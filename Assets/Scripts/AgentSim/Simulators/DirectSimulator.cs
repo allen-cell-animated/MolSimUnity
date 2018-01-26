@@ -15,7 +15,7 @@ namespace AICS.AgentSim
 		float forceMagnitude
 		{
 			get {
-				float meanForce = Time.deltaTime * 500000f * Mathf.Sqrt( diffusionCoefficient * agent.scale );
+				float meanForce = Time.deltaTime * 5E6f * Mathf.Sqrt( diffusionCoefficient * agent.scale );
 				return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
 			}
 		}
@@ -23,7 +23,7 @@ namespace AICS.AgentSim
 		float torqueMagnitude
 		{
 			get {
-				float meanForce = Time.deltaTime * 500000f * Mathf.Sqrt( diffusionCoefficient * agent.scale );
+				float meanForce = Time.deltaTime * 5E6f * Mathf.Sqrt( diffusionCoefficient * agent.scale );
 				return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
 			}
 		}
