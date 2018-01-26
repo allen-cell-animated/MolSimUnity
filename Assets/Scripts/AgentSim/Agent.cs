@@ -43,14 +43,14 @@ namespace AICS.AgentSim
 			}
 		}
 
-		ISimulator[] _simulators;
-		public ISimulator[] simulators
+		Simulator[] _simulators;
+		public Simulator[] simulators
 		{
 			get 
 			{
 				if (_simulators == null)
 				{
-					_simulators = GetComponents<ISimulator>();
+					_simulators = GetComponents<Simulator>();
 				}
 				return _simulators;
 			}
@@ -67,7 +67,7 @@ namespace AICS.AgentSim
 
 		void UpdateSelf (float time)
 		{
-			foreach (ISimulator simulator in simulators)
+			foreach (Simulator simulator in simulators)
 			{
 				simulator.SimulateTo( time );
 			}
