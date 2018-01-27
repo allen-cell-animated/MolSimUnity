@@ -7,7 +7,7 @@ namespace AICS.AgentSim
 	public class DirectSimulator : Simulator 
 	{
 		[Tooltip( "([Agent's scale] meters)^2 / s" )]
-		[SerializeField] protected float diffusionCoefficient;
+		public float diffusionCoefficient;
 
 		protected float displacement
 		{

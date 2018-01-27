@@ -13,7 +13,7 @@ namespace AICS.AgentSim
 			{
 				if (_agent == null)
 				{
-					_agent = GetComponentInParent<Agent>();
+					_agent = GetComponent<Agent>();
 				}
 				return _agent;
 			}

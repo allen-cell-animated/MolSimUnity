@@ -41,7 +41,20 @@ namespace AICS.AgentSim
 				}
 				return _children;
 			}
-		}
+        }
+
+        Container _container;
+        public Container container
+        {
+            get
+            {
+                if (_container == null)
+                {
+                    _container = GetComponentInParent<Container>();
+                }
+                return _container;
+            }
+        }
 
 		Simulator[] _simulators;
 		public Simulator[] simulators

@@ -29,7 +29,8 @@ namespace AICS.AgentSim
 
 		void Start ()
 		{
-			AddRigidbodyCollider();
+            agent.container.CreatePhysicsBounds();
+            AddRigidbodyCollider();
 		}
 
 		void AddRigidbodyCollider ()
@@ -37,7 +38,7 @@ namespace AICS.AgentSim
 			theCollider = gameObject.AddComponent<SphereCollider>();
 			body = gameObject.AddComponent<Rigidbody>();
 			body.drag = 10f;
-			body.useGravity = false;
+            body.useGravity = false;
 		}
 
 		protected override void DoRandomStep ()
