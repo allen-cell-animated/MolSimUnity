@@ -8,23 +8,33 @@ namespace AICS.AgentSim
     {
         Vector3 size = 100f * Vector3.one;
         float wallWidth = 100f;
+
         Transform[] walls;
 
-        public void Init (Vector3 _size, float _wallWidth)
+        public void Init (Vector3 _size, float _wallWidth, bool periodicBoundary)
         {
             size = _size;
             wallWidth = _wallWidth;
-            CreateWalls();
+            CreateWalls( periodicBoundary );
         }
 
-        void CreateWalls ()
+        void CreateWalls (bool periodicBoundary)
         {
+            GameObject wallPrefab = Resources.Load( "Wall" ) as GameObject;
+            if (wallPrefab == null)
+            {
+                Debug.LogWarning( "Wall prefab can't be found in Resources" );
+                return;
+            }
+
             walls = new Transform[6];
             for (int i = 0; i < 6; i++)
             {
-                walls[i] = GameObject.CreatePrimitive( PrimitiveType.Cube ).transform;
-                walls[i].GetComponent<MeshRenderer>().enabled = false;
-                walls[i].parent = transform;
+                walls[i] = (Instantiate( wallPrefab, transform ) as GameObject).transform;
+                if (periodicBoundary)
+                {
+                    walls[i].gameObject.AddComponent<PeriodicBoundary>();
+                }
             }
             SetWalls();
         }

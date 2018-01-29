@@ -7,6 +7,7 @@ namespace AICS.AgentSim
     public class Container : MonoBehaviour
 	{
         public Vector3 size;
+        public bool periodicBoundary = true;
 
         BoxWalls walls;
 
@@ -37,7 +38,7 @@ namespace AICS.AgentSim
             if (walls == null)
             {
                 walls = gameObject.AddComponent<BoxWalls>();
-                walls.Init( size, 25f );
+                walls.Init( size, 25f, periodicBoundary );
             }
         }
 	}
