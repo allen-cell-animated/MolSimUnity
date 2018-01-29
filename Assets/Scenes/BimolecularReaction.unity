@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac00d1baff1c7437191ead6205937724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 1
+  amount: 10
   individualPrefab: {fileID: 114717506123530026, guid: 8c97a5ec8668b453e9e009f0f2dabfc8,
     type: 2}
 --- !u!114 &1245971965

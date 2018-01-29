@@ -38,7 +38,7 @@ namespace AICS.AgentSim
             if (walls == null)
             {
                 walls = gameObject.AddComponent<BoxWalls>();
-                walls.Init( size, 25f, periodicBoundary );
+                walls.Init( size, 100f, periodicBoundary );
             }
         }
 	}

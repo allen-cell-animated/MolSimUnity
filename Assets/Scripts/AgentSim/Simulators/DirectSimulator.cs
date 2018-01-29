@@ -24,7 +24,15 @@ namespace AICS.AgentSim
 
 		protected virtual void DoRandomStep ()
 		{
-			transform.position += 2E3f * displacement * Random.onUnitSphere;
+            Vector3 moveStep = 2E3f * displacement * Random.onUnitSphere;
+            if (agent.container.PointIsInBounds( transform.position + moveStep ))
+            {
+                transform.position += moveStep;
+            }
+            else if (agent.container.PointIsInBounds( transform.position - moveStep ))
+            {
+                transform.position -= moveStep;
+            }
 		}
 	}
 }
