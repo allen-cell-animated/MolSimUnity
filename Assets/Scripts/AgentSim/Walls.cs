@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class BoxWalls : MonoBehaviour
+    public class Walls : MonoBehaviour
     {
         Vector3 size = 100f * Vector3.one;
         float wallWidth = 100f;

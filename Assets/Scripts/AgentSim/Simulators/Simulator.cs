@@ -19,6 +19,13 @@ namespace AICS.AgentSim
 			}
 		}
 
-		public abstract void SimulateTo (float time);
+        void Start ()
+        {
+            Setup();
+        }
+
+        protected abstract void Setup ();
+
+        public abstract void SimulateFor (float dTime);
 	}
 }

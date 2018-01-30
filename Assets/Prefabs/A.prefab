@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114717506123530026}
   - component: {fileID: 33858472576288084}
   - component: {fileID: 23158316481409050}
-  - component: {fileID: 114904892000277880}
+  - component: {fileID: 114839390220403792}
   m_Layer: 0
   m_Name: A
   m_TagString: Untagged
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scale: 0.000000001
---- !u!114 &114904892000277880
+--- !u!114 &114839390220403792
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -104,7 +104,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1051329247961260}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce4a0e52bea0f4c3fa7469190b6b9890, type: 3}
+  m_Script: {fileID: 11500000, guid: 53874d70da8a144b3b115748068129c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   diffusionCoefficient: 300000
+  radius: 0.5
+  maxMoveAttempts: 20

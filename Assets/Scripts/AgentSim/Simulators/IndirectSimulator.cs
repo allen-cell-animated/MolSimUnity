@@ -8,7 +8,9 @@ namespace AICS.AgentSim
     {
         public Reaction[] reactions;
 
-        public override void SimulateTo (float time)
+        protected override void Setup () { }
+
+        public override void SimulateFor (float dTime)
         {
             foreach (Reaction reaction in reactions)
             {

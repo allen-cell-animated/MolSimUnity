@@ -206,8 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 0
   highestAgents:
-  - {fileID: 1245971965}
-  - {fileID: 649447958}
+  - {fileID: 1180060486}
   observer: {fileID: 1581285018}
 --- !u!4 &531461676
 Transform:
@@ -263,7 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac00d1baff1c7437191ead6205937724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 10
+  amount: 50
   individualPrefab: {fileID: 114667722787416292, guid: 18a9838a20fba45dfa4392849e440784,
     type: 2}
 --- !u!114 &649447958
@@ -324,13 +323,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: {x: 50, y: 50, z: 50}
   periodicBoundary: 1
+  boundaryLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &1180060485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1180060482}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 030d44fb995d346208b6329a8e7ef975, type: 3}
   m_Name: 
@@ -377,7 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac00d1baff1c7437191ead6205937724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 10
+  amount: 50
   individualPrefab: {fileID: 114717506123530026, guid: 8c97a5ec8668b453e9e009f0f2dabfc8,
     type: 2}
 --- !u!114 &1245971965

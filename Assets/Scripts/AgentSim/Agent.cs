@@ -69,20 +69,20 @@ namespace AICS.AgentSim
 			}
 		}
 
-		public void UpdateTo (float time)
+		public void UpdateBy (float dTime)
 		{
 			foreach (Agent child in children)
 			{
-				child.UpdateTo( time );
+                child.UpdateBy( dTime );
 			}
-			UpdateSelf( time );
+            UpdateSelf( dTime );
 		}
 
-		void UpdateSelf (float time)
+        void UpdateSelf (float dTime)
 		{
 			foreach (Simulator simulator in simulators)
 			{
-				simulator.SimulateTo( time );
+                simulator.SimulateFor( dTime );
 			}
 		}
 	}

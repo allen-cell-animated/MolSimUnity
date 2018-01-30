@@ -9,7 +9,7 @@ namespace AICS.AgentSim
 		[Tooltip("current time in seconds")] 
 		public float time = 0; 
 		public Agent[] highestAgents;
-		public Observer observer;
+        public Observer observer;
 
 		static World _Instance;
 		public static World Instance
@@ -37,7 +37,7 @@ namespace AICS.AgentSim
 			time += dT;
 			foreach (Agent agent in highestAgents)
 			{
-				agent.UpdateTo( time );
+                agent.UpdateBy( dT );
 			}
 		}
 	}

@@ -27,7 +27,6 @@ namespace AICS.AgentSim
                 if (_size < 0)
                 {
                     _size = 2f * Vector3.Magnitude( toParent );
-                    Debug.Log( _size );
                 }
                 return _size;
             }
@@ -38,13 +37,9 @@ namespace AICS.AgentSim
             if (collision.rigidbody != null)
             {
                 RaycastHit info;
-                if (Physics.Raycast( collision.transform.position, toParent.normalized, out info, size, 1 << gameObject.layer ))
+                if (Physics.Raycast( collision.transform.position, toParent.normalized, out info, size, 1 << 8 ))
                 {
                     collision.transform.position = info.point - toParent.normalized;
-                }
-                else
-                {
-                    Debug.Log( "no collision " + collision.gameObject.name );
                 }
             }
         }
