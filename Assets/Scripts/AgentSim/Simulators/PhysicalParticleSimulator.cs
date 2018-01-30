@@ -56,7 +56,7 @@ namespace AICS.AgentSim
             {
                 if (agent.container.periodicBoundary)
                 {
-                    ReflectPeriodically( collision.gameObject.transform.parent.position - collision.gameObject.transform.position );
+                    ReflectPeriodically( collision.gameObject.transform.parent.position - transform.position );
                 }
             }
             else

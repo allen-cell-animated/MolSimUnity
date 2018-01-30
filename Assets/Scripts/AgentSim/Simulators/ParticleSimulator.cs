@@ -16,12 +16,12 @@ namespace AICS.AgentSim
             return Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime );
 		}
 
-        protected virtual void ReflectPeriodically (Vector3 wallToCenter)
+        protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
         {
             RaycastHit info;
-            if (Physics.Raycast( transform.position, wallToCenter.normalized, out info, 2f * wallToCenter.magnitude, agent.container.boundaryLayer ))
+            if (Physics.Raycast( transform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, agent.container.boundaryLayer ))
             {
-                transform.position = info.point - wallToCenter.normalized;
+                transform.position = info.point - collisionToCenter.normalized;
             }
         }
 

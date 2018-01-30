@@ -11,14 +11,14 @@ namespace AICS.AgentSim
 
         Transform[] walls;
 
-        public void Init (Vector3 _size, float _wallWidth, bool periodicBoundary)
+        public void Init (Vector3 _size, float _wallWidth)
         {
             size = _size;
             wallWidth = _wallWidth;
-            CreateWalls( periodicBoundary );
+            CreateWalls();
         }
 
-        void CreateWalls (bool periodicBoundary)
+        void CreateWalls ()
         {
             GameObject wallPrefab = Resources.Load( "Wall" ) as GameObject;
             if (wallPrefab == null)
@@ -31,10 +31,6 @@ namespace AICS.AgentSim
             for (int i = 0; i < 6; i++)
             {
                 walls[i] = (Instantiate( wallPrefab, transform ) as GameObject).transform;
-                if (periodicBoundary)
-                {
-                    walls[i].gameObject.AddComponent<PeriodicBoundary>();
-                }
             }
             SetWalls();
         }

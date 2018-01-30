@@ -38,12 +38,12 @@ namespace AICS.AgentSim
         {
             Vector3 moveStep = 2E3f * GetDisplacement( dTime ) * Random.onUnitSphere;
 
-            Vector3 wallToCenter;
-            if (agent.container.IsOutOfBounds( transform.position + moveStep, out wallToCenter ))
+            Vector3 collisionToCenter;
+            if (agent.container.IsOutOfBounds( transform.position + moveStep, out collisionToCenter ))
             {
                 if (agent.container.periodicBoundary)
                 {
-                    ReflectPeriodically( wallToCenter );
+                    ReflectPeriodically( collisionToCenter );
                     return true;
                 }
                 else

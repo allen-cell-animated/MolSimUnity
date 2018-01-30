@@ -38,45 +38,17 @@ namespace AICS.AgentSim
             if (walls == null)
             {
                 walls = gameObject.AddComponent<Walls>();
-                walls.Init( size, 100f, periodicBoundary );
+                walls.Init( size, 100f );
             }
         }
 
-        public virtual bool IsOutOfBounds (Vector3 point, out Vector3 wallToCenter)
+        public virtual bool IsOutOfBounds (Vector3 point, out Vector3 collisionToCenter)
         {
-            //there has to be a nicer way to write this...
-            if (point.x >= transform.position.x + size.x / 2f)
-            {
-                wallToCenter = -size.x / 2f * Vector3.right;
-                return true;
-            }
-            else if (point.x <= transform.position.x - size.x / 2f)
-            {
-                wallToCenter = size.x / 2f * Vector3.right;
-                return true;
-            }
-            else if (point.y >= transform.position.y + size.y / 2f)
-            {
-                wallToCenter = -size.y / 2f * Vector3.up;
-                return true;
-            }
-            else if (point.y <= transform.position.y - size.y / 2f)
-            {
-                wallToCenter = size.y / 2f * Vector3.up;
-                return true;
-            }
-            else if (point.z >= transform.position.z + size.z / 2f)
-            {
-                wallToCenter = -size.z / 2f * Vector3.forward;
-                return true;
-            }
-            else if (point.z <= transform.position.z - size.z / 2f)
-            {
-                wallToCenter = size.z / 2f * Vector3.forward;
-                return true;
-            }
-            wallToCenter = Vector3.zero;
-            return false;
+            bool inBounds = point.x < transform.position.x + size.x / 2f && point.x > transform.position.x - size.x / 2f
+                         && point.y < transform.position.y + size.y / 2f && point.y > transform.position.y - size.y / 2f
+                         && point.z < transform.position.z + size.z / 2f && point.z > transform.position.z - size.z / 2f;
+            collisionToCenter = inBounds ? Vector3.zero : transform.position - point;
+            return !inBounds;
         }
 
         public virtual bool WillCollide (ManagedParticleSimulator simulator, Vector3 newPosition, out ManagedParticleSimulator[] others)
