@@ -8,7 +8,9 @@ namespace AICS.AgentSim
 	{
 		[Tooltip("current time in seconds")] 
 		public float time = 0; 
-		public Agent[] highestAgents;
+        [Tooltip("frames since start")] 
+        public int steps = 0; 
+		public Agent[] rootAgents;
         public Observer observer;
 
 		static World _Instance;
@@ -24,7 +26,7 @@ namespace AICS.AgentSim
 			}
 		}
 
-		float dT
+		public float dT
 		{
 			get
 			{
@@ -35,7 +37,9 @@ namespace AICS.AgentSim
 		void Update ()
 		{
 			time += dT;
-			foreach (Agent agent in highestAgents)
+            steps++;
+
+            foreach (Agent agent in rootAgents)
 			{
                 agent.UpdateBy( dT );
 			}

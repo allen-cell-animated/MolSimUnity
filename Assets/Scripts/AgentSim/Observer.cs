@@ -6,6 +6,7 @@ namespace AICS.AgentSim
 {
 	public class Observer : MonoBehaviour 
 	{
+        [Tooltip( "meters" )]
 		public float currentScale = 1e-9f;
 	}
 }

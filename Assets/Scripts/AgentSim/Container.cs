@@ -4,14 +4,29 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
+    [RequireComponent( typeof(Agent) )]
     public class Container : MonoBehaviour
 	{
+        [Tooltip( "[Agent's scale] meters" )]
         public Vector3 size;
         public bool periodicBoundary = true;
         public LayerMask boundaryLayer;
 
         Walls walls;
         List<ManagedParticleSimulator> simulators = new List<ManagedParticleSimulator>();
+
+        float _volume = -1f;
+        public float volume
+        {
+            get
+            {
+                if (_volume < 0)
+                {
+                    _volume = size.x * size.y * size.z * Mathf.Pow( GetComponent<Agent>().scale, 3f );
+                }
+                return _volume;
+            }
+        }
 
         public virtual Vector3 GetRandomPointInBounds (float margin = 0)
         {

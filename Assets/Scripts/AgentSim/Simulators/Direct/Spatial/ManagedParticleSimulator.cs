@@ -14,16 +14,16 @@ namespace AICS.AgentSim
 
         protected override void Setup ()
         {
-            agent.container.RegisterSimulator( this );
+            container.RegisterSimulator( this );
         }
 
         public override void SimulateFor (float dTime)
         {
-            Vector3 exitVector;
-            if (!CheckBind( out exitVector ))
+            if (!CheckBind())
             {
-                transform.position += exitVector;
+                transform.position += GetExitVector();
             }
+            collidingSimulators.Clear();
 
             int i = 0;
             bool moved = false;
@@ -39,9 +39,9 @@ namespace AICS.AgentSim
             Vector3 moveStep = 2E3f * GetDisplacement( dTime ) * Random.onUnitSphere;
 
             Vector3 collisionToCenter;
-            if (agent.container.IsOutOfBounds( transform.position + moveStep, out collisionToCenter ))
+            if (container.IsOutOfBounds( transform.position + moveStep, out collisionToCenter ))
             {
-                if (agent.container.periodicBoundary)
+                if (container.periodicBoundary)
                 {
                     ReflectPeriodically( collisionToCenter );
                     return true;
@@ -54,7 +54,7 @@ namespace AICS.AgentSim
             else 
             {
                 ManagedParticleSimulator[] others;
-                if (agent.container.WillCollide( this, transform.position + moveStep, out others ))
+                if (container.WillCollide( this, transform.position + moveStep, out others ))
                 {
                     SaveCollidingSimulators( others );
                     return false;

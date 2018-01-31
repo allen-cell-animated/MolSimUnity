@@ -24,7 +24,7 @@ namespace AICS.AgentSim
 
         protected override void Setup ()
         {
-            agent.container.CreatePhysicsBounds();
+            container.CreatePhysicsBounds();
             AddRigidbodyCollider();
         }
 
@@ -39,6 +39,7 @@ namespace AICS.AgentSim
         public override void SimulateFor (float dTime)
         {
             CheckBind();
+            collidingSimulators.Clear();
 
             AddRandomForces( dTime );
         }
@@ -52,9 +53,9 @@ namespace AICS.AgentSim
 
         void OnCollisionEnter (Collision collision)
         {
-            if (1 << collision.gameObject.layer == agent.container.boundaryLayer)
+            if (1 << collision.gameObject.layer == container.boundaryLayer)
             {
-                if (agent.container.periodicBoundary)
+                if (container.periodicBoundary)
                 {
                     ReflectPeriodically( collision.gameObject.transform.parent.position - transform.position );
                 }

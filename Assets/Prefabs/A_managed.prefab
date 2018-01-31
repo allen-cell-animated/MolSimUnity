@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23158316481409050}
   - component: {fileID: 114839390220403792}
   m_Layer: 0
-  m_Name: A
+  m_Name: A_managed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82fde04cb77d48c7975f2d18535472c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  species: A
   scale: 0.000000001
 --- !u!114 &114839390220403792
 MonoBehaviour:
@@ -107,6 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53874d70da8a144b3b115748068129c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reactions: []
   diffusionCoefficient: 300000
   radius: 0.5
   maxMoveAttempts: 20

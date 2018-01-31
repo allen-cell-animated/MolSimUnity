@@ -6,6 +6,7 @@ namespace AICS.AgentSim
 {
 	public class Agent : MonoBehaviour 
 	{
+        public string species;
 		public float scale = 1e-9f;
 
 		Agent _parent;
@@ -43,19 +44,6 @@ namespace AICS.AgentSim
 			}
         }
 
-        Container _container;
-        public Container container
-        {
-            get
-            {
-                if (_container == null)
-                {
-                    _container = GetComponentInParent<Container>();
-                }
-                return _container;
-            }
-        }
-
 		Simulator[] _simulators;
 		public Simulator[] simulators
 		{
@@ -75,10 +63,10 @@ namespace AICS.AgentSim
 			{
                 child.UpdateBy( dTime );
 			}
-            UpdateSelf( dTime );
+            UpdateSelfBy( dTime );
 		}
 
-        void UpdateSelf (float dTime)
+        void UpdateSelfBy (float dTime)
 		{
 			foreach (Simulator simulator in simulators)
 			{

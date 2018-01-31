@@ -205,7 +205,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  highestAgents:
+  steps: 0
+  rootAgents:
   - {fileID: 1180060486}
   observer: {fileID: 1581285018}
 --- !u!4 &531461676
@@ -259,11 +260,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 649447953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac00d1baff1c7437191ead6205937724, type: 3}
+  m_Script: {fileID: 11500000, guid: f36d21b23d68544aba1cbef25e5253cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 50
-  individualPrefab: {fileID: 114667722787416292, guid: 18a9838a20fba45dfa4392849e440784,
+  concentration: 6e-16
+  particlePrefab: {fileID: 114482870330807476, guid: 291b307d3b3c7446fa80700d47096135,
     type: 2}
 --- !u!114 &649447958
 MonoBehaviour:
@@ -276,6 +277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82fde04cb77d48c7975f2d18535472c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  species: B
   scale: 0.000001
 --- !u!1 &1180060482
 GameObject:
@@ -289,7 +291,7 @@ GameObject:
   - component: {fileID: 1180060484}
   - component: {fileID: 1180060485}
   m_Layer: 0
-  m_Name: ABNetwork
+  m_Name: ABReactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,13 +334,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1180060482}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 030d44fb995d346208b6329a8e7ef975, type: 3}
+  m_Script: {fileID: 11500000, guid: f6a783a31d6df4615983d9903a2403a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   reactions:
   - {fileID: 11400000, guid: 8e94379514b604060b5982457c728eaf, type: 2}
+  reactionData: []
 --- !u!114 &1180060486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82fde04cb77d48c7975f2d18535472c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  species: 
   scale: 0.000001
 --- !u!1 &1245971962
 GameObject:
@@ -376,11 +380,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1245971962}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac00d1baff1c7437191ead6205937724, type: 3}
+  m_Script: {fileID: 11500000, guid: f36d21b23d68544aba1cbef25e5253cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 50
-  individualPrefab: {fileID: 114717506123530026, guid: 8c97a5ec8668b453e9e009f0f2dabfc8,
+  concentration: 6e-16
+  particlePrefab: {fileID: 114839390220403792, guid: e30b1ec2175594b988da46ea2745b016,
     type: 2}
 --- !u!114 &1245971965
 MonoBehaviour:
@@ -393,6 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82fde04cb77d48c7975f2d18535472c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  species: A
   scale: 0.000001
 --- !u!4 &1245971966
 Transform:
