@@ -4,28 +4,29 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    [RequireComponent( typeof(Agent) )]
-    public class Container : MonoBehaviour
+    public class Container : AgentComponent
 	{
-        [Tooltip( "[Agent's scale] meters" )]
-        public Vector3 size;
+        [Tooltip( "L" )]
+        public float volume;
+        [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
         public bool periodicBoundary = true;
-        public LayerMask boundaryLayer;
 
+        [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
+        Vector3 size;
         Walls walls;
         List<ManagedParticleSimulator> simulators = new List<ManagedParticleSimulator>();
 
-        float _volume = -1f;
-        public float volume
+        public virtual void Init (float _volume, bool _periodicBoundary)
         {
-            get
-            {
-                if (_volume < 0)
-                {
-                    _volume = size.x * size.y * size.z * Mathf.Pow( GetComponent<Agent>().scale, 3f );
-                }
-                return _volume;
-            }
+            volume = _volume;
+            CalculateSize( volume );
+            periodicBoundary = _periodicBoundary;
+        }
+
+        protected virtual void CalculateSize (float _volume)
+        {
+            float side = Mathf.Pow( _volume * 1E-6f, 1f / 3f ) / agent.scale;
+            size = side * Vector3.one;
         }
 
         public virtual Vector3 GetRandomPointInBounds (float margin = 0)

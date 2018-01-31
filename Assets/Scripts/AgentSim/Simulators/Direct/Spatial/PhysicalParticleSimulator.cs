@@ -10,25 +10,25 @@ namespace AICS.AgentSim
 		protected Collider theCollider;
         protected Rigidbody body;
 
-        float GetForceMagnitude (float dTime)
+        protected float GetForceMagnitude (float dTime)
 		{
             float meanForce = 5E6f * GetDisplacement( dTime );
 			return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
 		}
 
-        float GetTorqueMagnitude (float dTime)
+        protected float GetTorqueMagnitude (float dTime)
 		{
             float meanForce = 5E6f * GetDisplacement( dTime );
 			return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
-		}
+        }
 
-        protected override void Setup ()
+        protected override void DoAdditionalInit ()
         {
-            container.CreatePhysicsBounds();
+            population.reactor.container.CreatePhysicsBounds();
             AddRigidbodyCollider();
         }
 
-		void AddRigidbodyCollider ()
+        protected void AddRigidbodyCollider ()
 		{
 			theCollider = gameObject.AddComponent<SphereCollider>();
 			body = gameObject.AddComponent<Rigidbody>();
@@ -53,9 +53,14 @@ namespace AICS.AgentSim
 
         void OnCollisionEnter (Collision collision)
         {
-            if (1 << collision.gameObject.layer == container.boundaryLayer)
+            HandleCollision( collision );
+        }
+
+        protected virtual void HandleCollision (Collision collision)
+        {
+            if (1 << collision.gameObject.layer == population.reactor.container.boundaryLayer)
             {
-                if (container.periodicBoundary)
+                if (population.reactor.container.periodicBoundary)
                 {
                     ReflectPeriodically( collision.gameObject.transform.parent.position - transform.position );
                 }

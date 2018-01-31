@@ -6,36 +6,19 @@ namespace AICS.AgentSim
 {
     public abstract class ParticleSimulator : Simulator 
     {
-		[Tooltip( "([Agent's scale] meters)^2 / s" )]
-		public float diffusionCoefficient;
+        protected ParticlePopulation population;
+		protected float diffusionCoefficient;
 
         protected List<ParticleSimulator> collidingSimulators = new List<ParticleSimulator>();
 
-        ParticleReactor _reactor;
-        ParticleReactor reactor
+        public void Init (ParticlePopulation _population)
         {
-            get
-            {
-                if (_reactor == null)
-                {
-                    _reactor = GetComponentInParent<ParticleReactor>();
-                }
-                return _reactor;
-            }
+            population = _population;
+            diffusionCoefficient = population.molecule.diffusionCoefficient;
+            DoAdditionalInit();
         }
 
-        Container _container;
-        public Container container
-        {
-            get
-            {
-                if (_container == null)
-                {
-                    _container = GetComponentInParent<Container>();
-                }
-                return _container;
-            }
-        }
+        protected abstract void DoAdditionalInit ();
 
         protected float GetDisplacement (float dTime)
 		{
@@ -45,7 +28,7 @@ namespace AICS.AgentSim
         protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
         {
             RaycastHit info;
-            if (Physics.Raycast( transform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, container.boundaryLayer ))
+            if (Physics.Raycast( transform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, population.reactor.container.boundaryLayer ))
             {
                 transform.position = info.point - collisionToCenter.normalized;
             }
@@ -58,8 +41,8 @@ namespace AICS.AgentSim
 
         protected virtual bool CheckBind ()
         {
-            reactor.reactionData.Shuffle();
-            foreach (ParticleReaction reactionData in reactor.reactionData)
+            population.reactor.reactionData.Shuffle();
+            foreach (ParticleReaction reactionData in population.reactor.reactionData)
             {
                 collidingSimulators.Shuffle();
                 foreach (ParticleSimulator other in collidingSimulators)
@@ -79,7 +62,7 @@ namespace AICS.AgentSim
             // TODO
         }
 
-        protected virtual Vector3 GetExitVector ()
+        protected virtual Vector3 GetExitDirection ()
         {
             int n = 0;
             Vector3 exitVector = Vector3.zero;

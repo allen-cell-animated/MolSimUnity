@@ -4,28 +4,8 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-	public abstract class Simulator : MonoBehaviour
+    public abstract class Simulator : AgentComponent
 	{
-		Agent _agent;
-		public Agent agent
-		{
-			get
-			{
-				if (_agent == null)
-				{
-					_agent = GetComponent<Agent>();
-				}
-				return _agent;
-			}
-		}
-
-        void Start ()
-        {
-            Setup();
-        }
-
-        protected abstract void Setup ();
-
         public abstract void SimulateFor (float dTime);
 	}
 }

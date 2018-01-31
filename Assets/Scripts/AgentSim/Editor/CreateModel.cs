@@ -3,14 +3,14 @@ using UnityEditor;
 
 namespace AICS.AgentSim
 {
-    public class CreateReaction 
+    public class CreateModel 
     {
-        [MenuItem("Assets/Create/Reaction")]
+        [MenuItem("Assets/Create/Model")]
         public static void Create ()
         {
-            Reaction asset = ScriptableObject.CreateInstance<Reaction>();
+            Model asset = ScriptableObject.CreateInstance<Model>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Reactions/newReaction.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Models/newModel.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;

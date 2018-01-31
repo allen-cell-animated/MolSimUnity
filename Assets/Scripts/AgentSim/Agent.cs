@@ -7,6 +7,7 @@ namespace AICS.AgentSim
 	public class Agent : MonoBehaviour 
 	{
         public string species;
+        [Tooltip( "conversion factor to meters" )] 
 		public float scale = 1e-9f;
 
 		Agent _parent;
@@ -56,6 +57,12 @@ namespace AICS.AgentSim
 				return _simulators;
 			}
 		}
+
+        public void Init (string _species, float _scale)
+        {
+            species = _species;
+            scale = _scale;
+        }
 
 		public void UpdateBy (float dTime)
 		{
