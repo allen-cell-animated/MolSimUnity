@@ -35,3 +35,8 @@ MonoBehaviour:
     productSpecies:
     - A.B
     rate: 10000000
+  binds:
+  - parentSpecies: A
+    childSpecies: B
+    relativePosition: {x: 0.75, y: 0, z: 0}
+    relativeRotation: {x: 0, y: 0, z: 0}

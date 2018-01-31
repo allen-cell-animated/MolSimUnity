@@ -21,14 +21,17 @@ namespace AICS.AgentSim
             {
                 transform.position += GetExitDirection();
             }
-            collidingSimulators.Clear();
+            collidingParticles.Clear();
 
-            int i = 0;
-            bool moved = false;
-            while (!moved && i < population.reactor.maxMoveAttempts)
+            if (canMove)
             {
-                moved = MoveRandomStep( dTime );
-                i++;
+                int i = 0;
+                bool moved = false;
+                while (!moved && i < population.reactor.maxMoveAttempts)
+                {
+                    moved = MoveRandomStep( dTime );
+                    i++;
+                }
             }
         }
 
@@ -63,6 +66,11 @@ namespace AICS.AgentSim
                     return true;
                 }
             }
+        }
+
+        protected override void ToggleMotion (bool move)
+        {
+            canMove = move;
         }
     }
 }

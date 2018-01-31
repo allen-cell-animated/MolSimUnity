@@ -10,12 +10,26 @@ namespace AICS.AgentSim
         public float containerVolume;
         public Molecule[] molecules;
         public Reaction[] reactions;
+        public Bind[] binds;
 
         public Model (float _containerVolume, Molecule[] _molecules, Reaction[] _reactions)
         {
             containerVolume = _containerVolume;
             molecules = _molecules;
             reactions = _reactions;
+        }
+
+        public Bind GetBindForSpecies (string species1, string species2)
+        {
+            foreach (Bind bind in binds)
+            {
+                if ((bind.parentSpecies == species1 && bind.childSpecies == species2)
+                 || (bind.parentSpecies == species2 && bind.childSpecies == species1))
+                {
+                    return bind;
+                }
+            }
+            return null;
         }
     }
 
@@ -81,6 +95,23 @@ namespace AICS.AgentSim
                                                     || (species2 == reactantSpecies[0] && species1 == null)))
                 || (reactantSpecies.Length == 2 && ((species1 == reactantSpecies[0] && species2 == reactantSpecies[1])
                                                     || (species2 == reactantSpecies[0] && species1 == reactantSpecies[1])));
+        }
+    }
+
+    [System.Serializable]
+    public class Bind 
+    {
+        public string parentSpecies;
+        public string childSpecies;
+        public Vector3 relativePosition;
+        public Vector3 relativeRotation;
+
+        public Bind (string _parentSpecies, string _childSpecies, Vector3 _relativePosition, Vector3 _relativeRotation)
+        {
+            parentSpecies = _parentSpecies;
+            childSpecies = _childSpecies;
+            relativePosition = _relativePosition;
+            relativeRotation = _relativeRotation;
         }
     }
 }

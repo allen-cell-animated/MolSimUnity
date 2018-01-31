@@ -83,7 +83,9 @@ namespace AICS.AgentSim
 
         bool SimulatorsAreColliding (ManagedParticleSimulator simulator1, ManagedParticleSimulator simulator2)
         {
-            return simulator1 != simulator2 && Vector3.Distance( simulator1.transform.position, simulator2.transform.position ) < simulator1.radius + simulator2.radius;
+            return simulator1 != simulator2 
+                && Vector3.Distance( simulator1.transform.position, simulator2.transform.position ) < simulator1.radius + simulator2.radius
+                && !simulator1.boundParticles.Contains( simulator2 );
         }
 	}
 }

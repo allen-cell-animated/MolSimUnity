@@ -8,8 +8,10 @@ namespace AICS.AgentSim
     {
         protected ParticlePopulation population;
 		protected float diffusionCoefficient;
+        public bool canMove = true;
 
-        protected List<ParticleSimulator> collidingSimulators = new List<ParticleSimulator>();
+        protected List<ParticleSimulator> collidingParticles = new List<ParticleSimulator>();
+        [HideInInspector] public List<ParticleSimulator> boundParticles = new List<ParticleSimulator>();
 
         public void Init (ParticlePopulation _population)
         {
@@ -36,7 +38,7 @@ namespace AICS.AgentSim
 
         protected virtual void SaveCollidingSimulators (ParticleSimulator[] others)
         {
-            collidingSimulators.AddRange( others );
+            collidingParticles.AddRange( others );
         }
 
         protected virtual bool CheckBind ()
@@ -44,8 +46,8 @@ namespace AICS.AgentSim
             population.reactor.reactionData.Shuffle();
             foreach (ParticleReaction reactionData in population.reactor.reactionData)
             {
-                collidingSimulators.Shuffle();
-                foreach (ParticleSimulator other in collidingSimulators)
+                collidingParticles.Shuffle();
+                foreach (ParticleSimulator other in collidingParticles)
                 {
                     if (reactionData.reaction.ReactantsEqual( agent.species, other.agent.species ) && reactionData.ShouldHappen())
                     {
@@ -57,19 +59,41 @@ namespace AICS.AgentSim
             return false;
         }
 
-        protected virtual void DoBind (ParticleSimulator other, Reaction reaction)
+        protected void DoBind (ParticleSimulator other, Reaction reaction)
         {
-            // TODO
+            boundParticles.Add( other );
+            other.boundParticles.Add( this );
+
+            Bind bind = population.reactor.model.GetBindForSpecies( agent.species, other.agent.species );
+
+            bool thisIsChild = bind.childSpecies == agent.species;
+            ParticleSimulator newChild = thisIsChild ? this : other;
+            ParticleSimulator newParent = thisIsChild ? other : this;
+
+            newChild.BindToOther( newParent, bind );
         }
+
+        protected virtual void BindToOther (ParticleSimulator other, Bind bind)
+        {
+            ToggleMotion( false );
+            agent.SetParent( other.agent );
+            transform.position = other.transform.TransformPoint( bind.relativePosition );
+            transform.rotation = other.transform.rotation * Quaternion.Euler( bind.relativeRotation );
+        }
+
+        protected abstract void ToggleMotion (bool move);
 
         protected virtual Vector3 GetExitDirection ()
         {
             int n = 0;
             Vector3 exitVector = Vector3.zero;
-            foreach (ParticleSimulator other in collidingSimulators)
+            foreach (ParticleSimulator other in collidingParticles)
             {
-                exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
-                n++;
+                if (!boundParticles.Contains( other ))
+                {
+                    exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
+                    n++;
+                }
             }
             return exitVector.normalized;
         }

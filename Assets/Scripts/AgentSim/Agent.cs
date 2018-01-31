@@ -21,6 +21,10 @@ namespace AICS.AgentSim
 				}
 				return _parent;
 			}
+            set
+            {
+                _parent = value;
+            }
 		}
 
 		List<Agent> _children;
@@ -79,6 +83,38 @@ namespace AICS.AgentSim
 			{
                 simulator.SimulateFor( dTime );
 			}
-		}
+        }
+
+        public void SetParent (Agent newParent)
+        {
+            parent.RemoveChild( this );
+            newParent.AddChild( this );
+            parent = newParent;
+        }
+
+        void AddChild (Agent child)
+        {
+            if (!children.Contains( child ))
+            {
+                children.Add( child );
+                child.transform.SetParent( transform );
+            }
+            else
+            {
+                Debug.LogWarning( "Add: " + name + " already has child " + child.name );
+            }
+        }
+
+        void RemoveChild (Agent child)
+        {
+            if (children.Contains( child ))
+            {
+                children.Remove( child );
+            }
+            else
+            {
+                Debug.LogWarning( "Remove: " + name + " doesn't have child " + child.name );
+            }
+        }
 	}
 }

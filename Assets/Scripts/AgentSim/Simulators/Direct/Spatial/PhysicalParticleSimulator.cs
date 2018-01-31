@@ -7,7 +7,7 @@ namespace AICS.AgentSim
     // Directly simulated particles that use the physics engine to detect and exit collisions
     public class PhysicalParticleSimulator : ParticleSimulator 
 	{
-		protected Collider theCollider;
+        protected SphereCollider sphereCollider;
         protected Rigidbody body;
 
         protected float GetForceMagnitude (float dTime)
@@ -30,7 +30,7 @@ namespace AICS.AgentSim
 
         protected void AddRigidbodyCollider ()
 		{
-			theCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
 			body = gameObject.AddComponent<Rigidbody>();
 			body.drag = 10f;
             body.useGravity = false;
@@ -39,9 +39,12 @@ namespace AICS.AgentSim
         public override void SimulateFor (float dTime)
         {
             CheckBind();
-            collidingSimulators.Clear();
+            collidingParticles.Clear();
 
-            AddRandomForces( dTime );
+            if (canMove)
+            {
+                AddRandomForces( dTime );
+            }
         }
 
 		protected virtual void AddRandomForces (float dTime)
@@ -73,6 +76,12 @@ namespace AICS.AgentSim
                     SaveCollidingSimulators( others );
                 }
             }
+        }
+
+        protected override void ToggleMotion (bool move)
+        {
+            canMove = move;
+            body.velocity = body.angularVelocity = Vector3.zero;
         }
 	}
 }
