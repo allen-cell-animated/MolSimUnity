@@ -11,7 +11,7 @@ namespace AICS.AgentSim
         public bool canMove = true;
 
         protected List<ParticleSimulator> collidingParticles = new List<ParticleSimulator>();
-        protected ReactionState[] reactionStates;
+        [SerializeField] protected ReactionState[] reactionStates;
 
         ReactionWatcher[] reactionWatchers
         {
@@ -69,7 +69,9 @@ namespace AICS.AgentSim
                     collidingParticles.Shuffle();
                     foreach (ParticleSimulator other in collidingParticles)
                     {
-                        if (reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species ) && reactionWatchers[i].ShouldHappen())
+                        if (other.reactionStates[i].currentBindingPartner == null 
+                            && reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species ) 
+                            && reactionWatchers[i].ShouldHappen())
                         {
                             ApplyBind( i, other );
                             return true;
@@ -137,6 +139,7 @@ namespace AICS.AgentSim
         }
 	}
 
+    [System.Serializable]
     public class ReactionState
     {
         public int index;

@@ -5,29 +5,31 @@ using UnityEngine.Assertions;
 using UnityEngine.TestTools;
 using AICS.AgentSim;
 
-public class ContainerTests : AgentSimTests
+public class BindingTests : AgentSimTests
 {
     [UnityTest]
-    public IEnumerator ManagedParticlesStayInBounds ()
+    public IEnumerator BimolecularReactantsOnlyReactOnce ()
     {
         CreateWorld();
 
         ParticleReactor reactor = (GameObject.Instantiate( Resources.Load( "Tests/DefaultReactor" ) as GameObject ) as GameObject).GetComponent<ParticleReactor>();
-        reactor.model = Resources.Load( "Tests/ANullReaction" ) as Model;
+        reactor.model = Resources.Load( "Tests/BiomolecularReaction" ) as Model;
         World.Instance.rootAgents = new Agent[] { reactor.agent };
 
         yield return new WaitForEndOfFrame();
 
         ParticleSimulator[] particles = reactor.GetComponentInChildren<ParticlePopulation>().GetComponentsInChildren<ParticleSimulator>();
-        Vector3 nullVector;
 
-        for (int i = 0; i < 200; i++)
+        //let them react and bind
+        yield return new WaitForSeconds( 10f );
+
+        for (int i = 0; i < 500; i++)
         {
             yield return new WaitForEndOfFrame();
 
             foreach (ParticleSimulator particle in particles)
             {
-                Assert.IsFalse( reactor.container.IsOutOfBounds( particle.transform.position, out nullVector ) );
+                Assert.IsTrue( particle.transform.childCount < 2 );
             }
         }
 
