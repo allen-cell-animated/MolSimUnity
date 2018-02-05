@@ -10,7 +10,7 @@ namespace AICS.AgentSim
 		public float time = 0; 
         [Tooltip("frames since start")] 
         public int steps = 0; 
-		public Agent[] rootAgents;
+        public Agent[] rootAgents = new Agent[0];
         public Observer observer;
 
 		static World _Instance;
@@ -36,13 +36,16 @@ namespace AICS.AgentSim
 
 		void Update ()
 		{
-			time += dT;
-            steps++;
+            if (observer != null)
+            {
+    			time += dT;
+                steps++;
 
-            foreach (Agent agent in rootAgents)
-			{
-                agent.UpdateBy( dT );
-			}
+                foreach (Agent agent in rootAgents)
+    			{
+                    agent.UpdateBy( dT );
+    			}
+            }
 		}
 	}
 }

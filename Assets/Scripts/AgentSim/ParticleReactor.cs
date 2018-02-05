@@ -19,6 +19,14 @@ namespace AICS.AgentSim
 
         void Start ()
         {
+            if (model != null)
+            {
+                Init();
+            }
+        }
+
+        public void Init ()
+        {
             SetupReactionData();
             CreateContainer();
             CreateInitialSpecies();
