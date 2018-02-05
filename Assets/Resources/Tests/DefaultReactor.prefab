@@ -67,7 +67,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usePhysicsEngine: 0
   maxMoveAttempts: 20
-  periodicBoundary: 0
+  periodicBoundary: 1
   model: {fileID: 0}
   reactionWatchers: []
   container: {fileID: 0}
