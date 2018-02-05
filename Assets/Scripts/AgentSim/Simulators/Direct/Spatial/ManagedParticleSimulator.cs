@@ -32,6 +32,8 @@ namespace AICS.AgentSim
                     moved = MoveRandomStep( dTime );
                     i++;
                 }
+
+                RotateRandomly( dTime );
             }
         }
 
@@ -66,6 +68,11 @@ namespace AICS.AgentSim
                     return true;
                 }
             }
+        }
+
+        protected virtual void RotateRandomly (float dTime)
+        {
+            transform.rotation *= Quaternion.Euler( 2E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
         protected override void ToggleMotion (bool move)

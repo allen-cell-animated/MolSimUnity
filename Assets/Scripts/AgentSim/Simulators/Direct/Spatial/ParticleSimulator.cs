@@ -11,7 +11,7 @@ namespace AICS.AgentSim
         public bool canMove = true;
 
         protected List<ParticleSimulator> collidingParticles = new List<ParticleSimulator>();
-        [SerializeField] protected ReactionState[] reactionStates;
+        [HideInInspector] public ReactionState[] reactionStates;
 
         ReactionWatcher[] reactionWatchers
         {
@@ -42,7 +42,7 @@ namespace AICS.AgentSim
 
         protected float GetDisplacement (float dTime)
 		{
-            return Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime );
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt(  diffusionCoefficient * dTime ) );
 		}
 
         protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
