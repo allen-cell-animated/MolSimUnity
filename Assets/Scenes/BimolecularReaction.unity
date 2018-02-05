@@ -267,7 +267,7 @@ MonoBehaviour:
   maxMoveAttempts: 20
   periodicBoundary: 1
   model: {fileID: 11400000, guid: cfa4c109d3e2646a8bc0240af5560074, type: 2}
-  reactionData: []
+  reactionWatchers: []
   container: {fileID: 0}
 --- !u!114 &1180060486
 MonoBehaviour:
