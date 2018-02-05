@@ -14,7 +14,7 @@ namespace AICS.AgentSim
         public bool periodicBoundary = true;
         public Model model;
 
-        public ParticleReaction[] reactionData;
+        public ReactionWatcher[] reactionWatchers;
         [HideInInspector] public Container container;
 
         void Start ()
@@ -26,10 +26,10 @@ namespace AICS.AgentSim
 
         protected virtual void SetupReactionData ()
         {
-            reactionData = new ParticleReaction[model.reactions.Length];
+            reactionWatchers = new ReactionWatcher[model.reactions.Length];
             for (int i = 0; i < model.reactions.Length; i++)
             {
-                reactionData[i] = new ParticleReaction( model.reactions[i] );
+                reactionWatchers[i] = new ReactionWatcher( model.reactions[i] );
             }
         }
 
@@ -58,7 +58,7 @@ namespace AICS.AgentSim
 
     // runtime data for a reaction used to keep rate near its theoretical value
     [System.Serializable]
-    public class ParticleReaction
+    public class ReactionWatcher
     {
         public Reaction reaction;
 
@@ -66,7 +66,7 @@ namespace AICS.AgentSim
         public int events;
         public float observedRate;
 
-        public ParticleReaction (Reaction _reaction)
+        public ReactionWatcher (Reaction _reaction)
         {
             reaction = _reaction;
         }

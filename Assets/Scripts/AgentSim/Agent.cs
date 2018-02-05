@@ -15,9 +15,9 @@ namespace AICS.AgentSim
 		{
 			get
 			{
-				if (_parent == null)
+                if (_parent == null && transform.parent != null)
 				{
-					_parent = GetComponentInParent<Agent>();
+                    _parent = transform.parent.GetComponentInParent<Agent>();
 				}
 				return _parent;
 			}
@@ -26,6 +26,9 @@ namespace AICS.AgentSim
                 _parent = value;
             }
 		}
+
+        List<Agent> newChildren = new List<Agent>();
+        List<Agent> oldChildren = new List<Agent>();
 
 		List<Agent> _children;
 		public List<Agent> children
@@ -75,6 +78,8 @@ namespace AICS.AgentSim
                 child.UpdateBy( dTime );
 			}
             UpdateSelfBy( dTime );
+
+            UpdateChildren();
 		}
 
         void UpdateSelfBy (float dTime)
@@ -94,27 +99,42 @@ namespace AICS.AgentSim
 
         void AddChild (Agent child)
         {
-            if (!children.Contains( child ))
-            {
-                children.Add( child );
-                child.transform.SetParent( transform );
-            }
-            else
-            {
-                Debug.LogWarning( "Add: " + name + " already has child " + child.name );
-            }
+            newChildren.Add( child );
+            child.transform.SetParent( transform );
         }
 
         void RemoveChild (Agent child)
         {
-            if (children.Contains( child ))
+            oldChildren.Add( child );
+        }
+
+        void UpdateChildren ()
+        {
+            foreach (Agent child in newChildren)
             {
-                children.Remove( child );
+                if (!children.Contains( child ))
+                {
+                    children.Add( child );
+                }
+                else
+                {
+                    Debug.LogWarning( "Add: " + name + " already has child " + child.name );
+                }
             }
-            else
+            newChildren.Clear();
+
+            foreach (Agent child in oldChildren)
             {
-                Debug.LogWarning( "Remove: " + name + " doesn't have child " + child.name );
+                if (children.Contains( child ))
+                {
+                    children.Remove( child );
+                }
+                else
+                {
+                    Debug.LogWarning( "Remove: " + name + " doesn't have child " + child.name );
+                }
             }
+            oldChildren.Clear();
         }
 	}
 }

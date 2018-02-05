@@ -85,7 +85,7 @@ namespace AICS.AgentSim
         {
             return simulator1 != simulator2 
                 && Vector3.Distance( simulator1.transform.position, simulator2.transform.position ) < simulator1.radius + simulator2.radius
-                && !simulator1.boundParticles.Contains( simulator2 );
+                && !simulator1.IsBoundToOther( simulator2 );
         }
 	}
 }

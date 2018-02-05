@@ -38,11 +38,11 @@ namespace AICS.AgentSim
 
             for (int i = 0; i < amount; i++)
             {
-                SpawnParticle();
+                SpawnParticle( i );
             }
         }
 
-        public virtual void SpawnParticle ()
+        public virtual void SpawnParticle (int index)
         {
             if (molecule.visualizationPrefab == null)
             {
@@ -53,6 +53,7 @@ namespace AICS.AgentSim
             GameObject particle = Instantiate( molecule.visualizationPrefab, transform );
             particle.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
             particle.transform.rotation = Random.rotation;
+            particle.name = molecule.species + "_" + index;
             particle.AddComponent<Agent>().Init( molecule.species, molecule.scale );
 
             ParticleSimulator simulator;

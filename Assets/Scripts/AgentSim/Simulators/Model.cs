@@ -10,26 +10,12 @@ namespace AICS.AgentSim
         public float containerVolume;
         public Molecule[] molecules;
         public Reaction[] reactions;
-        public Bind[] binds;
 
         public Model (float _containerVolume, Molecule[] _molecules, Reaction[] _reactions)
         {
             containerVolume = _containerVolume;
             molecules = _molecules;
             reactions = _reactions;
-        }
-
-        public Bind GetBindForSpecies (string species1, string species2)
-        {
-            foreach (Bind bind in binds)
-            {
-                if ((bind.parentSpecies == species1 && bind.childSpecies == species2)
-                 || (bind.parentSpecies == species2 && bind.childSpecies == species1))
-                {
-                    return bind;
-                }
-            }
-            return null;
         }
     }
 
@@ -79,13 +65,15 @@ namespace AICS.AgentSim
         public string[] productSpecies;
         [Tooltip( "per second" )] 
         public float rate;
+        public Bind bind;
 
-        public Reaction (string[] _reactantSpecies, string[] _productSpecies, float _rate, string _description = "")
+        public Reaction (string[] _reactantSpecies, string[] _productSpecies, float _rate, Bind _bind, string _description = "")
         {
             description = _description;
             reactantSpecies = _reactantSpecies;
             productSpecies = _productSpecies;
             rate = _rate;
+            bind = _bind;
         }
 
         public bool ReactantsEqual (string species1, string species2)

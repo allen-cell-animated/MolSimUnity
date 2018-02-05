@@ -11,13 +11,31 @@ namespace AICS.AgentSim
         public bool canMove = true;
 
         protected List<ParticleSimulator> collidingParticles = new List<ParticleSimulator>();
-        [HideInInspector] public List<ParticleSimulator> boundParticles = new List<ParticleSimulator>();
+        protected ReactionState[] reactionStates;
+
+        ReactionWatcher[] reactionWatchers
+        {
+            get
+            {
+                return population.reactor.reactionWatchers;
+            }
+        }
 
         public void Init (ParticlePopulation _population)
         {
             population = _population;
             diffusionCoefficient = population.molecule.diffusionCoefficient;
+            InitReactionStates( population.reactor.model.reactions.Length );
             DoAdditionalInit();
+        }
+
+        void InitReactionStates (int n)
+        {
+            reactionStates = new ReactionState[n];
+            for (int i = 0; i < n; i++)
+            {
+                reactionStates[i] = new ReactionState( i, null );
+            }
         }
 
         protected abstract void DoAdditionalInit ();
@@ -43,42 +61,50 @@ namespace AICS.AgentSim
 
         protected virtual bool CheckBind ()
         {
-            population.reactor.reactionData.Shuffle();
-            foreach (ParticleReaction reactionData in population.reactor.reactionData)
+            reactionStates.Shuffle();
+            for (int i = 0; i < reactionStates.Length; i++)
             {
-                collidingParticles.Shuffle();
-                foreach (ParticleSimulator other in collidingParticles)
+                if (reactionStates[i].currentBindingPartner == null)
                 {
-                    if (reactionData.reaction.ReactantsEqual( agent.species, other.agent.species ) && reactionData.ShouldHappen())
+                    collidingParticles.Shuffle();
+                    foreach (ParticleSimulator other in collidingParticles)
                     {
-                        DoBind( other, reactionData.reaction );
-                        return true;
+                        if (reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species ) && reactionWatchers[i].ShouldHappen())
+                        {
+                            ApplyBind( i, other );
+                            return true;
+                        }
                     }
                 }
             }
             return false;
         }
 
-        protected void DoBind (ParticleSimulator other, Reaction reaction)
+        protected void ApplyBind (int reactionIndex, ParticleSimulator other)
         {
-            boundParticles.Add( other );
-            other.boundParticles.Add( this );
+            reactionStates[reactionIndex].currentBindingPartner = other;
+            other.reactionStates[reactionIndex].currentBindingPartner = this;
 
-            Bind bind = population.reactor.model.GetBindForSpecies( agent.species, other.agent.species );
+            Bind bind = reactionWatchers[reactionIndex].reaction.bind;
+            ParticleSimulator child, parent;
+            GetChildAndParent( bind, this, other, out child, out parent );
 
-            bool thisIsChild = bind.childSpecies == agent.species;
-            ParticleSimulator newChild = thisIsChild ? this : other;
-            ParticleSimulator newParent = thisIsChild ? other : this;
-
-            newChild.BindToOther( newParent, bind );
+            child.BindTo( parent, bind );
         }
 
-        protected virtual void BindToOther (ParticleSimulator other, Bind bind)
+        protected void BindTo (ParticleSimulator other, Bind bind)
         {
             ToggleMotion( false );
             agent.SetParent( other.agent );
             transform.position = other.transform.TransformPoint( bind.relativePosition );
             transform.rotation = other.transform.rotation * Quaternion.Euler( bind.relativeRotation );
+        }
+
+        public void GetChildAndParent (Bind bind, ParticleSimulator particle1, ParticleSimulator particle2, out ParticleSimulator child, out ParticleSimulator parent)
+        {
+            bool childIs1 = bind.childSpecies == particle1.agent.species;
+            child = childIs1 ? particle1 : particle2;
+            parent = childIs1 ? particle2 : particle1;
         }
 
         protected abstract void ToggleMotion (bool move);
@@ -89,7 +115,7 @@ namespace AICS.AgentSim
             Vector3 exitVector = Vector3.zero;
             foreach (ParticleSimulator other in collidingParticles)
             {
-                if (!boundParticles.Contains( other ))
+                if (!IsBoundToOther( other ))
                 {
                     exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
                     n++;
@@ -97,5 +123,29 @@ namespace AICS.AgentSim
             }
             return exitVector.normalized;
         }
+
+        public bool IsBoundToOther (ParticleSimulator other)
+        {
+            foreach (ReactionState reactionState in reactionStates)
+            {
+                if (reactionState.currentBindingPartner == other)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 	}
+
+    public class ReactionState
+    {
+        public int index;
+        public ParticleSimulator currentBindingPartner;
+
+        public ReactionState (int _index, ParticleSimulator _currentBindingPartner)
+        {
+            index = _index;
+            currentBindingPartner = _currentBindingPartner;
+        }
+    }
 }
