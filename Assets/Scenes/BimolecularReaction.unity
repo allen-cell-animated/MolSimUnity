@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 1010640216}
   - component: {fileID: 902787513}
   m_Layer: 0
-  m_Name: DefaultReactor
+  m_Name: ABReactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

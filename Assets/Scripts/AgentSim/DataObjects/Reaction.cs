@@ -24,13 +24,22 @@ namespace AICS.AgentSim
             bind = _bind;
         }
 
+        public bool ReactantsEqual (string species1, string species2)
+        {
+            return (reactants.Length == 0 && species1 == null && species2 == null)
+                || (reactants.Length == 1 && ((species1 == reactants[0].species && species2 == null) 
+                                           || (species2 == reactants[0].species && species1 == null)))
+                || (reactants.Length == 2 && ((species1 == reactants[0].species && species2 == reactants[1].species)
+                                           || (species2 == reactants[0].species && species1 == reactants[1].species)));
+        }
+
         public bool ReactantsEqual (MoleculeState species1, MoleculeState species2)
         {
             return (reactants.Length == 0 && species1 == null && species2 == null)
-                || (reactants.Length == 1 && ((species1.Matches( reactants[0] ) && species2 == null) 
-                                           || (species2.Matches( reactants[0] ) && species1 == null)))
-                || (reactants.Length == 2 && ((species1.Matches( reactants[0] ) && species2.Matches( reactants[1] ))
-                                           || (species2.Matches( reactants[0] ) && species1.Matches( reactants[1] ) )));
+                || (reactants.Length == 1 && ((species1.Satisfies( reactants[0] ) && species2 == null) 
+                                           || (species2.Satisfies( reactants[0] ) && species1 == null)))
+                || (reactants.Length == 2 && ((species1.Satisfies( reactants[0] ) && species2.Satisfies( reactants[1] ))
+                                           || (species2.Satisfies( reactants[0] ) && species1.Satisfies( reactants[1] ) )));
         }
     }
 
@@ -38,23 +47,50 @@ namespace AICS.AgentSim
     public class MoleculeState
     {
         public string species;
-        public ComponentState state;
+        [SerializeField] ComponentState[] _components;
 
-        public bool Matches (MoleculeState other)
+        Dictionary<string,string> _componentStates;
+        public Dictionary<string,string> componentStates
         {
-            return other.species == species && other.state.Matches( state );
+            get
+            {
+                if (_componentStates == null)
+                {
+                    foreach (ComponentState component in _components)
+                    {
+                        _componentStates.Add( component.id, component.state );
+                    }
+                }
+                return _componentStates;
+            }
+        }
+
+        public bool Satisfies (MoleculeState other)
+        {
+            if (other.species == species)
+            {
+                foreach (KeyValuePair<string,string> component in other.componentStates)
+                {
+                    if (componentStates[component.Key] != component.Value)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
         }
     }
 
     [System.Serializable]
     public class ComponentState
     {
-        public string componentID;
+        public string id;
         public string state;
 
         public bool Matches (ComponentState other)
         {
-            return other.componentID == componentID && other.state == state;
+            return other.id == id && other.state == state;
         }
     }
 
