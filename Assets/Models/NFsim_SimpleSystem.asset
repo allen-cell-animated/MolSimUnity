@@ -9,13 +9,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
-  m_Name: BiomolecularReaction
+  m_Name: NFsim_SimpleSystem
   m_EditorClassIdentifier: 
   containerVolume: 0.000000125
   molecules:
-  - molecule: {fileID: 11400000, guid: 796ec03b7857943c581df56d42f9eee5, type: 2}
+  - molecule: {fileID: 11400000, guid: 2398186012eda4f56a9fd9bb57430689, type: 2}
+    concentration: 1e-16
+  - molecule: {fileID: 11400000, guid: 2eaac87f4cf7c403195699f8f23e5723, type: 2}
     concentration: 6.5e-16
-  - molecule: {fileID: 11400000, guid: 161448dbec7414af09b902e1f8824716, type: 2}
-    concentration: 6.5e-16
-  reactions:
-  - {fileID: 11400000, guid: ad1740df44a0545ce93210748966c1be, type: 2}
+  reactions: []

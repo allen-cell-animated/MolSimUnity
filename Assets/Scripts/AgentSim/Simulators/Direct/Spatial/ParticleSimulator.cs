@@ -70,7 +70,7 @@ namespace AICS.AgentSim
                     foreach (ParticleSimulator other in collidingParticles)
                     {
                         if (other.reactionStates[i].currentBindingPartner == null 
-                            && reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species ) 
+                            //&& reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species ) TODO
                             && reactionWatchers[i].ShouldHappen())
                         {
                             ApplyBind( i, other );

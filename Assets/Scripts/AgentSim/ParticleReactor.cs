@@ -41,18 +41,18 @@ namespace AICS.AgentSim
 
         protected virtual void CreateInitialSpecies ()
         {
-            foreach (Molecule molecule in model.molecules)
+            foreach (MoleculeConcentration molecule in model.molecules)
             {
                 CreateSpecies( molecule );
             }
         }
 
-        protected virtual void CreateSpecies (Molecule molecule)
+        protected virtual void CreateSpecies (MoleculeConcentration moleculeConcentration)
         {
-            GameObject population = new GameObject( molecule.species + "Population", new System.Type[] {typeof(Agent), typeof(ParticlePopulation)} );
+            GameObject population = new GameObject( moleculeConcentration.molecule.species + "Population", new System.Type[] {typeof(Agent), typeof(ParticlePopulation)} );
             population.transform.SetParent( transform );
-            population.GetComponent<Agent>().Init( molecule.species, agent.scale );
-            population.GetComponent<ParticlePopulation>().Init( molecule, this );
+            population.GetComponent<Agent>().Init( moleculeConcentration.molecule.species, agent.scale );
+            population.GetComponent<ParticlePopulation>().Init( moleculeConcentration, this );
         }
     }
 

@@ -19,10 +19,10 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (Molecule _molecule, ParticleReactor _reactor)
+        public virtual void Init (MoleculeConcentration _moleculeConcentration, ParticleReactor _reactor)
         {
-            molecule = _molecule;
-            concentration = molecule.initialConcentration;
+            molecule = _moleculeConcentration.molecule;
+            concentration = _moleculeConcentration.concentration;
             reactor = _reactor;
 
             SpawnParticles();
