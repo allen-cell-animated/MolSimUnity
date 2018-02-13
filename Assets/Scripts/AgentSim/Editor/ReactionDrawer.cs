@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.Reflection;
 
 namespace AICS.AgentSim
 {
     [CustomPropertyDrawer(typeof(Reaction))]
     public class ReactionDrawer : PropertyDrawer
     {
-        float height = 0;
-
         float lineHeight
         {
             get
@@ -20,32 +20,42 @@ namespace AICS.AgentSim
 
         public override float GetPropertyHeight (SerializedProperty property, GUIContent label) 
         {
-            return height;
+            return EditorGUIUtility.singleLineHeight + (property.isExpanded ? 36 : 0);
+        }
+
+        static int GetPropertyIndex (FieldInfo fieldInfo, SerializedProperty property)
+        {
+            var obj = fieldInfo.GetValue( property.serializedObject.targetObject );
+            if (obj != null && obj.GetType().IsArray)
+            {
+                return Convert.ToInt32( property.propertyPath.Split( '[' )[1].Split( ']' )[0] );
+            }
+            return -1;
         }
 
         public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
         {
-            height = 0;
-
             if (property.objectReferenceValue != null)
             {
                 SerializedObject reaction = new SerializedObject( property.objectReferenceValue as Reaction );
                 SerializedProperty description = reaction.FindProperty( "description" );
                 SerializedProperty rate = reaction.FindProperty( "rate" );
 
-                EditorGUI.BeginProperty( position, label, property );
+                EditorGUI.BeginProperty( position, GUIContent.none, property );
 
-                EditorGUI.PropertyField( new Rect( position.x, position.y, position.width, EditorGUIUtility.singleLineHeight ), property );
+                EditorGUI.PropertyField( new Rect( position.x, position.y, position.width, EditorGUIUtility.singleLineHeight ), property, 
+                                        new GUIContent( (GetPropertyIndex( fieldInfo, property ) + 1).ToString() ) );
 
                 property.isExpanded = EditorGUI.Foldout( new Rect( position.x, position.y, position.width, EditorGUIUtility.singleLineHeight ), property.isExpanded, "" );
+
                 if (property.isExpanded)
                 {
                     EditorGUI.indentLevel++;
 
-                    height += lineHeight;
-                    EditorGUI.PropertyField( new Rect( position.x, position.y + height, position.width, EditorGUIUtility.singleLineHeight ), description );
-                    height += lineHeight;
-                    EditorGUI.PropertyField( new Rect( position.x, position.y + height, position.width, EditorGUIUtility.singleLineHeight ), rate );
+                    position.y += lineHeight;
+                    EditorGUI.PropertyField( new Rect( position.x, position.y, position.width, EditorGUIUtility.singleLineHeight ), description );
+                    position.y += lineHeight;
+                    EditorGUI.PropertyField( new Rect( position.x, position.y, position.width, EditorGUIUtility.singleLineHeight ), rate );
                 }
 
                 EditorGUI.EndProperty();
@@ -86,8 +96,6 @@ namespace AICS.AgentSim
                     }
                 }
             }
-
-            height += EditorGUIUtility.singleLineHeight;
         }
     }
 }

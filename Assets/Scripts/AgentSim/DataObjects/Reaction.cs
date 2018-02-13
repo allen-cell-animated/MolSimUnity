@@ -9,7 +9,9 @@ namespace AICS.AgentSim
         public string description;
         [Tooltip( "per second" )] 
         public float rate;
+        [Tooltip( "max of 2 reactants" )] 
         public IReactable[] reactants;
+        [Tooltip( "max of 2 reactants" )] 
         public IReactable[] products;
 
         public Reaction (IReactable[] _reactants, IReactable[] _products, float _rate, string _description = "")

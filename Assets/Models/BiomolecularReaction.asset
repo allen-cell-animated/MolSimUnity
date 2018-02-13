@@ -19,4 +19,4 @@ MonoBehaviour:
     concentration: 6.5e-16
   reactions:
   - {fileID: 11400000, guid: ad1740df44a0545ce93210748966c1be, type: 2}
-  - {fileID: 11400000, guid: ad1740df44a0545ce93210748966c1be, type: 2}
+  test: 0
