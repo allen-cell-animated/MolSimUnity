@@ -9,9 +9,11 @@ namespace AICS.AgentSim
         public string description;
         [Tooltip( "per second" )] 
         public float rate;
-        [Tooltip( "max of 2 reactants" )] 
+
+        public MoleculeState[] singleReactants;
+        public CompoundMoleculeState[] compundReactants;
         public IReactable[] reactants;
-        [Tooltip( "max of 2 reactants" )] 
+
         public IReactable[] products;
 
         public Reaction (IReactable[] _reactants, IReactable[] _products, float _rate, string _description = "")
@@ -33,14 +35,14 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class SingleMoleculeState : IReactable
+    public class MoleculeState : IReactable
     {
         public Molecule molecule;
         public Dictionary<string,string> componentStates = new Dictionary<string,string>();
 
-        public SingleMoleculeState () { }
+        public MoleculeState () { }
 
-        public SingleMoleculeState (Molecule _molecule, Dictionary<string,string> _componentStates)
+        public MoleculeState (Molecule _molecule, Dictionary<string,string> _componentStates)
         {
             molecule = _molecule;
             componentStates = _componentStates;
@@ -48,7 +50,7 @@ namespace AICS.AgentSim
 
         public bool Matches (IReactable other)
         {
-            SingleMoleculeState otherSingleMoleculeState = other as SingleMoleculeState;
+            MoleculeState otherSingleMoleculeState = other as MoleculeState;
             if (otherSingleMoleculeState != null && otherSingleMoleculeState.molecule.species == molecule.species)
             {
                 foreach (KeyValuePair<string,string> otherComponent in otherSingleMoleculeState.componentStates)
@@ -67,14 +69,14 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class CompoundMoleculeState : IReactable
     {
-        public SingleMoleculeState parentMoleculeState;
-        public SingleMoleculeState childMoleculeState;
+        public MoleculeState parentMoleculeState;
+        public MoleculeState childMoleculeState;
         public Vector3 relativePosition;
         public Vector3 relativeRotation;
 
         public CompoundMoleculeState () { }
 
-        public CompoundMoleculeState (SingleMoleculeState _parentMoleculeState, SingleMoleculeState _childMoleculeState, Vector3 _relativePosition, Vector3 _relativeRotation)
+        public CompoundMoleculeState (MoleculeState _parentMoleculeState, MoleculeState _childMoleculeState, Vector3 _relativePosition, Vector3 _relativeRotation)
         {
             parentMoleculeState = _parentMoleculeState;
             childMoleculeState = _childMoleculeState;
