@@ -21,7 +21,11 @@ namespace AICS.AgentSim
         {
             SetupReactionData();
             CreateContainer();
-            CreateInitialSpecies();
+
+            foreach (MoleculeConcentration molecule in model.molecules)
+            {
+                CreatePopulation( molecule );
+            }
         }
 
         protected virtual void SetupReactionData ()
@@ -39,15 +43,7 @@ namespace AICS.AgentSim
             container.Init( model.containerVolume, periodicBoundary );
         }
 
-        protected virtual void CreateInitialSpecies ()
-        {
-            foreach (MoleculeConcentration molecule in model.molecules)
-            {
-                CreateSpecies( molecule );
-            }
-        }
-
-        protected virtual void CreateSpecies (MoleculeConcentration moleculeConcentration)
+        protected virtual void CreatePopulation (MoleculeConcentration moleculeConcentration)
         {
             GameObject population = new GameObject( moleculeConcentration.molecule.species + "Population", new System.Type[] {typeof(Agent), typeof(ParticlePopulation)} );
             population.transform.SetParent( transform );

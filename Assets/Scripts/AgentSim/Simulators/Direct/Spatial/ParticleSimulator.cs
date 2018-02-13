@@ -70,10 +70,10 @@ namespace AICS.AgentSim
                     foreach (ParticleSimulator other in collidingParticles)
                     {
                         if (other.reactionStates[i].currentBindingPartner == null 
-                            && reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species )
+                            //&& reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species )
                             && reactionWatchers[i].ShouldHappen())
                         {
-                            ApplyBind( i, other );
+                            //ApplyBind( i, other );
                             return true;
                         }
                     }
@@ -82,32 +82,32 @@ namespace AICS.AgentSim
             return false;
         }
 
-        protected void ApplyBind (int reactionIndex, ParticleSimulator other)
-        {
-            reactionStates[reactionIndex].currentBindingPartner = other;
-            other.reactionStates[reactionIndex].currentBindingPartner = this;
+        //protected void ApplyBind (int reactionIndex, ParticleSimulator other)
+        //{
+        //    reactionStates[reactionIndex].currentBindingPartner = other;
+        //    other.reactionStates[reactionIndex].currentBindingPartner = this;
 
-            Bind bind = reactionWatchers[reactionIndex].reaction.bind;
-            ParticleSimulator child, parent;
-            GetChildAndParent( bind, this, other, out child, out parent );
+        //    Bind bind = reactionWatchers[reactionIndex].reaction.bind;
+        //    ParticleSimulator child, parent;
+        //    GetChildAndParent( bind, this, other, out child, out parent );
 
-            child.BindTo( parent, bind );
-        }
+        //    child.BindTo( parent, bind );
+        //}
 
-        protected void BindTo (ParticleSimulator other, Bind bind)
-        {
-            ToggleMotion( false );
-            agent.SetParent( other.agent );
-            transform.position = other.transform.TransformPoint( bind.relativePosition );
-            transform.rotation = other.transform.rotation * Quaternion.Euler( bind.relativeRotation );
-        }
+        //public void GetChildAndParent (Bind bind, ParticleSimulator particle1, ParticleSimulator particle2, out ParticleSimulator child, out ParticleSimulator parent)
+        //{
+        //    bool childIs1 = bind.childSpecies == particle1.agent.species;
+        //    child = childIs1 ? particle1 : particle2;
+        //    parent = childIs1 ? particle2 : particle1;
+        //}
 
-        public void GetChildAndParent (Bind bind, ParticleSimulator particle1, ParticleSimulator particle2, out ParticleSimulator child, out ParticleSimulator parent)
-        {
-            bool childIs1 = bind.childSpecies == particle1.agent.species;
-            child = childIs1 ? particle1 : particle2;
-            parent = childIs1 ? particle2 : particle1;
-        }
+        //protected void BindTo (ParticleSimulator other, Bind bind)
+        //{
+        //    ToggleMotion( false );
+        //    agent.SetParent( other.agent );
+        //    transform.position = other.transform.TransformPoint( bind.relativePosition );
+        //    transform.rotation = other.transform.rotation * Quaternion.Euler( bind.relativeRotation );
+        //}
 
         protected abstract void ToggleMotion (bool move);
 

@@ -7,71 +7,51 @@ namespace AICS.AgentSim
     public class Reaction : ScriptableObject
     {
         public string description;
-        [Tooltip( "max of 2 reactants" )] 
-        public MoleculeState[] reactants;
-        [Tooltip( "max of 2 products" )] 
-        public MoleculeState[] products;
         [Tooltip( "per second" )] 
         public float rate;
-        public Bind bind;
+        public IReactable[] reactants;
+        public IReactable[] products;
 
-        public Reaction (MoleculeState[] _reactants, MoleculeState[] _products, float _rate, Bind _bind, string _description = "")
+        public Reaction (IReactable[] _reactants, IReactable[] _products, float _rate, string _description = "")
         {
             description = _description;
             reactants = _reactants;
             products = _products;
             rate = _rate;
-            bind = _bind;
         }
 
-        public bool ReactantsEqual (string species1, string species2)
+        public bool ReactantsEqual (IReactable species1, IReactable species2)
         {
             return (reactants.Length == 0 && species1 == null && species2 == null)
-                || (reactants.Length == 1 && ((species1 == reactants[0].species && species2 == null) 
-                                           || (species2 == reactants[0].species && species1 == null)))
-                || (reactants.Length == 2 && ((species1 == reactants[0].species && species2 == reactants[1].species)
-                                           || (species2 == reactants[0].species && species1 == reactants[1].species)));
-        }
-
-        public bool ReactantsEqual (MoleculeState species1, MoleculeState species2)
-        {
-            return (reactants.Length == 0 && species1 == null && species2 == null)
-                || (reactants.Length == 1 && ((species1.Satisfies( reactants[0] ) && species2 == null) 
-                                           || (species2.Satisfies( reactants[0] ) && species1 == null)))
-                || (reactants.Length == 2 && ((species1.Satisfies( reactants[0] ) && species2.Satisfies( reactants[1] ))
-                                           || (species2.Satisfies( reactants[0] ) && species1.Satisfies( reactants[1] ) )));
+                || (reactants.Length == 1 && ((species1.Matches( reactants[0] ) && species2 == null) 
+                                           || (species2.Matches( reactants[0] ) && species1 == null)))
+                || (reactants.Length == 2 && ((species1.Matches( reactants[0] ) && species2.Matches( reactants[1] ))
+                                           || (species2.Matches( reactants[0] ) && species1.Matches( reactants[1] ) )));
         }
     }
 
     [System.Serializable]
-    public class MoleculeState
+    public class SingleMoleculeState : IReactable
     {
-        public string species;
-        [SerializeField] ComponentState[] _components;
+        public Molecule molecule;
+        public Dictionary<string,string> componentStates = new Dictionary<string,string>();
 
-        Dictionary<string,string> _componentStates;
-        public Dictionary<string,string> componentStates
+        public SingleMoleculeState () { }
+
+        public SingleMoleculeState (Molecule _molecule, Dictionary<string,string> _componentStates)
         {
-            get
-            {
-                if (_componentStates == null)
-                {
-                    foreach (ComponentState component in _components)
-                    {
-                        _componentStates.Add( component.id, component.state );
-                    }
-                }
-                return _componentStates;
-            }
+            molecule = _molecule;
+            componentStates = _componentStates;
         }
 
-        public bool Satisfies (MoleculeState other)
+        public bool Matches (IReactable other)
         {
-            if (other.species == species)
+            SingleMoleculeState otherSingleMoleculeState = other as SingleMoleculeState;
+            if (otherSingleMoleculeState != null && otherSingleMoleculeState.molecule.species == molecule.species)
             {
-                foreach (KeyValuePair<string,string> component in other.componentStates)
+                foreach (KeyValuePair<string,string> otherComponent in otherSingleMoleculeState.componentStates)
                 {
-                    if (componentStates[component.Key] != component.Value)
+                    if (componentStates[otherComponent.Key] != otherComponent.Value)
                     {
                         return false;
                     }
@@ -83,31 +63,29 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class ComponentState
+    public class CompoundMoleculeState : IReactable
     {
-        public string id;
-        public string state;
-
-        public bool Matches (ComponentState other)
-        {
-            return other.id == id && other.state == state;
-        }
-    }
-
-    [System.Serializable]
-    public class Bind 
-    {
-        public string parentSpecies;
-        public string childSpecies;
+        public SingleMoleculeState parentMoleculeState;
+        public SingleMoleculeState childMoleculeState;
         public Vector3 relativePosition;
         public Vector3 relativeRotation;
 
-        public Bind (string _parentSpecies, string _childSpecies, Vector3 _relativePosition, Vector3 _relativeRotation)
+        public CompoundMoleculeState () { }
+
+        public CompoundMoleculeState (SingleMoleculeState _parentMoleculeState, SingleMoleculeState _childMoleculeState, Vector3 _relativePosition, Vector3 _relativeRotation)
         {
-            parentSpecies = _parentSpecies;
-            childSpecies = _childSpecies;
+            parentMoleculeState = _parentMoleculeState;
+            childMoleculeState = _childMoleculeState;
             relativePosition = _relativePosition;
             relativeRotation = _relativeRotation;
+        }
+
+        public bool Matches (IReactable other)
+        {
+            CompoundMoleculeState otherCompoundMoleculeState = other as CompoundMoleculeState;
+            return otherCompoundMoleculeState != null 
+                && otherCompoundMoleculeState.parentMoleculeState.Matches( parentMoleculeState )
+                && otherCompoundMoleculeState.childMoleculeState.Matches( childMoleculeState );
         }
     }
 }

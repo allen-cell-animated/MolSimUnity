@@ -28,11 +28,13 @@ namespace AICS.AgentSim
             }
         }
 
-        public Molecule (string _species, float _radius, float _scale, GameObject _prefab = null)
+        public Molecule (string _species, float _radius, float _scale, float _diffusionCoefficient, MoleculeComponent[] _components, GameObject _prefab = null)
         {
             species = _species;
             radius = _radius;
             scale = _scale;
+            diffusionCoefficient = _diffusionCoefficient;
+            components = _components;
             _visualizationPrefab = _prefab;
         }
     }
@@ -41,7 +43,6 @@ namespace AICS.AgentSim
     public class MoleculeComponent
     {
         public string id;
-        [Tooltip( "First state is initial state" )]
         public string[] states;
 
         public MoleculeComponent (string _id, string[] _states)

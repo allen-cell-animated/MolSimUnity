@@ -13,17 +13,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: E+S(P~0)->E.S(P~0)
   reactants:
-  - species: E
-    _components: []
-  - species: S
-    _components:
-    - id: P
-      state: 0
+  - molecule: {fileID: 11400000, guid: 2398186012eda4f56a9fd9bb57430689, type: 2}
+  - molecule: {fileID: 11400000, guid: 2eaac87f4cf7c403195699f8f23e5723, type: 2}
   products:
-  - species: E.S
-    _components:
-    - id: P
-      state: 0
+  - molecule: {fileID: 0}
   rate: 10000000
   bind:
     parentSpecies: E
