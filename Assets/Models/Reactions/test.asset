@@ -13,5 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: 
   rate: 0
-  singleReactants: []
+  singleReactants:
+  - molecule: {fileID: 11400000, guid: 2eaac87f4cf7c403195699f8f23e5723, type: 2}
+  - molecule: {fileID: 11400000, guid: 7e8195dbf1805415684d5824d59d170d, type: 2}
   compundReactants: []

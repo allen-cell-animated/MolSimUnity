@@ -37,6 +37,18 @@ namespace AICS.AgentSim
             components = _components;
             _visualizationPrefab = _prefab;
         }
+
+        public MoleculeComponent GetComponentByID (string id)
+        {
+            foreach (MoleculeComponent component in components)
+            {
+                if (component.id == id)
+                {
+                    return component;
+                }
+            }
+            return null;
+        }
     }
 
     [System.Serializable]
