@@ -9,11 +9,7 @@ namespace AICS.AgentSim
         public string description;
         [Tooltip( "per second" )] 
         public float rate;
-
-        public MoleculeState[] singleReactants;
-        public CompoundMoleculeState[] compundReactants;
         public IReactable[] reactants;
-
         public IReactable[] products;
 
         public Reaction (IReactable[] _reactants, IReactable[] _products, float _rate, string _description = "")
@@ -73,8 +69,6 @@ namespace AICS.AgentSim
         public MoleculeState childMoleculeState;
         public Vector3 relativePosition;
         public Vector3 relativeRotation;
-
-        public CompoundMoleculeState () { }
 
         public CompoundMoleculeState (MoleculeState _parentMoleculeState, MoleculeState _childMoleculeState, Vector3 _relativePosition, Vector3 _relativeRotation)
         {
