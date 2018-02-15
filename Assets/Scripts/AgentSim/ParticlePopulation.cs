@@ -21,7 +21,7 @@ namespace AICS.AgentSim
 
         public virtual void Init (MoleculeConcentration _moleculeConcentration, ParticleReactor _reactor)
         {
-            molecule = _moleculeConcentration.molecule;
+            molecule = _moleculeConcentration.moleculeState.molecule;
             concentration = _moleculeConcentration.concentration;
             reactor = _reactor;
 

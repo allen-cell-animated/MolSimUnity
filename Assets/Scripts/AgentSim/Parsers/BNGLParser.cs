@@ -14,11 +14,11 @@ namespace AICS.AgentSim
             string data = Parser.LoadTextData( filePath );
             if (data.Length > 0)
             {
-                Model model = ScriptableObject.CreateInstance<Model>();
+                //Model model = ScriptableObject.CreateInstance<Model>();
                 string[] lines = data.Split ('\n');
                 bool inSection = false;
                 List<string> sectionLines = new List<string>();
-                Dictionary<string,float> parameters;
+                //Dictionary<string,float> parameters;
                 foreach (string line in lines)
                 {
                     if (line.Length >= 5 && line.Substring( 0, 5 ) == "begin")
@@ -31,7 +31,7 @@ namespace AICS.AgentSim
                         inSection = false;
                         if (line.Contains( "parameters" ))
                         {
-                            parameters = ParseParameters( sectionLines );
+                            //parameters = ParseParameters( sectionLines );
                         }
                         else if (line.Contains( "molecule types" ))
                         {
@@ -74,11 +74,11 @@ namespace AICS.AgentSim
 
         static void ParseMoleculeTypes (List<string> lines)
         {
-            List<Molecule> molecules = new List<Molecule>();
+            //List<Molecule> molecules = new List<Molecule>();
             foreach (string line in lines)
             {
                 line.Trim();
-                string[] s = line.Split( '(' );
+                //string[] s = line.Split( '(' );
                 //TODO
             }
         }

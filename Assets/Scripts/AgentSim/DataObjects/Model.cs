@@ -22,13 +22,13 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class MoleculeConcentration
     {
-        public Molecule molecule;
+        public MoleculeState moleculeState;
         [Tooltip( "M" )] 
         public float concentration;
 
-        public MoleculeConcentration (Molecule _molecule, float _concentration)
+        public MoleculeConcentration (MoleculeState _moleculeState, float _concentration)
         {
-            molecule = _molecule;
+            moleculeState = _moleculeState;
             concentration = _concentration;
         }
     }

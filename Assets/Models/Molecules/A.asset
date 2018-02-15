@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
+  m_Name: A
+  m_EditorClassIdentifier: 
+  species: A
+  radius: 0.5
+  scale: 0.000000001
+  diffusionCoefficient: 300000
+  components: []
+  _visualizationPrefab: {fileID: 1516328023671344, guid: 6f5572824542847eb882138248ab7ccd,
+    type: 2}

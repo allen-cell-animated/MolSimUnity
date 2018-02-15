@@ -12,6 +12,24 @@ namespace AICS.AgentSim
         public IReactable[] reactants;
         public IReactable[] products;
 
+        #region for prototyping in inspector without writing custom property drawer etc
+        public MoleculeState[] singleReactants;
+        public CompoundMoleculeState[] compoundReactants;
+        public MoleculeState[] singleProducts;
+        public CompoundMoleculeState[] compoundProducts;
+
+        public void Init ()
+        {
+            reactants = new IReactable[singleReactants.Length + compoundReactants.Length];
+            singleReactants.CopyTo( reactants, 0 );
+            compoundReactants.CopyTo( reactants, singleReactants.Length );
+
+            products = new IReactable[singleProducts.Length + compoundProducts.Length];
+            singleProducts.CopyTo( products, 0 );
+            compoundProducts.CopyTo( products, singleProducts.Length );
+        }
+        #endregion
+
         public Reaction (IReactable[] _reactants, IReactable[] _products, float _rate, string _description = "")
         {
             description = _description;
@@ -36,7 +54,17 @@ namespace AICS.AgentSim
         public Molecule molecule;
         public Dictionary<string,string> componentStates = new Dictionary<string,string>();
 
-        public MoleculeState () { }
+        #region for prototyping in inspector without writing custom property drawer etc
+        public ComponentState[] components;
+
+        public void Init ()
+        {
+            foreach (ComponentState component in components)
+            {
+                componentStates.Add( component.id, component.state );
+            }
+        }
+        #endregion
 
         public MoleculeState (Molecule _molecule, Dictionary<string,string> _componentStates)
         {
@@ -60,6 +88,14 @@ namespace AICS.AgentSim
             }
             return false;
         }
+    }
+
+    //for prototyping in inspector without writing custom property drawer etc
+    [System.Serializable]
+    public class ComponentState
+    {
+        public string id;
+        public string state;
     }
 
     [System.Serializable]

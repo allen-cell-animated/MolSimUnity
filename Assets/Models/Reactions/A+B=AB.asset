@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
+  m_Name: A+B=AB
+  m_EditorClassIdentifier: 
+  description: A(b) + B(a) -> A(b!1).B(a!1)
+  rate: 10000000
+  singleReactants:
+  - molecule: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
+    components: []
+  - molecule: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
+    components: []
+  compoundReactants: []
+  singleProducts: []
+  compoundProducts:
+  - parentMoleculeState:
+      molecule: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
+      components: []
+    childMoleculeState:
+      molecule: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
+      components: []
+    relativePosition: {x: 0.75, y: 0, z: 0}
+    relativeRotation: {x: 0, y: 0, z: 0}
