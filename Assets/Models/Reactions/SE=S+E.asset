@@ -11,25 +11,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: SE=S+E
   m_EditorClassIdentifier: 
-  description: S(e!1,P~0).E(s!1) -> S(e,P~0) + E(s)
+  description: S(e!1,P~u).E(s!1) -> S(e,P~u) + E(s)
   rate: 5000000
   singleReactants: []
   compoundReactants:
   - parentMoleculeState:
       molecule: {fileID: 11400000, guid: 1a0eecf65b7224002a099375ea218606, type: 2}
-      components: []
+      siteStates:
+      - id: s
+        state: 1
     childMoleculeState:
       molecule: {fileID: 11400000, guid: 23c9ffeb95f234e1bb6f9ab3e2bcc4b9, type: 2}
-      components:
+      siteStates:
+      - id: e
+        state: 1
       - id: P
-        state: 0
-    relativePosition: {x: 0.5, y: 0, z: 0}
-    relativeRotation: {x: 0, y: 0, z: 0}
+        state: u
   singleProducts:
   - molecule: {fileID: 11400000, guid: 23c9ffeb95f234e1bb6f9ab3e2bcc4b9, type: 2}
-    components:
-    - id: P
+    siteStates:
+    - id: e
       state: 0
+    - id: P
+      state: u
   - molecule: {fileID: 11400000, guid: 1a0eecf65b7224002a099375ea218606, type: 2}
-    components: []
+    siteStates:
+    - id: s
+      state: 0
   compoundProducts: []

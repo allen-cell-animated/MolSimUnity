@@ -111,13 +111,11 @@ namespace AICS.AgentSim
     {
         public MoleculeState parentMoleculeState;
         public MoleculeState childMoleculeState;
-        public RelativeTransform relativeTransform;
 
-        public CompoundMoleculeState (MoleculeState _parentMoleculeState, MoleculeState _childMoleculeState, Vector3 _relativePosition, Vector3 _relativeRotation)
+        public CompoundMoleculeState (MoleculeState _parentMoleculeState, MoleculeState _childMoleculeState)
         {
             parentMoleculeState = _parentMoleculeState;
             childMoleculeState = _childMoleculeState;
-            relativeTransform = new RelativeTransform( _relativePosition, _relativeRotation );
         }
 
         public bool Matches (IReactable other)
