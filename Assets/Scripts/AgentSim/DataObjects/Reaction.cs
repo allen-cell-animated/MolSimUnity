@@ -20,10 +20,18 @@ namespace AICS.AgentSim
 
         public void Init ()
         {
+            foreach (MoleculeState singleMolecule in singleReactants)
+            {
+                singleMolecule.Init();
+            }
             reactants = new IReactable[singleReactants.Length + compoundReactants.Length];
             singleReactants.CopyTo( reactants, 0 );
             compoundReactants.CopyTo( reactants, singleReactants.Length );
 
+            foreach (MoleculeState singleMolecule in singleProducts)
+            {
+                singleMolecule.Init();
+            }
             products = new IReactable[singleProducts.Length + compoundProducts.Length];
             singleProducts.CopyTo( products, 0 );
             compoundProducts.CopyTo( products, singleProducts.Length );
@@ -55,13 +63,13 @@ namespace AICS.AgentSim
         public Dictionary<string,string> componentStates = new Dictionary<string,string>();
 
         #region for prototyping in inspector without writing custom property drawer etc
-        public ComponentState[] components;
+        public BindingSiteState[] siteStates;
 
         public void Init ()
         {
-            foreach (ComponentState component in components)
+            foreach (BindingSiteState siteState in siteStates)
             {
-                componentStates.Add( component.id, component.state );
+                componentStates.Add( siteState.id, siteState.state );
             }
         }
         #endregion
@@ -92,7 +100,7 @@ namespace AICS.AgentSim
 
     //for prototyping in inspector without writing custom property drawer etc
     [System.Serializable]
-    public class ComponentState
+    public class BindingSiteState
     {
         public string id;
         public string state;
@@ -103,15 +111,13 @@ namespace AICS.AgentSim
     {
         public MoleculeState parentMoleculeState;
         public MoleculeState childMoleculeState;
-        public Vector3 relativePosition;
-        public Vector3 relativeRotation;
+        public RelativeTransform relativeTransform;
 
         public CompoundMoleculeState (MoleculeState _parentMoleculeState, MoleculeState _childMoleculeState, Vector3 _relativePosition, Vector3 _relativeRotation)
         {
             parentMoleculeState = _parentMoleculeState;
             childMoleculeState = _childMoleculeState;
-            relativePosition = _relativePosition;
-            relativeRotation = _relativeRotation;
+            relativeTransform = new RelativeTransform( _relativePosition, _relativeRotation );
         }
 
         public bool Matches (IReactable other)

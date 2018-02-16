@@ -33,6 +33,7 @@ namespace AICS.AgentSim
             reactionWatchers = new ReactionWatcher[model.reactions.Length];
             for (int i = 0; i < model.reactions.Length; i++)
             {
+                model.reactions[i].Init(); //for prototyping in inspector without writing custom property drawer etc
                 reactionWatchers[i] = new ReactionWatcher( model.reactions[i] );
             }
         }

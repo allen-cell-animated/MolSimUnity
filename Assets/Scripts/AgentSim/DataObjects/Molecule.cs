@@ -13,7 +13,7 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public MoleculeComponent[] components = new MoleculeComponent[0];
+        public BindingSite[] sites = new BindingSite[0];
 
         public GameObject _visualizationPrefab;
         public GameObject visualizationPrefab
@@ -28,23 +28,23 @@ namespace AICS.AgentSim
             }
         }
 
-        public Molecule (string _species, float _radius, float _scale, float _diffusionCoefficient, MoleculeComponent[] _components, GameObject _prefab = null)
+        public Molecule (string _species, float _radius, float _scale, float _diffusionCoefficient, BindingSite[] _sites, GameObject _prefab = null)
         {
             species = _species;
             radius = _radius;
             scale = _scale;
             diffusionCoefficient = _diffusionCoefficient;
-            components = _components;
+            sites = _sites;
             _visualizationPrefab = _prefab;
         }
 
-        public MoleculeComponent GetComponentByID (string id)
+        public BindingSite GetSiteByID (string id)
         {
-            foreach (MoleculeComponent component in components)
+            foreach (BindingSite site in sites)
             {
-                if (component.id == id)
+                if (site.id == id)
                 {
-                    return component;
+                    return site;
                 }
             }
             return null;
@@ -52,15 +52,38 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class MoleculeComponent
+    public class BindingSite
     {
         public string id;
         public string[] states;
+        public RelativeTransform transformOnMolecule;
+        public float radius;
 
-        public MoleculeComponent (string _id, string[] _states)
+        public BindingSite (string _id, string[] _states, Vector3 _relativePosition, Vector3 _relativeRotation, float _radius)
         {
             id = _id;
             states = _states;
+            transformOnMolecule = new RelativeTransform( _relativePosition, _relativeRotation );
+            radius = _radius;
+        }
+    }
+
+    [System.Serializable]
+    public class RelativeTransform
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+
+        public RelativeTransform (Vector3 _position, Vector3 _rotation)
+        {
+            position = _position;
+            rotation = _rotation;
+        }
+
+        public void Apply (Transform parent, Transform child)
+        {
+            child.position = parent.TransformPoint( position );
+            child.rotation = parent.rotation * Quaternion.Euler( rotation );
         }
     }
 }

@@ -24,4 +24,7 @@ MonoBehaviour:
         state: 0
     concentration: 1e-15
   reactions:
-  - {fileID: 11400000, guid: dd877d3a0c79c45ccaee3ba66ae32072, type: 2}
+  - {fileID: 11400000, guid: 78b048a8013db4f93870055883843290, type: 2}
+  - {fileID: 11400000, guid: 4790a6e9ede8e42709ce37d205a32a18, type: 2}
+  - {fileID: 11400000, guid: 645d7a62ec40d4e58ab5259a358c2c63, type: 2}
+  - {fileID: 11400000, guid: a2ced0170f2c7414990d32fa97a84957, type: 2}

@@ -20,5 +20,5 @@ MonoBehaviour:
     states:
     - 0
     - 1
-  _visualizationPrefab: {fileID: 1443296897763614, guid: 843b77990b26641f88a9f48e1fb5cb2e,
+  _visualizationPrefab: {fileID: 1743744978614082, guid: 098c4d6fcf1184cadacb41dd40a9fddc,
     type: 2}

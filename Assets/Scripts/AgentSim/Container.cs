@@ -21,6 +21,10 @@ namespace AICS.AgentSim
             volume = _volume;
             CalculateSize( volume );
             periodicBoundary = _periodicBoundary;
+            if (periodicBoundary)
+            {
+                CreatePhysicsBounds();
+            }
         }
 
         protected virtual void CalculateSize (float _volume)
