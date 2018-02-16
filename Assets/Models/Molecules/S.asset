@@ -15,10 +15,22 @@ MonoBehaviour:
   radius: 0.25
   scale: 0.000000001
   diffusionCoefficient: 500000
-  components:
+  sites:
+  - id: e
+    states:
+    - empty
+    - bound
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 2
   - id: P
     states:
-    - 0
-    - 1
+    - u
+    - p
+    transformOnMolecule:
+      position: {x: -0.25, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 0
   _visualizationPrefab: {fileID: 1743744978614082, guid: 098c4d6fcf1184cadacb41dd40a9fddc,
     type: 2}

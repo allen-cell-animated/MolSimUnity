@@ -15,21 +15,22 @@ MonoBehaviour:
   rate: 10000000
   singleReactants:
   - molecule: {fileID: 11400000, guid: 23c9ffeb95f234e1bb6f9ab3e2bcc4b9, type: 2}
-    components:
+    siteStates:
     - id: P
       state: 0
   - molecule: {fileID: 11400000, guid: 1a0eecf65b7224002a099375ea218606, type: 2}
-    components: []
+    siteStates: []
   compoundReactants: []
   singleProducts: []
   compoundProducts:
   - parentMoleculeState:
       molecule: {fileID: 11400000, guid: 1a0eecf65b7224002a099375ea218606, type: 2}
-      components: []
+      siteStates: []
     childMoleculeState:
       molecule: {fileID: 11400000, guid: 23c9ffeb95f234e1bb6f9ab3e2bcc4b9, type: 2}
-      components:
+      siteStates:
       - id: P
         state: 0
-    relativePosition: {x: 0.5, y: 0, z: 0}
-    relativeRotation: {x: 0, y: 0, z: 0}
+    relativeTransform:
+      position: {x: 0.5, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
