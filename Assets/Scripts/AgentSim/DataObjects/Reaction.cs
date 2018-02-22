@@ -60,13 +60,14 @@ namespace AICS.AgentSim
     public class MoleculeState : IReactable
     {
         public Molecule molecule;
-        public Dictionary<string,string> componentStates = new Dictionary<string,string>();
+        public Dictionary<string,string> componentStates;
 
         #region for prototyping in inspector without writing custom property drawer etc
         public BindingSiteState[] siteStates;
 
         public void Init ()
         {
+            componentStates = new Dictionary<string,string>();
             foreach (BindingSiteState siteState in siteStates)
             {
                 componentStates.Add( siteState.id, siteState.state );

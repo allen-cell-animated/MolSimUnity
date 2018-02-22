@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Container : AgentComponent
+    public class Container : Simulator
 	{
         [Tooltip( "L" )]
         public float volume;
@@ -59,6 +59,14 @@ namespace AICS.AgentSim
             {
                 walls = gameObject.AddComponent<Walls>();
                 walls.Init( size, 100f );
+            }
+        }
+
+        public override void SimulateFor (float dTime)
+        {
+            foreach (ManagedParticleSimulator simulator in simulators)
+            {
+                simulator.Move( dTime );
             }
         }
 

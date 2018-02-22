@@ -22,7 +22,10 @@ namespace AICS.AgentSim
                 transform.position += GetExitDirection();
             }
             collidingParticles.Clear();
+        }
 
+        public virtual void Move (float dTime)
+        {
             if (canMove)
             {
                 int i = 0;

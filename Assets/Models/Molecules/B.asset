@@ -21,7 +21,7 @@ MonoBehaviour:
     - 0
     - '#'
     transformOnMolecule:
-      position: {x: 0, y: 0, z: 0}
+      position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
   _visualizationPrefab: {fileID: 1629657773034706, guid: 4fe8a6629773d43c6a15f9dab5bfe5ed,
