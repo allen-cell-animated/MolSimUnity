@@ -9,8 +9,10 @@ namespace AICS.AgentSim
     {
         public float radius;
 
-        protected override void DoAdditionalInit ()
+        public override void Init (MoleculeState moleculeState, ParticlePopulation _population)
         {
+            base.Init( moleculeState, _population );
+
             radius = population.molecule.radius;
             population.reactor.container.RegisterSimulator( this );
         }
@@ -52,25 +54,18 @@ namespace AICS.AgentSim
                     ReflectPeriodically( collisionToCenter );
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
-            else 
+
+            ManagedParticleSimulator[] others;
+            if (population.reactor.container.WillCollide( this, transform.position + moveStep, out others ))
             {
-                ManagedParticleSimulator[] others;
-                if (population.reactor.container.WillCollide( this, transform.position + moveStep, out others ))
-                {
-                    SaveCollidingSimulators( others );
-                    return false;
-                }
-                else
-                {
-                    transform.position += moveStep;
-                    return true;
-                }
+                SaveCollidingSimulators( others );
+                return false;
             }
+
+            transform.position += moveStep;
+            return true;
         }
 
         protected virtual void RotateRandomly (float dTime)

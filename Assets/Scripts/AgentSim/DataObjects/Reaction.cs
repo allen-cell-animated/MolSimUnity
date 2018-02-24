@@ -17,6 +17,7 @@ namespace AICS.AgentSim
         public CompoundMoleculeState[] compoundReactants;
         public MoleculeState[] singleProducts;
         public CompoundMoleculeState[] compoundProducts;
+        public MoleculeBindingSite[] relevantSites;
 
         public void Init ()
         {
@@ -57,18 +58,31 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
+    public class MoleculeBindingSite
+    {
+        public Molecule molecule;
+        public string bindingSiteID;
+
+        public MoleculeBindingSite (Molecule _molecule, string _bindingSiteID)
+        {
+            molecule = _molecule;
+            bindingSiteID = _bindingSiteID;
+        }
+    }
+
+    [System.Serializable]
     public class MoleculeState : IReactable
     {
         public Molecule molecule;
         public Dictionary<string,string> componentStates;
 
         #region for prototyping in inspector without writing custom property drawer etc
-        public BindingSiteState[] siteStates;
+        public SiteState[] siteStates;
 
         public void Init ()
         {
             componentStates = new Dictionary<string,string>();
-            foreach (BindingSiteState siteState in siteStates)
+            foreach (SiteState siteState in siteStates)
             {
                 componentStates.Add( siteState.id, siteState.state );
             }
@@ -101,7 +115,7 @@ namespace AICS.AgentSim
 
     //for prototyping in inspector without writing custom property drawer etc
     [System.Serializable]
-    public class BindingSiteState
+    public class SiteState
     {
         public string id;
         public string state;

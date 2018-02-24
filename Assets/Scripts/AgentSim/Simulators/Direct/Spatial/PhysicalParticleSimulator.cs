@@ -22,8 +22,10 @@ namespace AICS.AgentSim
 			return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
         }
 
-        protected override void DoAdditionalInit ()
+        public override void Init (MoleculeState moleculeState, ParticlePopulation _population)
         {
+            base.Init( moleculeState, _population );
+
             population.reactor.container.CreatePhysicsBounds();
             AddRigidbodyCollider();
         }
@@ -31,6 +33,7 @@ namespace AICS.AgentSim
         protected void AddRigidbodyCollider ()
 		{
             sphereCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider.radius = population.molecule.radius;
 			body = gameObject.AddComponent<Rigidbody>();
 			body.drag = 10f;
             body.useGravity = false;

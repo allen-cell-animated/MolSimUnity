@@ -19,16 +19,38 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeConcentration _moleculeConcentration, ParticleReactor _reactor)
+        //int[] _relevantReactionIndices;
+        //public int[] relevantReactionIndices
+        //{
+        //    get
+        //    {
+        //        if (_relevantReactionIndices == null)
+        //        {
+        //            foreach (Reaction reaction in reactor.model.reactions)
+        //            {
+        //                foreach (MoleculeBindingSite bindingSite in reaction.relevantSites)
+        //                {
+        //                    if (molecule == bindingSite.molecule)
+        //                    {
+
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        return _relevantReactionIndices;
+        //    }
+        //}
+
+        public virtual void Init (MoleculeConcentration moleculeConcentration, ParticleReactor _reactor)
         {
-            molecule = _moleculeConcentration.moleculeState.molecule;
-            concentration = _moleculeConcentration.concentration;
+            molecule = moleculeConcentration.moleculeState.molecule;
+            concentration = moleculeConcentration.concentration;
             reactor = _reactor;
 
-            SpawnParticles();
+            SpawnParticles( moleculeConcentration.moleculeState );
         }
 
-        protected virtual void SpawnParticles ()
+        protected virtual void SpawnParticles (MoleculeState moleculeState)
         {
             if (molecule.visualizationPrefab == null)
             {
@@ -36,13 +58,15 @@ namespace AICS.AgentSim
                 return;
             }
 
+            moleculeState.Init(); //for prototyping in inspector without writing custom property drawer etc
+
             for (int i = 0; i < amount; i++)
             {
-                SpawnParticle( i );
+                SpawnParticle( moleculeState, i );
             }
         }
 
-        public virtual void SpawnParticle (int index)
+        public virtual void SpawnParticle (MoleculeState moleculeState, int index)
         {
             if (molecule.visualizationPrefab == null)
             {
@@ -65,7 +89,7 @@ namespace AICS.AgentSim
             {
                 simulator = particle.AddComponent<ManagedParticleSimulator>();
             }
-            simulator.Init( this );
+            simulator.Init( moleculeState, this );
         }
     }
 }

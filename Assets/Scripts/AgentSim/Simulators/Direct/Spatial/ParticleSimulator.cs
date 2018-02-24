@@ -9,9 +9,10 @@ namespace AICS.AgentSim
         protected ParticlePopulation population;
 		protected float diffusionCoefficient;
         public bool canMove = true;
+        public float interactionRadius;
 
         protected List<ParticleSimulator> collidingParticles = new List<ParticleSimulator>();
-        [HideInInspector] public ReactionState[] reactionStates;
+        [HideInInspector] public BindingSiteState[] bindingSiteStates;
 
         ReactionWatcher[] reactionWatchers
         {
@@ -21,24 +22,22 @@ namespace AICS.AgentSim
             }
         }
 
-        public void Init (ParticlePopulation _population)
+        public virtual void Init (MoleculeState moleculeState, ParticlePopulation _population)
         {
             population = _population;
             diffusionCoefficient = population.molecule.diffusionCoefficient;
-            InitReactionStates( population.reactor.model.reactions.Length );
-            DoAdditionalInit();
+            InitBindingSites( moleculeState );
         }
 
-        void InitReactionStates (int n)
+        void InitBindingSites (MoleculeState moleculeState)
         {
-            reactionStates = new ReactionState[n];
-            for (int i = 0; i < n; i++)
+            BindingSite[] sites = moleculeState.molecule.sites;
+            bindingSiteStates = new BindingSiteState[sites.Length];
+            for (int i = 0; i < sites.Length; i++)
             {
-                reactionStates[i] = new ReactionState( i, null );
+                bindingSiteStates[i] = new BindingSiteState( sites[i], moleculeState.componentStates[sites[i].id] ); //TODO pass reaction indices
             }
         }
-
-        protected abstract void DoAdditionalInit ();
 
         protected float GetDisplacement (float dTime)
 		{
@@ -61,24 +60,24 @@ namespace AICS.AgentSim
 
         protected virtual bool CheckBind ()
         {
-            reactionStates.Shuffle();
-            for (int i = 0; i < reactionStates.Length; i++)
-            {
-                if (reactionStates[i].currentBindingPartner == null)
-                {
-                    collidingParticles.Shuffle();
-                    foreach (ParticleSimulator other in collidingParticles)
-                    {
-                        if (other.reactionStates[i].currentBindingPartner == null 
-                            //&& reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species )
-                            && reactionWatchers[i].ShouldHappen())
-                        {
-                            //ApplyBind( i, other );
-                            return true;
-                        }
-                    }
-                }
-            }
+            //reactionStates.Shuffle();
+            //for (int i = 0; i < reactionStates.Length; i++)
+            //{
+            //    if (reactionStates[i].currentBindingPartner == null)
+            //    {
+            //        collidingParticles.Shuffle();
+            //        foreach (ParticleSimulator other in collidingParticles)
+            //        {
+            //            if (other.reactionStates[i].currentBindingPartner == null 
+            //                //&& reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species )
+            //                && reactionWatchers[i].ShouldHappen())
+            //            {
+            //                //ApplyBind( i, other );
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
             return false;
         }
 
@@ -128,27 +127,71 @@ namespace AICS.AgentSim
 
         public bool IsBoundToOther (ParticleSimulator other)
         {
-            foreach (ReactionState reactionState in reactionStates)
+            //foreach (ReactionState reactionState in reactionStates)
+            //{
+            //    if (reactionState.currentBindingPartner == other)
+            //    {
+            //        return true;
+            //    }
+            //}
+            return false;
+        }
+
+        public void CalculateInteractionRadius ()
+        {
+            float r = 0, max = 0;
+            foreach (BindingSiteState siteState in bindingSiteStates)
             {
-                if (reactionState.currentBindingPartner == other)
+                if (siteState.active)
                 {
-                    return true;
+                    r = siteState.maxExtentFromMoleculeCenter;
+                    if (r > max)
+                    {
+                        max = r;
+                    }
                 }
             }
-            return false;
+            interactionRadius = max;
         }
 	}
 
     [System.Serializable]
-    public class ReactionState
+    public class BindingSiteState
     {
-        public int index;
-        public ParticleSimulator currentBindingPartner;
+        public BindingSite bindingSite;
+        public string state;
+        public float radius;
+        public int[] relevantReactionIndices;
 
-        public ReactionState (int _index, ParticleSimulator _currentBindingPartner)
+        public bool active
         {
-            index = _index;
-            currentBindingPartner = _currentBindingPartner;
+            get
+            {
+                foreach (string activeState in bindingSite.activeStates)
+                {
+                    if (state == activeState)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        public float maxExtentFromMoleculeCenter
+        {
+            get
+            {
+                return Vector3.Magnitude( bindingSite.transformOnMolecule.position ) + radius;
+            }
+        }
+
+        public BindingSiteState (BindingSite _bindingSite, string _state) //, int[] _relevantReactionIndices
+        {
+            bindingSite = _bindingSite;
+            state = _state;
+            radius = bindingSite.radius;
+            //relevantReactionIndices = _relevantReactionIndices;
         }
     }
 }
