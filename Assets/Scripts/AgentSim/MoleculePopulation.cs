@@ -12,8 +12,7 @@ namespace AICS.AgentSim
         public float concentration;
         public float collisionRadius;
         public float interactionRadius;
-
-        protected BindingSitePopulation[] bindingSitePopulations;
+        public Dictionary<string,BindingSitePopulation> bindingSitePopulations;
 
         int amount
         {
@@ -25,35 +24,35 @@ namespace AICS.AgentSim
 
         public virtual void Init (MoleculeConcentration moleculeConcentration, MoleculeReactor _reactor)
         {
+            moleculeConcentration.moleculeState.Init(); //for prototyping in inspector without writing custom property drawer etc
+
             molecule = moleculeConcentration.moleculeState.molecule;
             concentration = moleculeConcentration.concentration;
             reactor = _reactor;
             collisionRadius = interactionRadius = molecule.radius;
 
-            InitBindingSitePopulations();
+            CreateBindingSitePopulations( moleculeConcentration.moleculeState );
             SpawnMolecules( moleculeConcentration.moleculeState );
         }
 
-        protected virtual void InitBindingSitePopulations ()
+        protected virtual void CreateBindingSitePopulations (MoleculeState moleculeState)
         {
-            bindingSitePopulations = new BindingSitePopulation[molecule.sites.Length];
+            bindingSitePopulations = new Dictionary<string,BindingSitePopulation>();
+            string siteID;
+            string initialState = "";
+            BindingSitePopulation sitePopulation;
             for (int i = 0; i < molecule.sites.Length; i++)
             {
-                bindingSitePopulations[i] = gameObject.AddComponent<BindingSitePopulation>();
-                bindingSitePopulations[i].Init( molecule.sites[i] );
-            }
-        }
-
-        public BindingSitePopulation GetBindingSitePopulationByID (string bindingSiteID)
-        {
-            foreach (BindingSitePopulation population in bindingSitePopulations)
-            {
-                if (population.bindingSite.id == bindingSiteID)
+                siteID = molecule.sites[i].id;
+                if (moleculeState.bindingSiteStates.ContainsKey( siteID ))
                 {
-                    return population;
+                    initialState = moleculeState.bindingSiteStates[siteID];
                 }
+
+                sitePopulation = gameObject.AddComponent<BindingSitePopulation>();
+                sitePopulation.Init( molecule.sites[i], initialState );
+                bindingSitePopulations.Add( siteID, sitePopulation );
             }
-            return null;
         }
 
         protected virtual void SpawnMolecules (MoleculeState moleculeState)
@@ -63,8 +62,6 @@ namespace AICS.AgentSim
                 Debug.LogWarning( name + "'s particle prefab is null!" );
                 return;
             }
-
-            moleculeState.Init(); //for prototyping in inspector without writing custom property drawer etc
 
             for (int i = 0; i < amount; i++)
             {

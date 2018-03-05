@@ -11,7 +11,6 @@ namespace AICS.AgentSim
         public bool canMove = true;
 
         protected List<MoleculeSimulator> collidingMolecules = new List<MoleculeSimulator>();
-        [HideInInspector] public BindingSiteState[] bindingSiteStates;
 
         ReactionWatcher[] reactionWatchers
         {
@@ -25,27 +24,42 @@ namespace AICS.AgentSim
         {
             population = _population;
             diffusionCoefficient = population.molecule.diffusionCoefficient;
-            InitBindingSites( moleculeState );
+            CreateBindingSites( moleculeState );
         }
 
-        void InitBindingSites (MoleculeState moleculeState)
+        protected virtual void CreateBindingSites (MoleculeState moleculeState)
         {
-            BindingSite[] sites = moleculeState.molecule.sites;
-            bindingSiteStates = new BindingSiteState[sites.Length];
-            BindingSitePopulation sitePopulation;
-            for (int i = 0; i < sites.Length; i++)
+            foreach (BindingSite site in moleculeState.molecule.sites)
             {
-                sitePopulation = population.GetBindingSitePopulationByID( sites[i].id );
-                if (sitePopulation != null)
-                {
-                    bindingSiteStates[i] = new BindingSiteState( sitePopulation, moleculeState.bindingSiteStates[sites[i].id] );
-                }
+                CreateBindingSite( site.id );
             }
+        }
+
+        public virtual void CreateBindingSite (string id)
+        {
+            BindingSitePopulation bindingSitePopulation = population.bindingSitePopulations[id];
+
+            GameObject bindingSite = new GameObject();
+            bindingSite.transform.SetParent( transform );
+            bindingSitePopulation.bindingSite.transformOnMolecule.Apply( transform, bindingSite.transform );
+            bindingSite.name = name + "_" + bindingSitePopulation.bindingSite.id;
+            bindingSite.AddComponent<Agent>().Init( agent.species + "_" + bindingSitePopulation.bindingSite.id, 0.1f * agent.scale );
+
+            BindingSiteSimulator simulator;
+            if (population.reactor.usePhysicsEngine)
+            {
+                simulator = bindingSite.AddComponent<PhysicalBindingSiteSimulator>();
+            }
+            else
+            {
+                simulator = bindingSite.AddComponent<ManagedBindingSiteSimulator>();
+            }
+            simulator.Init( bindingSitePopulation );
         }
 
         protected float GetDisplacement (float dTime)
 		{
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt(  diffusionCoefficient * dTime ) );
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime ) );
 		}
 
         protected virtual void ReflectPeriodically (Vector3 collisionToCenter)

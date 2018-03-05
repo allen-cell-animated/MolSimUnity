@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class PhysicalBindingSiteSimulator : BindingSiteSimulator 
+    public class PhysicalBindingSiteSimulator : BindingSiteSimulator 
     {
         public override void SimulateFor (float dTime)
         {

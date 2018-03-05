@@ -7,6 +7,7 @@ namespace AICS.AgentSim
     public class BindingSitePopulation : MonoBehaviour 
     {
         public BindingSite bindingSite;
+        public string initialState;
         public float radius;
 
         public float maxExtentFromMoleculeCenter
@@ -39,9 +40,10 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (BindingSite _bindingSite)
+        public virtual void Init (BindingSite _bindingSite, string _initialState)
         {
             bindingSite = _bindingSite;
+            initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
             radius = bindingSite.radius;
         }
 
