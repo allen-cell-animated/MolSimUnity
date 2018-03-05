@@ -14,7 +14,7 @@ namespace AICS.AgentSim
         [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
         Vector3 size;
         Walls walls;
-        List<ManagedParticleSimulator> simulators = new List<ManagedParticleSimulator>();
+        List<ManagedMoleculeSimulator> simulators = new List<ManagedMoleculeSimulator>();
 
         public virtual void Init (float _volume, bool _periodicBoundary)
         {
@@ -48,7 +48,7 @@ namespace AICS.AgentSim
             Gizmos.DrawWireCube( transform.position, size );
         }
 
-        public void RegisterSimulator (ManagedParticleSimulator simulator)
+        public void RegisterSimulator (ManagedMoleculeSimulator simulator)
         {
             simulators.Add( simulator );
         }
@@ -64,7 +64,7 @@ namespace AICS.AgentSim
 
         public override void SimulateFor (float dTime)
         {
-            foreach (ManagedParticleSimulator simulator in simulators)
+            foreach (ManagedMoleculeSimulator simulator in simulators)
             {
                 simulator.Move( dTime );
             }
@@ -79,10 +79,10 @@ namespace AICS.AgentSim
             return !inBounds;
         }
 
-        public virtual bool WillCollide (ManagedParticleSimulator simulator, Vector3 newPosition, out ManagedParticleSimulator[] others)
+        public virtual bool WillCollide (ManagedMoleculeSimulator simulator, Vector3 newPosition, out ManagedMoleculeSimulator[] others)
         {
-            List<ManagedParticleSimulator> othersList = new List<ManagedParticleSimulator>();
-            foreach (ManagedParticleSimulator other in simulators)
+            List<ManagedMoleculeSimulator> othersList = new List<ManagedMoleculeSimulator>();
+            foreach (ManagedMoleculeSimulator other in simulators)
             {
                 if (SimulatorsAreColliding( simulator, other ))
                 {
@@ -93,7 +93,7 @@ namespace AICS.AgentSim
             return others.Length > 0;
         }
 
-        bool SimulatorsAreColliding (ManagedParticleSimulator simulator1, ManagedParticleSimulator simulator2)
+        bool SimulatorsAreColliding (ManagedMoleculeSimulator simulator1, ManagedMoleculeSimulator simulator2)
         {
             return simulator1 != simulator2 
                 && Vector3.Distance( simulator1.transform.position, simulator2.transform.position ) < simulator1.radius + simulator2.radius

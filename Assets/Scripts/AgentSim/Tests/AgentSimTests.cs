@@ -27,10 +27,10 @@ public class AgentSimTests
         GameObject.Destroy( GameObject.Find( "DefaultLight(Clone)" ) );
     }
 
-    protected ParticlePopulation GetPopulationForSpecies (string species, ParticleReactor reactor)
+    protected MoleculePopulation GetPopulationForSpecies (string species, MoleculeReactor reactor)
     {
-        ParticlePopulation[] populations = reactor.GetComponentsInChildren<ParticlePopulation>();
-        foreach (ParticlePopulation population in populations)
+        MoleculePopulation[] populations = reactor.GetComponentsInChildren<MoleculePopulation>();
+        foreach (MoleculePopulation population in populations)
         {
             if (population.agent.species == species)
             {

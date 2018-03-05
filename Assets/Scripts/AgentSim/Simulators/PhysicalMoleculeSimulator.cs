@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AICS.AgentSim
 {
     // Directly simulated particles that use the physics engine to detect and exit collisions
-    public class PhysicalParticleSimulator : ParticleSimulator 
+    public class PhysicalMoleculeSimulator : MoleculeSimulator 
 	{
         protected SphereCollider sphereCollider;
         protected Rigidbody body;
@@ -22,7 +22,7 @@ namespace AICS.AgentSim
 			return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
         }
 
-        public override void Init (MoleculeState moleculeState, ParticlePopulation _population)
+        public override void Init (MoleculeState moleculeState, MoleculePopulation _population)
         {
             base.Init( moleculeState, _population );
 
@@ -42,7 +42,7 @@ namespace AICS.AgentSim
         public override void SimulateFor (float dTime)
         {
             CheckBind();
-            collidingParticles.Clear();
+            collidingMolecules.Clear();
 
             if (canMove)
             {
@@ -73,7 +73,7 @@ namespace AICS.AgentSim
             }
             else
             {
-                ParticleSimulator[] others = collision.gameObject.GetComponents<ParticleSimulator>();
+                MoleculeSimulator[] others = collision.gameObject.GetComponents<MoleculeSimulator>();
                 if (others != null && others.Length > 0)
                 {
                     SaveCollidingSimulators( others );

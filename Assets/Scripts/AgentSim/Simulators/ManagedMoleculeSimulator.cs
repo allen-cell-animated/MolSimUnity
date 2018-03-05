@@ -5,11 +5,11 @@ using UnityEngine;
 namespace AICS.AgentSim
 {
     // Directly simulated particles that don't use the physics engine, Container detects collisions instead
-    public class ManagedParticleSimulator : ParticleSimulator 
+    public class ManagedMoleculeSimulator : MoleculeSimulator 
     {
         public float radius;
 
-        public override void Init (MoleculeState moleculeState, ParticlePopulation _population)
+        public override void Init (MoleculeState moleculeState, MoleculePopulation _population)
         {
             base.Init( moleculeState, _population );
 
@@ -23,7 +23,7 @@ namespace AICS.AgentSim
             {
                 transform.position += GetExitDirection();
             }
-            collidingParticles.Clear();
+            collidingMolecules.Clear();
         }
 
         public virtual void Move (float dTime)
@@ -57,7 +57,7 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            ManagedParticleSimulator[] others;
+            ManagedMoleculeSimulator[] others;
             if (population.reactor.container.WillCollide( this, transform.position + moveStep, out others ))
             {
                 SaveCollidingSimulators( others );

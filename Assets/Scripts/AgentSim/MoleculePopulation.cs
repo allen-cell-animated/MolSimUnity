@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class ParticlePopulation : AgentComponent 
+    public class MoleculePopulation : AgentComponent 
     {
-        public ParticleReactor reactor;
+        public MoleculeReactor reactor;
         public Molecule molecule;
         [Tooltip( "M" )]
         public float concentration;
@@ -19,35 +19,19 @@ namespace AICS.AgentSim
             }
         }
 
-        //int[] _relevantReactionIndices;
-        //public int[] relevantReactionIndices
-        //{
-        //    get
-        //    {
-        //        if (_relevantReactionIndices == null)
-        //        {
-        //            foreach (Reaction reaction in reactor.model.reactions)
-        //            {
-        //                foreach (MoleculeBindingSite bindingSite in reaction.relevantSites)
-        //                {
-        //                    if (molecule == bindingSite.molecule)
-        //                    {
-
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        return _relevantReactionIndices;
-        //    }
-        //}
-
-        public virtual void Init (MoleculeConcentration moleculeConcentration, ParticleReactor _reactor)
+        public virtual void Init (MoleculeConcentration moleculeConcentration, MoleculeReactor _reactor)
         {
             molecule = moleculeConcentration.moleculeState.molecule;
             concentration = moleculeConcentration.concentration;
             reactor = _reactor;
 
+            InitBindingSitePopulations();
             SpawnParticles( moleculeConcentration.moleculeState );
+        }
+
+        protected virtual void InitBindingSitePopulations ()
+        {
+            //foreach (
         }
 
         protected virtual void SpawnParticles (MoleculeState moleculeState)
@@ -80,14 +64,14 @@ namespace AICS.AgentSim
             particle.name = molecule.species + "_" + index;
             particle.AddComponent<Agent>().Init( molecule.species, molecule.scale );
 
-            ParticleSimulator simulator;
+            MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
             {
-                simulator = particle.AddComponent<PhysicalParticleSimulator>();
+                simulator = particle.AddComponent<PhysicalMoleculeSimulator>();
             }
             else
             {
-                simulator = particle.AddComponent<ManagedParticleSimulator>();
+                simulator = particle.AddComponent<ManagedMoleculeSimulator>();
             }
             simulator.Init( moleculeState, this );
         }

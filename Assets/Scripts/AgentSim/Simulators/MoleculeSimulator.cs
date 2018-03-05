@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class ParticleSimulator : Simulator 
+    public abstract class MoleculeSimulator : Simulator 
     {
-        protected ParticlePopulation population;
+        protected MoleculePopulation population;
 		protected float diffusionCoefficient;
         public bool canMove = true;
         public float interactionRadius;
 
-        protected List<ParticleSimulator> collidingParticles = new List<ParticleSimulator>();
+        protected List<MoleculeSimulator> collidingMolecules = new List<MoleculeSimulator>();
         [HideInInspector] public BindingSiteState[] bindingSiteStates;
 
         ReactionWatcher[] reactionWatchers
@@ -22,7 +22,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeState moleculeState, ParticlePopulation _population)
+        public virtual void Init (MoleculeState moleculeState, MoleculePopulation _population)
         {
             population = _population;
             diffusionCoefficient = population.molecule.diffusionCoefficient;
@@ -53,9 +53,9 @@ namespace AICS.AgentSim
             }
         }
 
-        protected virtual void SaveCollidingSimulators (ParticleSimulator[] others)
+        protected virtual void SaveCollidingSimulators (MoleculeSimulator[] others)
         {
-            collidingParticles.AddRange( others );
+            collidingMolecules.AddRange( others );
         }
 
         protected virtual bool CheckBind ()
@@ -114,7 +114,7 @@ namespace AICS.AgentSim
         {
             int n = 0;
             Vector3 exitVector = Vector3.zero;
-            foreach (ParticleSimulator other in collidingParticles)
+            foreach (MoleculeSimulator other in collidingMolecules)
             {
                 if (!IsBoundToOther( other ))
                 {
@@ -125,7 +125,7 @@ namespace AICS.AgentSim
             return exitVector.normalized;
         }
 
-        public bool IsBoundToOther (ParticleSimulator other)
+        public bool IsBoundToOther (MoleculeSimulator other)
         {
             //foreach (ReactionState reactionState in reactionStates)
             //{
