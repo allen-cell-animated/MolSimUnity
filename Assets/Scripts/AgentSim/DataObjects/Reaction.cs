@@ -74,25 +74,25 @@ namespace AICS.AgentSim
     public class MoleculeState : IReactable
     {
         public Molecule molecule;
-        public Dictionary<string,string> componentStates;
+        public Dictionary<string,string> bindingSiteStates;
 
         #region for prototyping in inspector without writing custom property drawer etc
         public SiteState[] siteStates;
 
         public void Init ()
         {
-            componentStates = new Dictionary<string,string>();
+            bindingSiteStates = new Dictionary<string,string>();
             foreach (SiteState siteState in siteStates)
             {
-                componentStates.Add( siteState.id, siteState.state );
+                bindingSiteStates.Add( siteState.id, siteState.state );
             }
         }
         #endregion
 
-        public MoleculeState (Molecule _molecule, Dictionary<string,string> _componentStates)
+        public MoleculeState (Molecule _molecule, Dictionary<string,string> _bindingSiteStates)
         {
             molecule = _molecule;
-            componentStates = _componentStates;
+            bindingSiteStates = _bindingSiteStates;
         }
 
         public bool Matches (IReactable other)
@@ -100,9 +100,9 @@ namespace AICS.AgentSim
             MoleculeState otherSingleMoleculeState = other as MoleculeState;
             if (otherSingleMoleculeState != null && otherSingleMoleculeState.molecule.species == molecule.species)
             {
-                foreach (KeyValuePair<string,string> otherComponent in otherSingleMoleculeState.componentStates)
+                foreach (KeyValuePair<string,string> otherComponent in otherSingleMoleculeState.bindingSiteStates)
                 {
-                    if (componentStates[otherComponent.Key] != otherComponent.Value)
+                    if (bindingSiteStates[otherComponent.Key] != otherComponent.Value)
                     {
                         return false;
                     }

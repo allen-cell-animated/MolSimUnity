@@ -35,3 +35,8 @@ MonoBehaviour:
       siteStates:
       - id: a
         state: 1
+  relevantSites:
+  - molecule: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
+    bindingSiteID: b
+  - molecule: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
+    bindingSiteID: a

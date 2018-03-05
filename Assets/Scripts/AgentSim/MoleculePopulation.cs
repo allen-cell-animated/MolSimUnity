@@ -10,6 +10,10 @@ namespace AICS.AgentSim
         public Molecule molecule;
         [Tooltip( "M" )]
         public float concentration;
+        public float collisionRadius;
+        public float interactionRadius;
+
+        protected BindingSitePopulation[] bindingSitePopulations;
 
         int amount
         {
@@ -24,17 +28,35 @@ namespace AICS.AgentSim
             molecule = moleculeConcentration.moleculeState.molecule;
             concentration = moleculeConcentration.concentration;
             reactor = _reactor;
+            collisionRadius = interactionRadius = molecule.radius;
 
             InitBindingSitePopulations();
-            SpawnParticles( moleculeConcentration.moleculeState );
+            SpawnMolecules( moleculeConcentration.moleculeState );
         }
 
         protected virtual void InitBindingSitePopulations ()
         {
-            //foreach (
+            bindingSitePopulations = new BindingSitePopulation[molecule.sites.Length];
+            for (int i = 0; i < molecule.sites.Length; i++)
+            {
+                bindingSitePopulations[i] = gameObject.AddComponent<BindingSitePopulation>();
+                bindingSitePopulations[i].Init( molecule.sites[i] );
+            }
         }
 
-        protected virtual void SpawnParticles (MoleculeState moleculeState)
+        public BindingSitePopulation GetBindingSitePopulationByID (string bindingSiteID)
+        {
+            foreach (BindingSitePopulation population in bindingSitePopulations)
+            {
+                if (population.bindingSite.id == bindingSiteID)
+                {
+                    return population;
+                }
+            }
+            return null;
+        }
+
+        protected virtual void SpawnMolecules (MoleculeState moleculeState)
         {
             if (molecule.visualizationPrefab == null)
             {
@@ -46,11 +68,11 @@ namespace AICS.AgentSim
 
             for (int i = 0; i < amount; i++)
             {
-                SpawnParticle( moleculeState, i );
+                SpawnMolecule( moleculeState, i );
             }
         }
 
-        public virtual void SpawnParticle (MoleculeState moleculeState, int index)
+        public virtual void SpawnMolecule (MoleculeState moleculeState, int index)
         {
             if (molecule.visualizationPrefab == null)
             {

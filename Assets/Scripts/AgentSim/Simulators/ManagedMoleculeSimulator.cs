@@ -7,13 +7,17 @@ namespace AICS.AgentSim
     // Directly simulated particles that don't use the physics engine, Container detects collisions instead
     public class ManagedMoleculeSimulator : MoleculeSimulator 
     {
-        public float radius;
+        public float collisionRadius
+        {
+            get 
+            {
+                return population.collisionRadius;
+            }
+        }
 
         public override void Init (MoleculeState moleculeState, MoleculePopulation _population)
         {
             base.Init( moleculeState, _population );
-
-            radius = population.molecule.radius;
             population.reactor.container.RegisterSimulator( this );
         }
 

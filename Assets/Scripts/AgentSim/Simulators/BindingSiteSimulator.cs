@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BindingSiteSimulator : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+namespace AICS.AgentSim
+{
+    public abstract class BindingSiteSimulator : Simulator 
+    {
+        
+    }
 }

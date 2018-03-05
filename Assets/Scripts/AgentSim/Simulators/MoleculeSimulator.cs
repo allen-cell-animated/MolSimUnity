@@ -9,7 +9,6 @@ namespace AICS.AgentSim
         protected MoleculePopulation population;
 		protected float diffusionCoefficient;
         public bool canMove = true;
-        public float interactionRadius;
 
         protected List<MoleculeSimulator> collidingMolecules = new List<MoleculeSimulator>();
         [HideInInspector] public BindingSiteState[] bindingSiteStates;
@@ -33,9 +32,14 @@ namespace AICS.AgentSim
         {
             BindingSite[] sites = moleculeState.molecule.sites;
             bindingSiteStates = new BindingSiteState[sites.Length];
+            BindingSitePopulation sitePopulation;
             for (int i = 0; i < sites.Length; i++)
             {
-                bindingSiteStates[i] = new BindingSiteState( sites[i], moleculeState.componentStates[sites[i].id] ); //TODO pass reaction indices
+                sitePopulation = population.GetBindingSitePopulationByID( sites[i].id );
+                if (sitePopulation != null)
+                {
+                    bindingSiteStates[i] = new BindingSiteState( sitePopulation, moleculeState.bindingSiteStates[sites[i].id] );
+                }
             }
         }
 
@@ -139,59 +143,40 @@ namespace AICS.AgentSim
 
         public void CalculateInteractionRadius ()
         {
-            float r = 0, max = 0;
-            foreach (BindingSiteState siteState in bindingSiteStates)
-            {
-                if (siteState.active)
-                {
-                    r = siteState.maxExtentFromMoleculeCenter;
-                    if (r > max)
-                    {
-                        max = r;
-                    }
-                }
-            }
-            interactionRadius = max;
+            //float r = 0, max = 0;
+            //foreach (BindingSiteState siteState in bindingSiteStates)
+            //{
+            //    if (siteState.active)
+            //    {
+            //        r = siteState.maxExtentFromMoleculeCenter;
+            //        if (r > max)
+            //        {
+            //            max = r;
+            //        }
+            //    }
+            //}
+            //interactionRadius = max;
         }
 	}
 
     [System.Serializable]
     public class BindingSiteState
     {
-        public BindingSite bindingSite;
+        BindingSitePopulation population;
         public string state;
-        public float radius;
-        public int[] relevantReactionIndices;
 
         public bool active
         {
             get
             {
-                foreach (string activeState in bindingSite.activeStates)
-                {
-                    if (state == activeState)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return population.StateIsActive( state );
             }
         }
 
-        public float maxExtentFromMoleculeCenter
+        public BindingSiteState (BindingSitePopulation _population, string _state)
         {
-            get
-            {
-                return Vector3.Magnitude( bindingSite.transformOnMolecule.position ) + radius;
-            }
-        }
-
-        public BindingSiteState (BindingSite _bindingSite, string _state) //, int[] _relevantReactionIndices
-        {
-            bindingSite = _bindingSite;
+            population = _population;
             state = _state;
-            radius = bindingSite.radius;
-            //relevantReactionIndices = _relevantReactionIndices;
         }
     }
 }
