@@ -8,13 +8,13 @@ namespace AICS.AgentSim
     {
         public BindingSite bindingSite;
         public string initialState;
-        public float radius;
+        public float interactionRadius;
 
         public float maxExtentFromMoleculeCenter
         {
             get
             {
-                return Vector3.Magnitude( bindingSite.transformOnMolecule.position ) + radius;
+                return Vector3.Magnitude( bindingSite.transformOnMolecule.position ) + interactionRadius;
             }
         }
 
@@ -44,7 +44,7 @@ namespace AICS.AgentSim
         {
             bindingSite = _bindingSite;
             initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
-            radius = bindingSite.radius;
+            interactionRadius = bindingSite.radius;
         }
 
         public bool StateIsActive (string state)

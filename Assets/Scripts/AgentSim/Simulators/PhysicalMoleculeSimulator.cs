@@ -32,6 +32,7 @@ namespace AICS.AgentSim
 
         protected void AddRigidbodyCollider ()
 		{
+            gameObject.layer = 9;
             sphereCollider = gameObject.AddComponent<SphereCollider>();
             sphereCollider.radius = population.collisionRadius;
 			body = gameObject.AddComponent<Rigidbody>();

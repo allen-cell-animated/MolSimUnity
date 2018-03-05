@@ -6,9 +6,43 @@ namespace AICS.AgentSim
 {
     public class PhysicalBindingSiteSimulator : BindingSiteSimulator 
     {
+        protected SphereCollider sphereCollider;
+        protected Rigidbody body;
+
+        public override void Init (BindingSitePopulation _population)
+        {
+            base.Init( _population );
+
+            AddRigidbodyCollider();
+        }
+
+        protected void AddRigidbodyCollider ()
+        {
+            gameObject.layer = 9;
+            sphereCollider = gameObject.AddComponent<SphereCollider>();
+            sphereCollider.radius = population.interactionRadius;
+            sphereCollider.isTrigger = true;
+            body = gameObject.AddComponent<Rigidbody>();
+            body.isKinematic = true;
+        }
+
         public override void SimulateFor (float dTime)
         {
+            
+        }
 
+        void OnTriggerEnter (Collider other)
+        {
+            HandleCollision( other );
+        }
+
+        protected virtual void HandleCollision (Collider other)
+        {
+            BindingSiteSimulator otherSite = other.gameObject.GetComponent<BindingSiteSimulator>();
+            if (otherSite != null)
+            {
+                //TODO
+            }
         }
     }
 }

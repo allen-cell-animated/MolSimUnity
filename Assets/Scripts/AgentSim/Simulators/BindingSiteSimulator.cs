@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public abstract class BindingSiteSimulator : Simulator 
     {
-        BindingSitePopulation population;
+        protected BindingSitePopulation population;
         public string state;
 
         public virtual void Init (BindingSitePopulation _population)
