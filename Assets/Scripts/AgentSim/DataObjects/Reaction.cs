@@ -46,15 +46,6 @@ namespace AICS.AgentSim
             products = _products;
             rate = _rate;
         }
-
-        public bool ReactantsEqual (IReactable species1, IReactable species2)
-        {
-            return (reactants.Length == 0 && species1 == null && species2 == null)
-                || (reactants.Length == 1 && ((species1.Matches( reactants[0] ) && species2 == null) 
-                                           || (species2.Matches( reactants[0] ) && species1 == null)))
-                || (reactants.Length == 2 && ((species1.Matches( reactants[0] ) && species2.Matches( reactants[1] ))
-                                           || (species2.Matches( reactants[0] ) && species1.Matches( reactants[1] ) )));
-        }
     }
 
     [System.Serializable]

@@ -11,6 +11,23 @@ namespace AICS.AgentSim
         public bool canMove = true;
 
         protected List<MoleculeSimulator> collidingMolecules = new List<MoleculeSimulator>();
+        protected Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
+        protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
+
+        public bool active
+        {
+            get
+            {
+                foreach (KeyValuePair<string,BindingSiteSimulator> bindingSite in bindingSites)
+                {
+                    if (bindingSite.Value.active)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
 
         ReactionWatcher[] reactionWatchers
         {
@@ -54,7 +71,12 @@ namespace AICS.AgentSim
             {
                 simulator = bindingSite.AddComponent<ManagedBindingSiteSimulator>();
             }
-            simulator.Init( bindingSitePopulation );
+            simulator.Init( bindingSitePopulation, this );
+            bindingSites.Add( id, simulator );
+            if (simulator.active)
+            {
+                activeBindingSites.Add( simulator );
+            }
         }
 
         protected float GetDisplacement (float dTime)
@@ -74,6 +96,44 @@ namespace AICS.AgentSim
         protected virtual void SaveCollidingSimulators (MoleculeSimulator[] others)
         {
             collidingMolecules.AddRange( others );
+        }
+
+        public virtual void InteractWith (MoleculeSimulator other)
+        {
+            for (int i = 0; i < activeBindingSites.Count - 1; i++)
+            {
+                for (int j = i + 1; j < activeBindingSites.Count; j++)
+                {
+                    if (true)
+                    {
+                        
+                    }
+                }
+            }
+        }
+
+        public virtual bool StateMatches (IReactable state)
+        {
+            if (state.GetType() == typeof(MoleculeState))
+            {
+                MoleculeState moleculeState = state as MoleculeState;
+                if (moleculeState != null && moleculeState.molecule.species == population.molecule.species)
+                {
+                    foreach (KeyValuePair<string,string> siteState in moleculeState.bindingSiteStates)
+                    {
+                        if (bindingSites[siteState.Key].state != siteState.Value)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            else
+            {
+                //TODO
+            }
+            return false;
         }
 
         protected virtual bool CheckBind ()
@@ -172,25 +232,4 @@ namespace AICS.AgentSim
             //interactionRadius = max;
         }
 	}
-
-    [System.Serializable]
-    public class BindingSiteState
-    {
-        BindingSitePopulation population;
-        public string state;
-
-        public bool active
-        {
-            get
-            {
-                return population.StateIsActive( state );
-            }
-        }
-
-        public BindingSiteState (BindingSitePopulation _population, string _state)
-        {
-            population = _population;
-            state = _state;
-        }
-    }
 }

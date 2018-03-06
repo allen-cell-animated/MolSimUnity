@@ -84,6 +84,15 @@ namespace AICS.AgentSim
             }
         }
 
+        public bool ReactantsEqual (MoleculeSimulator molecule1, MoleculeSimulator molecule2)
+        {
+            return (reaction.reactants.Length == 0 && molecule1 == null && molecule1 == null)
+                || (reaction.reactants.Length == 1 && ((molecule1.StateMatches( reaction.reactants[0] ) && molecule2 == null)
+                                                    || (molecule2.StateMatches( reaction.reactants[0] ) && molecule1 == null)))
+                || (reaction.reactants.Length == 2 && ((molecule1.StateMatches( reaction.reactants[0] ) && molecule2.StateMatches( reaction.reactants[1] ))
+                                                    || (molecule2.StateMatches( reaction.reactants[0] ) && molecule1.StateMatches( reaction.reactants[1] ) )));
+        }
+
         public bool ShouldHappen ()
         {
             attempts++;

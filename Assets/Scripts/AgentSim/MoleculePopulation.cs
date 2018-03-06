@@ -50,7 +50,7 @@ namespace AICS.AgentSim
                 }
 
                 sitePopulation = gameObject.AddComponent<BindingSitePopulation>();
-                sitePopulation.Init( molecule.sites[i], initialState );
+                sitePopulation.Init( molecule.sites[i], initialState, this );
                 bindingSitePopulations.Add( siteID, sitePopulation );
             }
         }

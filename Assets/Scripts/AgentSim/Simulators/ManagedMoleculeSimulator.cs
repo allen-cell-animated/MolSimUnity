@@ -15,10 +15,18 @@ namespace AICS.AgentSim
             }
         }
 
+        public float interactionRadius
+        {
+            get 
+            {
+                return population.interactionRadius;
+            }
+        }
+
         public override void Init (MoleculeState moleculeState, MoleculePopulation _population)
         {
             base.Init( moleculeState, _population );
-            population.reactor.container.RegisterSimulator( this );
+            population.reactor.container.RegisterMolecule( this );
         }
 
         public override void SimulateFor (float dTime)

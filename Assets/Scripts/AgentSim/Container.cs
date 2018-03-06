@@ -14,7 +14,8 @@ namespace AICS.AgentSim
         [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
         Vector3 size;
         Walls walls;
-        List<ManagedMoleculeSimulator> simulators = new List<ManagedMoleculeSimulator>();
+        List<ManagedMoleculeSimulator> molecules = new List<ManagedMoleculeSimulator>();
+        List<ManagedMoleculeSimulator> activeMolecules = new List<ManagedMoleculeSimulator>();
 
         public virtual void Init (float _volume, bool _periodicBoundary)
         {
@@ -48,9 +49,13 @@ namespace AICS.AgentSim
             Gizmos.DrawWireCube( transform.position, size );
         }
 
-        public void RegisterSimulator (ManagedMoleculeSimulator simulator)
+        public void RegisterMolecule (ManagedMoleculeSimulator molecule)
         {
-            simulators.Add( simulator );
+            molecules.Add( molecule );
+            if (molecule.active)
+            {
+                activeMolecules.Add( molecule );
+            }
         }
 
         public virtual void CreatePhysicsBounds ()
@@ -64,9 +69,20 @@ namespace AICS.AgentSim
 
         public override void SimulateFor (float dTime)
         {
-            foreach (ManagedMoleculeSimulator simulator in simulators)
+            foreach (ManagedMoleculeSimulator molecule in molecules)
             {
-                simulator.Move( dTime );
+                molecule.Move( dTime );
+            }
+
+            for (int i = 0; i < activeMolecules.Count - 1; i++)
+            {
+                for (int j = i + 1; j < activeMolecules.Count; j++)
+                {
+                    if (MoleculesAreNearEachOther( activeMolecules[i], activeMolecules[j] ))
+                    {
+                        activeMolecules[i].InteractWith( activeMolecules[j] );
+                    }
+                }
             }
         }
 
@@ -79,12 +95,12 @@ namespace AICS.AgentSim
             return !inBounds;
         }
 
-        public virtual bool WillCollide (ManagedMoleculeSimulator simulator, Vector3 newPosition, out ManagedMoleculeSimulator[] others)
+        public virtual bool WillCollide (ManagedMoleculeSimulator molecule, Vector3 newPosition, out ManagedMoleculeSimulator[] others)
         {
             List<ManagedMoleculeSimulator> othersList = new List<ManagedMoleculeSimulator>();
-            foreach (ManagedMoleculeSimulator other in simulators)
+            foreach (ManagedMoleculeSimulator other in molecules)
             {
-                if (SimulatorsAreColliding( simulator, other ))
+                if (MoleculesAreColliding( molecule, other ))
                 {
                     othersList.Add( other );
                 }
@@ -93,11 +109,17 @@ namespace AICS.AgentSim
             return others.Length > 0;
         }
 
-        bool SimulatorsAreColliding (ManagedMoleculeSimulator simulator1, ManagedMoleculeSimulator simulator2)
+        bool MoleculesAreColliding (ManagedMoleculeSimulator molecule1, ManagedMoleculeSimulator molecule2)
         {
-            return simulator1 != simulator2 
-                && Vector3.Distance( simulator1.transform.position, simulator2.transform.position ) < simulator1.collisionRadius + simulator2.collisionRadius
-                && !simulator1.IsBoundToOther( simulator2 );
+            return molecule1 != molecule2 
+                && Vector3.Distance( molecule1.transform.position, molecule2.transform.position ) < molecule1.collisionRadius + molecule2.collisionRadius
+                && !molecule1.IsBoundToOther( molecule2 );
+        }
+
+        bool MoleculesAreNearEachOther (ManagedMoleculeSimulator molecule1, ManagedMoleculeSimulator molecule2)
+        {
+            return molecule1 != molecule2 
+                && Vector3.Distance( molecule1.transform.position, molecule2.transform.position ) < molecule1.interactionRadius + molecule2.interactionRadius;
         }
 	}
 }
