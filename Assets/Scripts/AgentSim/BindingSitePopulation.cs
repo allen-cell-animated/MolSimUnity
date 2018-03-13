@@ -62,5 +62,18 @@ namespace AICS.AgentSim
             }
             return false;
         }
+
+        public virtual Reaction GetNextReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
+        {
+            reactionWatchers.Shuffle();
+            foreach (ReactionWatcher reactionWatcher in reactionWatchers)
+            {
+                if (reactionWatcher.TryReaction( bindingSite1, bindingSite2 ))
+                {
+                    return reactionWatcher.reaction;
+                }
+            }
+            return null;
+        }
     }
 }

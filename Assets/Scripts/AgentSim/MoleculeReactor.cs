@@ -68,7 +68,7 @@ namespace AICS.AgentSim
             reaction = _reaction;
         }
 
-        public bool observedRateTooHigh
+        bool observedRateTooHigh
         {
             get
             {
@@ -76,7 +76,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool observedRateTooLow
+        bool observedRateTooLow
         {
             get
             {
@@ -84,35 +84,43 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool ReactantsEqual (MoleculeSimulator molecule1, MoleculeSimulator molecule2)
+        bool shouldHappen
         {
-            return (reaction.reactants.Length == 0 && molecule1 == null && molecule1 == null)
-                || (reaction.reactants.Length == 1 && ((molecule1.StateMatches( reaction.reactants[0] ) && molecule2 == null)
-                                                    || (molecule2.StateMatches( reaction.reactants[0] ) && molecule1 == null)))
-                || (reaction.reactants.Length == 2 && ((molecule1.StateMatches( reaction.reactants[0] ) && molecule2.StateMatches( reaction.reactants[1] ))
-                                                    || (molecule2.StateMatches( reaction.reactants[0] ) && molecule1.StateMatches( reaction.reactants[1] ) )));
+            get
+            {
+                bool react;
+                if (observedRateTooLow)
+                {
+                    react = true;
+                }
+                else 
+                {
+                    react = Random.value <= reaction.rate * World.Instance.dT * (World.Instance.steps / attempts);
+                }
+                events = react ? events + 1 : events;
+                observedRate = Mathf.Round( events / World.Instance.time );
+                return react;
+            }
         }
 
-        public bool ShouldHappen ()
+        public bool TryReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
         {
             attempts++;
 
-            bool react;
-            if (observedRateTooLow)
+            if (!observedRateTooHigh && ReactantsEqual( bindingSite1.molecule, bindingSite2.molecule ))
             {
-                react = true;
+                return shouldHappen;
             }
-            else if (observedRateTooHigh)
-            {
-                react = false;
-            }
-            else 
-            {
-                react = Random.value <= reaction.rate * World.Instance.dT * (World.Instance.steps / attempts);
-            }
-            events = react ? events + 1 : events;
-            observedRate = Mathf.Round( events / World.Instance.time );
-            return react;
+            return false;
+        }
+
+        bool ReactantsEqual (MoleculeSimulator molecule1, MoleculeSimulator molecule2)
+        {
+            return (reaction.reactants.Length == 0 && molecule1 == null && molecule1 == null)
+                || (reaction.reactants.Length == 1 && ((reaction.reactants[0].Matches( molecule1 ) && molecule2 == null)
+                                                    || (reaction.reactants[0].Matches( molecule2 ) && molecule1 == null)))
+                || (reaction.reactants.Length == 2 && ((reaction.reactants[0].Matches( molecule1 ) && reaction.reactants[1].Matches( molecule2 ) ))
+                                                    || (reaction.reactants[0].Matches( molecule2 ) && reaction.reactants[1].Matches( molecule1 ) ));
         }
 
         public void Reset ()

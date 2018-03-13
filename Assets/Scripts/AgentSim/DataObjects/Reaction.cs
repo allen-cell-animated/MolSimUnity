@@ -86,14 +86,13 @@ namespace AICS.AgentSim
             bindingSiteStates = _bindingSiteStates;
         }
 
-        public bool Matches (IReactable other)
+        public bool Matches (MoleculeSimulator _molecule)
         {
-            MoleculeState otherSingleMoleculeState = other as MoleculeState;
-            if (otherSingleMoleculeState != null && otherSingleMoleculeState.molecule.species == molecule.species)
+            if (_molecule.species == molecule.species)
             {
-                foreach (KeyValuePair<string,string> otherComponent in otherSingleMoleculeState.bindingSiteStates)
+                foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {
-                    if (bindingSiteStates[otherComponent.Key] != otherComponent.Value)
+                    if (!_molecule.SiteIsInState( siteState.Key, siteState.Value ))
                     {
                         return false;
                     }
@@ -124,12 +123,10 @@ namespace AICS.AgentSim
             childMoleculeState = _childMoleculeState;
         }
 
-        public bool Matches (IReactable other)
+        public bool Matches (MoleculeSimulator _molecule)
         {
-            CompoundMoleculeState otherCompoundMoleculeState = other as CompoundMoleculeState;
-            return otherCompoundMoleculeState != null 
-                && otherCompoundMoleculeState.parentMoleculeState.Matches( parentMoleculeState )
-                && otherCompoundMoleculeState.childMoleculeState.Matches( childMoleculeState );
+            // TODO
+            return false;
         }
     }
 }

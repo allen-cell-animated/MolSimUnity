@@ -6,6 +6,6 @@ namespace AICS.AgentSim
 {
     public interface IReactable
     {
-        bool Matches (IReactable other);
+        bool Matches (MoleculeSimulator _molecule);
     }
 }

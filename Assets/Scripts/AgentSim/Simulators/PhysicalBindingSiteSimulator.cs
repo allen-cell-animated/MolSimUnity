@@ -9,9 +9,9 @@ namespace AICS.AgentSim
         protected SphereCollider sphereCollider;
         protected Rigidbody body;
 
-        public override void Init (BindingSitePopulation _population)
+        public override void Init (BindingSitePopulation _population, MoleculeSimulator _molecule)
         {
-            base.Init( _population );
+            base.Init( _population, _molecule );
 
             AddRigidbodyCollider();
         }

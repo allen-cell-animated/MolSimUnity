@@ -25,14 +25,13 @@ namespace AICS.AgentSim
             state = population.initialState;
         }
 
-        public virtual bool CanBindToOther (BindingSiteSimulator other)
+        public virtual bool TryToReact (BindingSiteSimulator other)
         {
-            foreach (ReactionWatcher reactionWatcher in population.reactionWatchers)
+            Reaction reaction = population.GetNextReaction( this, other );
+            if (reaction != null)
             {
-                if (!reactionWatcher.observedRateTooHigh && reactionWatcher.ReactantsEqual( molecule, other.molecule ))
-                {
-                    //TODO
-                }
+                // TODO do reaction
+                return true;
             }
             return false;
         }

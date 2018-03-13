@@ -14,6 +14,14 @@ namespace AICS.AgentSim
         protected Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
         protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
 
+        public string species
+        {
+            get
+            {
+                return population.molecule.species;
+            }
+        }
+
         public bool active
         {
             get
@@ -100,40 +108,18 @@ namespace AICS.AgentSim
 
         public virtual void InteractWith (MoleculeSimulator other)
         {
-            for (int i = 0; i < activeBindingSites.Count - 1; i++)
+            for (int i = 0; i < activeBindingSites.Count; i++)
             {
-                for (int j = i + 1; j < activeBindingSites.Count; j++)
+                for (int j = 0; j < other.activeBindingSites.Count; j++)
                 {
-                    if (true)
-                    {
-                        
-                    }
+                    activeBindingSites[i].TryToReact( other.activeBindingSites[j] );
                 }
             }
         }
 
-        public virtual bool StateMatches (IReactable state)
+        public virtual bool SiteIsInState (string siteID, string state)
         {
-            if (state.GetType() == typeof(MoleculeState))
-            {
-                MoleculeState moleculeState = state as MoleculeState;
-                if (moleculeState != null && moleculeState.molecule.species == population.molecule.species)
-                {
-                    foreach (KeyValuePair<string,string> siteState in moleculeState.bindingSiteStates)
-                    {
-                        if (bindingSites[siteState.Key].state != siteState.Value)
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
-            else
-            {
-                //TODO
-            }
-            return false;
+            return bindingSites[siteID].state == state;
         }
 
         protected virtual bool CheckBind ()
