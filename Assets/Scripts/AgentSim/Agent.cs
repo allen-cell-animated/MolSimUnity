@@ -92,6 +92,7 @@ namespace AICS.AgentSim
 
         public void SetParent (Agent newParent)
         {
+            transform.SetParent( newParent.transform );
             parent.RemoveChild( this );
             newParent.AddChild( this );
             parent = newParent;

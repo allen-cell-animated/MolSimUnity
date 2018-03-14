@@ -12,7 +12,7 @@ namespace AICS.AgentSim
             {
                 bindingSite1.molecule.ToggleMotion( false );
                 bindingSite2.molecule.ToggleMotion( false );
-                RelativelyPositionAndParent( bindingSite1.transform, bindingSite2.transform );
+                RelativelyPosition( bindingSite1.transform, bindingSite2.transform );
 
                 MoleculePopulation productPopulation = bindingSite1.reactor.GetPopulationForMoleculeSet( products[0] );
                 productPopulation.SpawnMoleculeComplex( bindingSite1.transform, new MoleculeSimulator[]{bindingSite1.molecule, bindingSite2.molecule});
@@ -24,11 +24,10 @@ namespace AICS.AgentSim
             }
         }
 
-        void RelativelyPositionAndParent (Transform parentBindingSite, Transform childBindingSite)
+        void RelativelyPosition (Transform parentBindingSite, Transform childBindingSite)
         {
             childBindingSite.parent.position = parentBindingSite.TransformPoint( childBindingSite.InverseTransformPoint( childBindingSite.parent.position ) );
             childBindingSite.parent.rotation = childBindingSite.parent.rotation * Quaternion.Inverse( childBindingSite.rotation ) * parentBindingSite.rotation;
-            childBindingSite.parent.SetParent( parentBindingSite.parent );
         }
     }
 }

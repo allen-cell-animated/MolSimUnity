@@ -7,6 +7,8 @@ namespace AICS.AgentSim
     // Directly simulated particles that don't use the physics engine, Container detects collisions instead
     public class ManagedMoleculeSimulator : MoleculeSimulator 
     {
+        [SerializeField] protected ManagedMoleculeSimulator[] collidingMolecules;
+
         public float collisionRadius
         {
             get 
@@ -33,9 +35,16 @@ namespace AICS.AgentSim
         {
             if (canMove)
             {
-                transform.position += GetExitDirection();
+                Vector3 exit = GetExitDirection( (MoleculeSimulator[])collidingMolecules );
+                if (exit.magnitude > 0)
+                {
+                    if (log)
+                    {
+                        GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position = transform.position + exit;
+                    }
+                    transform.position += exit;
+                }
             }
-            collidingMolecules.Clear();
         }
 
         public virtual void Move (float dTime)
@@ -69,10 +78,8 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            ManagedMoleculeSimulator[] others;
-            if (population.reactor.container.WillCollide( this, transform.position + moveStep, out others ))
+            if (population.reactor.container.WillCollide( this, transform.position + moveStep, out collidingMolecules ))
             {
-                SaveCollidingSimulators( others );
                 return false;
             }
 

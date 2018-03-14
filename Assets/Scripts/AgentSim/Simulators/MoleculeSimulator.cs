@@ -9,7 +9,6 @@ namespace AICS.AgentSim
         protected MoleculePopulation population;
         public bool canMove = true;
 
-        protected List<MoleculeSimulator> collidingMolecules = new List<MoleculeSimulator>();
         protected Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
         protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
 
@@ -66,10 +65,11 @@ namespace AICS.AgentSim
             BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( molecule, id );
 
             GameObject bindingSite = new GameObject();
-            bindingSite.transform.SetParent( transform );
             bindingSitePopulation.bindingSite.transformOnMolecule.Apply( transform, bindingSite.transform );
             bindingSite.name = name + "_" + bindingSitePopulation.bindingSite.id;
-            bindingSite.AddComponent<Agent>().Init( agent.species + "_" + bindingSitePopulation.bindingSite.id, 0.1f * agent.scale );
+            Agent a = bindingSite.AddComponent<Agent>();
+            a.Init( agent.species + "_" + bindingSitePopulation.bindingSite.id, 0.1f * agent.scale );
+            a.SetParent( agent );
 
             BindingSiteSimulator simulator;
             if (population.reactor.usePhysicsEngine)
@@ -100,11 +100,6 @@ namespace AICS.AgentSim
             {
                 transform.position = info.point - collisionToCenter.normalized;
             }
-        }
-
-        protected virtual void SaveCollidingSimulators (MoleculeSimulator[] others)
-        {
-            collidingMolecules.AddRange( others );
         }
 
         public virtual void InteractWith (MoleculeSimulator other)
@@ -153,20 +148,35 @@ namespace AICS.AgentSim
         }
 
         public abstract void ToggleMotion (bool move);
-
-        protected virtual Vector3 GetExitDirection ()
+        public bool log;
+        protected virtual Vector3 GetExitDirection (MoleculeSimulator[] collidingMolecules)
         {
-            int n = 0;
-            Vector3 exitVector = Vector3.zero;
-            foreach (MoleculeSimulator other in collidingMolecules)
+            if (collidingMolecules != null)
             {
-                if (!IsBoundToOther( other ))
+                int n = 0;
+                Vector3 exitVector = Vector3.zero;
+                foreach (MoleculeSimulator other in collidingMolecules)
                 {
-                    exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
-                    n++;
+                    if (!IsBoundToOther( other ))
+                    {
+                        exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
+                        n++;
+                    }
                 }
+                if (log) { Debug.Log( n + " == " + collidingMolecules.Length ); }
+                return exitVector;//.normalized;
             }
-            return exitVector.normalized;
+            if (log) { Debug.Log( "colliding molecules is null" ); }
+            return Vector3.zero;
+        }
+
+        public void MoveToComplex (MoleculeSimulator complex)
+        {
+            if (!population.reactor.usePhysicsEngine)
+            {
+                population.reactor.container.UnregisterMolecule( this as ManagedMoleculeSimulator );
+            }
+            agent.SetParent( complex.agent );
         }
 	}
 }

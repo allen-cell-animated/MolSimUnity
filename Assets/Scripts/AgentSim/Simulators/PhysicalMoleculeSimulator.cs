@@ -9,6 +9,7 @@ namespace AICS.AgentSim
 	{
         protected SphereCollider sphereCollider;
         protected Rigidbody body;
+        protected List<PhysicalMoleculeSimulator> collidingMolecules = new List<PhysicalMoleculeSimulator>();
 
         protected float GetForceMagnitude (float dTime)
 		{
@@ -77,7 +78,7 @@ namespace AICS.AgentSim
                 MoleculeSimulator[] others = collision.gameObject.GetComponents<MoleculeSimulator>();
                 if (others != null && others.Length > 0)
                 {
-                    SaveCollidingSimulators( others );
+                    collidingMolecules.AddRange( (PhysicalMoleculeSimulator[])others );
                 }
             }
         }

@@ -49,8 +49,9 @@ namespace AICS.AgentSim
         protected virtual void CreatePopulation (MoleculeConcentration moleculeConcentration)
         {
             GameObject obj = new GameObject( moleculeConcentration.species + "Population", new System.Type[] {typeof(Agent), typeof(MoleculePopulation)} );
-            obj.transform.SetParent( transform );
-            obj.GetComponent<Agent>().Init( moleculeConcentration.species, agent.scale );
+            Agent a = obj.GetComponent<Agent>();
+            a.Init( moleculeConcentration.species, agent.scale );
+            a.SetParent( agent );
             MoleculePopulation population = obj.GetComponent<MoleculePopulation>();
             population.Init( moleculeConcentration, this );
             populations.Add( moleculeConcentration.species, population );

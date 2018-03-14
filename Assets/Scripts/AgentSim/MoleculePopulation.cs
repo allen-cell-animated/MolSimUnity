@@ -105,11 +105,13 @@ namespace AICS.AgentSim
                 return;
             }
 
-            GameObject particle = Instantiate( moleculeState.molecule.visualizationPrefab, transform );
+            GameObject particle = Instantiate( moleculeState.molecule.visualizationPrefab );
             particle.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
             particle.transform.rotation = Random.rotation;
             particle.name = molecules[0].species + "_" + index;
-            particle.AddComponent<Agent>().Init( moleculeState.molecule.species, moleculeState.molecule.scale );
+            Agent a = particle.AddComponent<Agent>();
+            a.Init( moleculeState.molecule.species, moleculeState.molecule.scale );
+            a.SetParent( agent );
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
@@ -138,10 +140,11 @@ namespace AICS.AgentSim
         public virtual void SpawnMoleculeComplex (Transform bindingSiteTransform, MoleculeSimulator[] _molecules)
         {
             GameObject particle = new GameObject( species + "_" + transform.childCount );
-            particle.transform.SetParent( transform );
             particle.transform.position = bindingSiteTransform.position;
             particle.transform.rotation = bindingSiteTransform.rotation;
-            particle.AddComponent<Agent>().Init( species, _molecules[0].agent.scale );
+            Agent a = particle.AddComponent<Agent>();
+            a.Init( species, _molecules[0].agent.scale );
+            a.SetParent( agent );
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
@@ -156,11 +159,7 @@ namespace AICS.AgentSim
 
             foreach (MoleculeSimulator molecule in _molecules)
             {
-                if (!reactor.usePhysicsEngine)
-                {
-                    reactor.container.UnregisterMolecule( molecule as ManagedMoleculeSimulator );
-                }
-                molecule.transform.SetParent( particle.transform );
+                molecule.MoveToComplex( simulator );
             }
         }
     }
