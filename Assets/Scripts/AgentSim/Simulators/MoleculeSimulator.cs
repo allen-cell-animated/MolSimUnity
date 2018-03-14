@@ -126,6 +126,18 @@ namespace AICS.AgentSim
             return bindingSites[siteID].state == state;
         }
 
+        public virtual bool IsBoundToOther (MoleculeSimulator molecule)
+        {
+            foreach (BindingSiteSimulator site in bindingSites.Values)
+            {
+                if (site.boundSite != null && site.boundSite.molecule == molecule)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public virtual MoleculeSimulator[] GetBoundMoleculesSet ()
         {
             List<MoleculeSimulator> boundMolecules = new List<MoleculeSimulator>();
@@ -139,56 +151,6 @@ namespace AICS.AgentSim
             }
             return boundMolecules.ToArray();
         }
-
-        protected virtual bool CheckBind ()
-        {
-            //reactionStates.Shuffle();
-            //for (int i = 0; i < reactionStates.Length; i++)
-            //{
-            //    if (reactionStates[i].currentBindingPartner == null)
-            //    {
-            //        collidingParticles.Shuffle();
-            //        foreach (ParticleSimulator other in collidingParticles)
-            //        {
-            //            if (other.reactionStates[i].currentBindingPartner == null 
-            //                //&& reactionWatchers[i].reaction.ReactantsEqual( agent.species, other.agent.species )
-            //                && reactionWatchers[i].ShouldHappen())
-            //            {
-            //                //ApplyBind( i, other );
-            //                return true;
-            //            }
-            //        }
-            //    }
-            //}
-            return false;
-        }
-
-        //protected void ApplyBind (int reactionIndex, ParticleSimulator other)
-        //{
-        //    reactionStates[reactionIndex].currentBindingPartner = other;
-        //    other.reactionStates[reactionIndex].currentBindingPartner = this;
-
-        //    Bind bind = reactionWatchers[reactionIndex].reaction.bind;
-        //    ParticleSimulator child, parent;
-        //    GetChildAndParent( bind, this, other, out child, out parent );
-
-        //    child.BindTo( parent, bind );
-        //}
-
-        //public void GetChildAndParent (Bind bind, ParticleSimulator particle1, ParticleSimulator particle2, out ParticleSimulator child, out ParticleSimulator parent)
-        //{
-        //    bool childIs1 = bind.childSpecies == particle1.agent.species;
-        //    child = childIs1 ? particle1 : particle2;
-        //    parent = childIs1 ? particle2 : particle1;
-        //}
-
-        //protected void BindTo (ParticleSimulator other, Bind bind)
-        //{
-        //    ToggleMotion( false );
-        //    agent.SetParent( other.agent );
-        //    transform.position = other.transform.TransformPoint( bind.relativePosition );
-        //    transform.rotation = other.transform.rotation * Quaternion.Euler( bind.relativeRotation );
-        //}
 
         public abstract void ToggleMotion (bool move);
 
@@ -205,35 +167,6 @@ namespace AICS.AgentSim
                 }
             }
             return exitVector.normalized;
-        }
-
-        public bool IsBoundToOther (MoleculeSimulator other)
-        {
-            //foreach (ReactionState reactionState in reactionStates)
-            //{
-            //    if (reactionState.currentBindingPartner == other)
-            //    {
-            //        return true;
-            //    }
-            //}
-            return false;
-        }
-
-        public void CalculateInteractionRadius ()
-        {
-            //float r = 0, max = 0;
-            //foreach (BindingSiteState siteState in bindingSiteStates)
-            //{
-            //    if (siteState.active)
-            //    {
-            //        r = siteState.maxExtentFromMoleculeCenter;
-            //        if (r > max)
-            //        {
-            //            max = r;
-            //        }
-            //    }
-            //}
-            //interactionRadius = max;
         }
 	}
 }

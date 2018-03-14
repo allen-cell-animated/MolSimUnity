@@ -58,6 +58,18 @@ namespace AICS.AgentSim
             }
         }
 
+        public void UnregisterMolecule (ManagedMoleculeSimulator molecule)
+        {
+            if (molecules.Contains( molecule ))
+            {
+                molecules.Remove( molecule );
+            }
+            if (activeMolecules.Contains( molecule ))
+            {
+                activeMolecules.Remove( molecule );
+            }
+        }
+
         public virtual void CreatePhysicsBounds ()
         {
             if (walls == null)

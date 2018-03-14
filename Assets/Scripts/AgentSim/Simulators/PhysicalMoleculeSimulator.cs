@@ -42,7 +42,7 @@ namespace AICS.AgentSim
 
         public override void SimulateFor (float dTime)
         {
-            CheckBind();
+            //CheckBind();
             collidingMolecules.Clear();
 
             if (canMove)

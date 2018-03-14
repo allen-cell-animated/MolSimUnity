@@ -29,6 +29,28 @@ namespace AICS.AgentSim
         #endregion
 
         public abstract void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null);
+
+        protected virtual string GetFinalSiteState (BindingSiteSimulator bindingSite)
+        {
+            foreach (MoleculeStateSet product in products)
+            {
+                foreach (MoleculeState moleculeState in product.moleculeStates)
+                {
+                    if (moleculeState.molecule.species == bindingSite.molecule.species)
+                    {
+                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
+                        {
+                            if (bindingSiteState.Key == bindingSite.id)
+                            {
+                                return bindingSiteState.Value;
+                            }
+                        }
+                    }
+                }
+            }
+            Debug.LogWarning( "reacting binding site " + bindingSite.name + " doesn't match any site on product of reaction " + description );
+            return "";
+        }
     }
 
     [System.Serializable]
@@ -52,17 +74,12 @@ namespace AICS.AgentSim
         #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
-            foreach (MoleculeState molecule in moleculeStates)
+            foreach (MoleculeState moleculeState in moleculeStates)
             {
-                molecule.Init();
+                moleculeState.Init();
             }
         }
         #endregion
-
-        public MoleculeStateSet (MoleculeState[] _moleculeStates)
-        {
-            moleculeStates = _moleculeStates;
-        }
 
         public string species 
         {

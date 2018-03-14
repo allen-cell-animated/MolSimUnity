@@ -28,16 +28,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public Molecule (string _species, float _radius, float _scale, float _diffusionCoefficient, BindingSite[] _sites, GameObject _prefab = null)
-        {
-            species = _species;
-            radius = _radius;
-            scale = _scale;
-            diffusionCoefficient = _diffusionCoefficient;
-            sites = _sites;
-            _visualizationPrefab = _prefab;
-        }
-
         public BindingSite GetSiteByID (string id)
         {
             foreach (BindingSite site in sites)
@@ -59,14 +49,6 @@ namespace AICS.AgentSim
         public string[] activeStates;
         public RelativeTransform transformOnMolecule;
         public float radius;
-
-        public BindingSite (string _id, string[] _states, Vector3 _relativePosition, Vector3 _relativeRotation, float _radius)
-        {
-            id = _id;
-            states = _states;
-            transformOnMolecule = new RelativeTransform( _relativePosition, _relativeRotation );
-            radius = _radius;
-        }
     }
 
     [System.Serializable]

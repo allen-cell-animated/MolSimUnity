@@ -135,13 +135,13 @@ namespace AICS.AgentSim
             return null;
         }
 
-        public virtual void SpawnMoleculeComplex (Vector3 position, MoleculeSimulator[] _molecules)
+        public virtual void SpawnMoleculeComplex (Transform bindingSiteTransform, MoleculeSimulator[] _molecules)
         {
             GameObject particle = new GameObject( species + "_" + transform.childCount );
             particle.transform.SetParent( transform );
-            particle.transform.position = position;
-            particle.transform.rotation = Random.rotation;
-            particle.AddComponent<Agent>().Init( species, agent.scale );
+            particle.transform.position = bindingSiteTransform.position;
+            particle.transform.rotation = bindingSiteTransform.rotation;
+            particle.AddComponent<Agent>().Init( species, _molecules[0].agent.scale );
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
@@ -156,6 +156,10 @@ namespace AICS.AgentSim
 
             foreach (MoleculeSimulator molecule in _molecules)
             {
+                if (!reactor.usePhysicsEngine)
+                {
+                    reactor.container.UnregisterMolecule( molecule as ManagedMoleculeSimulator );
+                }
                 molecule.transform.SetParent( particle.transform );
             }
         }

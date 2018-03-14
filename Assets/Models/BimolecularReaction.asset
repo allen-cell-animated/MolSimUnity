@@ -20,7 +20,6 @@ MonoBehaviour:
         siteStates:
         - id: b
           state: 0
-    compoundRadius: 0
   - concentration: 6.5e-16
     moleculeStateSet:
       moleculeStates:
@@ -28,6 +27,5 @@ MonoBehaviour:
         siteStates:
         - id: a
           state: 0
-    compoundRadius: 0.8
   reactions:
   - {fileID: 11400000, guid: d9d327902b9ed400cb2b16957dd7fd6a, type: 2}

@@ -52,6 +52,7 @@ namespace AICS.AgentSim
         public MoleculeConcentration (MoleculeStateSet _moleculeStateSet, float _concentration)
         {
             moleculeStateSet = _moleculeStateSet;
+            moleculeStateSet.Init();
             concentration = _concentration;
         }
     }

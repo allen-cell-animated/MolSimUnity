@@ -31,7 +31,7 @@ namespace AICS.AgentSim
 
         public override void SimulateFor (float dTime)
         {
-            if (!CheckBind())
+            if (canMove)
             {
                 transform.position += GetExitDirection();
             }
