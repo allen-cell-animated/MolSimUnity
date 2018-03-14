@@ -28,6 +28,6 @@ MonoBehaviour:
         siteStates:
         - id: a
           state: 0
-    compoundRadius: 0
+    compoundRadius: 0.8
   reactions:
   - {fileID: 11400000, guid: d9d327902b9ed400cb2b16957dd7fd6a, type: 2}

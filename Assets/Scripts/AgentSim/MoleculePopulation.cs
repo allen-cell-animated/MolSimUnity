@@ -10,9 +10,18 @@ namespace AICS.AgentSim
         public Molecule[] molecules;
         [Tooltip( "M" )]
         public float concentration;
+        public float diffusionCoefficient;
         public float collisionRadius;
         public float interactionRadius;
         public Dictionary<MoleculeBindingSite,BindingSitePopulation> bindingSitePopulations;
+
+        public string species
+        {
+            get
+            {
+                return agent.species;
+            }
+        }
 
         int amount
         {
@@ -31,17 +40,22 @@ namespace AICS.AgentSim
             }
             concentration = moleculeConcentration.concentration;
             reactor = _reactor;
-            collisionRadius = interactionRadius = moleculeConcentration.radius;
+            diffusionCoefficient = moleculeConcentration.moleculeStateSet.diffusionCoefficient;
+            collisionRadius = interactionRadius = moleculeConcentration.moleculeStateSet.radius;
 
             CreateBindingSitePopulations( moleculeConcentration.moleculeStateSet.moleculeStates );
 
-            if (moleculeConcentration.moleculeCount == 1)
+            if (amount > 0)
             {
-                SpawnMolecules( moleculeConcentration.moleculeStateSet.moleculeStates[0] );
-            }
-            else if (moleculeConcentration.moleculeCount > 1)
-            {
-                // TODO spawn complexes of molecules
+                if (moleculeConcentration.moleculeCount == 1)
+                {
+                    SpawnMolecules( moleculeConcentration.moleculeStateSet.moleculeStates[0] );
+                }
+                else if (moleculeConcentration.moleculeCount > 1)
+                {
+                    Debug.LogWarning( "Can't spawn complexes of molecules yet!" );
+                    // TODO spawn complexes of molecules
+                }
             }
         }
 
@@ -106,7 +120,7 @@ namespace AICS.AgentSim
             {
                 simulator = particle.AddComponent<ManagedMoleculeSimulator>();
             }
-            simulator.Init( moleculeState, this );
+            simulator.Init( this, moleculeState );
         }
 
         public virtual BindingSitePopulation GetBindingSitePopulation (Molecule _molecule, string _bindingSiteID)
@@ -119,6 +133,31 @@ namespace AICS.AgentSim
                 }
             }
             return null;
+        }
+
+        public virtual void SpawnMoleculeComplex (Vector3 position, MoleculeSimulator[] _molecules)
+        {
+            GameObject particle = new GameObject( species + "_" + transform.childCount );
+            particle.transform.SetParent( transform );
+            particle.transform.position = position;
+            particle.transform.rotation = Random.rotation;
+            particle.AddComponent<Agent>().Init( species, agent.scale );
+
+            MoleculeSimulator simulator;
+            if (reactor.usePhysicsEngine)
+            {
+                simulator = particle.AddComponent<PhysicalMoleculeSimulator>();
+            }
+            else
+            {
+                simulator = particle.AddComponent<ManagedMoleculeSimulator>();
+            }
+            simulator.Init( this );
+
+            foreach (MoleculeSimulator molecule in _molecules)
+            {
+                molecule.transform.SetParent( particle.transform );
+            }
         }
     }
 }

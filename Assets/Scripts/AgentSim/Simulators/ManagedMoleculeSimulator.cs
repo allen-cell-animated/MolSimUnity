@@ -23,9 +23,9 @@ namespace AICS.AgentSim
             }
         }
 
-        public override void Init (MoleculeState moleculeState, MoleculePopulation _population)
+        public override void Init (MoleculePopulation _population, MoleculeState moleculeState = null)
         {
-            base.Init( moleculeState, _population );
+            base.Init( _population, moleculeState );
             population.reactor.container.RegisterMolecule( this );
         }
 
@@ -85,7 +85,7 @@ namespace AICS.AgentSim
             transform.rotation *= Quaternion.Euler( 2E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
-        protected override void ToggleMotion (bool move)
+        public override void ToggleMotion (bool move)
         {
             canMove = move;
         }

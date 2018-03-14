@@ -19,6 +19,14 @@ namespace AICS.AgentSim
             }
         }
 
+        public MoleculeReactor reactor
+        {
+            get
+            {
+                return population.moleculePopulation.reactor;
+            }
+        }
+
         public virtual void Init (BindingSitePopulation _population, MoleculeSimulator _molecule)
         {
             population = _population;

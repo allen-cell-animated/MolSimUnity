@@ -56,13 +56,13 @@ namespace AICS.AgentSim
             populations.Add( moleculeConcentration.species, population );
         }
 
-        public virtual MoleculePopulation GetPopulationForSpecies (string species)
+        public virtual MoleculePopulation GetPopulationForMoleculeSet (MoleculeStateSet moleculeStateSet)
         {
-            if (!populations.ContainsKey( species ))
+            if (!populations.ContainsKey( moleculeStateSet.species ))
             {
-                // TODO create new population
+                CreatePopulation( new MoleculeConcentration( moleculeStateSet, 0 ) );
             }
-            return populations[species];
+            return populations[moleculeStateSet.species];
         }
     }
 

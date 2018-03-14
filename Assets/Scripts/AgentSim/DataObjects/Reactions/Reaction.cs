@@ -28,7 +28,7 @@ namespace AICS.AgentSim
         }
         #endregion
 
-        public abstract void React (BindingSiteSimulator reactant1, BindingSiteSimulator reactant2 = null);
+        public abstract void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null);
     }
 
     [System.Serializable]
@@ -59,6 +59,11 @@ namespace AICS.AgentSim
         }
         #endregion
 
+        public MoleculeStateSet (MoleculeState[] _moleculeStates)
+        {
+            moleculeStates = _moleculeStates;
+        }
+
         public string species 
         {
             get
@@ -73,6 +78,48 @@ namespace AICS.AgentSim
                     }
                 }
                 return s;
+            }
+        }
+
+        public float radius
+        {
+            get
+            {
+                if (moleculeStates.Length == 1)
+                {
+                    return moleculeStates[0].molecule.radius;
+                }
+                if (moleculeStates.Length > 1)
+                {
+                    float r = 0;
+                    foreach (MoleculeState moleculeState in moleculeStates)
+                    {
+                        r += moleculeState.molecule.radius;
+                    }
+                    return r * 1.5f; //hack for now
+                }
+                return 0;
+            }
+        }
+
+        public float diffusionCoefficient
+        {
+            get
+            {
+                if (moleculeStates.Length == 1)
+                {
+                    return moleculeStates[0].molecule.diffusionCoefficient;
+                }
+                if (moleculeStates.Length > 1)
+                {
+                    float d = 0;
+                    foreach (MoleculeState moleculeState in moleculeStates)
+                    {
+                        d += moleculeState.molecule.diffusionCoefficient;
+                    }
+                    return d / (0.8f * Mathf.Pow( moleculeStates.Length, 2f )); //hack for now
+                }
+                return 0;
             }
         }
 

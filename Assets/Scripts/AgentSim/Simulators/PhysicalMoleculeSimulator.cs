@@ -22,9 +22,9 @@ namespace AICS.AgentSim
 			return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
         }
 
-        public override void Init (MoleculeState moleculeState, MoleculePopulation _population)
+        public override void Init (MoleculePopulation _population, MoleculeState moleculeState = null)
         {
-            base.Init( moleculeState, _population );
+            base.Init( _population, moleculeState );
 
             population.reactor.container.CreatePhysicsBounds();
             AddRigidbodyCollider();
@@ -82,7 +82,7 @@ namespace AICS.AgentSim
             }
         }
 
-        protected override void ToggleMotion (bool move)
+        public override void ToggleMotion (bool move)
         {
             canMove = move;
             body.velocity = body.angularVelocity = Vector3.zero;

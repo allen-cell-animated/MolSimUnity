@@ -32,8 +32,6 @@ namespace AICS.AgentSim
         [Tooltip( "M" )] 
         public float concentration;
         public MoleculeStateSet moleculeStateSet;
-        [Tooltip( "If this represents a complex of molecules, what is the total radius?" )] 
-        [SerializeField] float compoundRadius;
 
         public string species
         {
@@ -48,18 +46,6 @@ namespace AICS.AgentSim
             get
             {
                 return moleculeStateSet.moleculeStates.Length;
-            }
-        }
-
-        public float radius
-        {
-            get
-            {
-                if (moleculeCount == 1)
-                {
-                    return moleculeStateSet.moleculeStates[0].molecule.radius;
-                }
-                return compoundRadius;
             }
         }
 

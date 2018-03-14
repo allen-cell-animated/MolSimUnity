@@ -6,9 +6,7 @@ namespace AICS.AgentSim
 {
     public abstract class MoleculeSimulator : Simulator 
     {
-        protected Molecule molecule;
         protected MoleculePopulation population;
-		protected float diffusionCoefficient;
         public bool canMove = true;
 
         protected List<MoleculeSimulator> collidingMolecules = new List<MoleculeSimulator>();
@@ -19,7 +17,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return molecule.species;
+                return agent.species;
             }
         }
 
@@ -46,23 +44,24 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeState moleculeState, MoleculePopulation _population)
+        public virtual void Init (MoleculePopulation _population, MoleculeState moleculeState = null)
         {
-            molecule = moleculeState.molecule;
             population = _population;
-            diffusionCoefficient = molecule.diffusionCoefficient;
-            CreateBindingSites( moleculeState );
+            if (moleculeState != null)
+            {
+                CreateBindingSites( moleculeState );
+            }
         }
 
         protected virtual void CreateBindingSites (MoleculeState moleculeState)
         {
             foreach (BindingSite site in moleculeState.molecule.sites)
             {
-                CreateBindingSite( site.id );
+                CreateBindingSite( moleculeState.molecule, site.id );
             }
         }
 
-        public virtual void CreateBindingSite (string id)
+        public virtual void CreateBindingSite (Molecule molecule, string id)
         {
             BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( molecule, id );
 
@@ -91,7 +90,7 @@ namespace AICS.AgentSim
 
         protected float GetDisplacement (float dTime)
 		{
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime ) );
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.diffusionCoefficient * dTime ) );
 		}
 
         protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
@@ -191,7 +190,7 @@ namespace AICS.AgentSim
         //    transform.rotation = other.transform.rotation * Quaternion.Euler( bind.relativeRotation );
         //}
 
-        protected abstract void ToggleMotion (bool move);
+        public abstract void ToggleMotion (bool move);
 
         protected virtual Vector3 GetExitDirection ()
         {
