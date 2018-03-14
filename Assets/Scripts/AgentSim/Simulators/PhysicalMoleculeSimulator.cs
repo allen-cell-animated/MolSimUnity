@@ -41,14 +41,14 @@ namespace AICS.AgentSim
             body.useGravity = false;
 		}
 
-        public override void SimulateFor (float dTime)
+        void Update ()
         {
             //CheckBind();
             collidingMolecules.Clear();
 
             if (canMove)
             {
-                AddRandomForces( dTime );
+                AddRandomForces( World.Instance.dT );
             }
         }
 

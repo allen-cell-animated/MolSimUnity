@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class BindingSiteSimulator : Simulator 
+    public abstract class BindingSiteSimulator : MonoBehaviour 
     {
         protected BindingSitePopulation population;
         public MoleculeSimulator molecule;

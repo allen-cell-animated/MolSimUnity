@@ -31,19 +31,11 @@ namespace AICS.AgentSim
             population.reactor.container.RegisterMolecule( this );
         }
 
-        public override void SimulateFor (float dTime)
+        void Update ()
         {
             if (canMove)
             {
-                Vector3 exit = GetExitDirection( (MoleculeSimulator[])collidingMolecules );
-                if (exit.magnitude > 0)
-                {
-                    if (log)
-                    {
-                        GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position = transform.position + exit;
-                    }
-                    transform.position += exit;
-                }
+                transform.position += GetExitDirection( collidingMolecules );
             }
         }
 
@@ -89,7 +81,7 @@ namespace AICS.AgentSim
 
         protected virtual void RotateRandomly (float dTime)
         {
-            transform.rotation *= Quaternion.Euler( 2E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
+            transform.rotation *= Quaternion.Euler( 4E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
         public override void ToggleMotion (bool move)

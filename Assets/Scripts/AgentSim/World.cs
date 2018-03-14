@@ -7,10 +7,9 @@ namespace AICS.AgentSim
 	public class World : MonoBehaviour 
 	{
 		[Tooltip("current time in seconds")] 
-		public float time = 0; 
+		public float time; 
         [Tooltip("frames since start")] 
-        public int steps = 0; 
-        public Agent[] rootAgents = new Agent[0];
+        public int steps; 
         public Observer observer;
 
 		static World _Instance;
@@ -40,11 +39,6 @@ namespace AICS.AgentSim
             {
     			time += dT;
                 steps++;
-
-                foreach (Agent agent in rootAgents)
-    			{
-                    agent.UpdateBy( dT );
-    			}
             }
 		}
 	}

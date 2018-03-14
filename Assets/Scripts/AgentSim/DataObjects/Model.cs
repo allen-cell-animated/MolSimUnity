@@ -6,6 +6,7 @@ namespace AICS.AgentSim
 {
     public class Model : ScriptableObject
     {
+        public float scale = 1e-6f;
         [Tooltip( "L" )] 
         public float containerVolume;
         public MoleculeConcentration[] molecules;

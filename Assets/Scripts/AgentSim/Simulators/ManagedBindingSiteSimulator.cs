@@ -10,10 +10,5 @@ namespace AICS.AgentSim
         {
             base.Init( _population, _molecule );
         }
-
-        public override void SimulateFor (float dTime)
-        {
-            
-        }
     }
 }

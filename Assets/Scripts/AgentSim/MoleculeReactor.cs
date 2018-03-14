@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class MoleculeReactor : AgentComponent 
+    public class MoleculeReactor : MonoBehaviour 
     {
         [Tooltip( "use physics engine for collision detection or let container manage collisions?" )]
         public bool usePhysicsEngine;
@@ -43,15 +43,12 @@ namespace AICS.AgentSim
         protected virtual void CreateContainer ()
         {
             container = gameObject.AddComponent<Container>();
-            container.Init( model.containerVolume, periodicBoundary );
+            container.Init( model.scale, model.containerVolume, periodicBoundary );
         }
 
         protected virtual void CreatePopulation (MoleculeConcentration moleculeConcentration)
         {
-            GameObject obj = new GameObject( moleculeConcentration.species + "Population", new System.Type[] {typeof(Agent), typeof(MoleculePopulation)} );
-            Agent a = obj.GetComponent<Agent>();
-            a.Init( moleculeConcentration.species, agent.scale );
-            a.SetParent( agent );
+            GameObject obj = new GameObject( moleculeConcentration.species + "Population", new System.Type[] {typeof(MoleculePopulation)} );
             MoleculePopulation population = obj.GetComponent<MoleculePopulation>();
             population.Init( moleculeConcentration, this );
             populations.Add( moleculeConcentration.species, population );

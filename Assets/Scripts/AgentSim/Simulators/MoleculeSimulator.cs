@@ -4,21 +4,14 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class MoleculeSimulator : Simulator 
+    public abstract class MoleculeSimulator : MonoBehaviour 
     {
         protected MoleculePopulation population;
+        public string species;
         public bool canMove = true;
 
         protected Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
         protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
-
-        public string species
-        {
-            get
-            {
-                return agent.species;
-            }
-        }
 
         public bool active
         {
@@ -48,7 +41,12 @@ namespace AICS.AgentSim
             population = _population;
             if (moleculeState != null)
             {
+                species = moleculeState.species;
                 CreateBindingSites( moleculeState );
+            }
+            else
+            {
+                species = population.species;
             }
         }
 
@@ -65,11 +63,9 @@ namespace AICS.AgentSim
             BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( molecule, id );
 
             GameObject bindingSite = new GameObject();
+            bindingSite.transform.SetParent( transform );
             bindingSitePopulation.bindingSite.transformOnMolecule.Apply( transform, bindingSite.transform );
             bindingSite.name = name + "_" + bindingSitePopulation.bindingSite.id;
-            Agent a = bindingSite.AddComponent<Agent>();
-            a.Init( agent.species + "_" + bindingSitePopulation.bindingSite.id, 0.1f * agent.scale );
-            a.SetParent( agent );
 
             BindingSiteSimulator simulator;
             if (population.reactor.usePhysicsEngine)
@@ -148,7 +144,7 @@ namespace AICS.AgentSim
         }
 
         public abstract void ToggleMotion (bool move);
-        public bool log;
+
         protected virtual Vector3 GetExitDirection (MoleculeSimulator[] collidingMolecules)
         {
             if (collidingMolecules != null)
@@ -163,10 +159,8 @@ namespace AICS.AgentSim
                         n++;
                     }
                 }
-                if (log) { Debug.Log( n + " == " + collidingMolecules.Length ); }
-                return exitVector;//.normalized;
+                return exitVector.normalized;
             }
-            if (log) { Debug.Log( "colliding molecules is null" ); }
             return Vector3.zero;
         }
 
@@ -176,7 +170,7 @@ namespace AICS.AgentSim
             {
                 population.reactor.container.UnregisterMolecule( this as ManagedMoleculeSimulator );
             }
-            agent.SetParent( complex.agent );
+            transform.SetParent( complex.transform );
         }
 	}
 }

@@ -26,11 +26,6 @@ namespace AICS.AgentSim
             body.isKinematic = true;
         }
 
-        public override void SimulateFor (float dTime)
-        {
-            
-        }
-
         void OnTriggerEnter (Collider other)
         {
             HandleCollision( other );

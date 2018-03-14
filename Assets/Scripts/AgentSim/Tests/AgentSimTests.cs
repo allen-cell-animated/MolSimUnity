@@ -17,10 +17,6 @@ public class AgentSimTests
 
     protected void DestroyWorld ()
     {
-        foreach (Agent agent in World.Instance.rootAgents)
-        {
-            GameObject.Destroy( agent.gameObject );
-        }
         GameObject.Destroy( World.Instance.observer.GetComponentInParent<FollowLookZoomCamera>().gameObject );
         GameObject.Destroy( World.Instance.gameObject );
         GameObject.Destroy( GameObject.Find( "EventSystem(Clone)" ) );
@@ -32,7 +28,7 @@ public class AgentSimTests
         MoleculePopulation[] populations = reactor.GetComponentsInChildren<MoleculePopulation>();
         foreach (MoleculePopulation population in populations)
         {
-            if (population.agent.species == species)
+            if (population.species == species)
             {
                 return population;
             }

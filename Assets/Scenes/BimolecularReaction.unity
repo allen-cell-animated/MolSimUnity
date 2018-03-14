@@ -143,8 +143,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 0
   steps: 0
-  rootAgents:
-  - {fileID: 1010640216}
   observer: {fileID: 1581285018}
 --- !u!4 &531461676
 Transform:
@@ -211,7 +209,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 902787514}
-  - component: {fileID: 1010640216}
   - component: {fileID: 902787513}
   m_Layer: 0
   m_Name: ABReactor
@@ -252,20 +249,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1010640216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114679124706885274, guid: dcb35f8163ff74e51b7fddb8ded9b212,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 902787512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f82fde04cb77d48c7975f2d18535472c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  species: none
-  scale: 0.000001
 --- !u!1001 &1113661159
 Prefab:
   m_ObjectHideFlags: 0

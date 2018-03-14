@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Container : Simulator
+    public class Container : MonoBehaviour
 	{
+        public float scale;
         [Tooltip( "L" )]
         public float volume;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -17,10 +18,11 @@ namespace AICS.AgentSim
         List<ManagedMoleculeSimulator> molecules = new List<ManagedMoleculeSimulator>();
         List<ManagedMoleculeSimulator> activeMolecules = new List<ManagedMoleculeSimulator>();
 
-        public virtual void Init (float _volume, bool _periodicBoundary)
+        public virtual void Init (float _scale, float _volume, bool _periodicBoundary)
         {
+            scale = _scale;
             volume = _volume;
-            CalculateSize( volume );
+            CalculateSize();
             periodicBoundary = _periodicBoundary;
             if (periodicBoundary)
             {
@@ -28,9 +30,9 @@ namespace AICS.AgentSim
             }
         }
 
-        protected virtual void CalculateSize (float _volume)
+        protected virtual void CalculateSize ()
         {
-            float side = Mathf.Pow( _volume * 1E-6f, 1f / 3f ) / agent.scale;
+            float side = Mathf.Pow( volume * 1E-6f, 1f / 3f ) / scale;
             size = side * Vector3.one;
         }
 
@@ -79,11 +81,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public override void SimulateFor (float dTime)
+        void Update ()
         {
             foreach (ManagedMoleculeSimulator molecule in molecules)
             {
-                molecule.Move( dTime );
+                molecule.Move( World.Instance.dT );
             }
 
             for (int i = 0; i < activeMolecules.Count - 1; i++)
