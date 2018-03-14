@@ -7,12 +7,12 @@ namespace AICS.AgentSim
     public class MoleculePopulation : AgentComponent 
     {
         public MoleculeReactor reactor;
-        public Molecule molecule;
+        public Molecule[] molecules;
         [Tooltip( "M" )]
         public float concentration;
         public float collisionRadius;
         public float interactionRadius;
-        public Dictionary<string,BindingSitePopulation> bindingSitePopulations;
+        public Dictionary<MoleculeBindingSite,BindingSitePopulation> bindingSitePopulations;
 
         int amount
         {
@@ -24,42 +24,56 @@ namespace AICS.AgentSim
 
         public virtual void Init (MoleculeConcentration moleculeConcentration, MoleculeReactor _reactor)
         {
-            moleculeConcentration.moleculeState.Init(); //for prototyping in inspector without writing custom property drawer etc
-
-            molecule = moleculeConcentration.moleculeState.molecule;
+            molecules = new Molecule[moleculeConcentration.moleculeCount];
+            for (int i = 0; i < moleculeConcentration.moleculeCount; i++)
+            {
+                molecules[i] = moleculeConcentration.moleculeStateSet.moleculeStates[i].molecule;
+            }
             concentration = moleculeConcentration.concentration;
             reactor = _reactor;
-            collisionRadius = interactionRadius = molecule.radius;
+            collisionRadius = interactionRadius = moleculeConcentration.radius;
 
-            CreateBindingSitePopulations( moleculeConcentration.moleculeState );
-            SpawnMolecules( moleculeConcentration.moleculeState );
+            CreateBindingSitePopulations( moleculeConcentration.moleculeStateSet.moleculeStates );
+
+            if (moleculeConcentration.moleculeCount == 1)
+            {
+                SpawnMolecules( moleculeConcentration.moleculeStateSet.moleculeStates[0] );
+            }
+            else if (moleculeConcentration.moleculeCount > 1)
+            {
+                // TODO spawn complexes of molecules
+            }
         }
 
-        protected virtual void CreateBindingSitePopulations (MoleculeState moleculeState)
+        protected virtual void CreateBindingSitePopulations (MoleculeState[] moleculeStates)
         {
-            bindingSitePopulations = new Dictionary<string,BindingSitePopulation>();
-            string siteID;
+            bindingSitePopulations = new Dictionary<MoleculeBindingSite,BindingSitePopulation>();
             string initialState = "";
             BindingSitePopulation sitePopulation;
-            for (int i = 0; i < molecule.sites.Length; i++)
+            foreach (Molecule molecule in molecules)
             {
-                siteID = molecule.sites[i].id;
-                if (moleculeState.bindingSiteStates.ContainsKey( siteID ))
+                foreach (BindingSite site in molecule.sites)
                 {
-                    initialState = moleculeState.bindingSiteStates[siteID];
-                }
+                    foreach (MoleculeState moleculeState in moleculeStates)
+                    {
+                        if (moleculeState.molecule == molecule && moleculeState.bindingSiteStates.ContainsKey( site.id ))
+                        {
+                            initialState = moleculeState.bindingSiteStates[site.id];
+                        }
+                    }
 
-                sitePopulation = gameObject.AddComponent<BindingSitePopulation>();
-                sitePopulation.Init( molecule.sites[i], initialState, this );
-                bindingSitePopulations.Add( siteID, sitePopulation );
+                    sitePopulation = gameObject.AddComponent<BindingSitePopulation>();
+                    sitePopulation.Init( molecule, site, initialState, this );
+                    bindingSitePopulations.Add( new MoleculeBindingSite( molecule, site.id ), sitePopulation );
+                }
             }
         }
 
         protected virtual void SpawnMolecules (MoleculeState moleculeState)
         {
-            if (molecule.visualizationPrefab == null)
+            if (moleculeState.molecule.visualizationPrefab == null)
             {
-                Debug.LogWarning( name + "'s particle prefab is null!" );
+                Debug.LogWarning( name + "'s molecule prefab is null!" );
                 return;
             }
 
@@ -71,17 +85,17 @@ namespace AICS.AgentSim
 
         public virtual void SpawnMolecule (MoleculeState moleculeState, int index)
         {
-            if (molecule.visualizationPrefab == null)
+            if (moleculeState.molecule.visualizationPrefab == null)
             {
-                Debug.LogWarning( name + "'s particle prefab is null!" );
+                Debug.LogWarning( name + "'s molecule prefab is null!" );
                 return;
             }
 
-            GameObject particle = Instantiate( molecule.visualizationPrefab, transform );
+            GameObject particle = Instantiate( moleculeState.molecule.visualizationPrefab, transform );
             particle.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
             particle.transform.rotation = Random.rotation;
-            particle.name = molecule.species + "_" + index;
-            particle.AddComponent<Agent>().Init( molecule.species, molecule.scale );
+            particle.name = molecules[0].species + "_" + index;
+            particle.AddComponent<Agent>().Init( moleculeState.molecule.species, moleculeState.molecule.scale );
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
@@ -93,6 +107,18 @@ namespace AICS.AgentSim
                 simulator = particle.AddComponent<ManagedMoleculeSimulator>();
             }
             simulator.Init( moleculeState, this );
+        }
+
+        public virtual BindingSitePopulation GetBindingSitePopulation (Molecule _molecule, string _bindingSiteID)
+        {
+            foreach (MoleculeBindingSite site in bindingSitePopulations.Keys)
+            {
+                if (site.molecule == _molecule && site.bindingSiteID == _bindingSiteID)
+                {
+                    return bindingSitePopulations[site];
+                }
+            }
+            return null;
         }
     }
 }

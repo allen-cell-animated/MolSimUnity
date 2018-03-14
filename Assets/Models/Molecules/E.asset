@@ -19,7 +19,7 @@ MonoBehaviour:
   - id: s
     states:
     - 0
-    - '#'
+    - +
     activeStates:
     - 0
     transformOnMolecule:

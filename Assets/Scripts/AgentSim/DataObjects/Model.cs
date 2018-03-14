@@ -11,24 +11,61 @@ namespace AICS.AgentSim
         public MoleculeConcentration[] molecules;
         public Reaction[] reactions;
 
-        public Model (float _containerVolume, MoleculeConcentration[] _molecules, Reaction[] _reactions)
+        #region for prototyping in inspector without writing custom property drawer etc
+        public void Init ()
         {
-            containerVolume = _containerVolume;
-            molecules = _molecules;
-            reactions = _reactions;
+            foreach (MoleculeConcentration molecule in molecules)
+            {
+                molecule.moleculeStateSet.Init();
+            }
+            foreach (Reaction reaction in reactions)
+            {
+                reaction.Init();
+            }
         }
+        #endregion
     }
 
     [System.Serializable]
     public class MoleculeConcentration
     {
-        public MoleculeState moleculeState;
         [Tooltip( "M" )] 
         public float concentration;
+        public MoleculeStateSet moleculeStateSet;
+        [Tooltip( "If this represents a complex of molecules, what is the total radius?" )] 
+        [SerializeField] float compoundRadius;
 
-        public MoleculeConcentration (MoleculeState _moleculeState, float _concentration)
+        public string species
         {
-            moleculeState = _moleculeState;
+            get
+            {
+                return moleculeStateSet.species;
+            }
+        }
+
+        public int moleculeCount
+        {
+            get
+            {
+                return moleculeStateSet.moleculeStates.Length;
+            }
+        }
+
+        public float radius
+        {
+            get
+            {
+                if (moleculeCount == 1)
+                {
+                    return moleculeStateSet.moleculeStates[0].molecule.radius;
+                }
+                return compoundRadius;
+            }
+        }
+
+        public MoleculeConcentration (MoleculeStateSet _moleculeStateSet, float _concentration)
+        {
+            moleculeStateSet = _moleculeStateSet;
             concentration = _concentration;
         }
     }

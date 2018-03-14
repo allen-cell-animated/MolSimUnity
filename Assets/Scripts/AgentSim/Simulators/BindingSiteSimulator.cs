@@ -9,6 +9,7 @@ namespace AICS.AgentSim
         protected BindingSitePopulation population;
         public MoleculeSimulator molecule;
         public string state;
+        public BindingSiteSimulator boundSite;
 
         public bool active
         {
@@ -30,7 +31,11 @@ namespace AICS.AgentSim
             Reaction reaction = population.GetNextReaction( this, other );
             if (reaction != null)
             {
-                // TODO do reaction
+                boundSite = other;
+                other.boundSite = this;
+
+                reaction.React( this, other );
+
                 return true;
             }
             return false;

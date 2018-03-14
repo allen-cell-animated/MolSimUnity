@@ -14,6 +14,7 @@ namespace AICS.AgentSim
         public bool periodicBoundary = true;
         public Model model;
 
+        public Dictionary<string,MoleculePopulation> populations;
         public ReactionWatcher[] reactionWatchers;
         [HideInInspector] public Container container;
 
@@ -22,6 +23,7 @@ namespace AICS.AgentSim
             SetupReactionData();
             CreateContainer();
 
+            populations = new Dictionary<string,MoleculePopulation>();
             foreach (MoleculeConcentration molecule in model.molecules)
             {
                 CreatePopulation( molecule );
@@ -30,10 +32,10 @@ namespace AICS.AgentSim
 
         protected virtual void SetupReactionData ()
         {
+            model.Init(); //for prototyping in inspector without writing custom property drawer etc
             reactionWatchers = new ReactionWatcher[model.reactions.Length];
             for (int i = 0; i < model.reactions.Length; i++)
             {
-                model.reactions[i].Init(); //for prototyping in inspector without writing custom property drawer etc
                 reactionWatchers[i] = new ReactionWatcher( model.reactions[i] );
             }
         }
@@ -46,10 +48,21 @@ namespace AICS.AgentSim
 
         protected virtual void CreatePopulation (MoleculeConcentration moleculeConcentration)
         {
-            GameObject population = new GameObject( moleculeConcentration.moleculeState.molecule.species + "Population", new System.Type[] {typeof(Agent), typeof(MoleculePopulation)} );
-            population.transform.SetParent( transform );
-            population.GetComponent<Agent>().Init( moleculeConcentration.moleculeState.molecule.species, agent.scale );
-            population.GetComponent<MoleculePopulation>().Init( moleculeConcentration, this );
+            GameObject obj = new GameObject( moleculeConcentration.species + "Population", new System.Type[] {typeof(Agent), typeof(MoleculePopulation)} );
+            obj.transform.SetParent( transform );
+            obj.GetComponent<Agent>().Init( moleculeConcentration.species, agent.scale );
+            MoleculePopulation population = obj.GetComponent<MoleculePopulation>();
+            population.Init( moleculeConcentration, this );
+            populations.Add( moleculeConcentration.species, population );
+        }
+
+        public virtual MoleculePopulation GetPopulationForSpecies (string species)
+        {
+            if (!populations.ContainsKey( species ))
+            {
+                // TODO create new population
+            }
+            return populations[species];
         }
     }
 
@@ -107,20 +120,20 @@ namespace AICS.AgentSim
         {
             attempts++;
 
-            if (!observedRateTooHigh && ReactantsEqual( bindingSite1.molecule, bindingSite2.molecule ))
+            if (!observedRateTooHigh && ReactantsEqual( bindingSite1.molecule.GetBoundMoleculesSet(), bindingSite2.molecule.GetBoundMoleculesSet() ))
             {
                 return shouldHappen;
             }
             return false;
         }
 
-        bool ReactantsEqual (MoleculeSimulator molecule1, MoleculeSimulator molecule2)
+        bool ReactantsEqual (MoleculeSimulator[] moleculeSet1, MoleculeSimulator[] moleculeSet2)
         {
-            return (reaction.reactants.Length == 0 && molecule1 == null && molecule1 == null)
-                || (reaction.reactants.Length == 1 && ((reaction.reactants[0].Matches( molecule1 ) && molecule2 == null)
-                                                    || (reaction.reactants[0].Matches( molecule2 ) && molecule1 == null)))
-                || (reaction.reactants.Length == 2 && ((reaction.reactants[0].Matches( molecule1 ) && reaction.reactants[1].Matches( molecule2 ) ))
-                                                    || (reaction.reactants[0].Matches( molecule2 ) && reaction.reactants[1].Matches( molecule1 ) ));
+            return (reaction.reactants.Length == 0 && moleculeSet1 == null && moleculeSet2 == null)
+                || (reaction.reactants.Length == 1 && ((reaction.reactants[0].Matches( moleculeSet1 ) && moleculeSet2 == null)
+                                                    || (reaction.reactants[0].Matches( moleculeSet2 ) && moleculeSet1 == null)))
+                || (reaction.reactants.Length == 2 && ((reaction.reactants[0].Matches( moleculeSet1 ) && reaction.reactants[1].Matches( moleculeSet2 ) ))
+                                                    || (reaction.reactants[0].Matches( moleculeSet2 ) && reaction.reactants[1].Matches( moleculeSet1 ) ));
         }
 
         public void Reset ()

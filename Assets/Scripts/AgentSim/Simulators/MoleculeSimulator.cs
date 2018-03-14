@@ -6,6 +6,7 @@ namespace AICS.AgentSim
 {
     public abstract class MoleculeSimulator : Simulator 
     {
+        protected Molecule molecule;
         protected MoleculePopulation population;
 		protected float diffusionCoefficient;
         public bool canMove = true;
@@ -18,7 +19,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return population.molecule.species;
+                return molecule.species;
             }
         }
 
@@ -47,8 +48,9 @@ namespace AICS.AgentSim
 
         public virtual void Init (MoleculeState moleculeState, MoleculePopulation _population)
         {
+            molecule = moleculeState.molecule;
             population = _population;
-            diffusionCoefficient = population.molecule.diffusionCoefficient;
+            diffusionCoefficient = molecule.diffusionCoefficient;
             CreateBindingSites( moleculeState );
         }
 
@@ -62,7 +64,7 @@ namespace AICS.AgentSim
 
         public virtual void CreateBindingSite (string id)
         {
-            BindingSitePopulation bindingSitePopulation = population.bindingSitePopulations[id];
+            BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( molecule, id );
 
             GameObject bindingSite = new GameObject();
             bindingSite.transform.SetParent( transform );
@@ -112,7 +114,10 @@ namespace AICS.AgentSim
             {
                 for (int j = 0; j < other.activeBindingSites.Count; j++)
                 {
-                    activeBindingSites[i].TryToReact( other.activeBindingSites[j] );
+                    if (activeBindingSites[i].TryToReact( other.activeBindingSites[j] ))
+                    {
+                        return;
+                    }
                 }
             }
         }
@@ -120,6 +125,20 @@ namespace AICS.AgentSim
         public virtual bool SiteIsInState (string siteID, string state)
         {
             return bindingSites[siteID].state == state;
+        }
+
+        public virtual MoleculeSimulator[] GetBoundMoleculesSet ()
+        {
+            List<MoleculeSimulator> boundMolecules = new List<MoleculeSimulator>();
+            boundMolecules.Add( this );
+            foreach (BindingSiteSimulator site in bindingSites.Values)
+            {
+                if (site.boundSite != null && !boundMolecules.Contains( site.boundSite.molecule ))
+                {
+                    boundMolecules.Add( site.boundSite.molecule );
+                }
+            }
+            return boundMolecules.ToArray();
         }
 
         protected virtual bool CheckBind ()

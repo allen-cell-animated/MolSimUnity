@@ -29,12 +29,36 @@ namespace AICS.AgentSim
             EditorUtility.FocusProjectWindow();
         }
 
-        [MenuItem("AICS/Create/Reaction")]
-        public static void CreateReaction ()
+        [MenuItem("AICS/Create/Reaction/StateChange")]
+        public static void CreateStateChangeReaction ()
         {
-            Reaction asset = ScriptableObject.CreateInstance<Reaction>();
+            StateChangeReaction asset = ScriptableObject.CreateInstance<StateChangeReaction>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newReaction.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newStateChangeReaction.asset");
+            AssetDatabase.SaveAssets();
+
+            Selection.activeObject = asset;
+            EditorUtility.FocusProjectWindow();
+        }
+
+        [MenuItem("AICS/Create/Reaction/Bind")]
+        public static void CreateBindReaction ()
+        {
+            BindReaction asset = ScriptableObject.CreateInstance<BindReaction>();
+
+            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newBindReaction.asset");
+            AssetDatabase.SaveAssets();
+
+            Selection.activeObject = asset;
+            EditorUtility.FocusProjectWindow();
+        }
+
+        [MenuItem("AICS/Create/Reaction/Release")]
+        public static void CreateReleaseReaction ()
+        {
+            ReleaseReaction asset = ScriptableObject.CreateInstance<ReleaseReaction>();
+
+            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newReleaseReaction.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;

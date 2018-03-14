@@ -41,7 +41,7 @@ namespace AICS.AgentSim
             BindingSiteSimulator otherSite = other.gameObject.GetComponent<BindingSiteSimulator>();
             if (otherSite != null)
             {
-                //TODO
+                //TODO handle collisions with physics engine
             }
         }
     }

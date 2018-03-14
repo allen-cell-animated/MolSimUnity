@@ -6,6 +6,7 @@ namespace AICS.AgentSim
 {
     public class BindingSitePopulation : MonoBehaviour 
     {
+        public Molecule molecule;
         public MoleculePopulation moleculePopulation;
         public BindingSite bindingSite;
         public string initialState;
@@ -26,12 +27,14 @@ namespace AICS.AgentSim
             {
                 if (_reactionWatchers == null)
                 {
+                    Reaction reaction;
                     List<ReactionWatcher> reactionWatchersList = new List<ReactionWatcher>();
                     for (int i = 0; i < moleculePopulation.reactor.model.reactions.Length; i++)
                     {
-                        foreach (MoleculeBindingSite site in moleculePopulation.reactor.model.reactions[i].relevantSites)
+                        reaction = moleculePopulation.reactor.model.reactions[i];
+                        foreach (MoleculeBindingSite site in reaction.relevantSites)
                         {
-                            if (moleculePopulation.molecule == site.molecule && bindingSite.id == site.bindingSiteID)
+                            if (site.molecule == molecule && bindingSite.id == site.bindingSiteID)
                             {
                                 reactionWatchersList.Add( moleculePopulation.reactor.reactionWatchers[i] );
                             }
@@ -43,8 +46,9 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (BindingSite _bindingSite, string _initialState, MoleculePopulation _moleculePopulation)
+        public virtual void Init (Molecule _molecule, BindingSite _bindingSite, string _initialState, MoleculePopulation _moleculePopulation)
         {
+            molecule = _molecule;
             moleculePopulation = _moleculePopulation;
             bindingSite = _bindingSite;
             initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
