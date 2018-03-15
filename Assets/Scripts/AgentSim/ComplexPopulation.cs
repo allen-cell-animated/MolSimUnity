@@ -9,18 +9,17 @@ namespace AICS.AgentSim
         public Reactor reactor;
         public Molecule[] molecules;
         public string species;
-        [Tooltip( "M" )]
-        public float concentration;
         public float diffusionCoefficient;
         public float collisionRadius;
         public float interactionRadius;
         public Dictionary<MoleculeBindingSite,BindingSitePopulation> bindingSitePopulations;
 
-        int amount
+        int amount;
+        float concentration
         {
             get
             {
-                return Mathf.RoundToInt( concentration * reactor.container.volume * 6.022141e23f );
+                return amount / ( reactor.container.volume * 6.022141e23f );
             }
         }
 
@@ -32,23 +31,16 @@ namespace AICS.AgentSim
                 molecules[i] = complexConcentration.complexState.moleculeStates[i].molecule;
             }
             species = complexConcentration.species;
-            concentration = complexConcentration.concentration;
             reactor = _reactor;
             diffusionCoefficient = complexConcentration.complexState.diffusionCoefficient;
             collisionRadius = interactionRadius = complexConcentration.complexState.radius;
+            amount = Mathf.RoundToInt( complexConcentration.concentration * reactor.container.volume * 6.022141e23f );
 
             CreateBindingSitePopulations( complexConcentration.complexState.moleculeStates );
 
-            if (amount > 0)
+            if (amount > 0 && complexConcentration.moleculeCount > 0)
             {
-                if (complexConcentration.moleculeCount == 1)
-                {
-                    SpawnMolecules( complexConcentration.complexState.moleculeStates[0] );
-                }
-                else if (complexConcentration.moleculeCount > 1)
-                {
-                    SpawnMoleculeComplexes( complexConcentration.complexState.moleculeStates );
-                }
+                SpawnMoleculeComplexes( complexConcentration.complexState.moleculeStates );
             }
         }
 
@@ -78,30 +70,53 @@ namespace AICS.AgentSim
 
         protected virtual void SpawnMoleculeComplexes (MoleculeState[] moleculeStates)
         {
-            Debug.LogWarning( "Can't spawn complexes of molecules yet!" );
-            // TODO spawn complexes of molecules
-        }
-
-        protected virtual void SpawnMoleculeComplex (MoleculeState[] moleculeStates)
-        {
-            
-        }
-
-        protected virtual void SpawnMolecules (MoleculeState moleculeState)
-        {
-            if (moleculeState.molecule.visualizationPrefab == null)
-            {
-                Debug.LogWarning( name + "'s molecule prefab is null!" );
-                return;
-            }
-
+            MoleculeSimulator complex;
             for (int i = 0; i < amount; i++)
             {
-                SpawnMolecule( moleculeState, i );
+                complex = CreateComplex( reactor.container.GetRandomPointInBounds( 0.1f ), Random.rotation );
+                SpawnMoleculesInComplex( complex, moleculeStates );
             }
         }
 
-        public virtual void SpawnMolecule (MoleculeState moleculeState, int index)
+        protected virtual MoleculeSimulator CreateComplex (Vector3 position, Quaternion rotation)
+        {
+            GameObject obj = new GameObject( species + "_" + transform.childCount );
+            obj.transform.SetParent( transform );
+            obj.transform.position = position;
+            obj.transform.rotation = rotation;
+
+            MoleculeSimulator simulator;
+            if (reactor.usePhysicsEngine)
+            {
+                simulator = obj.AddComponent<PhysicalMoleculeSimulator>();
+            }
+            else
+            {
+                simulator = obj.AddComponent<ManagedMoleculeSimulator>();
+            }
+            simulator.Init( this );
+            return simulator;
+        }
+
+        protected virtual void SpawnMoleculesInComplex (MoleculeSimulator complex, MoleculeState[] moleculeStates)
+        {
+            if (moleculeStates.Length < 2)
+            {
+                SpawnMolecule( complex, moleculeStates[0], complex.transform.position, complex.transform.rotation );
+            }
+            else 
+            {
+                for (int i = 0; i < moleculeStates.Length - 1; i++)
+                {
+                    for (int j = i + 1; j < moleculeStates.Length; j++)
+                    {
+                        // TODO place multiple molecules in complex
+                    }
+                }
+            }
+        }
+
+        public virtual void SpawnMolecule (MoleculeSimulator complex, MoleculeState moleculeState, Vector3 position, Quaternion rotation)
         {
             if (moleculeState.molecule.visualizationPrefab == null)
             {
@@ -110,10 +125,10 @@ namespace AICS.AgentSim
             }
 
             GameObject particle = Instantiate( moleculeState.molecule.visualizationPrefab );
-            particle.transform.SetParent( transform );
-            particle.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
-            particle.transform.rotation = Random.rotation;
-            particle.name = molecules[0].species + "_" + index;
+            particle.transform.SetParent( complex.transform );
+            particle.transform.position = position;
+            particle.transform.rotation = rotation;
+            particle.name = molecules[0].species + "_" + complex.transform.childCount;
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
@@ -129,25 +144,11 @@ namespace AICS.AgentSim
 
         public virtual void CreateComplexFromMolecules (Transform centerTransform, MoleculeSimulator[] _molecules)
         {
-            GameObject particle = new GameObject( species + "_" + transform.childCount );
-            particle.transform.SetParent( transform );
-            particle.transform.position = centerTransform.position;
-            particle.transform.rotation = centerTransform.rotation;
-
-            MoleculeSimulator simulator;
-            if (reactor.usePhysicsEngine)
-            {
-                simulator = particle.AddComponent<PhysicalMoleculeSimulator>();
-            }
-            else
-            {
-                simulator = particle.AddComponent<ManagedMoleculeSimulator>();
-            }
-            simulator.Init( this );
+            MoleculeSimulator complex = CreateComplex( centerTransform.position, centerTransform.rotation );
 
             foreach (MoleculeSimulator molecule in _molecules)
             {
-                molecule.MoveToComplex( simulator );
+                molecule.MoveToComplex( complex );
             }
         }
 

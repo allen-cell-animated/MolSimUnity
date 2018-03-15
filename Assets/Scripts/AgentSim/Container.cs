@@ -7,9 +7,7 @@ namespace AICS.AgentSim
     public class Container : MonoBehaviour
 	{
         public float scale;
-        [Tooltip( "L" )]
         public float volume;
-        [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
         public bool periodicBoundary = true;
 
         [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
