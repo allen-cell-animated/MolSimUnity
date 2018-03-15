@@ -25,12 +25,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public override void Init (ComplexPopulation _population, MoleculeState moleculeState = null)
-        {
-            base.Init( _population, moleculeState );
-            population.reactor.container.RegisterMolecule( this );
-        }
-
         void Update ()
         {
             if (canMove)

@@ -138,7 +138,7 @@ namespace AICS.AgentSim
 
         protected virtual MoleculeSimulator CreateComplex (Vector3 position, Quaternion rotation)
         {
-            GameObject obj = new GameObject( species + "_" + transform.childCount );
+            GameObject obj = new GameObject( species + "Complex_" + transform.childCount );
             obj.transform.SetParent( transform );
             obj.transform.position = position;
             obj.transform.rotation = rotation;
@@ -151,6 +151,7 @@ namespace AICS.AgentSim
             else
             {
                 simulator = obj.AddComponent<ManagedMoleculeSimulator>();
+                reactor.container.RegisterMolecule( simulator as ManagedMoleculeSimulator );
             }
             simulator.Init( this );
             return simulator;
@@ -173,10 +174,10 @@ namespace AICS.AgentSim
             }
 
             GameObject particle = Instantiate( moleculeState.molecule.visualizationPrefab );
+            particle.name = complex.name + "_" + molecules[0].species;
             particle.transform.SetParent( complex.transform );
             particle.transform.position = complex.transform.TransformPoint( relativeTransform.position );
             particle.transform.rotation = complex.transform.rotation * Quaternion.Euler( relativeTransform.rotation );
-            particle.name = molecules[0].species + "_" + complex.transform.childCount;
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
