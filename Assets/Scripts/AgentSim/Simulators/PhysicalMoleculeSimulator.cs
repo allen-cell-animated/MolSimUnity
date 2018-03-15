@@ -23,7 +23,7 @@ namespace AICS.AgentSim
 			return Mathf.Log( Random.Range( float.Epsilon, 1f ) ) / (-1f / meanForce);
         }
 
-        public override void Init (MoleculePopulation _population, MoleculeState moleculeState = null)
+        public override void Init (ComplexPopulation _population, MoleculeState moleculeState = null)
         {
             base.Init( _population, moleculeState );
 

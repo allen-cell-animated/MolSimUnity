@@ -9,21 +9,21 @@ namespace AICS.AgentSim
         public string description;
         [Tooltip( "per second" )] 
         public float rate;
-        public MoleculeStateSet[] reactants;
-        public MoleculeStateSet[] products;
+        public ComplexState[] reactantStates;
+        public ComplexState[] productStates;
 
         #region for prototyping in inspector without writing custom property drawer etc
         public MoleculeBindingSite[] relevantSites;
 
         public void Init ()
         {
-            foreach (MoleculeStateSet reactant in reactants)
+            foreach (ComplexState reactantState in reactantStates)
             {
-                reactant.Init();
+                reactantState.Init();
             }
-            foreach (MoleculeStateSet product in products)
+            foreach (ComplexState productState in productStates)
             {
-                product.Init();
+                productState.Init();
             }
         }
         #endregion
@@ -32,11 +32,11 @@ namespace AICS.AgentSim
 
         protected virtual string GetFinalSiteState (BindingSiteSimulator bindingSite)
         {
-            foreach (MoleculeStateSet product in products)
+            foreach (ComplexState productState in productStates)
             {
-                foreach (MoleculeState moleculeState in product.moleculeStates)
+                foreach (MoleculeState moleculeState in productState.moleculeStates)
                 {
-                    if (moleculeState.molecule.species == bindingSite.molecule.species)
+                    if (moleculeState.species == bindingSite.molecule.species)
                     {
                         foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
                         {
@@ -67,7 +67,7 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class MoleculeStateSet
+    public class ComplexState
     {
         public MoleculeState[] moleculeStates;
 

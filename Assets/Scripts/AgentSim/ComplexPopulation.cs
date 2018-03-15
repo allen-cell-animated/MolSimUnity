@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class MoleculePopulation : MonoBehaviour 
+    public class ComplexPopulation : MonoBehaviour 
     {
-        public MoleculeReactor reactor;
+        public Reactor reactor;
         public Molecule[] molecules;
         public string species;
         [Tooltip( "M" )]
@@ -24,31 +24,30 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeConcentration moleculeConcentration, MoleculeReactor _reactor)
+        public virtual void Init (ComplexConcentration complexConcentration, Reactor _reactor)
         {
-            molecules = new Molecule[moleculeConcentration.moleculeCount];
-            for (int i = 0; i < moleculeConcentration.moleculeCount; i++)
+            molecules = new Molecule[complexConcentration.moleculeCount];
+            for (int i = 0; i < complexConcentration.moleculeCount; i++)
             {
-                molecules[i] = moleculeConcentration.moleculeStateSet.moleculeStates[i].molecule;
+                molecules[i] = complexConcentration.complexState.moleculeStates[i].molecule;
             }
-            species = moleculeConcentration.species;
-            concentration = moleculeConcentration.concentration;
+            species = complexConcentration.species;
+            concentration = complexConcentration.concentration;
             reactor = _reactor;
-            diffusionCoefficient = moleculeConcentration.moleculeStateSet.diffusionCoefficient;
-            collisionRadius = interactionRadius = moleculeConcentration.moleculeStateSet.radius;
+            diffusionCoefficient = complexConcentration.complexState.diffusionCoefficient;
+            collisionRadius = interactionRadius = complexConcentration.complexState.radius;
 
-            CreateBindingSitePopulations( moleculeConcentration.moleculeStateSet.moleculeStates );
+            CreateBindingSitePopulations( complexConcentration.complexState.moleculeStates );
 
             if (amount > 0)
             {
-                if (moleculeConcentration.moleculeCount == 1)
+                if (complexConcentration.moleculeCount == 1)
                 {
-                    SpawnMolecules( moleculeConcentration.moleculeStateSet.moleculeStates[0] );
+                    SpawnMolecules( complexConcentration.complexState.moleculeStates[0] );
                 }
-                else if (moleculeConcentration.moleculeCount > 1)
+                else if (complexConcentration.moleculeCount > 1)
                 {
-                    Debug.LogWarning( "Can't spawn complexes of molecules yet!" );
-                    // TODO spawn complexes of molecules
+                    SpawnMoleculeComplexes( complexConcentration.complexState.moleculeStates );
                 }
             }
         }
@@ -75,6 +74,17 @@ namespace AICS.AgentSim
                     bindingSitePopulations.Add( new MoleculeBindingSite( molecule, site.id ), sitePopulation );
                 }
             }
+        }
+
+        protected virtual void SpawnMoleculeComplexes (MoleculeState[] moleculeStates)
+        {
+            Debug.LogWarning( "Can't spawn complexes of molecules yet!" );
+            // TODO spawn complexes of molecules
+        }
+
+        protected virtual void SpawnMoleculeComplex (MoleculeState[] moleculeStates)
+        {
+            
         }
 
         protected virtual void SpawnMolecules (MoleculeState moleculeState)
@@ -117,24 +127,12 @@ namespace AICS.AgentSim
             simulator.Init( this, moleculeState );
         }
 
-        public virtual BindingSitePopulation GetBindingSitePopulation (Molecule _molecule, string _bindingSiteID)
-        {
-            foreach (MoleculeBindingSite site in bindingSitePopulations.Keys)
-            {
-                if (site.molecule == _molecule && site.bindingSiteID == _bindingSiteID)
-                {
-                    return bindingSitePopulations[site];
-                }
-            }
-            return null;
-        }
-
-        public virtual void SpawnMoleculeComplex (Transform bindingSiteTransform, MoleculeSimulator[] _molecules)
+        public virtual void CreateComplexFromMolecules (Transform centerTransform, MoleculeSimulator[] _molecules)
         {
             GameObject particle = new GameObject( species + "_" + transform.childCount );
             particle.transform.SetParent( transform );
-            particle.transform.position = bindingSiteTransform.position;
-            particle.transform.rotation = bindingSiteTransform.rotation;
+            particle.transform.position = centerTransform.position;
+            particle.transform.rotation = centerTransform.rotation;
 
             MoleculeSimulator simulator;
             if (reactor.usePhysicsEngine)
@@ -151,6 +149,18 @@ namespace AICS.AgentSim
             {
                 molecule.MoveToComplex( simulator );
             }
+        }
+
+        public virtual BindingSitePopulation GetBindingSitePopulation (Molecule _molecule, string _bindingSiteID)
+        {
+            foreach (MoleculeBindingSite site in bindingSitePopulations.Keys)
+            {
+                if (site.molecule == _molecule && site.bindingSiteID == _bindingSiteID)
+                {
+                    return bindingSitePopulations[site];
+                }
+            }
+            return null;
         }
     }
 }

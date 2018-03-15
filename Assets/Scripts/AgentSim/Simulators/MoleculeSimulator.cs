@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public abstract class MoleculeSimulator : MonoBehaviour 
     {
-        protected MoleculePopulation population;
+        protected ComplexPopulation population;
         public string species;
         public bool canMove = true;
 
@@ -36,7 +36,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculePopulation _population, MoleculeState moleculeState = null)
+        public virtual void Init (ComplexPopulation _population, MoleculeState moleculeState = null)
         {
             population = _population;
             if (moleculeState != null)

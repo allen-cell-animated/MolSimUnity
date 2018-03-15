@@ -6,8 +6,8 @@ namespace AICS.AgentSim
 {
     public class BindingSitePopulation : MonoBehaviour 
     {
+        public ComplexPopulation complexPopulation;
         public Molecule molecule;
-        public MoleculePopulation moleculePopulation;
         public BindingSite bindingSite;
         public string initialState;
         public float interactionRadius;
@@ -29,14 +29,15 @@ namespace AICS.AgentSim
                 {
                     Reaction reaction;
                     List<ReactionWatcher> reactionWatchersList = new List<ReactionWatcher>();
-                    for (int i = 0; i < moleculePopulation.reactor.model.reactions.Length; i++)
+                    ComplexPopulation complexPopulation = GetComponent<ComplexPopulation>();
+                    for (int i = 0; i < complexPopulation.reactor.model.reactions.Length; i++)
                     {
-                        reaction = moleculePopulation.reactor.model.reactions[i];
+                        reaction = complexPopulation.reactor.model.reactions[i];
                         foreach (MoleculeBindingSite site in reaction.relevantSites)
                         {
-                            if (site.molecule == molecule && bindingSite.id == site.bindingSiteID)
+                            if (molecule == site.molecule && bindingSite.id == site.bindingSiteID)
                             {
-                                reactionWatchersList.Add( moleculePopulation.reactor.reactionWatchers[i] );
+                                reactionWatchersList.Add( complexPopulation.reactor.reactionWatchers[i] );
                             }
                         }
                     }
@@ -46,10 +47,10 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (Molecule _molecule, BindingSite _bindingSite, string _initialState, MoleculePopulation _moleculePopulation)
+        public virtual void Init (Molecule _molecule, BindingSite _bindingSite, string _initialState, ComplexPopulation _complexPopulation)
         {
+            complexPopulation = _complexPopulation;
             molecule = _molecule;
-            moleculePopulation = _moleculePopulation;
             bindingSite = _bindingSite;
             initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
             interactionRadius = bindingSite.radius;

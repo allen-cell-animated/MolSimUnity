@@ -19,11 +19,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public MoleculeReactor reactor
+        public Reactor reactor
         {
             get
             {
-                return population.moleculePopulation.reactor;
+                return population.complexPopulation.reactor;
             }
         }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class MoleculeReactor : MonoBehaviour 
+    public class Reactor : MonoBehaviour 
     {
         [Tooltip( "use physics engine for collision detection or let container manage collisions?" )]
         public bool usePhysicsEngine;
@@ -14,7 +14,7 @@ namespace AICS.AgentSim
         public bool periodicBoundary = true;
         public Model model;
 
-        public Dictionary<string,MoleculePopulation> populations;
+        public Dictionary<string,ComplexPopulation> populations;
         public ReactionWatcher[] reactionWatchers;
         [HideInInspector] public Container container;
 
@@ -23,10 +23,10 @@ namespace AICS.AgentSim
             SetupReactionData();
             CreateContainer();
 
-            populations = new Dictionary<string,MoleculePopulation>();
-            foreach (MoleculeConcentration molecule in model.molecules)
+            populations = new Dictionary<string,ComplexPopulation>();
+            foreach (ComplexConcentration complex in model.complexes)
             {
-                CreatePopulation( molecule );
+                CreatePopulation( complex );
             }
         }
 
@@ -46,21 +46,21 @@ namespace AICS.AgentSim
             container.Init( model.scale, model.containerVolume, periodicBoundary );
         }
 
-        protected virtual void CreatePopulation (MoleculeConcentration moleculeConcentration)
+        protected virtual void CreatePopulation (ComplexConcentration complexConcentration)
         {
-            GameObject obj = new GameObject( moleculeConcentration.species + "Population", new System.Type[] {typeof(MoleculePopulation)} );
-            MoleculePopulation population = obj.GetComponent<MoleculePopulation>();
-            population.Init( moleculeConcentration, this );
-            populations.Add( moleculeConcentration.species, population );
+            GameObject obj = new GameObject( complexConcentration.species + "Population" );
+            ComplexPopulation population = obj.AddComponent<ComplexPopulation>();
+            population.Init( complexConcentration, this );
+            populations.Add( complexConcentration.species, population );
         }
 
-        public virtual MoleculePopulation GetPopulationForMoleculeSet (MoleculeStateSet moleculeStateSet)
+        public virtual ComplexPopulation GetPopulationForComplex (ComplexState complexState)
         {
-            if (!populations.ContainsKey( moleculeStateSet.species ))
+            if (!populations.ContainsKey( complexState.species ))
             {
-                CreatePopulation( new MoleculeConcentration( moleculeStateSet, 0 ) );
+                CreatePopulation( new ComplexConcentration( complexState, 0 ) );
             }
-            return populations[moleculeStateSet.species];
+            return populations[complexState.species];
         }
     }
 
@@ -127,11 +127,11 @@ namespace AICS.AgentSim
 
         bool ReactantsEqual (MoleculeSimulator[] moleculeSet1, MoleculeSimulator[] moleculeSet2)
         {
-            return (reaction.reactants.Length == 0 && moleculeSet1 == null && moleculeSet2 == null)
-                || (reaction.reactants.Length == 1 && ((reaction.reactants[0].Matches( moleculeSet1 ) && moleculeSet2 == null)
-                                                    || (reaction.reactants[0].Matches( moleculeSet2 ) && moleculeSet1 == null)))
-                || (reaction.reactants.Length == 2 && ((reaction.reactants[0].Matches( moleculeSet1 ) && reaction.reactants[1].Matches( moleculeSet2 ) ))
-                                                    || (reaction.reactants[0].Matches( moleculeSet2 ) && reaction.reactants[1].Matches( moleculeSet1 ) ));
+            return (reaction.reactantStates.Length == 0 && moleculeSet1 == null && moleculeSet2 == null)
+                || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].Matches( moleculeSet1 ) && moleculeSet2 == null)
+                                                         || (reaction.reactantStates[0].Matches( moleculeSet2 ) && moleculeSet1 == null)))
+                || (reaction.reactantStates.Length == 2 && ((reaction.reactantStates[0].Matches( moleculeSet1 ) && reaction.reactantStates[1].Matches( moleculeSet2 )))
+                                                         || (reaction.reactantStates[0].Matches( moleculeSet2 ) && reaction.reactantStates[1].Matches( moleculeSet1 )));
         }
 
         public void Reset ()

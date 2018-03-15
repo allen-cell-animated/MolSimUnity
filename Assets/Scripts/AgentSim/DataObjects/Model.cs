@@ -6,18 +6,19 @@ namespace AICS.AgentSim
 {
     public class Model : ScriptableObject
     {
+        [Tooltip( "Meters" )] 
         public float scale = 1e-6f;
-        [Tooltip( "L" )] 
+        [Tooltip( "Liters" )] 
         public float containerVolume;
-        public MoleculeConcentration[] molecules;
+        public ComplexConcentration[] complexes;
         public Reaction[] reactions;
 
         #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
-            foreach (MoleculeConcentration molecule in molecules)
+            foreach (ComplexConcentration complex in complexes)
             {
-                molecule.moleculeStateSet.Init();
+                complex.complexState.Init();
             }
             foreach (Reaction reaction in reactions)
             {
@@ -28,17 +29,17 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class MoleculeConcentration
+    public class ComplexConcentration
     {
-        [Tooltip( "M" )] 
+        [Tooltip( "Molar" )] 
         public float concentration;
-        public MoleculeStateSet moleculeStateSet;
+        public ComplexState complexState;
 
         public string species
         {
             get
             {
-                return moleculeStateSet.species;
+                return complexState.species;
             }
         }
 
@@ -46,14 +47,14 @@ namespace AICS.AgentSim
         {
             get
             {
-                return moleculeStateSet.moleculeStates.Length;
+                return complexState.moleculeStates.Length;
             }
         }
 
-        public MoleculeConcentration (MoleculeStateSet _moleculeStateSet, float _concentration)
+        public ComplexConcentration (ComplexState _complexState, float _concentration)
         {
-            moleculeStateSet = _moleculeStateSet;
-            moleculeStateSet.Init();
+            complexState = _complexState;
+            complexState.Init();
             concentration = _concentration;
         }
     }
