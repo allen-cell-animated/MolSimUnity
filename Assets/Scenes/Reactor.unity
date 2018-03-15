@@ -231,8 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usePhysicsEngine: 0
   maxMoveAttempts: 20
-  periodicBoundary: 1
-  model: {fileID: 11400000, guid: f86e5e061e9074dda8a717230166b991, type: 2}
+  periodicBoundary: 0
+  model: {fileID: 11400000, guid: fef8e2d61fae04d418efe55670e8ccb0, type: 2}
   reactionWatchers: []
   container: {fileID: 0}
 --- !u!4 &902787514

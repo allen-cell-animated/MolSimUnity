@@ -70,12 +70,70 @@ namespace AICS.AgentSim
 
         protected virtual void SpawnMoleculeComplexes (MoleculeState[] moleculeStates)
         {
+            RelativeTransform[] transforms = GetMoleculeTransforms( moleculeStates );
             MoleculeSimulator complex;
             for (int i = 0; i < amount; i++)
             {
                 complex = CreateComplex( reactor.container.GetRandomPointInBounds( 0.1f ), Random.rotation );
-                SpawnMoleculesInComplex( complex, moleculeStates );
+                SpawnMoleculesInComplex( complex, moleculeStates, transforms );
             }
+        }
+
+        protected virtual RelativeTransform[] GetMoleculeTransforms (MoleculeState[] moleculeStates)
+        {
+            RelativeTransform[] transforms = new RelativeTransform[moleculeStates.Length];
+            transforms[0] = new RelativeTransform( Vector3.zero, Vector3.zero );
+            Vector3 averagePosition = Vector3.zero;
+
+            Transform molecule1 = new GameObject( "molecule1" ).transform;
+            Transform molecule2 = new GameObject( "molecule2" ).transform;
+            Transform site1 = new GameObject( "site1" ).transform;
+            site1.SetParent( molecule1 );
+            Transform site2 = new GameObject( "site2" ).transform;
+            site2.SetParent( molecule2 );
+            BindingSite bs1, bs2;
+
+            for (int i = 0; i < moleculeStates.Length - 1; i++)
+            {
+                foreach (KeyValuePair<string,string> siteState1 in moleculeStates[i].bindingSiteStates)
+                {
+                    if (siteState1.Value.Contains( "!" ))
+                    {
+                        for (int j = i + 1; j < moleculeStates.Length; j++)
+                        {
+                            foreach (KeyValuePair<string,string> siteState2 in moleculeStates[j].bindingSiteStates)
+                            {
+                                if (siteState1.Value == siteState2.Value)
+                                {
+                                    molecule1.position = transforms[i].position;
+                                    molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
+                                    bs1 = moleculeStates[i].molecule.GetSiteByID( siteState1.Key );
+                                    bs1.transformOnMolecule.Apply( molecule1, site1 );
+
+                                    molecule2.position = Vector3.zero;
+                                    molecule2.rotation = Quaternion.identity;
+                                    bs2 = moleculeStates[j].molecule.GetSiteByID( siteState2.Key );
+                                    bs2.transformOnMolecule.Apply( molecule2, site2 );
+
+                                    molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
+                                    molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
+                                    
+                                    transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
+                                    averagePosition += transforms[j].position;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            averagePosition /= transforms.Length;
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                transforms[i].position -= averagePosition;
+            }
+            Destroy( molecule1.gameObject );
+            Destroy( molecule2.gameObject );
+            return transforms;
         }
 
         protected virtual MoleculeSimulator CreateComplex (Vector3 position, Quaternion rotation)
@@ -98,25 +156,15 @@ namespace AICS.AgentSim
             return simulator;
         }
 
-        protected virtual void SpawnMoleculesInComplex (MoleculeSimulator complex, MoleculeState[] moleculeStates)
+        protected virtual void SpawnMoleculesInComplex (MoleculeSimulator complex, MoleculeState[] moleculeStates, RelativeTransform[] moleculeTransforms)
         {
-            if (moleculeStates.Length < 2)
+            for (int i = 0; i < moleculeStates.Length; i++)
             {
-                SpawnMolecule( complex, moleculeStates[0], complex.transform.position, complex.transform.rotation );
-            }
-            else 
-            {
-                for (int i = 0; i < moleculeStates.Length - 1; i++)
-                {
-                    for (int j = i + 1; j < moleculeStates.Length; j++)
-                    {
-                        // TODO place multiple molecules in complex
-                    }
-                }
+                SpawnMolecule( complex, moleculeStates[i], moleculeTransforms[i] );
             }
         }
 
-        public virtual void SpawnMolecule (MoleculeSimulator complex, MoleculeState moleculeState, Vector3 position, Quaternion rotation)
+        public virtual void SpawnMolecule (MoleculeSimulator complex, MoleculeState moleculeState, RelativeTransform relativeTransform)
         {
             if (moleculeState.molecule.visualizationPrefab == null)
             {
@@ -126,8 +174,8 @@ namespace AICS.AgentSim
 
             GameObject particle = Instantiate( moleculeState.molecule.visualizationPrefab );
             particle.transform.SetParent( complex.transform );
-            particle.transform.position = position;
-            particle.transform.rotation = rotation;
+            particle.transform.position = complex.transform.TransformPoint( relativeTransform.position );
+            particle.transform.rotation = complex.transform.rotation * Quaternion.Euler( relativeTransform.rotation );
             particle.name = molecules[0].species + "_" + complex.transform.childCount;
 
             MoleculeSimulator simulator;
@@ -140,6 +188,7 @@ namespace AICS.AgentSim
                 simulator = particle.AddComponent<ManagedMoleculeSimulator>();
             }
             simulator.Init( this, moleculeState );
+            simulator.ToggleMotion( false );
         }
 
         public virtual void CreateComplexFromMolecules (Transform centerTransform, MoleculeSimulator[] _molecules)

@@ -9,22 +9,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
-  m_Name: B
+  m_Name: 2
   m_EditorClassIdentifier: 
-  species: B
+  species: 2
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
   sites:
-  - id: a
+  - id: b
     states:
     - 0
     - '!+'
     activeStates:
     - 0
     transformOnMolecule:
-      position: {x: -0.375, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
+      position: {x: 0, y: 0, z: -2}
+      rotation: {x: 0, y: -90, z: 0}
     radius: 1
-  _visualizationPrefab: {fileID: 1629657773034706, guid: 4fe8a6629773d43c6a15f9dab5bfe5ed,
+  - id: d
+    states:
+    - 0
+    - '!+'
+    activeStates:
+    - 0
+    transformOnMolecule:
+      position: {x: 0, y: 1, z: 0}
+      rotation: {x: 0, y: -90, z: 0}
+    radius: 1
+  _visualizationPrefab: {fileID: 1516328023671344, guid: e87b5bb5cb22f4dbbad23aa41101b3f7,
     type: 2}

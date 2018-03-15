@@ -49,6 +49,7 @@ namespace AICS.AgentSim
         protected virtual void CreatePopulation (ComplexConcentration complexConcentration)
         {
             GameObject obj = new GameObject( complexConcentration.species + "Population" );
+            obj.transform.SetParent( transform );
             ComplexPopulation population = obj.AddComponent<ComplexPopulation>();
             population.Init( complexConcentration, this );
             populations.Add( complexConcentration.species, population );

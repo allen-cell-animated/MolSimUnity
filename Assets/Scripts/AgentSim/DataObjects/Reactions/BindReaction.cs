@@ -19,8 +19,6 @@ namespace AICS.AgentSim
 
                 bindingSite1.state = GetFinalSiteState( bindingSite1 );
                 bindingSite2.state = GetFinalSiteState( bindingSite2 );
-
-                //UnityEditor.EditorApplication.isPaused = true;
             }
         }
 
