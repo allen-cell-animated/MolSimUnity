@@ -229,7 +229,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6a783a31d6df4615983d9903a2403a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usePhysicsEngine: 0
   maxMoveAttempts: 20
   periodicBoundary: 0
   model: {fileID: 11400000, guid: f86e5e061e9074dda8a717230166b991, type: 2}

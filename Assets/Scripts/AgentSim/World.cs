@@ -31,7 +31,7 @@ namespace AICS.AgentSim
 			{
 				return observer.currentScale;
 			}
-		}
+        }
 
 		void Update ()
 		{

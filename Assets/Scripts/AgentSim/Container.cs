@@ -13,8 +13,8 @@ namespace AICS.AgentSim
         [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
         Vector3 size;
         Walls walls;
-        List<ManagedMoleculeSimulator> molecules = new List<ManagedMoleculeSimulator>();
-        List<ManagedMoleculeSimulator> activeMolecules = new List<ManagedMoleculeSimulator>();
+        List<ParticleSimulator> particles = new List<ParticleSimulator>();
+        List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
 
         public virtual void Init (float _scale, float _volume, bool _periodicBoundary)
         {
@@ -24,7 +24,7 @@ namespace AICS.AgentSim
             periodicBoundary = _periodicBoundary;
             if (periodicBoundary)
             {
-                CreatePhysicsBounds();
+                CreateBounds();
             }
         }
 
@@ -49,28 +49,31 @@ namespace AICS.AgentSim
             Gizmos.DrawWireCube( transform.position, size );
         }
 
-        public void RegisterMolecule (ManagedMoleculeSimulator molecule)
+        public void RegisterParticle (ParticleSimulator particle)
         {
-            molecules.Add( molecule );
-            if (molecule.active)
+            if (!particles.Contains( particle ))
             {
-                activeMolecules.Add( molecule );
+                particles.Add( particle );
+            }
+            if (particle.active && !activeParticles.Contains( particle ))
+            {
+                activeParticles.Add( particle );
             }
         }
 
-        public void UnregisterMolecule (ManagedMoleculeSimulator molecule)
+        public void UnregisterParticle (ParticleSimulator particle)
         {
-            if (molecules.Contains( molecule ))
+            if (particles.Contains( particle ))
             {
-                molecules.Remove( molecule );
+                particles.Remove( particle );
             }
-            if (activeMolecules.Contains( molecule ))
+            if (activeParticles.Contains( particle ))
             {
-                activeMolecules.Remove( molecule );
+                activeParticles.Remove( particle );
             }
         }
 
-        public virtual void CreatePhysicsBounds ()
+        public virtual void CreateBounds ()
         {
             if (walls == null)
             {
@@ -81,18 +84,18 @@ namespace AICS.AgentSim
 
         void Update ()
         {
-            foreach (ManagedMoleculeSimulator molecule in molecules)
+            foreach (ParticleSimulator particle in particles)
             {
-                molecule.Move( World.Instance.dT );
+                particle.Move( World.Instance.dT );
             }
 
-            for (int i = 0; i < activeMolecules.Count - 1; i++)
+            for (int i = 0; i < activeParticles.Count - 1; i++)
             {
-                for (int j = i + 1; j < activeMolecules.Count; j++)
+                for (int j = i + 1; j < activeParticles.Count; j++)
                 {
-                    if (MoleculesAreNearEachOther( activeMolecules[i], activeMolecules[j] ))
+                    if (activeParticles[i].IsNear( activeParticles[j] ))
                     {
-                        activeMolecules[i].InteractWith( activeMolecules[j] );
+                        activeParticles[i].InteractWith( activeParticles[j] );
                     }
                 }
             }
@@ -107,31 +110,18 @@ namespace AICS.AgentSim
             return !inBounds;
         }
 
-        public virtual bool WillCollide (ManagedMoleculeSimulator molecule, Vector3 newPosition, out ManagedMoleculeSimulator[] others)
+        public virtual bool WillCollide (ParticleSimulator particle, Vector3 newPosition, out ParticleSimulator[] others)
         {
-            List<ManagedMoleculeSimulator> othersList = new List<ManagedMoleculeSimulator>();
-            foreach (ManagedMoleculeSimulator other in molecules)
+            List<ParticleSimulator> othersList = new List<ParticleSimulator>();
+            foreach (ParticleSimulator other in particles)
             {
-                if (MoleculesAreColliding( molecule, other ))
+                if (particle.IsCollidingWith( other ))
                 {
                     othersList.Add( other );
                 }
             }
             others = othersList.ToArray();
             return others.Length > 0;
-        }
-
-        bool MoleculesAreColliding (ManagedMoleculeSimulator molecule1, ManagedMoleculeSimulator molecule2)
-        {
-            return molecule1 != molecule2 
-                && Vector3.Distance( molecule1.transform.position, molecule2.transform.position ) < molecule1.collisionRadius + molecule2.collisionRadius
-                && !molecule1.IsBoundToOther( molecule2 );
-        }
-
-        bool MoleculesAreNearEachOther (ManagedMoleculeSimulator molecule1, ManagedMoleculeSimulator molecule2)
-        {
-            return molecule1 != molecule2 
-                && Vector3.Distance( molecule1.transform.position, molecule2.transform.position ) < molecule1.interactionRadius + molecule2.interactionRadius;
         }
 	}
 }

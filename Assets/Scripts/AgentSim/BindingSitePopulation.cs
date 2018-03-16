@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class BindingSitePopulation : MonoBehaviour 
     {
-        public ComplexPopulation complexPopulation;
+        public ParticlePopulation particlePopulation;
         public Molecule molecule;
         public BindingSite bindingSite;
         public string initialState;
@@ -29,15 +29,14 @@ namespace AICS.AgentSim
                 {
                     Reaction reaction;
                     List<ReactionWatcher> reactionWatchersList = new List<ReactionWatcher>();
-                    ComplexPopulation complexPopulation = GetComponent<ComplexPopulation>();
-                    for (int i = 0; i < complexPopulation.reactor.model.reactions.Length; i++)
+                    for (int i = 0; i < particlePopulation.reactor.model.reactions.Length; i++)
                     {
-                        reaction = complexPopulation.reactor.model.reactions[i];
+                        reaction = particlePopulation.reactor.model.reactions[i];
                         foreach (MoleculeBindingSite site in reaction.relevantSites)
                         {
                             if (molecule == site.molecule && bindingSite.id == site.bindingSiteID)
                             {
-                                reactionWatchersList.Add( complexPopulation.reactor.reactionWatchers[i] );
+                                reactionWatchersList.Add( particlePopulation.reactor.reactionWatchers[i] );
                             }
                         }
                     }
@@ -47,9 +46,9 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (Molecule _molecule, BindingSite _bindingSite, string _initialState, ComplexPopulation _complexPopulation)
+        public virtual void Init (Molecule _molecule, BindingSite _bindingSite, string _initialState, ParticlePopulation _particlePopulation)
         {
-            complexPopulation = _complexPopulation;
+            particlePopulation = _particlePopulation;
             molecule = _molecule;
             bindingSite = _bindingSite;
             initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;

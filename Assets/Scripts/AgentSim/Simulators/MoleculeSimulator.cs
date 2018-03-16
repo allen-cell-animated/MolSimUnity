@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class MoleculeSimulator : MonoBehaviour 
+    public class MoleculeSimulator : MonoBehaviour 
     {
-        protected ComplexPopulation population;
         public string species;
-        public bool canMove = true;
 
+        public ParticleSimulator particle;
         protected Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
         protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
 
@@ -28,26 +27,11 @@ namespace AICS.AgentSim
             }
         }
 
-        ReactionWatcher[] reactionWatchers
+        public virtual void Init (MoleculeState moleculeState, ParticleSimulator _particle)
         {
-            get
-            {
-                return population.reactor.reactionWatchers;
-            }
-        }
-
-        public virtual void Init (ComplexPopulation _population, MoleculeState moleculeState = null)
-        {
-            population = _population;
-            if (moleculeState != null)
-            {
-                species = moleculeState.species;
-                CreateBindingSites( moleculeState );
-            }
-            else
-            {
-                species = population.species;
-            }
+            species = moleculeState.species;
+            particle = _particle;
+            CreateBindingSites( moleculeState );
         }
 
         protected virtual void CreateBindingSites (MoleculeState moleculeState)
@@ -58,58 +42,38 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void CreateBindingSite (Molecule molecule, string id)
+        protected virtual void CreateBindingSite (Molecule molecule, string id)
         {
-            BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( molecule, id );
+            BindingSitePopulation bindingSitePopulation = GetComponentInParent<ParticlePopulation>().GetBindingSitePopulation( molecule.species, id );
 
-            GameObject bindingSite = new GameObject();
-            bindingSite.transform.SetParent( transform );
-            bindingSitePopulation.bindingSite.transformOnMolecule.Apply( transform, bindingSite.transform );
-            bindingSite.name = name + "_" + bindingSitePopulation.bindingSite.id;
+            GameObject obj = new GameObject();
+            obj.transform.SetParent( transform );
+            bindingSitePopulation.bindingSite.transformOnMolecule.Apply( transform, obj.transform );
+            obj.name = name + "_" + bindingSitePopulation.bindingSite.id;
 
-            BindingSiteSimulator simulator;
-            if (population.reactor.usePhysicsEngine)
+            BindingSiteSimulator bindingSite = obj.AddComponent<BindingSiteSimulator>();
+            bindingSite.Init( bindingSitePopulation, this );
+
+            bindingSites.Add( id, bindingSite );
+            if (bindingSite.active)
             {
-                simulator = bindingSite.AddComponent<PhysicalBindingSiteSimulator>();
-            }
-            else
-            {
-                simulator = bindingSite.AddComponent<ManagedBindingSiteSimulator>();
-            }
-            simulator.Init( bindingSitePopulation, this );
-            bindingSites.Add( id, simulator );
-            if (simulator.active)
-            {
-                activeBindingSites.Add( simulator );
+                activeBindingSites.Add( bindingSite );
             }
         }
 
-        protected float GetDisplacement (float dTime)
-		{
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.diffusionCoefficient * dTime ) );
-		}
-
-        protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
+        public virtual bool InteractWith (MoleculeSimulator other)
         {
-            RaycastHit info;
-            if (Physics.Raycast( transform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, population.reactor.container.boundaryLayer ))
+            foreach (BindingSiteSimulator bindingSite in activeBindingSites)
             {
-                transform.position = info.point - collisionToCenter.normalized;
-            }
-        }
-
-        public virtual void InteractWith (MoleculeSimulator other)
-        {
-            for (int i = 0; i < activeBindingSites.Count; i++)
-            {
-                for (int j = 0; j < other.activeBindingSites.Count; j++)
+                foreach (BindingSiteSimulator otherBindingSite in other.activeBindingSites)
                 {
-                    if (activeBindingSites[i].TryToReact( other.activeBindingSites[j] ))
+                    if (bindingSite.ReactWith( otherBindingSite ))
                     {
-                        return;
+                        return true;
                     }
                 }
             }
+            return false;
         }
 
         public virtual bool SiteIsInState (string siteID, string state)
@@ -117,60 +81,11 @@ namespace AICS.AgentSim
             return bindingSites[siteID].state == state;
         }
 
-        public virtual bool IsBoundToOther (MoleculeSimulator molecule)
+        public void MoveToComplex (ParticleSimulator _particle)
         {
-            foreach (BindingSiteSimulator site in bindingSites.Values)
-            {
-                if (site.boundSite != null && site.boundSite.molecule == molecule)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public virtual MoleculeSimulator[] GetBoundMoleculesSet ()
-        {
-            List<MoleculeSimulator> boundMolecules = new List<MoleculeSimulator>();
-            boundMolecules.Add( this );
-            foreach (BindingSiteSimulator site in bindingSites.Values)
-            {
-                if (site.boundSite != null && !boundMolecules.Contains( site.boundSite.molecule ))
-                {
-                    boundMolecules.Add( site.boundSite.molecule );
-                }
-            }
-            return boundMolecules.ToArray();
-        }
-
-        public abstract void ToggleMotion (bool move);
-
-        protected virtual Vector3 GetExitDirection (MoleculeSimulator[] collidingMolecules)
-        {
-            if (collidingMolecules != null)
-            {
-                int n = 0;
-                Vector3 exitVector = Vector3.zero;
-                foreach (MoleculeSimulator other in collidingMolecules)
-                {
-                    if (!IsBoundToOther( other ))
-                    {
-                        exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
-                        n++;
-                    }
-                }
-                return exitVector.normalized;
-            }
-            return Vector3.zero;
-        }
-
-        public void MoveToComplex (MoleculeSimulator complex)
-        {
-            if (!population.reactor.usePhysicsEngine)
-            {
-                population.reactor.container.UnregisterMolecule( this as ManagedMoleculeSimulator );
-            }
-            transform.SetParent( complex.transform );
+            particle.RemoveMolecule( this );
+            particle = _particle;
+            transform.SetParent( _particle.transform );
         }
 	}
 }

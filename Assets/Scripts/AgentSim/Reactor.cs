@@ -6,15 +6,13 @@ namespace AICS.AgentSim
 {
     public class Reactor : MonoBehaviour 
     {
-        [Tooltip( "use physics engine for collision detection or let container manage collisions?" )]
-        public bool usePhysicsEngine;
-        [Tooltip( "if not using physics engine, how many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
+        [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
         public bool periodicBoundary = true;
         public Model model;
 
-        public Dictionary<string,ComplexPopulation> populations;
+        public Dictionary<string,ParticlePopulation> populations;
         public ReactionWatcher[] reactionWatchers;
         [HideInInspector] public Container container;
 
@@ -23,7 +21,7 @@ namespace AICS.AgentSim
             SetupReactionData();
             CreateContainer();
 
-            populations = new Dictionary<string,ComplexPopulation>();
+            populations = new Dictionary<string,ParticlePopulation>();
             foreach (ComplexConcentration complex in model.complexes)
             {
                 CreatePopulation( complex );
@@ -50,12 +48,12 @@ namespace AICS.AgentSim
         {
             GameObject obj = new GameObject( complexConcentration.species + "Population" );
             obj.transform.SetParent( transform );
-            ComplexPopulation population = obj.AddComponent<ComplexPopulation>();
+            ParticlePopulation population = obj.AddComponent<ParticlePopulation>();
             population.Init( complexConcentration, this );
             populations.Add( complexConcentration.species, population );
         }
 
-        public virtual ComplexPopulation GetPopulationForComplex (ComplexState complexState)
+        public virtual ParticlePopulation GetPopulationForComplex (ComplexState complexState)
         {
             if (!populations.ContainsKey( complexState.species ))
             {
@@ -119,20 +117,20 @@ namespace AICS.AgentSim
         {
             attempts++;
 
-            if (!observedRateTooHigh && ReactantsEqual( bindingSite1.molecule.GetBoundMoleculesSet(), bindingSite2.molecule.GetBoundMoleculesSet() ))
+            if (!observedRateTooHigh && ReactantsEqual( bindingSite1.complex, bindingSite2.complex ))
             {
                 return shouldHappen;
             }
             return false;
         }
 
-        bool ReactantsEqual (MoleculeSimulator[] moleculeSet1, MoleculeSimulator[] moleculeSet2)
+        bool ReactantsEqual (List<MoleculeSimulator> complex1, List<MoleculeSimulator> complex2)
         {
-            return (reaction.reactantStates.Length == 0 && moleculeSet1 == null && moleculeSet2 == null)
-                || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].Matches( moleculeSet1 ) && moleculeSet2 == null)
-                                                         || (reaction.reactantStates[0].Matches( moleculeSet2 ) && moleculeSet1 == null)))
-                || (reaction.reactantStates.Length == 2 && ((reaction.reactantStates[0].Matches( moleculeSet1 ) && reaction.reactantStates[1].Matches( moleculeSet2 )))
-                                                         || (reaction.reactantStates[0].Matches( moleculeSet2 ) && reaction.reactantStates[1].Matches( moleculeSet1 )));
+            return (reaction.reactantStates.Length == 0 && complex1 == null && complex2 == null)
+                || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].Matches( complex1 ) && complex2 == null)
+                                                         || (reaction.reactantStates[0].Matches( complex2 ) && complex1 == null)))
+                || (reaction.reactantStates.Length == 2 && ((reaction.reactantStates[0].Matches( complex1 ) && reaction.reactantStates[1].Matches( complex2 )))
+                                                         || (reaction.reactantStates[0].Matches( complex2 ) && reaction.reactantStates[1].Matches( complex1 )));
         }
 
         public void Reset ()

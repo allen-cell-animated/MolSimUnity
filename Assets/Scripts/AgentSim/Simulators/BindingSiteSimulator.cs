@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class BindingSiteSimulator : MonoBehaviour 
+    public class BindingSiteSimulator : MonoBehaviour 
     {
         protected BindingSitePopulation population;
         public MoleculeSimulator molecule;
@@ -23,7 +23,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return population.complexPopulation.reactor;
+                return population.particlePopulation.reactor;
             }
         }
 
@@ -35,6 +35,14 @@ namespace AICS.AgentSim
             }
         }
 
+        public List<MoleculeSimulator> complex
+        {
+            get
+            {
+                return molecule.particle.molecules;
+            }
+        }
+
         public virtual void Init (BindingSitePopulation _population, MoleculeSimulator _molecule)
         {
             population = _population;
@@ -42,19 +50,24 @@ namespace AICS.AgentSim
             state = population.initialState;
         }
 
-        public virtual bool TryToReact (BindingSiteSimulator other)
+        public virtual bool ReactWith (BindingSiteSimulator other)
         {
-            Reaction reaction = population.GetNextReaction( this, other );
-            if (reaction != null)
+            if (IsNear( other ))
             {
-                boundSite = other;
-                other.boundSite = this;
-
-                reaction.React( this, other );
-
-                return true;
+                Reaction reaction = population.GetNextReaction( this, other );
+                if (reaction != null)
+                {
+                    reaction.React( this, other );
+                    return true;
+                }
             }
             return false;
+        }
+
+        bool IsNear (BindingSiteSimulator other)
+        {
+            return other != this 
+                && Vector3.Distance( transform.position, other.transform.position ) < population.interactionRadius + other.population.interactionRadius;
         }
     }
 }

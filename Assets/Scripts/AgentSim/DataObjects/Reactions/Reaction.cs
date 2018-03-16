@@ -140,7 +140,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool Matches (MoleculeSimulator[] molecules)
+        public bool Matches (List<MoleculeSimulator> molecules)
         {
             foreach (MoleculeState moleculeState in moleculeStates)
             {
