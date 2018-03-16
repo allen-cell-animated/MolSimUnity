@@ -13,8 +13,6 @@ namespace AICS.AgentSim
         [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
         Vector3 size;
         Walls walls;
-        List<ParticleSimulator> particles = new List<ParticleSimulator>();
-        List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
 
         public virtual void Init (float _scale, float _volume, bool _periodicBoundary)
         {
@@ -49,30 +47,6 @@ namespace AICS.AgentSim
             Gizmos.DrawWireCube( transform.position, size );
         }
 
-        public void RegisterParticle (ParticleSimulator particle)
-        {
-            if (!particles.Contains( particle ))
-            {
-                particles.Add( particle );
-            }
-            if (particle.active && !activeParticles.Contains( particle ))
-            {
-                activeParticles.Add( particle );
-            }
-        }
-
-        public void UnregisterParticle (ParticleSimulator particle)
-        {
-            if (particles.Contains( particle ))
-            {
-                particles.Remove( particle );
-            }
-            if (activeParticles.Contains( particle ))
-            {
-                activeParticles.Remove( particle );
-            }
-        }
-
         public virtual void CreateBounds ()
         {
             if (walls == null)
@@ -82,46 +56,13 @@ namespace AICS.AgentSim
             }
         }
 
-        void Update ()
-        {
-            foreach (ParticleSimulator particle in particles)
-            {
-                particle.Move( World.Instance.dT );
-            }
-
-            for (int i = 0; i < activeParticles.Count - 1; i++)
-            {
-                for (int j = i + 1; j < activeParticles.Count; j++)
-                {
-                    if (activeParticles[i].IsNear( activeParticles[j] ))
-                    {
-                        activeParticles[i].InteractWith( activeParticles[j] );
-                    }
-                }
-            }
-        }
-
-        public virtual bool IsOutOfBounds (Vector3 point, out Vector3 collisionToCenter)
+        public virtual bool IsOutOfBounds (Vector3 point, out Vector3 pointToCenter)
         {
             bool inBounds = point.x < transform.position.x + size.x / 2f && point.x > transform.position.x - size.x / 2f
                          && point.y < transform.position.y + size.y / 2f && point.y > transform.position.y - size.y / 2f
                          && point.z < transform.position.z + size.z / 2f && point.z > transform.position.z - size.z / 2f;
-            collisionToCenter = inBounds ? Vector3.zero : transform.position - point;
+            pointToCenter = inBounds ? Vector3.zero : transform.position - point;
             return !inBounds;
-        }
-
-        public virtual bool WillCollide (ParticleSimulator particle, Vector3 newPosition, out ParticleSimulator[] others)
-        {
-            List<ParticleSimulator> othersList = new List<ParticleSimulator>();
-            foreach (ParticleSimulator other in particles)
-            {
-                if (particle.IsCollidingWith( other ))
-                {
-                    othersList.Add( other );
-                }
-            }
-            others = othersList.ToArray();
-            return others.Length > 0;
         }
 	}
 }

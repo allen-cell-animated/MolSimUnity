@@ -16,6 +16,9 @@ namespace AICS.AgentSim
         public ReactionWatcher[] reactionWatchers;
         [HideInInspector] public Container container;
 
+        [SerializeField] List<ParticleSimulator> particles = new List<ParticleSimulator>();
+        [SerializeField] List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
+
         void Start ()
         {
             SetupReactionData();
@@ -60,6 +63,67 @@ namespace AICS.AgentSim
                 CreatePopulation( new ComplexConcentration( complexState, 0 ) );
             }
             return populations[complexState.species];
+        }
+
+        public void RegisterParticle (ParticleSimulator particle)
+        {
+            if (!particles.Contains( particle ))
+            {
+                particles.Add( particle );
+            }
+            if (particle.active && !activeParticles.Contains( particle ))
+            {
+                activeParticles.Add( particle );
+            }
+        }
+
+        public void UnregisterParticle (ParticleSimulator particle)
+        {
+            if (particles.Contains( particle ))
+            {
+                particles.Remove( particle );
+            }
+            if (activeParticles.Contains( particle ))
+            {
+                activeParticles.Remove( particle );
+            }
+        }
+
+        void Update ()
+        {
+            //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+            foreach (ParticleSimulator particle in particles)
+            {
+                particle.Move( World.Instance.dT );
+            }
+            //UnityEngine.Profiling.Profiler.EndSample();
+
+            //UnityEngine.Profiling.Profiler.BeginSample("CalculateCollisions");
+            for (int i = 0; i < activeParticles.Count - 1; i++)
+            {
+                for (int j = i + 1; j < activeParticles.Count; j++)
+                {
+                    if (activeParticles[i].IsNear( activeParticles[j] ))
+                    {
+                        activeParticles[i].InteractWith( activeParticles[j] );
+                    }
+                }
+            }
+            //UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        public virtual bool WillCollide (ParticleSimulator particle, Vector3 newPosition, out ParticleSimulator[] others)
+        {
+            List<ParticleSimulator> othersList = new List<ParticleSimulator>();
+            foreach (ParticleSimulator other in particles)
+            {
+                if (particle.IsCollidingWith( other ))
+                {
+                    othersList.Add( other );
+                }
+            }
+            others = othersList.ToArray();
+            return others.Length > 0;
         }
     }
 

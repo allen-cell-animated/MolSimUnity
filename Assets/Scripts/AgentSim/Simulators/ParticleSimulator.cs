@@ -45,7 +45,7 @@ namespace AICS.AgentSim
         public virtual void Init (ParticlePopulation _population)
         {
             population = _population;
-            population.reactor.container.RegisterParticle( this );
+            population.reactor.RegisterParticle( this );
         }
 
         void Update ()
@@ -95,7 +95,7 @@ namespace AICS.AgentSim
             Vector3 collisionToCenter;
             if (population.reactor.container.IsOutOfBounds( transform.position + moveStep, out collisionToCenter ))
             {
-                if (population.reactor.container.periodicBoundary)
+                if (population.reactor.periodicBoundary)
                 {
                     ReflectPeriodically( collisionToCenter );
                     return true;
@@ -103,7 +103,7 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            if (population.reactor.container.WillCollide( this, transform.position + moveStep, out collidingMolecules ))
+            if (population.reactor.WillCollide( this, transform.position + moveStep, out collidingMolecules ))
             {
                 return false;
             }
@@ -170,7 +170,7 @@ namespace AICS.AgentSim
             }
             if (molecules.Count == 0)
             {
-                population.reactor.container.UnregisterParticle( this );
+                population.reactor.UnregisterParticle( this );
                 Destroy( this );
             }
         }

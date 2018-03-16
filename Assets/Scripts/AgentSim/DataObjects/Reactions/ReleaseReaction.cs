@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class ReleaseReaction : Reaction 
     {
-        public override void React (BindingSiteSimulator reactant1, BindingSiteSimulator reactant2 = null)
+        public override void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null)
         {
 
         }

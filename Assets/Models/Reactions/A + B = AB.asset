@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be946a43eeb0a483ebac7a3352e538de, type: 3}
-  m_Name: A+B=AB
+  m_Name: A + B = AB
   m_EditorClassIdentifier: 
   description: A(b) + B(a) -> A(b!1).B(a!1)
-  rate: 10000000
+  rate: 100000000
   reactantStates:
   - moleculeStates:
     - molecule: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
