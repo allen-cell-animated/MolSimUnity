@@ -162,8 +162,14 @@ namespace AICS.AgentSim
         {
             get
             {
+                attempts++;
+
                 bool react;
-                if (observedRateTooLow)
+                if (observedRateTooHigh)
+                {
+                    react = false;
+                }
+                else if (observedRateTooLow)
                 {
                     react = true;
                 }
@@ -171,17 +177,17 @@ namespace AICS.AgentSim
                 {
                     react = Random.value <= reaction.rate * World.Instance.dT * (World.Instance.steps / attempts);
                 }
+
                 events = react ? events + 1 : events;
                 observedRate = Mathf.Round( events / World.Instance.time );
+
                 return react;
             }
         }
 
         public bool TryReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
         {
-            attempts++;
-
-            if (!observedRateTooHigh && ReactantsEqual( bindingSite1.complex, bindingSite2.complex ))
+            if (ReactantsEqual( bindingSite1.complex, bindingSite2.complex ))
             {
                 return shouldHappen;
             }

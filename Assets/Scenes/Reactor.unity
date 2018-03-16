@@ -231,9 +231,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxMoveAttempts: 20
   periodicBoundary: 1
-  model: {fileID: 11400000, guid: d6b22542f39904cafa8ae1e27852a013, type: 2}
+  model: {fileID: 11400000, guid: f86e5e061e9074dda8a717230166b991, type: 2}
   reactionWatchers: []
   container: {fileID: 0}
+  particles: []
+  activeParticles: []
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0
