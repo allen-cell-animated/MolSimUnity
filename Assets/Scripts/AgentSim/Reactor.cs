@@ -91,6 +91,11 @@ namespace AICS.AgentSim
 
         void Update ()
         {
+            foreach (ReactionWatcher reactionWatcher in reactionWatchers)
+            {
+                reactionWatcher.CalculateObservedRate();
+            }
+
             //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             foreach (ParticleSimulator particle in particles)
             {
@@ -142,6 +147,11 @@ namespace AICS.AgentSim
             reaction = _reaction;
         }
 
+        public void CalculateObservedRate ()
+        {
+            observedRate = events / World.Instance.time;
+        }
+
         bool observedRateTooHigh
         {
             get
@@ -179,7 +189,6 @@ namespace AICS.AgentSim
                 }
 
                 events = react ? events + 1 : events;
-                observedRate = Mathf.Round( events / World.Instance.time );
 
                 return react;
             }
