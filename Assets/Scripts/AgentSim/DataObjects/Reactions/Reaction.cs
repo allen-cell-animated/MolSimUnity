@@ -15,6 +15,14 @@ namespace AICS.AgentSim
         #region for prototyping in inspector without writing custom property drawer etc
         public MoleculeBindingSite[] relevantSites;
 
+        public bool isBimolecular
+        {
+            get
+            {
+                return reactantStates.Length > 1;
+            }
+        }
+
         public void Init ()
         {
             foreach (ComplexState reactantState in reactantStates)
@@ -30,7 +38,7 @@ namespace AICS.AgentSim
 
         public abstract void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null);
 
-        protected virtual string GetFinalSiteState (BindingSiteSimulator bindingSite)
+        protected virtual void SetFinalSiteState (BindingSiteSimulator bindingSite)
         {
             foreach (ComplexState productState in productStates)
             {
@@ -42,14 +50,14 @@ namespace AICS.AgentSim
                         {
                             if (bindingSiteState.Key == bindingSite.id)
                             {
-                                return bindingSiteState.Value;
+                                bindingSite.state = bindingSiteState.Value;
+                                return;
                             }
                         }
                     }
                 }
             }
             Debug.LogWarning( "reacting binding site " + bindingSite.name + " doesn't match any site on product of reaction " + description );
-            return "";
         }
     }
 
@@ -201,6 +209,18 @@ namespace AICS.AgentSim
                     }
                 }
                 return true;
+            }
+            return false;
+        }
+
+        public bool ContainsBindingSite (string bindingSiteID)
+        {
+            foreach (KeyValuePair<string,string> bindingSiteState in bindingSiteStates)
+            {
+                if (bindingSiteState.Key == bindingSiteID)
+                {
+                    return true;
+                }
             }
             return false;
         }

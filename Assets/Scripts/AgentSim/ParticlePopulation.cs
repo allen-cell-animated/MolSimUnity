@@ -180,10 +180,11 @@ namespace AICS.AgentSim
                 molecule = SpawnMolecule( moleculeStates[i] );
                 if (molecule != null)
                 {
-                    NameAndPlaceMoleculeInComplex( molecule, particle.transform, moleculeTransforms[i] );
+                    NameAndPlaceMoleculeInComplex( molecule, moleculeStates[i].molecule.species, particle.transform, moleculeTransforms[i] );
                     _molecules[i] = CreateMoleculeSimulator( molecule, moleculeStates[i], particle );
                 }
             }
+            ConnectBoundSites( _molecules );
             return _molecules;
         }
 
@@ -199,9 +200,9 @@ namespace AICS.AgentSim
             return molecule;
         }
 
-        protected virtual void NameAndPlaceMoleculeInComplex (GameObject molecule, Transform complex, RelativeTransform relativeTransform)
+        protected virtual void NameAndPlaceMoleculeInComplex (GameObject molecule, string species, Transform complex, RelativeTransform relativeTransform)
         {
-            molecule.name = complex.name + "_" + molecules[0].species;
+            molecule.name = complex.name + "_" + species;
             molecule.transform.SetParent( complex );
             molecule.transform.position = complex.TransformPoint( relativeTransform.position );
             molecule.transform.rotation = complex.rotation * Quaternion.Euler( relativeTransform.rotation );
@@ -212,6 +213,31 @@ namespace AICS.AgentSim
             MoleculeSimulator molecule = obj.AddComponent<MoleculeSimulator>();
             molecule.Init( moleculeState, particle );
             return molecule;
+        }
+
+        protected virtual void ConnectBoundSites (MoleculeSimulator[] _molecules)
+        {
+            Dictionary<string,BindingSiteSimulator> boundSites = new Dictionary<string, BindingSiteSimulator>();
+            string boundState;
+            foreach (MoleculeSimulator molecule in _molecules)
+            {
+                foreach (KeyValuePair<string,BindingSiteSimulator> bindingSite in molecule.bindingSites)
+                {
+                    boundState = bindingSite.Value.state;
+                    if (boundState.Contains( "!" ))
+                    {
+                        if (!boundSites.ContainsKey( boundState ))
+                        {
+                            boundSites.Add( boundState, bindingSite.Value );
+                        }
+                        else
+                        {
+                            boundSites[boundState].boundSite = bindingSite.Value;
+                            bindingSite.Value.boundSite = boundSites[boundState];
+                        }
+                    }
+                }
+            }
         }
 
         public virtual void CreateComplexWithMolecules (Transform centerTransform, List<MoleculeSimulator> _molecules)

@@ -9,7 +9,7 @@ namespace AICS.AgentSim
         public string species;
 
         public ParticleSimulator particle;
-        protected Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
+        public Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
         protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
 
         public bool active

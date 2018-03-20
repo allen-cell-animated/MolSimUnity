@@ -13,11 +13,12 @@ namespace AICS.AgentSim
         public Model model;
 
         public Dictionary<string,ParticlePopulation> populations;
-        public ReactionWatcher[] reactionWatchers;
+        public List<CollisionFreeReactionWatcher> collisionFreeReactionWatchers = new List<CollisionFreeReactionWatcher>();
+        public List<BimolecularReactionWatcher> bimolecularReactionWatchers = new List<BimolecularReactionWatcher>();
         [HideInInspector] public Container container;
 
-        [SerializeField] List<ParticleSimulator> particles = new List<ParticleSimulator>();
-        [SerializeField] List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
+        List<ParticleSimulator> particles = new List<ParticleSimulator>();
+        List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
 
         void Start ()
         {
@@ -34,10 +35,17 @@ namespace AICS.AgentSim
         protected virtual void SetupReactionData ()
         {
             model.Init(); //for prototyping in inspector without writing custom property drawer etc
-            reactionWatchers = new ReactionWatcher[model.reactions.Length];
-            for (int i = 0; i < model.reactions.Length; i++)
+
+            foreach (Reaction reaction in model.reactions)
             {
-                reactionWatchers[i] = new ReactionWatcher( model.reactions[i] );
+                if (reaction.isBimolecular)
+                {
+                    bimolecularReactionWatchers.Add( new BimolecularReactionWatcher( reaction ) );
+                }
+                else
+                {
+                    collisionFreeReactionWatchers.Add( new CollisionFreeReactionWatcher( reaction ) );
+                }
             }
         }
 
@@ -91,18 +99,44 @@ namespace AICS.AgentSim
 
         void Update ()
         {
-            foreach (ReactionWatcher reactionWatcher in reactionWatchers)
+            CalculateObservedRates();
+            MoveParticles();
+            DoCollisionFreeReactions();
+            DoBimolecularReactions();
+        }
+
+        void CalculateObservedRates ()
+        {
+            foreach (ReactionWatcher reactionWatcher in collisionFreeReactionWatchers)
             {
                 reactionWatcher.CalculateObservedRate();
             }
+            foreach (ReactionWatcher reactionWatcher in bimolecularReactionWatchers)
+            {
+                reactionWatcher.CalculateObservedRate();
+            }
+        }
 
+        protected virtual void MoveParticles ()
+        {
             //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             foreach (ParticleSimulator particle in particles)
             {
                 particle.Move( World.Instance.dT );
             }
             //UnityEngine.Profiling.Profiler.EndSample();
+        }
 
+        protected virtual void DoCollisionFreeReactions ()
+        {
+            foreach (CollisionFreeReactionWatcher reactionWatcher in collisionFreeReactionWatchers)
+            {
+                reactionWatcher.TryReact();
+            }
+        }
+
+        protected virtual void DoBimolecularReactions ()
+        {
             //UnityEngine.Profiling.Profiler.BeginSample("CalculateCollisions");
             for (int i = 0; i < activeParticles.Count - 1; i++)
             {
@@ -129,93 +163,6 @@ namespace AICS.AgentSim
             }
             others = othersList.ToArray();
             return others.Length > 0;
-        }
-    }
-
-    // runtime data for a reaction used to keep rate near its theoretical value
-    [System.Serializable]
-    public class ReactionWatcher
-    {
-        public Reaction reaction;
-
-        public int attempts;
-        public int events;
-        public float observedRate;
-
-        public ReactionWatcher (Reaction _reaction)
-        {
-            reaction = _reaction;
-        }
-
-        public void CalculateObservedRate ()
-        {
-            observedRate = events / World.Instance.time;
-        }
-
-        bool observedRateTooHigh
-        {
-            get
-            {
-                return observedRate > 1.2f * reaction.rate;
-            }
-        }
-
-        bool observedRateTooLow
-        {
-            get
-            {
-                return observedRate < 0.8f * reaction.rate;
-            }
-        }
-
-        bool shouldHappen
-        {
-            get
-            {
-                attempts++;
-
-                bool react;
-                if (observedRateTooHigh)
-                {
-                    react = false;
-                }
-                else if (observedRateTooLow)
-                {
-                    react = true;
-                }
-                else 
-                {
-                    react = Random.value <= reaction.rate * World.Instance.dT * (World.Instance.steps / attempts);
-                }
-
-                events = react ? events + 1 : events;
-
-                return react;
-            }
-        }
-
-        public bool TryReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
-        {
-            if (ReactantsEqual( bindingSite1.complex, bindingSite2.complex ))
-            {
-                return shouldHappen;
-            }
-            return false;
-        }
-
-        bool ReactantsEqual (List<MoleculeSimulator> complex1, List<MoleculeSimulator> complex2)
-        {
-            return (reaction.reactantStates.Length == 0 && complex1 == null && complex2 == null)
-                || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].Matches( complex1 ) && complex2 == null)
-                                                         || (reaction.reactantStates[0].Matches( complex2 ) && complex1 == null)))
-                || (reaction.reactantStates.Length == 2 && ((reaction.reactantStates[0].Matches( complex1 ) && reaction.reactantStates[1].Matches( complex2 )))
-                                                         || (reaction.reactantStates[0].Matches( complex2 ) && reaction.reactantStates[1].Matches( complex1 )));
-        }
-
-        public void Reset ()
-        {
-            events = attempts = 0;
-            observedRate = 0;
         }
     }
 }

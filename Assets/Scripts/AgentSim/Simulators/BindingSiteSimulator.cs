@@ -48,13 +48,14 @@ namespace AICS.AgentSim
             population = _population;
             molecule = _molecule;
             state = population.initialState;
+            population.RegisterBindingSite( this );
         }
 
         public virtual bool ReactWith (BindingSiteSimulator other)
         {
             if (IsNear( other ))
             {
-                Reaction reaction = population.GetNextReaction( this, other );
+                Reaction reaction = population.GetNextBimolecularReaction( this, other );
                 if (reaction != null)
                 {
                     reaction.React( this, other );

@@ -11,6 +11,7 @@ namespace AICS.AgentSim
         public BindingSite bindingSite;
         public string initialState;
         public float interactionRadius;
+        protected List<BindingSiteSimulator> bindingSites = new List<BindingSiteSimulator>();
 
         public float maxExtentFromMoleculeCenter
         {
@@ -20,23 +21,21 @@ namespace AICS.AgentSim
             }
         }
 
-        ReactionWatcher[] _reactionWatchers;
-        public ReactionWatcher[] reactionWatchers
+        BimolecularReactionWatcher[] _reactionWatchers;
+        public BimolecularReactionWatcher[] reactionWatchers
         {
             get
             {
                 if (_reactionWatchers == null)
                 {
-                    Reaction reaction;
-                    List<ReactionWatcher> reactionWatchersList = new List<ReactionWatcher>();
-                    for (int i = 0; i < particlePopulation.reactor.model.reactions.Length; i++)
+                    List<BimolecularReactionWatcher> reactionWatchersList = new List<BimolecularReactionWatcher>();
+                    foreach (BimolecularReactionWatcher reactionWatcher in particlePopulation.reactor.bimolecularReactionWatchers)
                     {
-                        reaction = particlePopulation.reactor.model.reactions[i];
-                        foreach (MoleculeBindingSite site in reaction.relevantSites)
+                        foreach (MoleculeBindingSite site in reactionWatcher.reaction.relevantSites)
                         {
                             if (molecule == site.molecule && bindingSite.id == site.bindingSiteID)
                             {
-                                reactionWatchersList.Add( particlePopulation.reactor.reactionWatchers[i] );
+                                reactionWatchersList.Add( reactionWatcher );
                             }
                         }
                     }
@@ -53,6 +52,23 @@ namespace AICS.AgentSim
             bindingSite = _bindingSite;
             initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
             interactionRadius = bindingSite.radius;
+            RegisterCollisionFreeReactions();
+        }
+
+        public void RegisterBindingSite (BindingSiteSimulator _bindingSite)
+        {
+            if (!bindingSites.Contains( _bindingSite ))
+            {
+                bindingSites.Add(_bindingSite );
+            }
+        }
+
+        void RegisterCollisionFreeReactions ()
+        {
+            foreach (CollisionFreeReactionWatcher reactionWatcher in particlePopulation.reactor.collisionFreeReactionWatchers)
+            {
+                reactionWatcher.RegisterBindingSitePopulation( this );
+            }
         }
 
         public bool StateIsActive (string state)
@@ -67,12 +83,21 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual Reaction GetNextReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
+        public virtual void DoCollisionFreeReaction (Reaction reaction)
+        {
+            if (bindingSites.Count > 0)
+            {
+                bindingSites.Shuffle();
+                reaction.React( bindingSites[0] );
+            }
+        }
+
+        public virtual Reaction GetNextBimolecularReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
         {
             reactionWatchers.Shuffle();
-            foreach (ReactionWatcher reactionWatcher in reactionWatchers)
+            foreach (BimolecularReactionWatcher reactionWatcher in reactionWatchers)
             {
-                if (reactionWatcher.TryReaction( bindingSite1, bindingSite2 ))
+                if (reactionWatcher.TryReactOnCollision( bindingSite1, bindingSite2 ))
                 {
                     return reactionWatcher.reaction;
                 }

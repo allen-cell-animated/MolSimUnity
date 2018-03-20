@@ -18,8 +18,8 @@ namespace AICS.AgentSim
                 ParticlePopulation productPopulation = bindingSite1.reactor.GetPopulationForComplex( productStates[0] );
                 productPopulation.CreateComplexWithMolecules( bindingSite1.transform, new List<MoleculeSimulator>( new MoleculeSimulator[]{bindingSite1.molecule, bindingSite2.molecule} ) );
 
-                bindingSite1.state = GetFinalSiteState( bindingSite1 );
-                bindingSite2.state = GetFinalSiteState( bindingSite2 );
+                SetFinalSiteState( bindingSite1 );
+                SetFinalSiteState( bindingSite2 );
             }
         }
 
