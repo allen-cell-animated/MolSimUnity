@@ -7,17 +7,30 @@ namespace AICS.AgentSim
     [System.Serializable]
 	public class CollisionFreeReactionWatcher : ReactionWatcher
 	{
-        List<BindingSitePopulation> populations = new List<BindingSitePopulation>();
+        [SerializeField] List<BindingSitePopulation> populations = new List<BindingSitePopulation>();
 
 		public CollisionFreeReactionWatcher (Reaction _reaction) : base (_reaction) { }
 
-        public void RegisterBindingSitePopulation (BindingSitePopulation population)
+        public void RegisterBindingSitePopulation (BindingSitePopulation population, ComplexState complex)
         {
-            if (!populations.Contains( population ) && reaction.relevantSites[0].molecule.species == population.molecule.species 
+            if (!populations.Contains( population ) && ComplexIsReactant( complex ) 
+                && reaction.relevantSites[0].molecule.species == population.molecule.species 
                 && reaction.relevantSites[0].bindingSiteID == population.bindingSite.id)
             {
                 populations.Add( population );
             }
+        }
+
+        bool ComplexIsReactant (ComplexState complex)
+        {
+            foreach (ComplexState reactant in reaction.reactantStates)
+            {
+                if (reactant.Matches( complex ))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool TryReact ()

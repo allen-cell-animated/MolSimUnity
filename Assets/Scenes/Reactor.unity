@@ -232,9 +232,9 @@ MonoBehaviour:
   maxMoveAttempts: 20
   periodicBoundary: 1
   model: {fileID: 11400000, guid: d6b22542f39904cafa8ae1e27852a013, type: 2}
+  collisionFreeReactionWatchers: []
+  bimolecularReactionWatchers: []
   container: {fileID: 0}
-  particles: []
-  activeParticles: []
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0

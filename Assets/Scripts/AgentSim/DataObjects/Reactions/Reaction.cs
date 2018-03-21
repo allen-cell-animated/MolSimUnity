@@ -168,6 +168,27 @@ namespace AICS.AgentSim
             }
             return true;
         }
+
+        public bool Matches (ComplexState other)
+        {
+            foreach (MoleculeState moleculeState in moleculeStates)
+            {
+                bool stateFound = false;
+                foreach (MoleculeState otherMoleculeState in other.moleculeStates)
+                {
+                    if (moleculeState.Matches( otherMoleculeState ))
+                    {
+                        stateFound = true;
+                        break;
+                    }
+                }
+                if (!stateFound)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     [System.Serializable]
@@ -199,11 +220,27 @@ namespace AICS.AgentSim
 
         public bool Matches (MoleculeSimulator _molecule)
         {
-            if (_molecule.species == molecule.species)
+            if (_molecule.species == species)
             {
                 foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {
                     if (!_molecule.SiteIsInState( siteState.Key, siteState.Value ))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public bool Matches (MoleculeState other)
+        {
+            if (other.species == species)
+            {
+                foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
+                {
+                    if (!other.bindingSiteStates.ContainsKey(siteState.Key) || other.bindingSiteStates[siteState.Key] != siteState.Value)
                     {
                         return false;
                     }

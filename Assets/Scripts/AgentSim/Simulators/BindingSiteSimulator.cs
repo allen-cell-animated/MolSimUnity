@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class BindingSiteSimulator : MonoBehaviour 
     {
-        protected BindingSitePopulation population;
+        [SerializeField] protected BindingSitePopulation population;
         public MoleculeSimulator molecule;
         public string state;
         public BindingSiteSimulator boundSite;
@@ -69,6 +69,14 @@ namespace AICS.AgentSim
         {
             return other != this 
                 && Vector3.Distance( transform.position, other.transform.position ) < population.interactionRadius + other.population.interactionRadius;
+        }
+
+        public void MoveToPopulation (ParticlePopulation particlePopulation)
+        {
+            population.UnregisterBindingSite( this );
+            population = particlePopulation.GetBindingSitePopulation( molecule.species, id );
+            population.RegisterBindingSite( this );
+            name = molecule.name + "_" + id;
         }
     }
 }

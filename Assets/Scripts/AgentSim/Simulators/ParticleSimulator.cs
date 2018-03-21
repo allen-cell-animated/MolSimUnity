@@ -7,7 +7,7 @@ namespace AICS.AgentSim
     public class ParticleSimulator : MonoBehaviour 
     {
         public bool canMove = true;
-        protected ParticlePopulation population;
+        public ParticlePopulation population;
         public List<MoleculeSimulator> molecules;
         protected ParticleSimulator[] collidingMolecules;
 
@@ -162,6 +162,12 @@ namespace AICS.AgentSim
             }
         }
 
+        public MoleculeSimulator[] GetMoleculesAtEndOfBond (BindingSiteSimulator bindingSite)
+        {
+            // TODO
+            return new MoleculeSimulator[]{bindingSite.molecule};
+        }
+
         public void RemoveMolecule (MoleculeSimulator molecule)
         {
             if (molecules.Contains( molecule ))
@@ -171,7 +177,6 @@ namespace AICS.AgentSim
             if (molecules.Count == 0)
             {
                 population.reactor.UnregisterParticle( this );
-                Destroy( this );
             }
         }
 	}

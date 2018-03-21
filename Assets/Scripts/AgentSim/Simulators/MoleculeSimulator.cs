@@ -83,9 +83,23 @@ namespace AICS.AgentSim
 
         public void MoveToComplex (ParticleSimulator _particle)
         {
+            if (_particle.gameObject == gameObject)
+            {
+                transform.SetParent( _particle.population.transform );
+            }
+            else
+            {
+                transform.SetParent( _particle.transform );
+            }
+
             particle.RemoveMolecule( this );
             particle = _particle;
-            transform.SetParent( _particle.transform );
+            name = particle.name + "_" + species;
+
+            foreach (BindingSiteSimulator bindingSite in bindingSites.Values)
+            {
+                bindingSite.MoveToPopulation( particle.population );
+            }
         }
 	}
 }

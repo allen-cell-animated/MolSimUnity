@@ -11,7 +11,7 @@ namespace AICS.AgentSim
         public BindingSite bindingSite;
         public string initialState;
         public float interactionRadius;
-        protected List<BindingSiteSimulator> bindingSites = new List<BindingSiteSimulator>();
+        [SerializeField] protected List<BindingSiteSimulator> bindingSites = new List<BindingSiteSimulator>();
 
         public float maxExtentFromMoleculeCenter
         {
@@ -52,7 +52,6 @@ namespace AICS.AgentSim
             bindingSite = _bindingSite;
             initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
             interactionRadius = bindingSite.radius;
-            RegisterCollisionFreeReactions();
         }
 
         public void RegisterBindingSite (BindingSiteSimulator _bindingSite)
@@ -63,11 +62,11 @@ namespace AICS.AgentSim
             }
         }
 
-        void RegisterCollisionFreeReactions ()
+        public void UnregisterBindingSite (BindingSiteSimulator _bindingSite)
         {
-            foreach (CollisionFreeReactionWatcher reactionWatcher in particlePopulation.reactor.collisionFreeReactionWatchers)
+            if (bindingSites.Contains( _bindingSite ))
             {
-                reactionWatcher.RegisterBindingSitePopulation( this );
+                bindingSites.Remove(_bindingSite );
             }
         }
 

@@ -19,6 +19,7 @@ namespace AICS.AgentSim
 
         List<ParticleSimulator> particles = new List<ParticleSimulator>();
         List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
+        List<ParticleSimulator> particlesToDestroy = new List<ParticleSimulator>();
 
         void Start ()
         {
@@ -95,6 +96,10 @@ namespace AICS.AgentSim
             {
                 activeParticles.Remove( particle );
             }
+            if (!particlesToDestroy.Contains( particle ))
+            {
+                particlesToDestroy.Add( particle );
+            }
         }
 
         void Update ()
@@ -103,9 +108,10 @@ namespace AICS.AgentSim
             MoveParticles();
             DoCollisionFreeReactions();
             DoBimolecularReactions();
+            Cleanup();
         }
 
-        void CalculateObservedRates ()
+		void CalculateObservedRates ()
         {
             foreach (ReactionWatcher reactionWatcher in collisionFreeReactionWatchers)
             {
@@ -149,6 +155,15 @@ namespace AICS.AgentSim
                 }
             }
             //UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        protected virtual void Cleanup ()
+        {
+            foreach (ParticleSimulator particle in particlesToDestroy)
+            {
+                Destroy( particle.gameObject );
+            }
+            particlesToDestroy.Clear();
         }
 
         public virtual bool WillCollide (ParticleSimulator particle, Vector3 newPosition, out ParticleSimulator[] others)
