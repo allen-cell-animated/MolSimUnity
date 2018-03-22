@@ -8,16 +8,16 @@ namespace AICS.AgentSim
     {
         public bool canMove = true;
         public ParticlePopulation population;
-        public List<MoleculeSimulator> molecules;
-        protected ParticleSimulator[] collidingMolecules;
+        public List<MoleculeSimulator> moleculeSimulators;
+        protected List<ParticleSimulator> collidingParticleSimulators = new List<ParticleSimulator>();
 
         public bool active
         {
             get
             {
-                foreach (MoleculeSimulator molecule in molecules)
+                foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
                 {
-                    if (molecule.active)
+                    if (moleculeSimulator.active)
                     {
                         return true;
                     }
@@ -26,7 +26,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public float collisionRadius
+        float collisionRadius
         {
             get 
             {
@@ -34,7 +34,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public float interactionRadius
+        float interactionRadius
         {
             get 
             {
@@ -42,34 +42,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (ParticlePopulation _population)
+        public virtual void Init (List<MoleculeSimulator> _moleculeSimulators, ParticlePopulation _particlePopulation)
         {
-            population = _population;
-            population.reactor.RegisterParticle( this );
-        }
-
-        void Update ()
-        {
-            if (canMove)
-            {
-                transform.position += GetExitDirection( collidingMolecules );
-            }
-        }
-
-        protected virtual Vector3 GetExitDirection (ParticleSimulator[] collidingParticles)
-        {
-            if (collidingParticles != null)
-            {
-                int n = 0;
-                Vector3 exitVector = Vector3.zero;
-                foreach (ParticleSimulator other in collidingParticles)
-                {
-                    exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
-                    n++;
-                }
-                return exitVector.normalized;
-            }
-            return Vector3.zero;
+            population = _particlePopulation;
+            moleculeSimulators = _moleculeSimulators;
+            population.reactor.RegisterParticleSimulator( this );
         }
 
         public virtual void Move (float dTime)
@@ -83,6 +60,7 @@ namespace AICS.AgentSim
                     moved = MoveRandomStep( dTime );
                     i++;
                 }
+                transform.position += GetExitDirection();
 
                 RotateRandomly( dTime );
             }
@@ -103,7 +81,7 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            if (population.reactor.WillCollide( this, transform.position + moveStep, out collidingMolecules ))
+            if (population.reactor.GetCollidingParticleSimulators( this, transform.position + moveStep, collidingParticleSimulators ).Count > 0)
             {
                 return false;
             }
@@ -128,55 +106,65 @@ namespace AICS.AgentSim
 
         protected float GetDisplacement (float dTime)
         {
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.diffusionCoefficient * dTime ) );
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.complexState.diffusionCoefficient * dTime ) );
         }
 
-        public virtual void ToggleMotion (bool move)
+        protected virtual Vector3 GetExitDirection ()
         {
-            canMove = move;
+            int n = 0;
+            Vector3 exitVector = Vector3.zero;
+            foreach (ParticleSimulator other in collidingParticleSimulators)
+            {
+                exitVector = (n * exitVector + (transform.position - other.transform.position)) / (n + 1f);
+                n++;
+            }
+            return exitVector.normalized;
         }
 
-        public bool IsCollidingWith (ParticleSimulator other)
+        public bool IsCollidingWith (ParticleSimulator other, Vector3 newPosition)
         {
             return other != this 
-                && Vector3.Distance( transform.position, other.transform.position ) < collisionRadius + other.collisionRadius;
-        }
-
-        public bool IsNear (ParticleSimulator other)
-        {
-            return other != this 
-                && Vector3.Distance( transform.position, other.transform.position ) < interactionRadius + other.interactionRadius;
+                && Vector3.Distance( newPosition, other.transform.position ) < collisionRadius + other.collisionRadius;
         }
 
         public virtual void InteractWith (ParticleSimulator other)
         {
-            foreach (MoleculeSimulator molecule in molecules)
+            if (IsNear( other ))
             {
-                foreach (MoleculeSimulator otherMolecule in other.molecules)
+                foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
                 {
-                    if (molecule.InteractWith( otherMolecule ))
+                    foreach (MoleculeSimulator otherMoleculeSimulator in other.moleculeSimulators)
                     {
-                        return;
+                        if (moleculeSimulator.InteractWith( otherMoleculeSimulator ))
+                        {
+                            return;
+                        }
                     }
                 }
             }
         }
 
-        public MoleculeSimulator[] GetMoleculesAtEndOfBond (BindingSiteSimulator bindingSite)
+        bool IsNear (ParticleSimulator other)
         {
-            // TODO
-            return new MoleculeSimulator[]{bindingSite.molecule};
+            return other != this 
+                && Vector3.Distance( transform.position, other.transform.position ) < interactionRadius + other.interactionRadius;
         }
 
-        public void RemoveMolecule (MoleculeSimulator molecule)
+        public MoleculeSimulator[] GetMoleculesAtEndOfBond (BindingSiteSimulator bindingSiteSimulator)
         {
-            if (molecules.Contains( molecule ))
+            // TODO
+            return new MoleculeSimulator[]{bindingSiteSimulator.moleculeSimulator};
+        }
+
+        public void RemoveMolecule (MoleculeSimulator moleculeSimulator)
+        {
+            if (moleculeSimulators.Contains( moleculeSimulator ))
             {
-                molecules.Remove( molecule );
+                moleculeSimulators.Remove( moleculeSimulator );
             }
-            if (molecules.Count == 0)
+            if (moleculeSimulators.Count == 0)
             {
-                population.reactor.UnregisterParticle( this );
+                population.reactor.UnregisterParticleSimulator( this );
             }
         }
 	}

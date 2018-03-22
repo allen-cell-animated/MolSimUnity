@@ -28,7 +28,8 @@ namespace AICS.AgentSim
                     {
                         bindingSite = GetBindingSiteForProductState( productState, bindingSite1, bindingSite2 );
                         productPopulation = bindingSite1.reactor.GetPopulationForComplex( productState );
-                        productPopulation.CreateComplexWithMolecules( bindingSite.molecule.transform, new List<MoleculeSimulator>( bindingSite.molecule.particle.GetMoleculesAtEndOfBond( bindingSite ) ) );
+                        productPopulation.CreateComplexWithMoleculeSimulators( bindingSite.moleculeSimulator.transform, 
+                                                                               new List<MoleculeSimulator>( bindingSite.particleSimulator.GetMoleculesAtEndOfBond( bindingSite ) ) );
                     }
 
                     bindingSite1.boundSite = null;
@@ -41,11 +42,11 @@ namespace AICS.AgentSim
         {
             foreach (MoleculeState moleculeState in productState.moleculeStates)
             {
-                if (moleculeState.species == bindingSite1.molecule.species && moleculeState.ContainsBindingSite( bindingSite1.id ) )
+                if (moleculeState.molecule.species == bindingSite1.species && moleculeState.ContainsBindingSite( bindingSite1.id ) )
                 {
                     return bindingSite1;
                 }
-                if (moleculeState.species == bindingSite2.molecule.species && moleculeState.ContainsBindingSite( bindingSite2.id ) )
+                if (moleculeState.molecule.species == bindingSite2.species && moleculeState.ContainsBindingSite( bindingSite2.id ) )
                 {
                     return bindingSite2;
                 }

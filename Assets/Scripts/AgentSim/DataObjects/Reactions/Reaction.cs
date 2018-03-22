@@ -11,8 +11,6 @@ namespace AICS.AgentSim
         public float rate;
         public ComplexState[] reactantStates;
         public ComplexState[] productStates;
-
-        #region for prototyping in inspector without writing custom property drawer etc
         public MoleculeBindingSite[] relevantSites;
 
         public bool isBimolecular
@@ -23,6 +21,7 @@ namespace AICS.AgentSim
             }
         }
 
+        #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
             foreach (ComplexState reactantState in reactantStates)
@@ -38,26 +37,26 @@ namespace AICS.AgentSim
 
         public abstract void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null);
 
-        protected virtual void SetFinalSiteState (BindingSiteSimulator bindingSite)
+        protected virtual void SetFinalSiteState (BindingSiteSimulator bindingSiteSimulator)
         {
             foreach (ComplexState productState in productStates)
             {
                 foreach (MoleculeState moleculeState in productState.moleculeStates)
                 {
-                    if (moleculeState.species == bindingSite.molecule.species)
+                    if (moleculeState.molecule.species == bindingSiteSimulator.species)
                     {
                         foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
                         {
-                            if (bindingSiteState.Key == bindingSite.id)
+                            if (bindingSiteState.Key == bindingSiteSimulator.id)
                             {
-                                bindingSite.state = bindingSiteState.Value;
+                                bindingSiteSimulator.state = bindingSiteState.Value;
                                 return;
                             }
                         }
                     }
                 }
             }
-            Debug.LogWarning( "reacting binding site " + bindingSite.name + " doesn't match any site on product of reaction " + description );
+            Debug.LogWarning( "reacting binding site " + bindingSiteSimulator.name + " doesn't match any site on product of reaction " + description );
         }
     }
 
@@ -71,6 +70,11 @@ namespace AICS.AgentSim
         {
             molecule = _molecule;
             bindingSiteID = _bindingSiteID;
+        }
+
+        public bool Matches (MoleculeBindingSite other)
+        {
+            return other.molecule == molecule && other.bindingSiteID == bindingSiteID;
         }
     }
 
@@ -96,7 +100,7 @@ namespace AICS.AgentSim
                 string s = "";
                 for (int i = 0; i < moleculeStates.Length; i++)
                 {
-                    s += moleculeStates[i].species;
+                    s += moleculeStates[i].molecule.species;
                     if (i < moleculeStates.Length - 1)
                     {
                         s += ".";
@@ -202,6 +206,7 @@ namespace AICS.AgentSim
 
         public void Init ()
         {
+            molecule.Init();
             bindingSiteStates = new Dictionary<string,string>();
             foreach (SiteState siteState in siteStates)
             {
@@ -210,21 +215,13 @@ namespace AICS.AgentSim
         }
         #endregion
 
-        public string species 
+        public bool Matches (MoleculeSimulator _moleculeSimulator)
         {
-            get
-            {
-                return molecule.species;
-            }
-        }
-
-        public bool Matches (MoleculeSimulator _molecule)
-        {
-            if (_molecule.species == species)
+            if (_moleculeSimulator.species == molecule.species)
             {
                 foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {
-                    if (!_molecule.SiteIsInState( siteState.Key, siteState.Value ))
+                    if (!_moleculeSimulator.BindingSiteIsInState( siteState.Key, siteState.Value ))
                     {
                         return false;
                     }
@@ -236,7 +233,7 @@ namespace AICS.AgentSim
 
         public bool Matches (MoleculeState other)
         {
-            if (other.species == species)
+            if (other.molecule.species == molecule.species)
             {
                 foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {

@@ -7,11 +7,34 @@ namespace AICS.AgentSim
     public class BindingSitePopulation : MonoBehaviour 
     {
         public ParticlePopulation particlePopulation;
-        public Molecule molecule;
-        public BindingSite bindingSite;
+        public MoleculeBindingSite moleculeBindingSite;
         public string initialState;
         public float interactionRadius;
         [SerializeField] protected List<BindingSiteSimulator> bindingSites = new List<BindingSiteSimulator>();
+
+        protected BindingSite bindingSite
+        {
+            get
+            {
+                return moleculeBindingSite.molecule.bindingSites[moleculeBindingSite.bindingSiteID];
+            }
+        }
+
+        public string id
+        {
+            get
+            {
+                return moleculeBindingSite.bindingSiteID;
+            }
+        }
+
+        public RelativeTransform transformOnMolecule
+        {
+            get
+            {
+                return bindingSite.transformOnMolecule;
+            }
+        }
 
         public float maxExtentFromMoleculeCenter
         {
@@ -22,7 +45,7 @@ namespace AICS.AgentSim
         }
 
         BimolecularReactionWatcher[] _reactionWatchers;
-        public BimolecularReactionWatcher[] reactionWatchers
+        BimolecularReactionWatcher[] reactionWatchers
         {
             get
             {
@@ -33,7 +56,7 @@ namespace AICS.AgentSim
                     {
                         foreach (MoleculeBindingSite site in reactionWatcher.reaction.relevantSites)
                         {
-                            if (molecule == site.molecule && bindingSite.id == site.bindingSiteID)
+                            if (moleculeBindingSite.molecule == site.molecule && bindingSite.id == site.bindingSiteID)
                             {
                                 reactionWatchersList.Add( reactionWatcher );
                             }
@@ -45,13 +68,17 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (Molecule _molecule, BindingSite _bindingSite, string _initialState, ParticlePopulation _particlePopulation)
+        public virtual void Init (MoleculeState moleculeState, string _bindingSiteID, ParticlePopulation _particlePopulation)
         {
             particlePopulation = _particlePopulation;
-            molecule = _molecule;
-            bindingSite = _bindingSite;
-            initialState = string.IsNullOrEmpty( _initialState ) ? bindingSite.states[0] :  _initialState;
+            moleculeBindingSite = new MoleculeBindingSite( moleculeState.molecule, _bindingSiteID );
+            initialState = string.IsNullOrEmpty( moleculeState.bindingSiteStates[_bindingSiteID] ) ? bindingSite.states[0] :  moleculeState.bindingSiteStates[_bindingSiteID];
             interactionRadius = bindingSite.radius;
+
+            foreach (CollisionFreeReactionWatcher reactionWatcher in _particlePopulation.reactor.collisionFreeReactionWatchers)
+            {
+                reactionWatcher.RegisterBindingSitePopulation( this, _particlePopulation.complexState );
+            }
         }
 
         public void RegisterBindingSite (BindingSiteSimulator _bindingSite)

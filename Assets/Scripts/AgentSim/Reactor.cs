@@ -6,27 +6,33 @@ namespace AICS.AgentSim
 {
     public class Reactor : MonoBehaviour 
     {
+        [HideInInspector] public Container container;
+        public Model model;
+        public List<BimolecularReactionWatcher> bimolecularReactionWatchers = new List<BimolecularReactionWatcher>();
+        public List<CollisionFreeReactionWatcher> collisionFreeReactionWatchers = new List<CollisionFreeReactionWatcher>();
+        public Dictionary<string,ParticlePopulation> particlePopulations = new Dictionary<string,ParticlePopulation>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
         public bool periodicBoundary = true;
-        public Model model;
 
-        public Dictionary<string,ParticlePopulation> populations;
-        public List<CollisionFreeReactionWatcher> collisionFreeReactionWatchers = new List<CollisionFreeReactionWatcher>();
-        public List<BimolecularReactionWatcher> bimolecularReactionWatchers = new List<BimolecularReactionWatcher>();
-        [HideInInspector] public Container container;
+        protected List<ParticleSimulator> particleSimulators = new List<ParticleSimulator>();
+        protected List<ParticleSimulator> activeParticleSimulators = new List<ParticleSimulator>();
+        protected List<ParticleSimulator> particleSimulatorsToDestroy = new List<ParticleSimulator>();
 
-        List<ParticleSimulator> particles = new List<ParticleSimulator>();
-        List<ParticleSimulator> activeParticles = new List<ParticleSimulator>();
-        List<ParticleSimulator> particlesToDestroy = new List<ParticleSimulator>();
+        float dT
+        {
+            get
+            {
+                return World.Instance.dT;
+            }
+        }
 
         void Start ()
         {
             SetupReactionData();
             CreateContainer();
 
-            populations = new Dictionary<string,ParticlePopulation>();
             foreach (ComplexConcentration complex in model.complexes)
             {
                 CreatePopulation( complex );
@@ -60,45 +66,46 @@ namespace AICS.AgentSim
         {
             GameObject obj = new GameObject( complexConcentration.species + "Population" );
             obj.transform.SetParent( transform );
-            ParticlePopulation population = obj.AddComponent<ParticlePopulation>();
-            population.Init( complexConcentration, this );
-            populations.Add( complexConcentration.species, population );
+
+            ParticlePopulation particlePopulation = obj.AddComponent<ParticlePopulation>();
+            particlePopulation.Init( complexConcentration, this );
+            particlePopulations.Add( complexConcentration.species, particlePopulation );
         }
 
         public virtual ParticlePopulation GetPopulationForComplex (ComplexState complexState)
         {
-            if (!populations.ContainsKey( complexState.species ))
+            if (!particlePopulations.ContainsKey( complexState.species ))
             {
                 CreatePopulation( new ComplexConcentration( complexState, 0 ) );
             }
-            return populations[complexState.species];
+            return particlePopulations[complexState.species];
         }
 
-        public void RegisterParticle (ParticleSimulator particle)
+        public void RegisterParticleSimulator (ParticleSimulator particleSimulator)
         {
-            if (!particles.Contains( particle ))
+            if (!particleSimulators.Contains( particleSimulator ))
             {
-                particles.Add( particle );
+                particleSimulators.Add( particleSimulator );
             }
-            if (particle.active && !activeParticles.Contains( particle ))
+            if (particleSimulator.active && !activeParticleSimulators.Contains( particleSimulator ))
             {
-                activeParticles.Add( particle );
+                activeParticleSimulators.Add( particleSimulator );
             }
         }
 
-        public void UnregisterParticle (ParticleSimulator particle)
+        public void UnregisterParticleSimulator (ParticleSimulator particleSimulator)
         {
-            if (particles.Contains( particle ))
+            if (particleSimulators.Contains( particleSimulator ))
             {
-                particles.Remove( particle );
+                particleSimulators.Remove( particleSimulator );
             }
-            if (activeParticles.Contains( particle ))
+            if (activeParticleSimulators.Contains( particleSimulator ))
             {
-                activeParticles.Remove( particle );
+                activeParticleSimulators.Remove( particleSimulator );
             }
-            if (!particlesToDestroy.Contains( particle ))
+            if (!particleSimulatorsToDestroy.Contains( particleSimulator ))
             {
-                particlesToDestroy.Add( particle );
+                particleSimulatorsToDestroy.Add( particleSimulator );
             }
         }
 
@@ -126,32 +133,29 @@ namespace AICS.AgentSim
         protected virtual void MoveParticles ()
         {
             //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
-            foreach (ParticleSimulator particle in particles)
+            foreach (ParticleSimulator particleSimulator in particleSimulators)
             {
-                particle.Move( World.Instance.dT );
+                particleSimulator.Move( dT );
             }
             //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         protected virtual void DoCollisionFreeReactions ()
         {
-            foreach (CollisionFreeReactionWatcher reactionWatcher in collisionFreeReactionWatchers)
+            foreach (CollisionFreeReactionWatcher collisionFreeReactionWatcher in collisionFreeReactionWatchers)
             {
-                reactionWatcher.TryReact();
+                collisionFreeReactionWatcher.TryReact();
             }
         }
 
         protected virtual void DoBimolecularReactions ()
         {
             //UnityEngine.Profiling.Profiler.BeginSample("CalculateCollisions");
-            for (int i = 0; i < activeParticles.Count - 1; i++)
+            for (int i = 0; i < activeParticleSimulators.Count - 1; i++)
             {
-                for (int j = i + 1; j < activeParticles.Count; j++)
+                for (int j = i + 1; j < activeParticleSimulators.Count; j++)
                 {
-                    if (activeParticles[i].IsNear( activeParticles[j] ))
-                    {
-                        activeParticles[i].InteractWith( activeParticles[j] );
-                    }
+                    activeParticleSimulators[i].InteractWith( activeParticleSimulators[j] );
                 }
             }
             //UnityEngine.Profiling.Profiler.EndSample();
@@ -159,25 +163,24 @@ namespace AICS.AgentSim
 
         protected virtual void Cleanup ()
         {
-            foreach (ParticleSimulator particle in particlesToDestroy)
+            foreach (ParticleSimulator particleSimulator in particleSimulatorsToDestroy)
             {
-                Destroy( particle.gameObject );
+                Destroy( particleSimulator.gameObject );
             }
-            particlesToDestroy.Clear();
+            particleSimulatorsToDestroy.Clear();
         }
 
-        public virtual bool WillCollide (ParticleSimulator particle, Vector3 newPosition, out ParticleSimulator[] others)
+        public virtual List<ParticleSimulator> GetCollidingParticleSimulators (ParticleSimulator particleSimulator, Vector3 newPosition, List<ParticleSimulator> collidingParticleSimulators)
         {
-            List<ParticleSimulator> othersList = new List<ParticleSimulator>();
-            foreach (ParticleSimulator other in particles)
+            collidingParticleSimulators.Clear();
+            foreach (ParticleSimulator otherParticleSimulator in particleSimulators)
             {
-                if (particle.IsCollidingWith( other ))
+                if (particleSimulator.IsCollidingWith( otherParticleSimulator, newPosition ))
                 {
-                    othersList.Add( other );
+                    collidingParticleSimulators.Add( otherParticleSimulator );
                 }
             }
-            others = othersList.ToArray();
-            return others.Length > 0;
+            return collidingParticleSimulators;
         }
     }
 }

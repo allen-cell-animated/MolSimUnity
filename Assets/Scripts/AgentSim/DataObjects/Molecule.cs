@@ -13,7 +13,23 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public BindingSite[] sites = new BindingSite[0];
+        public Dictionary<string,BindingSite> bindingSites;
+
+        #region for prototyping in inspector without writing custom property drawer etc
+        [SerializeField] BindingSite[] sites = new BindingSite[0];
+
+        public void Init ()
+        {
+            bindingSites = new Dictionary<string,BindingSite>();
+            foreach (BindingSite site in sites)
+            {
+                if (!bindingSites.ContainsKey( site.id ))
+                {
+                    bindingSites.Add( site.id, site );
+                }
+            }
+        }
+        #endregion
 
         public GameObject _visualizationPrefab;
         public GameObject visualizationPrefab
@@ -26,18 +42,6 @@ namespace AICS.AgentSim
                 }
                 return _visualizationPrefab;
             }
-        }
-
-        public BindingSite GetSiteByID (string id)
-        {
-            foreach (BindingSite site in sites)
-            {
-                if (site.id == id)
-                {
-                    return site;
-                }
-            }
-            return null;
         }
     }
 

@@ -7,7 +7,7 @@ namespace AICS.AgentSim
     public class BindingSiteSimulator : MonoBehaviour 
     {
         [SerializeField] protected BindingSitePopulation population;
-        public MoleculeSimulator molecule;
+        public MoleculeSimulator moleculeSimulator;
         public string state;
         public BindingSiteSimulator boundSite;
 
@@ -27,11 +27,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public string id
+        public ParticleSimulator particleSimulator
         {
             get
             {
-                return population.bindingSite.id;
+                return moleculeSimulator.particleSimulator;
             }
         }
 
@@ -39,14 +39,30 @@ namespace AICS.AgentSim
         {
             get
             {
-                return molecule.particle.molecules;
+                return particleSimulator.moleculeSimulators;
             }
         }
 
-        public virtual void Init (BindingSitePopulation _population, MoleculeSimulator _molecule)
+        public string species
+        {
+            get
+            {
+                return moleculeSimulator.species;
+            }
+        }
+
+        public string id
+        {
+            get
+            {
+                return population.id;
+            }
+        }
+
+        public virtual void Init (BindingSitePopulation _population, MoleculeSimulator _moleculeSimulator)
         {
             population = _population;
-            molecule = _molecule;
+            moleculeSimulator = _moleculeSimulator;
             state = population.initialState;
             population.RegisterBindingSite( this );
         }
@@ -67,6 +83,7 @@ namespace AICS.AgentSim
 
         bool IsNear (BindingSiteSimulator other)
         {
+            Debug.Log( other == null );
             return other != this 
                 && Vector3.Distance( transform.position, other.transform.position ) < population.interactionRadius + other.population.interactionRadius;
         }
@@ -74,9 +91,9 @@ namespace AICS.AgentSim
         public void MoveToPopulation (ParticlePopulation particlePopulation)
         {
             population.UnregisterBindingSite( this );
-            population = particlePopulation.GetBindingSitePopulation( molecule.species, id );
+            population = particlePopulation.GetBindingSitePopulation( moleculeSimulator.moleculeState.molecule, id );
             population.RegisterBindingSite( this );
-            name = molecule.name + "_" + id;
+            name = moleculeSimulator.name + "_" + id;
         }
     }
 }

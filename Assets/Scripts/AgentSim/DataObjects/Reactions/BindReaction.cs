@@ -15,10 +15,10 @@ namespace AICS.AgentSim
 
                 RelativelyPosition( bindingSite1.transform, bindingSite2.transform );
 
-                ParticlePopulation productPopulation = bindingSite1.reactor.GetPopulationForComplex( productStates[0] );
-                List<MoleculeSimulator> molecules = new List<MoleculeSimulator>( bindingSite1.molecule.particle.molecules );
-                molecules.AddRange( bindingSite2.molecule.particle.molecules );
-                productPopulation.CreateComplexWithMolecules( bindingSite1.transform, molecules );
+                ParticlePopulation productParticlePopulation = bindingSite1.reactor.GetPopulationForComplex( productStates[0] );
+                List<MoleculeSimulator> moleculeSimulators = new List<MoleculeSimulator>( bindingSite1.particleSimulator.moleculeSimulators );
+                moleculeSimulators.AddRange( bindingSite2.particleSimulator.moleculeSimulators );
+                productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSite1.transform, moleculeSimulators );
 
                 SetFinalSiteState( bindingSite1 );
                 SetFinalSiteState( bindingSite2 );

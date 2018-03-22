@@ -6,19 +6,18 @@ namespace AICS.AgentSim
 {
     public class MoleculeSimulator : MonoBehaviour 
     {
-        public string species;
-
-        public ParticleSimulator particle;
-        public Dictionary<string,BindingSiteSimulator> bindingSites = new Dictionary<string,BindingSiteSimulator>();
-        protected List<BindingSiteSimulator> activeBindingSites = new List<BindingSiteSimulator>();
+        public ParticleSimulator particleSimulator;
+        public MoleculeState moleculeState;
+        public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
+        protected List<BindingSiteSimulator> activeBindingSiteSimulators = new List<BindingSiteSimulator>();
 
         public bool active
         {
             get
             {
-                foreach (KeyValuePair<string,BindingSiteSimulator> bindingSite in bindingSites)
+                foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
                 {
-                    if (bindingSite.Value.active)
+                    if (bindingSiteSimulator.active)
                     {
                         return true;
                     }
@@ -27,47 +26,55 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeState moleculeState, ParticleSimulator _particle)
+        public string species
         {
-            species = moleculeState.species;
-            particle = _particle;
-            CreateBindingSites( moleculeState );
+            get
+            {
+                return moleculeState.molecule.species;
+            }
         }
 
-        protected virtual void CreateBindingSites (MoleculeState moleculeState)
+        public virtual void Init (MoleculeState _moleculeState, ParticleSimulator _particleSimulator)
         {
-            foreach (BindingSite site in moleculeState.molecule.sites)
+            moleculeState = _moleculeState;
+            particleSimulator = _particleSimulator;
+            CreateBindingSites();
+        }
+
+        protected virtual void CreateBindingSites ()
+        {
+            foreach (string siteID in moleculeState.molecule.bindingSites.Keys)
             {
-                CreateBindingSite( moleculeState.molecule, site.id );
+                CreateBindingSite( moleculeState.molecule, siteID );
             }
         }
 
         protected virtual void CreateBindingSite (Molecule molecule, string id)
         {
-            BindingSitePopulation bindingSitePopulation = GetComponentInParent<ParticlePopulation>().GetBindingSitePopulation( molecule.species, id );
+            BindingSitePopulation bindingSitePopulation = particleSimulator.population.GetBindingSitePopulation( molecule, id );
 
-            GameObject obj = new GameObject();
-            obj.transform.SetParent( transform );
-            bindingSitePopulation.bindingSite.transformOnMolecule.Apply( transform, obj.transform );
-            obj.name = name + "_" + bindingSitePopulation.bindingSite.id;
+            GameObject bindingSiteObject = new GameObject();
+            bindingSiteObject.transform.SetParent( transform );
+            bindingSitePopulation.transformOnMolecule.Apply( transform, bindingSiteObject.transform );
+            bindingSiteObject.name = name + "_" + bindingSitePopulation.moleculeBindingSite.bindingSiteID;
 
-            BindingSiteSimulator bindingSite = obj.AddComponent<BindingSiteSimulator>();
-            bindingSite.Init( bindingSitePopulation, this );
+            BindingSiteSimulator bindingSiteSimulator = bindingSiteObject.AddComponent<BindingSiteSimulator>();
+            bindingSiteSimulator.Init( bindingSitePopulation, this );
 
-            bindingSites.Add( id, bindingSite );
-            if (bindingSite.active)
+            bindingSiteSimulators.Add( id, bindingSiteSimulator );
+            if (bindingSiteSimulator.active)
             {
-                activeBindingSites.Add( bindingSite );
+                activeBindingSiteSimulators.Add( bindingSiteSimulator );
             }
         }
 
         public virtual bool InteractWith (MoleculeSimulator other)
         {
-            foreach (BindingSiteSimulator bindingSite in activeBindingSites)
+            foreach (BindingSiteSimulator bindingSiteSimulator in activeBindingSiteSimulators)
             {
-                foreach (BindingSiteSimulator otherBindingSite in other.activeBindingSites)
+                foreach (BindingSiteSimulator otherBindingSiteSimulator in other.activeBindingSiteSimulators)
                 {
-                    if (bindingSite.ReactWith( otherBindingSite ))
+                    if (bindingSiteSimulator.ReactWith( otherBindingSiteSimulator ))
                     {
                         return true;
                     }
@@ -76,29 +83,29 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual bool SiteIsInState (string siteID, string state)
+        public virtual bool BindingSiteIsInState (string bindingSiteID, string state)
         {
-            return bindingSites[siteID].state == state;
+            return bindingSiteSimulators[bindingSiteID].state == state;
         }
 
-        public void MoveToComplex (ParticleSimulator _particle)
+        public void MoveToComplex (ParticleSimulator _particleSimulator)
         {
-            if (_particle.gameObject == gameObject)
+            if (_particleSimulator.gameObject == gameObject)
             {
-                transform.SetParent( _particle.population.transform );
+                transform.SetParent( _particleSimulator.population.transform );
             }
             else
             {
-                transform.SetParent( _particle.transform );
+                transform.SetParent( _particleSimulator.transform );
             }
 
-            particle.RemoveMolecule( this );
-            particle = _particle;
-            name = particle.name + "_" + species;
+            particleSimulator.RemoveMolecule( this );
+            particleSimulator = _particleSimulator;
+            name = particleSimulator.name + "_" + species;
 
-            foreach (BindingSiteSimulator bindingSite in bindingSites.Values)
+            foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                bindingSite.MoveToPopulation( particle.population );
+                bindingSiteSimulator.MoveToPopulation( particleSimulator.population );
             }
         }
 	}

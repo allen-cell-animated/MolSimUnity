@@ -229,12 +229,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6a783a31d6df4615983d9903a2403a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 0}
+  model: {fileID: 11400000, guid: f86e5e061e9074dda8a717230166b991, type: 2}
+  bimolecularReactionWatchers: []
+  collisionFreeReactionWatchers: []
   maxMoveAttempts: 20
   periodicBoundary: 1
-  model: {fileID: 11400000, guid: d6b22542f39904cafa8ae1e27852a013, type: 2}
-  collisionFreeReactionWatchers: []
-  bimolecularReactionWatchers: []
-  container: {fileID: 0}
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0

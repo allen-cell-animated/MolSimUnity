@@ -11,26 +11,33 @@ namespace AICS.AgentSim
 
 		public CollisionFreeReactionWatcher (Reaction _reaction) : base (_reaction) { }
 
-        public void RegisterBindingSitePopulation (BindingSitePopulation population, ComplexState complex)
+        public void RegisterBindingSitePopulation (BindingSitePopulation bindingSitePopulation, ComplexState complex)
         {
-            if (!populations.Contains( population ) && ComplexIsReactant( complex ) 
-                && reaction.relevantSites[0].molecule.species == population.molecule.species 
-                && reaction.relevantSites[0].bindingSiteID == population.bindingSite.id)
+            if (!populations.Contains( bindingSitePopulation ) && ComplexIsReactant( complex ) 
+                && bindingSitePopulation.moleculeBindingSite.Matches( reaction.relevantSites[0] ))
             {
-                populations.Add( population );
+                populations.Add( bindingSitePopulation );
             }
         }
 
-        bool ComplexIsReactant (ComplexState complex)
+        bool ComplexIsReactant (ComplexState complexState)
         {
             foreach (ComplexState reactant in reaction.reactantStates)
             {
-                if (reactant.Matches( complex ))
+                if (reactant.Matches( complexState ))
                 {
                     return true;
                 }
             }
             return false;
+        }
+
+        public void UnregisterBindingSitePopulation (BindingSitePopulation bindingSitePopulation)
+        {
+            if (populations.Contains( bindingSitePopulation ))
+            {
+                populations.Remove( bindingSitePopulation );
+            }
         }
 
         public bool TryReact ()
@@ -49,9 +56,9 @@ namespace AICS.AgentSim
 	{
 		public BimolecularReactionWatcher (Reaction _reaction) : base (_reaction) { }
 
-        public bool TryReactOnCollision (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
+        public bool TryReactOnCollision (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
-            if (ReactantsEqual( bindingSite1.complex, bindingSite2.complex ))
+            if (ReactantsEqual( bindingSiteSimulator1.complex, bindingSiteSimulator2.complex ))
             {
                 return shouldHappen;
             }
