@@ -6,49 +6,41 @@ namespace AICS.AgentSim
 {
     public class ReleaseReaction : Reaction 
     {
-        public override void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null)
+        public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
-            if (bindingSite1 != null)
+            if (bindingSiteSimulator1 != null)
             {
-                if (bindingSite1.boundSite == null)
+                bindingSiteSimulator2 = bindingSiteSimulator1.boundSite;
+
+                SetFinalSiteState( bindingSiteSimulator1 );
+                SetFinalSiteState( bindingSiteSimulator2 );
+
+                BindingSiteSimulator bindingSiteSimulator;
+                ParticlePopulation productPopulation;
+                foreach (ComplexState productState in productStates)
                 {
-                    Debug.Log( bindingSite1.name );
-                    UnityEditor.EditorApplication.isPaused = true;
+                    bindingSiteSimulator = GetBindingSiteForProductState( productState, bindingSiteSimulator1, bindingSiteSimulator2 );
+                    productPopulation = bindingSiteSimulator1.reactor.GetPopulationForComplex( productState );
+                    productPopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator.moleculeSimulator.transform, 
+                                                                          new List<MoleculeSimulator>( bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator ) ) );
                 }
-                else 
-                {
-                    bindingSite2 = bindingSite1.boundSite;
 
-                    SetFinalSiteState( bindingSite1 );
-                    SetFinalSiteState( bindingSite2 );
-
-                    BindingSiteSimulator bindingSite;
-                    ParticlePopulation productPopulation;
-                    foreach (ComplexState productState in productStates)
-                    {
-                        bindingSite = GetBindingSiteForProductState( productState, bindingSite1, bindingSite2 );
-                        productPopulation = bindingSite1.reactor.GetPopulationForComplex( productState );
-                        productPopulation.CreateComplexWithMoleculeSimulators( bindingSite.moleculeSimulator.transform, 
-                                                                               new List<MoleculeSimulator>( bindingSite.particleSimulator.GetMoleculesAtEndOfBond( bindingSite ) ) );
-                    }
-
-                    bindingSite1.boundSite = null;
-                    bindingSite2.boundSite = null;
-                }
+                bindingSiteSimulator1.boundSite = null;
+                bindingSiteSimulator2.boundSite = null;
             }
         }
 
-        BindingSiteSimulator GetBindingSiteForProductState (ComplexState productState, BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
+        BindingSiteSimulator GetBindingSiteForProductState (ComplexState productState, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
             foreach (MoleculeState moleculeState in productState.moleculeStates)
             {
-                if (moleculeState.molecule.species == bindingSite1.species && moleculeState.ContainsBindingSite( bindingSite1.id ) )
+                if (moleculeState.molecule.species == bindingSiteSimulator1.species && moleculeState.ContainsBindingSite( bindingSiteSimulator1.id ) )
                 {
-                    return bindingSite1;
+                    return bindingSiteSimulator1;
                 }
-                if (moleculeState.molecule.species == bindingSite2.species && moleculeState.ContainsBindingSite( bindingSite2.id ) )
+                if (moleculeState.molecule.species == bindingSiteSimulator2.species && moleculeState.ContainsBindingSite( bindingSiteSimulator2.id ) )
                 {
-                    return bindingSite2;
+                    return bindingSiteSimulator2;
                 }
             }
             return null;

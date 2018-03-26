@@ -34,24 +34,24 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeState _moleculeState, ParticleSimulator _particleSimulator)
+        public virtual void Init (MoleculeState _moleculeState, ParticleSimulator _particleSimulator, ParticlePopulation population)
         {
             moleculeState = _moleculeState;
             particleSimulator = _particleSimulator;
-            CreateBindingSites();
+            CreateBindingSites( population );
         }
 
-        protected virtual void CreateBindingSites ()
+        protected virtual void CreateBindingSites (ParticlePopulation population)
         {
             foreach (string siteID in moleculeState.molecule.bindingSites.Keys)
             {
-                CreateBindingSite( moleculeState.molecule, siteID );
+                CreateBindingSite( moleculeState.molecule, siteID, population );
             }
         }
 
-        protected virtual void CreateBindingSite (Molecule molecule, string id)
+        protected virtual void CreateBindingSite (Molecule molecule, string id, ParticlePopulation population)
         {
-            BindingSitePopulation bindingSitePopulation = particleSimulator.population.GetBindingSitePopulation( molecule, id );
+            BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( new MoleculeBindingSite( molecule, id ) );
 
             GameObject bindingSiteObject = new GameObject();
             bindingSiteObject.transform.SetParent( transform );
@@ -83,11 +83,6 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual bool BindingSiteIsInState (string bindingSiteID, string state)
-        {
-            return bindingSiteSimulators[bindingSiteID].state == state;
-        }
-
         public void MoveToComplex (ParticleSimulator _particleSimulator)
         {
             if (_particleSimulator.gameObject == gameObject)
@@ -99,7 +94,7 @@ namespace AICS.AgentSim
                 transform.SetParent( _particleSimulator.transform );
             }
 
-            particleSimulator.RemoveMolecule( this );
+            particleSimulator.RemoveMoleculeSimulator( this );
             particleSimulator = _particleSimulator;
             name = particleSimulator.name + "_" + species;
 

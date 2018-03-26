@@ -79,7 +79,7 @@ namespace AICS.AgentSim
             {
                 line.Trim();
                 //string[] s = line.Split( '(' );
-                //TODO parse molecule types
+                //TODO (later) parse molecule types
             }
         }
 

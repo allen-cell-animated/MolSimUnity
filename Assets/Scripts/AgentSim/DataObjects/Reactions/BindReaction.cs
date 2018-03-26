@@ -6,22 +6,22 @@ namespace AICS.AgentSim
 {
     public class BindReaction : Reaction 
     {
-        public override void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null)
+        public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
-            if (bindingSite1 != null && bindingSite2 != null)
+            if (bindingSiteSimulator1 != null && bindingSiteSimulator2 != null)
             {
-                bindingSite1.boundSite = bindingSite2;
-                bindingSite2.boundSite = bindingSite1;
+                bindingSiteSimulator1.boundSite = bindingSiteSimulator2;
+                bindingSiteSimulator2.boundSite = bindingSiteSimulator1;
 
-                RelativelyPosition( bindingSite1.transform, bindingSite2.transform );
+                RelativelyPosition( bindingSiteSimulator1.transform, bindingSiteSimulator2.transform );
 
-                ParticlePopulation productParticlePopulation = bindingSite1.reactor.GetPopulationForComplex( productStates[0] );
-                List<MoleculeSimulator> moleculeSimulators = new List<MoleculeSimulator>( bindingSite1.particleSimulator.moleculeSimulators );
-                moleculeSimulators.AddRange( bindingSite2.particleSimulator.moleculeSimulators );
-                productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSite1.transform, moleculeSimulators );
+                ParticlePopulation productParticlePopulation = bindingSiteSimulator1.reactor.GetPopulationForComplex( productStates[0] );
+                List<MoleculeSimulator> moleculeSimulators = new List<MoleculeSimulator>( bindingSiteSimulator1.particleSimulator.moleculeSimulators );
+                moleculeSimulators.AddRange( bindingSiteSimulator2.particleSimulator.moleculeSimulators );
+                productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.transform, moleculeSimulators );
 
-                SetFinalSiteState( bindingSite1 );
-                SetFinalSiteState( bindingSite2 );
+                SetFinalSiteState( bindingSiteSimulator1 );
+                SetFinalSiteState( bindingSiteSimulator2 );
             }
         }
 

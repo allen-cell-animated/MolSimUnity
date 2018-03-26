@@ -10,9 +10,9 @@ namespace AICS.AgentSim
         public MoleculeBindingSite moleculeBindingSite;
         public string initialState;
         public float interactionRadius;
-        [SerializeField] protected List<BindingSiteSimulator> bindingSites = new List<BindingSiteSimulator>();
+        [SerializeField] protected List<BindingSiteSimulator> bindingSiteSimulators = new List<BindingSiteSimulator>();
 
-        protected BindingSite bindingSite
+        public BindingSite bindingSite
         {
             get
             {
@@ -81,49 +81,37 @@ namespace AICS.AgentSim
             }
         }
 
-        public void RegisterBindingSite (BindingSiteSimulator _bindingSite)
+        public void RegisterBindingSiteSimulator (BindingSiteSimulator _bindingSiteSimulator)
         {
-            if (!bindingSites.Contains( _bindingSite ))
+            if (!bindingSiteSimulators.Contains( _bindingSiteSimulator ))
             {
-                bindingSites.Add(_bindingSite );
+                bindingSiteSimulators.Add(_bindingSiteSimulator );
             }
         }
 
-        public void UnregisterBindingSite (BindingSiteSimulator _bindingSite)
+        public void UnregisterBindingSiteSimulator (BindingSiteSimulator _bindingSiteSimulator)
         {
-            if (bindingSites.Contains( _bindingSite ))
+            if (bindingSiteSimulators.Contains( _bindingSiteSimulator ))
             {
-                bindingSites.Remove(_bindingSite );
+                bindingSiteSimulators.Remove(_bindingSiteSimulator );
             }
-        }
-
-        public bool StateIsActive (string state)
-        {
-            foreach (string activeState in bindingSite.activeStates)
-            {
-                if (state == activeState)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         public virtual void DoCollisionFreeReaction (Reaction reaction)
         {
-            if (bindingSites.Count > 0)
+            if (bindingSiteSimulators.Count > 0)
             {
-                bindingSites.Shuffle();
-                reaction.React( bindingSites[0] );
+                bindingSiteSimulators.Shuffle();
+                reaction.React( bindingSiteSimulators[0] );
             }
         }
 
-        public virtual Reaction GetNextBimolecularReaction (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2)
+        public virtual Reaction GetNextBimolecularReaction (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
             reactionWatchers.Shuffle();
             foreach (BimolecularReactionWatcher reactionWatcher in reactionWatchers)
             {
-                if (reactionWatcher.TryReactOnCollision( bindingSite1, bindingSite2 ))
+                if (reactionWatcher.TryReactOnCollision( bindingSiteSimulator1, bindingSiteSimulator2 ))
                 {
                     return reactionWatcher.reaction;
                 }

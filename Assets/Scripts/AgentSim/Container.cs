@@ -47,7 +47,7 @@ namespace AICS.AgentSim
             Gizmos.DrawWireCube( transform.position, size );
         }
 
-        public virtual void CreateBounds ()
+        protected virtual void CreateBounds ()
         {
             if (walls == null)
             {

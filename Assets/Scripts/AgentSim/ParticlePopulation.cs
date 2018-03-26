@@ -35,6 +35,7 @@ namespace AICS.AgentSim
             reactor = _reactor;
             complexState = complexConcentration.complexState;
             collisionRadius = interactionRadius = complexState.radius;
+            interactionRadius += 1f;
             amount = Mathf.RoundToInt( complexConcentration.concentration * reactor.container.volume * 6.022141e23f );
 
             CreateBindingSitePopulations( complexState );
@@ -133,7 +134,7 @@ namespace AICS.AgentSim
         protected virtual MoleculeSimulator CreateMoleculeSimulator (GameObject moleculeObject, MoleculeState moleculeState, ParticleSimulator particleSimulator)
         {
             MoleculeSimulator moleculeSimulator = moleculeObject.AddComponent<MoleculeSimulator>();
-            moleculeSimulator.Init( moleculeState, particleSimulator );
+            moleculeSimulator.Init( moleculeState, particleSimulator, this );
             return moleculeSimulator;
         }
 
@@ -180,6 +181,7 @@ namespace AICS.AgentSim
             particleSimulator.Init( _moleculeSimulators, this );
             foreach (MoleculeSimulator moleculeSimulator in _moleculeSimulators)
             {
+                // TODO debug remove item in loop error
                 moleculeSimulator.MoveToComplex( particleSimulator );
             }
         }
@@ -244,12 +246,11 @@ namespace AICS.AgentSim
             return transforms;
         }
 
-        public virtual BindingSitePopulation GetBindingSitePopulation (Molecule molecule, string bindingSiteID)
+        public virtual BindingSitePopulation GetBindingSitePopulation (MoleculeBindingSite moleculeBindingSite)
         {
-            MoleculeBindingSite otherMoleculeBindingSite = new MoleculeBindingSite( molecule, bindingSiteID );
             foreach (BindingSitePopulation bindingSitePopulation in bindingSitePopulations)
             {
-                if (bindingSitePopulation.moleculeBindingSite.Matches( otherMoleculeBindingSite ))
+                if (bindingSitePopulation.moleculeBindingSite.Matches( moleculeBindingSite ))
                 {
                     return bindingSitePopulation;
                 }

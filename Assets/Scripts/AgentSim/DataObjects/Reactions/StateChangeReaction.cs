@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class StateChangeReaction : Reaction 
     {
-        public override void React (BindingSiteSimulator bindingSite1, BindingSiteSimulator bindingSite2 = null)
+        public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
 
         }

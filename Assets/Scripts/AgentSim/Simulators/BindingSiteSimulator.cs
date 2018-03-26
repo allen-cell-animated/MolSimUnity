@@ -15,7 +15,14 @@ namespace AICS.AgentSim
         {
             get
             {
-                return population.StateIsActive( state );
+                foreach (string activeState in population.bindingSite.activeStates)
+                {
+                    if (state == activeState)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
 
@@ -64,7 +71,7 @@ namespace AICS.AgentSim
             population = _population;
             moleculeSimulator = _moleculeSimulator;
             state = population.initialState;
-            population.RegisterBindingSite( this );
+            population.RegisterBindingSiteSimulator( this );
         }
 
         public virtual bool ReactWith (BindingSiteSimulator other)
@@ -83,16 +90,17 @@ namespace AICS.AgentSim
 
         bool IsNear (BindingSiteSimulator other)
         {
-            Debug.Log( other == null );
+            // TODO fix null ref here
+            //Debug.Log( other == null );
             return other != this 
                 && Vector3.Distance( transform.position, other.transform.position ) < population.interactionRadius + other.population.interactionRadius;
         }
 
         public void MoveToPopulation (ParticlePopulation particlePopulation)
         {
-            population.UnregisterBindingSite( this );
-            population = particlePopulation.GetBindingSitePopulation( moleculeSimulator.moleculeState.molecule, id );
-            population.RegisterBindingSite( this );
+            population.UnregisterBindingSiteSimulator( this );
+            population = particlePopulation.GetBindingSitePopulation( population.moleculeBindingSite );
+            population.RegisterBindingSiteSimulator( this );
             name = moleculeSimulator.name + "_" + id;
         }
     }

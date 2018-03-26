@@ -6,7 +6,6 @@ namespace AICS.AgentSim
 {
     public class ParticleSimulator : MonoBehaviour 
     {
-        public bool canMove = true;
         public ParticlePopulation population;
         public List<MoleculeSimulator> moleculeSimulators;
         protected List<ParticleSimulator> collidingParticleSimulators = new List<ParticleSimulator>();
@@ -51,19 +50,15 @@ namespace AICS.AgentSim
 
         public virtual void Move (float dTime)
         {
-            if (canMove)
+            RotateRandomly( dTime );
+            int i = 0;
+            bool moved = false;
+            while (!moved && i < population.reactor.maxMoveAttempts)
             {
-                int i = 0;
-                bool moved = false;
-                while (!moved && i < population.reactor.maxMoveAttempts)
-                {
-                    moved = MoveRandomStep( dTime );
-                    i++;
-                }
-                transform.position += GetExitDirection();
-
-                RotateRandomly( dTime );
+                moved = MoveRandomStep( dTime );
+                i++;
             }
+            transform.position += GetExitDirection();
         }
 
         protected virtual bool MoveRandomStep (float dTime)
@@ -150,13 +145,13 @@ namespace AICS.AgentSim
                 && Vector3.Distance( transform.position, other.transform.position ) < interactionRadius + other.interactionRadius;
         }
 
-        public MoleculeSimulator[] GetMoleculesAtEndOfBond (BindingSiteSimulator bindingSiteSimulator)
+        public MoleculeSimulator[] GetComplexAtEndOfBond (BindingSiteSimulator bindingSiteSimulator)
         {
-            // TODO
+            // TODO trace complex
             return new MoleculeSimulator[]{bindingSiteSimulator.moleculeSimulator};
         }
 
-        public void RemoveMolecule (MoleculeSimulator moleculeSimulator)
+        public void RemoveMoleculeSimulator (MoleculeSimulator moleculeSimulator)
         {
             if (moleculeSimulators.Contains( moleculeSimulator ))
             {
