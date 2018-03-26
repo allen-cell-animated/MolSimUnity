@@ -42,7 +42,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public List<MoleculeSimulator> complex
+        public MoleculeSimulator[] complex
         {
             get
             {
@@ -90,8 +90,6 @@ namespace AICS.AgentSim
 
         bool IsNear (BindingSiteSimulator other)
         {
-            // TODO fix null ref here
-            //Debug.Log( other == null );
             return other != this 
                 && Vector3.Distance( transform.position, other.transform.position ) < population.interactionRadius + other.population.interactionRadius;
         }

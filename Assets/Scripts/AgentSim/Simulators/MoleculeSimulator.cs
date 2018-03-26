@@ -85,14 +85,7 @@ namespace AICS.AgentSim
 
         public void MoveToComplex (ParticleSimulator _particleSimulator)
         {
-            if (_particleSimulator.gameObject == gameObject)
-            {
-                transform.SetParent( _particleSimulator.population.transform );
-            }
-            else
-            {
-                transform.SetParent( _particleSimulator.transform );
-            }
+            transform.SetParent( _particleSimulator.gameObject == gameObject ? _particleSimulator.population.transform : _particleSimulator.transform );
 
             particleSimulator.RemoveMoleculeSimulator( this );
             particleSimulator = _particleSimulator;

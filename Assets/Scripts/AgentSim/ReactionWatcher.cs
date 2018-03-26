@@ -65,7 +65,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        bool ReactantsEqual (List<MoleculeSimulator> complex1, List<MoleculeSimulator> complex2)
+        bool ReactantsEqual (MoleculeSimulator[] complex1, MoleculeSimulator[] complex2)
         {
             return (reaction.reactantStates.Length == 0 && complex1 == null && complex2 == null)
                 || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].Matches( complex1 ) && complex2 == null)

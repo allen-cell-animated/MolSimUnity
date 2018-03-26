@@ -66,10 +66,9 @@ namespace AICS.AgentSim
 
             GameObject complexObject;
             ParticleSimulator particleSimulator;
-            List<MoleculeSimulator> moleculeSimulators = null;
+            MoleculeSimulator[] moleculeSimulators = null;
             RelativeTransform[] moleculeTransforms = null;
-            if (singleMolecule) { moleculeSimulators = new List<MoleculeSimulator>(); }
-            else { moleculeTransforms = CalculateMoleculeTransforms( complexState ); }
+            if (!singleMolecule) { moleculeTransforms = CalculateMoleculeTransforms( complexState ); }
 
             for (int i = 0; i < amount; i++)
             {
@@ -79,10 +78,10 @@ namespace AICS.AgentSim
                 NameAndPlaceComplex( complexObject, reactor.container.GetRandomPointInBounds( 0.1f ), Random.rotation );
                 particleSimulator = complexObject.AddComponent<ParticleSimulator>();
 
-                if (singleMolecule) { moleculeSimulators.Add( CreateMoleculeSimulator( complexObject, complexState.moleculeStates[0], particleSimulator ) ); }
+                if (singleMolecule) { moleculeSimulators = new MoleculeSimulator[]{ CreateMoleculeSimulator( complexObject, complexState.moleculeStates[0], particleSimulator ) }; }
                 else { moleculeSimulators = SpawnMoleculesInComplex( particleSimulator, complexState, moleculeTransforms ); }
 
-                particleSimulator.Init( new List<MoleculeSimulator>( moleculeSimulators ), this );
+                particleSimulator.Init( moleculeSimulators, this );
             }
         }
 
@@ -94,7 +93,7 @@ namespace AICS.AgentSim
             complexObject.transform.rotation = rotation;
         }
 
-        protected virtual List<MoleculeSimulator> SpawnMoleculesInComplex (ParticleSimulator particleSimulator, ComplexState complexState, RelativeTransform[] moleculeTransforms)
+        protected virtual MoleculeSimulator[] SpawnMoleculesInComplex (ParticleSimulator particleSimulator, ComplexState complexState, RelativeTransform[] moleculeTransforms)
         {
             GameObject moleculeObject;
             List<MoleculeSimulator> moleculeSimulators = new List<MoleculeSimulator>();
@@ -108,7 +107,7 @@ namespace AICS.AgentSim
                 }
             }
             ConnectBoundSites( moleculeSimulators );
-            return moleculeSimulators;
+            return moleculeSimulators.ToArray();
         }
 
         protected virtual GameObject SpawnMolecule (MoleculeState moleculeState)
@@ -163,15 +162,15 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void CreateComplexWithMoleculeSimulators (Transform centerTransform, List<MoleculeSimulator> _moleculeSimulators)
+        public virtual void CreateComplexWithMoleculeSimulators (Transform centerTransform, MoleculeSimulator[] _moleculeSimulators)
         {
             ParticleSimulator particleSimulator = null;
-            if (_moleculeSimulators.Count == 1)
+            if (_moleculeSimulators.Length == 1)
             {
                 particleSimulator = _moleculeSimulators[0].gameObject.AddComponent<ParticleSimulator>();
                 particleSimulator.name = complexName;
             }
-            else if (_moleculeSimulators.Count > 1)
+            else if (_moleculeSimulators.Length > 1)
             {
                 GameObject complexObject = new GameObject();
                 NameAndPlaceComplex( complexObject, centerTransform.position, centerTransform.rotation );
@@ -179,9 +178,9 @@ namespace AICS.AgentSim
             }
 
             particleSimulator.Init( _moleculeSimulators, this );
-            foreach (MoleculeSimulator moleculeSimulator in _moleculeSimulators)
+            List<MoleculeSimulator> oldSimulators = new List<MoleculeSimulator>( _moleculeSimulators );
+            foreach (MoleculeSimulator moleculeSimulator in oldSimulators)
             {
-                // TODO debug remove item in loop error
                 moleculeSimulator.MoveToComplex( particleSimulator );
             }
         }

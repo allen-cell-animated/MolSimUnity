@@ -111,10 +111,12 @@ namespace AICS.AgentSim
 
         void Update ()
         {
-            CalculateObservedRates();
             MoveParticles();
+
+            CalculateObservedRates();
             DoCollisionFreeReactions();
             DoBimolecularReactions();
+
             Cleanup();
         }
 
@@ -140,17 +142,31 @@ namespace AICS.AgentSim
             //UnityEngine.Profiling.Profiler.EndSample();
         }
 
+        public virtual bool WillCollide (ParticleSimulator particleSimulator, Vector3 newPosition)
+        {
+            foreach (ParticleSimulator otherParticleSimulator in particleSimulators)
+            {
+                if (particleSimulator.IsCollidingWith( otherParticleSimulator, newPosition ))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected virtual void DoCollisionFreeReactions ()
         {
+            //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
             foreach (CollisionFreeReactionWatcher collisionFreeReactionWatcher in collisionFreeReactionWatchers)
             {
                 collisionFreeReactionWatcher.TryReact();
             }
+            //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         protected virtual void DoBimolecularReactions ()
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("CalculateCollisions");
+            //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
             for (int i = 0; i < activeParticleSimulators.Count - 1; i++)
             {
                 for (int j = i + 1; j < activeParticleSimulators.Count; j++)
@@ -165,17 +181,24 @@ namespace AICS.AgentSim
         {
             foreach (ParticleSimulator particleSimulator in particleSimulatorsToDestroy)
             {
-                Destroy( particleSimulator.gameObject );
+                if (particleSimulator.GetComponent<MoleculeSimulator>())
+                {
+                    Destroy( particleSimulator );
+                }
+                else
+                {
+                    Destroy( particleSimulator.gameObject );
+                }
             }
             particleSimulatorsToDestroy.Clear();
         }
 
-        public virtual List<ParticleSimulator> GetCollidingParticleSimulators (ParticleSimulator particleSimulator, Vector3 newPosition, List<ParticleSimulator> collidingParticleSimulators)
+        public virtual List<ParticleSimulator> GetCollidingParticleSimulators (ParticleSimulator particleSimulator)
         {
-            collidingParticleSimulators.Clear();
+            List<ParticleSimulator> collidingParticleSimulators = new List<ParticleSimulator>();
             foreach (ParticleSimulator otherParticleSimulator in particleSimulators)
             {
-                if (particleSimulator.IsCollidingWith( otherParticleSimulator, newPosition ))
+                if (particleSimulator.IsCollidingWith( otherParticleSimulator, particleSimulator.transform.position ))
                 {
                     collidingParticleSimulators.Add( otherParticleSimulator );
                 }
