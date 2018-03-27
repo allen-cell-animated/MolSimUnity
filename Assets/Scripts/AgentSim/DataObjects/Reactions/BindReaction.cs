@@ -13,13 +13,13 @@ namespace AICS.AgentSim
                 bindingSiteSimulator1.boundSite = bindingSiteSimulator2;
                 bindingSiteSimulator2.boundSite = bindingSiteSimulator1;
 
-                RelativelyPosition( bindingSiteSimulator1.transform, bindingSiteSimulator2.transform );
+                RelativelyPosition( bindingSiteSimulator1.theTransform, bindingSiteSimulator2.theTransform );
 
                 ParticlePopulation productParticlePopulation = bindingSiteSimulator1.reactor.GetPopulationForComplex( productStates[0] );
                 MoleculeSimulator[] moleculeSimulators = new MoleculeSimulator[bindingSiteSimulator1.complex.Length + bindingSiteSimulator2.complex.Length];
                 bindingSiteSimulator1.complex.CopyTo( moleculeSimulators, 0 );
                 bindingSiteSimulator2.complex.CopyTo( moleculeSimulators, bindingSiteSimulator1.complex.Length );
-                productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.transform, moleculeSimulators );
+                productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.theTransform, moleculeSimulators );
 
                 SetFinalSiteState( bindingSiteSimulator1 );
                 SetFinalSiteState( bindingSiteSimulator2 );

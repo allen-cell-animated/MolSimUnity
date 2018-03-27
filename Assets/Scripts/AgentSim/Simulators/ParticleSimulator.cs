@@ -9,6 +9,19 @@ namespace AICS.AgentSim
         public ParticlePopulation population;
         public MoleculeSimulator[] moleculeSimulators;
 
+        Transform _theTransform;
+        public Transform theTransform
+        {
+            get
+            {
+                if (_theTransform == null)
+                {
+                    _theTransform = transform;
+                }
+                return _theTransform;
+            }
+        }
+
         public bool active
         {
             get
@@ -64,7 +77,7 @@ namespace AICS.AgentSim
             Vector3 moveStep = 2E3f * GetDisplacement( dTime ) * Random.onUnitSphere;
 
             Vector3 collisionToCenter;
-            if (population.reactor.container.IsOutOfBounds( transform.position + moveStep, out collisionToCenter ))
+            if (population.reactor.container.IsOutOfBounds( theTransform.position + moveStep, out collisionToCenter ))
             {
                 if (population.reactor.periodicBoundary)
                 {
@@ -74,27 +87,27 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            if (population.reactor.WillCollide( this, transform.position + moveStep ))
+            if (population.reactor.WillCollide( this, theTransform.position + moveStep ))
             {
                 return false;
             }
 
-            transform.position += moveStep;
+            theTransform.position += moveStep;
             return true;
         }
 
         protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
         {
             RaycastHit info;
-            if (Physics.Raycast( transform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, population.reactor.container.boundaryLayer ))
+            if (Physics.Raycast( theTransform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, population.reactor.container.boundaryLayer ))
             {
-                transform.position = info.point - collisionToCenter.normalized;
+                theTransform.position = info.point - collisionToCenter.normalized;
             }
         }
 
         protected virtual void RotateRandomly (float dTime)
         {
-            transform.rotation *= Quaternion.Euler( 4E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
+            theTransform.rotation *= Quaternion.Euler( 4E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
         protected float GetDisplacement (float dTime)
@@ -105,7 +118,7 @@ namespace AICS.AgentSim
         public bool IsCollidingWith (ParticleSimulator other, Vector3 newPosition)
         {
             return other != this 
-                && Vector3.Distance( newPosition, other.transform.position ) < collisionRadius + other.collisionRadius;
+                && Vector3.Distance( newPosition, other.theTransform.position ) < collisionRadius + other.collisionRadius;
         }
 
         public virtual void InteractWith (ParticleSimulator other)
@@ -142,7 +155,7 @@ namespace AICS.AgentSim
         bool IsNear (ParticleSimulator other)
         {
             return other != this 
-                && Vector3.Distance( transform.position, other.transform.position ) < interactionRadius + other.interactionRadius;
+                && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
         }
 
         public MoleculeSimulator[] GetComplexAtEndOfBond (BindingSiteSimulator bindingSiteSimulator)

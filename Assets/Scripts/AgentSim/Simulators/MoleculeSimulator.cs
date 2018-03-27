@@ -11,6 +11,19 @@ namespace AICS.AgentSim
         public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
         protected List<BindingSiteSimulator> activeBindingSiteSimulators = new List<BindingSiteSimulator>();
 
+        Transform _theTransform;
+        public Transform theTransform
+        {
+            get
+            {
+                if (_theTransform == null)
+                {
+                    _theTransform = transform;
+                }
+                return _theTransform;
+            }
+        }
+
         public bool active
         {
             get
@@ -54,8 +67,8 @@ namespace AICS.AgentSim
             BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( new MoleculeBindingSite( molecule, id ) );
 
             GameObject bindingSiteObject = new GameObject();
-            bindingSiteObject.transform.SetParent( transform );
-            bindingSitePopulation.transformOnMolecule.Apply( transform, bindingSiteObject.transform );
+            bindingSiteObject.transform.SetParent( theTransform );
+            bindingSitePopulation.transformOnMolecule.Apply( theTransform, bindingSiteObject.transform );
             bindingSiteObject.name = name + "_" + bindingSitePopulation.moleculeBindingSite.bindingSiteID;
 
             BindingSiteSimulator bindingSiteSimulator = bindingSiteObject.AddComponent<BindingSiteSimulator>();
@@ -85,7 +98,7 @@ namespace AICS.AgentSim
 
         public void MoveToComplex (ParticleSimulator _particleSimulator)
         {
-            transform.SetParent( _particleSimulator.gameObject == gameObject ? _particleSimulator.population.transform : _particleSimulator.transform );
+            theTransform.SetParent( _particleSimulator.gameObject == gameObject ? _particleSimulator.population.theTransform : _particleSimulator.theTransform );
 
             particleSimulator.RemoveMoleculeSimulator( this );
             particleSimulator = _particleSimulator;

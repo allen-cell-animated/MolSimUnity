@@ -8,8 +8,8 @@ namespace AICS.AgentSim
     {
         [HideInInspector] public Container container;
         public Model model;
-        public List<BimolecularReactionWatcher> bimolecularReactionWatchers = new List<BimolecularReactionWatcher>();
-        public List<CollisionFreeReactionWatcher> collisionFreeReactionWatchers = new List<CollisionFreeReactionWatcher>();
+        public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
+        public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
         public Dictionary<string,ParticlePopulation> particlePopulations = new Dictionary<string,ParticlePopulation>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
@@ -47,11 +47,11 @@ namespace AICS.AgentSim
             {
                 if (reaction.isBimolecular)
                 {
-                    bimolecularReactionWatchers.Add( new BimolecularReactionWatcher( reaction ) );
+                    bimolecularReactionSimulators.Add( new BimolecularReactionSimulator( reaction ) );
                 }
                 else
                 {
-                    collisionFreeReactionWatchers.Add( new CollisionFreeReactionWatcher( reaction ) );
+                    collisionFreeReactionSimulators.Add( new CollisionFreeReactionSimulator( reaction ) );
                 }
             }
         }
@@ -122,24 +122,24 @@ namespace AICS.AgentSim
 
 		void CalculateObservedRates ()
         {
-            foreach (ReactionWatcher reactionWatcher in collisionFreeReactionWatchers)
+            foreach (ReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
             {
-                reactionWatcher.CalculateObservedRate();
+                reactionSimulator.CalculateObservedRate();
             }
-            foreach (ReactionWatcher reactionWatcher in bimolecularReactionWatchers)
+            foreach (ReactionSimulator reactionSimulator in bimolecularReactionSimulators)
             {
-                reactionWatcher.CalculateObservedRate();
+                reactionSimulator.CalculateObservedRate();
             }
         }
 
         protected virtual void MoveParticles ()
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+            UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             foreach (ParticleSimulator particleSimulator in particleSimulators)
             {
                 particleSimulator.Move( dT );
             }
-            //UnityEngine.Profiling.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public virtual bool WillCollide (ParticleSimulator particleSimulator, Vector3 newPosition)
@@ -156,17 +156,17 @@ namespace AICS.AgentSim
 
         protected virtual void DoCollisionFreeReactions ()
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
-            foreach (CollisionFreeReactionWatcher collisionFreeReactionWatcher in collisionFreeReactionWatchers)
+            UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+            foreach (CollisionFreeReactionSimulator collisionFreeReactionSimulator in collisionFreeReactionSimulators)
             {
-                collisionFreeReactionWatcher.TryReact();
+                collisionFreeReactionSimulator.TryReact();
             }
-            //UnityEngine.Profiling.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         protected virtual void DoBimolecularReactions ()
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
+            UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
             for (int i = 0; i < activeParticleSimulators.Count - 1; i++)
             {
                 for (int j = i + 1; j < activeParticleSimulators.Count; j++)
@@ -174,7 +174,7 @@ namespace AICS.AgentSim
                     activeParticleSimulators[i].InteractWith( activeParticleSimulators[j] );
                 }
             }
-            //UnityEngine.Profiling.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         protected virtual void Cleanup ()
@@ -191,19 +191,6 @@ namespace AICS.AgentSim
                 }
             }
             particleSimulatorsToDestroy.Clear();
-        }
-
-        public virtual List<ParticleSimulator> GetCollidingParticleSimulators (ParticleSimulator particleSimulator)
-        {
-            List<ParticleSimulator> collidingParticleSimulators = new List<ParticleSimulator>();
-            foreach (ParticleSimulator otherParticleSimulator in particleSimulators)
-            {
-                if (particleSimulator.IsCollidingWith( otherParticleSimulator, particleSimulator.transform.position ))
-                {
-                    collidingParticleSimulators.Add( otherParticleSimulator );
-                }
-            }
-            return collidingParticleSimulators;
         }
     }
 }

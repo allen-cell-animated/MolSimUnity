@@ -44,27 +44,27 @@ namespace AICS.AgentSim
             }
         }
 
-        BimolecularReactionWatcher[] _reactionWatchers;
-        BimolecularReactionWatcher[] reactionWatchers
+        BimolecularReactionSimulator[] _reactionSimulators;
+        BimolecularReactionSimulator[] reactionSimulators
         {
             get
             {
-                if (_reactionWatchers == null)
+                if (_reactionSimulators == null)
                 {
-                    List<BimolecularReactionWatcher> reactionWatchersList = new List<BimolecularReactionWatcher>();
-                    foreach (BimolecularReactionWatcher reactionWatcher in particlePopulation.reactor.bimolecularReactionWatchers)
+                    List<BimolecularReactionSimulator> reactionSimulatorsList = new List<BimolecularReactionSimulator>();
+                    foreach (BimolecularReactionSimulator reactionSimulator in particlePopulation.reactor.bimolecularReactionSimulators)
                     {
-                        foreach (MoleculeBindingSite site in reactionWatcher.reaction.relevantSites)
+                        foreach (MoleculeBindingSite site in reactionSimulator.reaction.relevantSites)
                         {
                             if (moleculeBindingSite.molecule == site.molecule && bindingSite.id == site.bindingSiteID)
                             {
-                                reactionWatchersList.Add( reactionWatcher );
+                                reactionSimulatorsList.Add( reactionSimulator );
                             }
                         }
                     }
-                    _reactionWatchers = reactionWatchersList.ToArray();
+                    _reactionSimulators = reactionSimulatorsList.ToArray();
                 }
-                return _reactionWatchers;
+                return _reactionSimulators;
             }
         }
 
@@ -75,7 +75,7 @@ namespace AICS.AgentSim
             initialState = string.IsNullOrEmpty( moleculeState.bindingSiteStates[_bindingSiteID] ) ? bindingSite.states[0] :  moleculeState.bindingSiteStates[_bindingSiteID];
             interactionRadius = bindingSite.radius;
 
-            foreach (CollisionFreeReactionWatcher reactionWatcher in _particlePopulation.reactor.collisionFreeReactionWatchers)
+            foreach (CollisionFreeReactionSimulator reactionWatcher in _particlePopulation.reactor.collisionFreeReactionSimulators)
             {
                 reactionWatcher.RegisterBindingSitePopulation( this, _particlePopulation.complexState );
             }
@@ -108,12 +108,12 @@ namespace AICS.AgentSim
 
         public virtual Reaction GetNextBimolecularReaction (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
-            reactionWatchers.Shuffle();
-            foreach (BimolecularReactionWatcher reactionWatcher in reactionWatchers)
+            reactionSimulators.Shuffle();
+            foreach (BimolecularReactionSimulator reactionSimulator in reactionSimulators)
             {
-                if (reactionWatcher.TryReactOnCollision( bindingSiteSimulator1, bindingSiteSimulator2 ))
+                if (reactionSimulator.TryReactOnCollision( bindingSiteSimulator1, bindingSiteSimulator2 ))
                 {
-                    return reactionWatcher.reaction;
+                    return reactionSimulator.reaction;
                 }
             }
             return null;

@@ -5,15 +5,15 @@ using UnityEngine;
 namespace AICS.AgentSim
 {
     [System.Serializable]
-	public class CollisionFreeReactionWatcher : ReactionWatcher
+    public class CollisionFreeReactionSimulator : ReactionSimulator
 	{
         [SerializeField] List<BindingSitePopulation> populations = new List<BindingSitePopulation>();
 
-		public CollisionFreeReactionWatcher (Reaction _reaction) : base (_reaction) { }
+        public CollisionFreeReactionSimulator (Reaction _reaction) : base (_reaction) { }
 
-        public void RegisterBindingSitePopulation (BindingSitePopulation bindingSitePopulation, ComplexState complex)
+        public void RegisterBindingSitePopulation (BindingSitePopulation bindingSitePopulation, ComplexState complexState)
         {
-            if (!populations.Contains( bindingSitePopulation ) && ComplexIsReactant( complex ) 
+            if (!populations.Contains( bindingSitePopulation ) && ComplexIsReactant( complexState ) 
                 && bindingSitePopulation.moleculeBindingSite.Matches( reaction.relevantSites[0] ))
             {
                 populations.Add( bindingSitePopulation );
@@ -52,9 +52,9 @@ namespace AICS.AgentSim
 	}
 
     [System.Serializable]
-	public class BimolecularReactionWatcher : ReactionWatcher
+    public class BimolecularReactionSimulator : ReactionSimulator
 	{
-		public BimolecularReactionWatcher (Reaction _reaction) : base (_reaction) { }
+        public BimolecularReactionSimulator (Reaction _reaction) : base (_reaction) { }
 
         public bool TryReactOnCollision (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
@@ -77,7 +77,7 @@ namespace AICS.AgentSim
 
 	// runtime data for a reaction used to keep rate near its theoretical value
     [System.Serializable]
-    public abstract class ReactionWatcher
+    public abstract class ReactionSimulator
     {
         public Reaction reaction;
         
@@ -85,7 +85,7 @@ namespace AICS.AgentSim
         public int events;
         public float observedRate;
 
-        public ReactionWatcher (Reaction _reaction)
+        public ReactionSimulator (Reaction _reaction)
         {
             reaction = _reaction;
         }

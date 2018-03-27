@@ -11,6 +11,19 @@ namespace AICS.AgentSim
         public string state;
         public BindingSiteSimulator boundSite;
 
+        Transform _theTransform;
+        public Transform theTransform
+        {
+            get
+            {
+                if (_theTransform == null)
+                {
+                    _theTransform = transform;
+                }
+                return _theTransform;
+            }
+        }
+
         public bool active
         {
             get
@@ -91,7 +104,7 @@ namespace AICS.AgentSim
         bool IsNear (BindingSiteSimulator other)
         {
             return other != this 
-                && Vector3.Distance( transform.position, other.transform.position ) < population.interactionRadius + other.population.interactionRadius;
+                && Vector3.Distance( theTransform.position, other.theTransform.position ) < population.interactionRadius + other.population.interactionRadius;
         }
 
         public void MoveToPopulation (ParticlePopulation particlePopulation)

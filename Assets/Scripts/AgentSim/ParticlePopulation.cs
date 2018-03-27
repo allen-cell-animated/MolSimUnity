@@ -13,6 +13,19 @@ namespace AICS.AgentSim
 
         protected List<BindingSitePopulation> bindingSitePopulations = new List<BindingSitePopulation>();
 
+        Transform _theTransform;
+        public Transform theTransform
+        {
+            get
+            {
+                if (_theTransform == null)
+                {
+                    _theTransform = transform;
+                }
+                return _theTransform;
+            }
+        }
+
         int amount;
         public float concentration
         {
@@ -26,7 +39,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return complexState.species + transform.childCount;
+                return complexState.species + theTransform.childCount;
             }
         }
 
@@ -102,7 +115,7 @@ namespace AICS.AgentSim
                 moleculeObject = SpawnMolecule( complexState.moleculeStates[i] );
                 if (moleculeObject != null)
                 {
-                    NameAndPlaceMoleculeInComplex( moleculeObject, complexState.moleculeStates[i].molecule.species, particleSimulator.transform, moleculeTransforms[i] );
+                    NameAndPlaceMoleculeInComplex( moleculeObject, complexState.moleculeStates[i].molecule.species, particleSimulator.theTransform, moleculeTransforms[i] );
                     moleculeSimulators.Add( CreateMoleculeSimulator( moleculeObject, complexState.moleculeStates[i], particleSimulator ) );
                 }
             }

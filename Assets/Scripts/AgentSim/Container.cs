@@ -14,6 +14,19 @@ namespace AICS.AgentSim
         Vector3 size;
         Walls walls;
 
+        Transform _theTransform;
+        public Transform theTransform
+        {
+            get
+            {
+                if (_theTransform == null)
+                {
+                    _theTransform = transform;
+                }
+                return _theTransform;
+            }
+        }
+
         public virtual void Init (float _scale, float _volume, bool _periodicBoundary)
         {
             scale = _scale;
@@ -34,7 +47,7 @@ namespace AICS.AgentSim
 
         public virtual Vector3 GetRandomPointInBounds (float margin = 0)
         {
-            return transform.position + (1f - margin) * (new Vector3( size.x * Random.value, size.y * Random.value, size.z * Random.value ) - size / 2f);
+            return theTransform.position + (1f - margin) * (new Vector3( size.x * Random.value, size.y * Random.value, size.z * Random.value ) - size / 2f);
         }
 
         void OnDrawGizmos ()
@@ -44,7 +57,7 @@ namespace AICS.AgentSim
 
         protected virtual void DrawGizmo ()
         {
-            Gizmos.DrawWireCube( transform.position, size );
+            Gizmos.DrawWireCube( theTransform.position, size );
         }
 
         protected virtual void CreateBounds ()
@@ -58,10 +71,10 @@ namespace AICS.AgentSim
 
         public virtual bool IsOutOfBounds (Vector3 point, out Vector3 pointToCenter)
         {
-            bool inBounds = point.x < transform.position.x + size.x / 2f && point.x > transform.position.x - size.x / 2f
-                         && point.y < transform.position.y + size.y / 2f && point.y > transform.position.y - size.y / 2f
-                         && point.z < transform.position.z + size.z / 2f && point.z > transform.position.z - size.z / 2f;
-            pointToCenter = inBounds ? Vector3.zero : transform.position - point;
+            bool inBounds = point.x < theTransform.position.x + size.x / 2f && point.x > theTransform.position.x - size.x / 2f
+                         && point.y < theTransform.position.y + size.y / 2f && point.y > theTransform.position.y - size.y / 2f
+                         && point.z < theTransform.position.z + size.z / 2f && point.z > theTransform.position.z - size.z / 2f;
+            pointToCenter = inBounds ? Vector3.zero : theTransform.position - point;
             return !inBounds;
         }
 	}
