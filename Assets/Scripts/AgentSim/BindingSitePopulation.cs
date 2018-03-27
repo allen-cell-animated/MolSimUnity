@@ -97,26 +97,25 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void DoCollisionFreeReaction (Reaction reaction)
+        public virtual bool DoCollisionFreeReaction (Reaction reaction)
         {
             if (bindingSiteSimulators.Count > 0)
             {
                 bindingSiteSimulators.Shuffle();
                 reaction.React( bindingSiteSimulators[0] );
+                return true;
             }
+            return false;
         }
 
-        public virtual Reaction GetNextBimolecularReaction (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
+        public virtual bool DoBimolecularReaction (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
             reactionSimulators.Shuffle();
             foreach (BimolecularReactionSimulator reactionSimulator in reactionSimulators)
             {
-                if (reactionSimulator.TryReactOnCollision( bindingSiteSimulator1, bindingSiteSimulator2 ))
-                {
-                    return reactionSimulator.reaction;
-                }
+                return reactionSimulator.TryReactOnCollision( bindingSiteSimulator1, bindingSiteSimulator2 );
             }
-            return null;
+            return false;
         }
     }
 }

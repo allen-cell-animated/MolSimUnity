@@ -91,12 +91,7 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
-                Reaction reaction = population.GetNextBimolecularReaction( this, other );
-                if (reaction != null)
-                {
-                    reaction.React( this, other );
-                    return true;
-                }
+                return population.DoBimolecularReaction( this, other );
             }
             return false;
         }

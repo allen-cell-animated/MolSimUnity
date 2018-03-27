@@ -45,7 +45,7 @@ namespace AICS.AgentSim
             if (populations.Count > 0 && shouldHappen)
             {
                 populations.Shuffle();
-                populations[0].DoCollisionFreeReaction( reaction );
+                return populations[0].DoCollisionFreeReaction( reaction );
             }
             return false;
         }
@@ -58,9 +58,10 @@ namespace AICS.AgentSim
 
         public bool TryReactOnCollision (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
-            if (ReactantsEqual( bindingSiteSimulator1.complex, bindingSiteSimulator2.complex ))
+            if (ReactantsEqual( bindingSiteSimulator1.complex, bindingSiteSimulator2.complex ) && shouldHappen)
             {
-                return shouldHappen;
+                reaction.React( bindingSiteSimulator1, bindingSiteSimulator2 );
+                return true;
             }
             return false;
         }

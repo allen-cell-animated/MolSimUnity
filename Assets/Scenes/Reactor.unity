@@ -231,8 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 0}
   model: {fileID: 11400000, guid: cdeb8b2a8c0a045dcac77f5ab3eb068b, type: 2}
-  bimolecularReactionWatchers: []
-  collisionFreeReactionWatchers: []
+  bimolecularReactionSimulators: []
+  collisionFreeReactionSimulators: []
   maxMoveAttempts: 20
   periodicBoundary: 1
 --- !u!4 &902787514

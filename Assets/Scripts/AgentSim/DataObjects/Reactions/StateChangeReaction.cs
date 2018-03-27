@@ -8,7 +8,7 @@ namespace AICS.AgentSim
     {
         public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
-
+            ShowFlash( bindingSiteSimulator1.theTransform );
         }
     }
 }

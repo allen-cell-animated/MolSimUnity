@@ -27,6 +27,8 @@ namespace AICS.AgentSim
 
                 bindingSiteSimulator1.boundSite = null;
                 bindingSiteSimulator2.boundSite = null;
+
+                ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }
 
