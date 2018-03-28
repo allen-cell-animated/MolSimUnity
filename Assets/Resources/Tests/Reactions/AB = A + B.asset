@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: AB = A + B
   m_EditorClassIdentifier: 
   description: A(b!1).B(a!1) -> A(b) + B(a)
-  rate: 1000000
+  rate: 100000000
   reactantStates:
   - moleculeStates:
     - molecule: {fileID: 11400000, guid: 1591ac0aecb7e4a33bd1ced8237ad062, type: 2}

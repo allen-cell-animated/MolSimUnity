@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class BindingSiteSimulator : MonoBehaviour 
     {
-        [SerializeField] protected BindingSitePopulation population;
+        public BindingSitePopulation population;
         public MoleculeSimulator moleculeSimulator;
         public string state;
         public BindingSiteSimulator boundSite;
@@ -108,6 +108,11 @@ namespace AICS.AgentSim
             population = particlePopulation.GetBindingSitePopulation( population.moleculeBindingSite );
             population.RegisterBindingSiteSimulator( this );
             name = moleculeSimulator.name + "_" + id;
+        }
+
+        public override string ToString()
+        {
+            return "BindingSiteSimulator " + name;
         }
     }
 }

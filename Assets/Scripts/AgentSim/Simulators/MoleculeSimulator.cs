@@ -9,7 +9,7 @@ namespace AICS.AgentSim
         public ParticleSimulator particleSimulator;
         public MoleculeState moleculeState;
         public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
-        protected List<BindingSiteSimulator> activeBindingSiteSimulators = new List<BindingSiteSimulator>();
+        public List<BindingSiteSimulator> activeBindingSiteSimulators = new List<BindingSiteSimulator>();
 
         Transform _theTransform;
         public Transform theTransform
@@ -108,6 +108,11 @@ namespace AICS.AgentSim
             {
                 bindingSiteSimulator.MoveToPopulation( particleSimulator.population );
             }
+        }
+
+        public override string ToString()
+        {
+            return "MoleculeSimulator " + name;
         }
 	}
 }

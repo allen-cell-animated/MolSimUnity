@@ -15,7 +15,6 @@ public class ContainerTests : AgentSimTests
         yield return new WaitForEndOfFrame();
 
         ParticleSimulator[] particleSimulators = GameObject.FindObjectsOfType<ParticleSimulator>();
-        Vector3 nullVector;
 
         for (int i = 0; i < 500; i++)
         {
@@ -23,7 +22,7 @@ public class ContainerTests : AgentSimTests
 
             foreach (ParticleSimulator particleSimulator in particleSimulators)
             {
-                Assert.IsFalse( reactor.container.IsOutOfBounds( particleSimulator.theTransform.position, out nullVector ) );
+                Assert.IsTrue( reactor.container.IsInBounds( particleSimulator.theTransform.position ) );
             }
         }
 

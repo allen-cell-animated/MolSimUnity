@@ -10,8 +10,7 @@ namespace AICS.AgentSim
         public ComplexState complexState;
         public float collisionRadius;
         public float interactionRadius;
-
-        protected List<BindingSitePopulation> bindingSitePopulations = new List<BindingSitePopulation>();
+        public List<BindingSitePopulation> bindingSitePopulations = new List<BindingSitePopulation>();
 
         Transform _theTransform;
         public Transform theTransform
@@ -269,6 +268,11 @@ namespace AICS.AgentSim
                 }
             }
             return null;
+        }
+
+        public override string ToString()
+        {
+            return "ParticlePopulation " + name;
         }
     }
 }

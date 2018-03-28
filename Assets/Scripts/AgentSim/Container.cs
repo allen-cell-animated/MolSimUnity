@@ -69,13 +69,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual bool IsOutOfBounds (Vector3 point, out Vector3 pointToCenter)
+        public virtual bool IsInBounds (Vector3 point)
         {
-            bool inBounds = point.x < theTransform.position.x + size.x / 2f && point.x > theTransform.position.x - size.x / 2f
-                         && point.y < theTransform.position.y + size.y / 2f && point.y > theTransform.position.y - size.y / 2f
-                         && point.z < theTransform.position.z + size.z / 2f && point.z > theTransform.position.z - size.z / 2f;
-            pointToCenter = inBounds ? Vector3.zero : theTransform.position - point;
-            return !inBounds;
+            return point.x < theTransform.position.x + size.x / 2f && point.x > theTransform.position.x - size.x / 2f
+                && point.y < theTransform.position.y + size.y / 2f && point.y > theTransform.position.y - size.y / 2f
+                && point.z < theTransform.position.z + size.z / 2f && point.z > theTransform.position.z - size.z / 2f;
         }
 	}
 }

@@ -20,6 +20,11 @@ namespace AICS.AgentSim
         {
             return other.molecule == molecule && other.bindingSiteID == bindingSiteID;
         }
+
+        public override string ToString ()
+        {
+            return "site " + bindingSiteID + " on molecule " + molecule.species;
+        }
     }
 
     [System.Serializable]

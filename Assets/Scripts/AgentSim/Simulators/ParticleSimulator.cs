@@ -76,12 +76,11 @@ namespace AICS.AgentSim
         {
             Vector3 moveStep = 2E3f * GetDisplacement( dTime ) * Random.onUnitSphere;
 
-            Vector3 collisionToCenter;
-            if (population.reactor.container.IsOutOfBounds( theTransform.position + moveStep, out collisionToCenter ))
+            if (!population.reactor.container.IsInBounds( theTransform.position + moveStep ))
             {
                 if (population.reactor.periodicBoundary)
                 {
-                    ReflectPeriodically( collisionToCenter );
+                    ReflectPeriodically( population.reactor.container.theTransform.position - (theTransform.position + moveStep) );
                     return true;
                 }
                 return false;
@@ -138,15 +137,7 @@ namespace AICS.AgentSim
                                     return;
                                 }
                             }
-                            else 
-                            {
-                                Debug.Log( "NULL molecule in OTHER particle " + name );
-                            }
                         }
-                    }
-                    else 
-                    {
-                        Debug.Log( "NULL molecule in particle " + name );
                     }
                 }
             }
@@ -183,5 +174,10 @@ namespace AICS.AgentSim
                 population.reactor.UnregisterParticleSimulator( this );
             }
         }
+
+		public override string ToString()
+		{
+            return "ParticleSimulator " + name;
+		}
 	}
 }

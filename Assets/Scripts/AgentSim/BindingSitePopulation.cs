@@ -10,7 +10,7 @@ namespace AICS.AgentSim
         public MoleculeBindingSite moleculeBindingSite;
         public string initialState;
         public float interactionRadius;
-        [SerializeField] protected List<BindingSiteSimulator> bindingSiteSimulators = new List<BindingSiteSimulator>();
+        public List<BindingSiteSimulator> bindingSiteSimulators = new List<BindingSiteSimulator>();
 
         public BindingSite bindingSite
         {
@@ -116,6 +116,11 @@ namespace AICS.AgentSim
                 return reactionSimulator.TryReactOnCollision( bindingSiteSimulator1, bindingSiteSimulator2 );
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return "BindingSitePopulation for " + moleculeBindingSite + " on " + name;
         }
     }
 }

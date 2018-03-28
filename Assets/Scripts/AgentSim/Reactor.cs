@@ -16,8 +16,8 @@ namespace AICS.AgentSim
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
         public bool periodicBoundary = true;
 
-        protected List<ParticleSimulator> particleSimulators = new List<ParticleSimulator>();
-        protected List<ParticleSimulator> activeParticleSimulators = new List<ParticleSimulator>();
+        public List<ParticleSimulator> particleSimulators = new List<ParticleSimulator>();
+        public List<ParticleSimulator> activeParticleSimulators = new List<ParticleSimulator>();
         protected List<ParticleSimulator> particleSimulatorsToDestroy = new List<ParticleSimulator>();
 
         float dT
