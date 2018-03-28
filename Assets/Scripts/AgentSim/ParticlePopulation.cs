@@ -125,13 +125,14 @@ namespace AICS.AgentSim
 
         protected virtual GameObject SpawnMolecule (MoleculeState moleculeState)
         {
-            if (moleculeState.molecule.visualizationPrefab == null)
+            GameObject visualizationPrefab = moleculeState.molecule.visualizationPrefab;
+            if (visualizationPrefab == null)
             {
                 Debug.LogWarning( name + "'s molecule prefab is null!" );
-                return null;
+                visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
             }
 
-            GameObject molecule = Instantiate( moleculeState.molecule.visualizationPrefab );
+            GameObject molecule = Instantiate( visualizationPrefab );
             return molecule;
         }
 

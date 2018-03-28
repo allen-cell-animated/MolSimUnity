@@ -9,15 +9,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
-  m_Name: ANullReaction
+  m_Name: BasicMoleculeDiffusion
   m_EditorClassIdentifier: 
+  scale: 0.000001
   containerVolume: 0.000000125
-  molecules:
-  - species: A
-    radius: 0.5
-    scale: 0.000000001
-    diffusionCoefficient: 300000
-    initialConcentration: 6.5e-16
-    _visualizationPrefab: {fileID: 1516328023671344, guid: 6f5572824542847eb882138248ab7ccd,
-      type: 2}
+  complexes:
+  - concentration: 2.6e-15
+    complexState:
+      moleculeStates:
+      - molecule: {fileID: 11400000, guid: 99eec79f4177b4f97bf9a0970fcea559, type: 2}
+        siteStates: []
   reactions: []

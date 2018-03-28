@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6a783a31d6df4615983d9903a2403a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usePhysicsEngine: 0
+  container: {fileID: 0}
+  model: {fileID: 0}
+  bimolecularReactionSimulators: []
+  collisionFreeReactionSimulators: []
   maxMoveAttempts: 20
   periodicBoundary: 1
-  model: {fileID: 0}
-  reactionWatchers: []
-  container: {fileID: 0}
