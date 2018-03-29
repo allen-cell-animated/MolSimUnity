@@ -109,6 +109,24 @@ namespace AICS.AgentSim
             }
         }
 
+        public void ParticleSimulatorChangedActiveState (ParticleSimulator particleSimulator)
+        {
+            if (particleSimulator.active)
+            {
+                if (activeParticleSimulators.Contains( particleSimulator ))
+                {
+                    activeParticleSimulators.Remove( particleSimulator );
+                }
+            }
+            else
+            {
+                if (!activeParticleSimulators.Contains( particleSimulator ))
+                {
+                    activeParticleSimulators.Add( particleSimulator );
+                }
+            }
+        }
+
         void Update ()
         {
             MoveParticles();
@@ -191,6 +209,27 @@ namespace AICS.AgentSim
                 }
             }
             particleSimulatorsToDestroy.Clear();
+        }
+
+        static GameObject _flashPrefab;
+        static GameObject flashPrefab
+        {
+            get
+            {
+                if (_flashPrefab == null)
+                {
+                    _flashPrefab = Resources.Load( "Flash" ) as GameObject;
+                }
+                return _flashPrefab;
+            }
+        }
+
+        public static void ShowFlash (Transform parent)
+        {
+            if (flashPrefab != null)
+            {
+                Instantiate( flashPrefab, parent.position, Quaternion.identity, parent );
+            }
         }
     }
 }

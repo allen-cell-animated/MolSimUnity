@@ -50,6 +50,7 @@ namespace AICS.AgentSim
                             if (bindingSiteState.Key == bindingSiteSimulator.id)
                             {
                                 bindingSiteSimulator.state = bindingSiteState.Value;
+                                bindingSiteSimulator.UpdateActive();
                                 return;
                             }
                         }
@@ -59,25 +60,9 @@ namespace AICS.AgentSim
             Debug.LogWarning( "reacting binding site " + bindingSiteSimulator.name + " doesn't match any site on product of reaction " + description );
         }
 
-        GameObject _flashPrefab;
-        GameObject flashPrefab
+        protected void UpdateActiveSimulators ()
         {
-            get
-            {
-                if (_flashPrefab == null)
-                {
-                    _flashPrefab = Resources.Load( "Flash" ) as GameObject;
-                }
-                return _flashPrefab;
-            }
-        }
 
-        protected void ShowFlash (Transform parent)
-        {
-            if (flashPrefab != null)
-            {
-                Instantiate( flashPrefab, parent.position, Quaternion.identity, parent );
-            }
         }
     }
 }

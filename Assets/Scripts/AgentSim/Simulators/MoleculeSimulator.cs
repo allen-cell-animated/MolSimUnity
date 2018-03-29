@@ -9,7 +9,6 @@ namespace AICS.AgentSim
         public ParticleSimulator particleSimulator;
         public MoleculeState moleculeState;
         public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
-        public List<BindingSiteSimulator> activeBindingSiteSimulators = new List<BindingSiteSimulator>();
 
         Transform _theTransform;
         public Transform theTransform
@@ -24,19 +23,29 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool active
+        public bool active;
+
+        public void UpdateActive (bool aBindingSiteIsActive = false)
         {
-            get
+            bool newActive = aBindingSiteIsActive ? true : GetActive();
+
+            if (newActive != active)
             {
-                foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
-                {
-                    if (bindingSiteSimulator.active)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                active = newActive;
+                particleSimulator.UpdateActive( active );
             }
+        }
+
+        bool GetActive ()
+        {
+            foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
+            {
+                if (bindingSiteSimulator.active)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public string species
@@ -52,6 +61,12 @@ namespace AICS.AgentSim
             moleculeState = _moleculeState;
             particleSimulator = _particleSimulator;
             CreateBindingSites( population );
+
+            foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
+            {
+                bindingSiteSimulator.UpdateActive( false );
+            }
+            active = GetActive();
         }
 
         protected virtual void CreateBindingSites (ParticlePopulation population)
@@ -75,21 +90,20 @@ namespace AICS.AgentSim
             bindingSiteSimulator.Init( bindingSitePopulation, this );
 
             bindingSiteSimulators.Add( id, bindingSiteSimulator );
-            if (bindingSiteSimulator.active)
-            {
-                activeBindingSiteSimulators.Add( bindingSiteSimulator );
-            }
         }
 
         public virtual bool InteractWith (MoleculeSimulator other)
         {
-            foreach (BindingSiteSimulator bindingSiteSimulator in activeBindingSiteSimulators)
+            foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                foreach (BindingSiteSimulator otherBindingSiteSimulator in other.activeBindingSiteSimulators)
+                if (bindingSiteSimulator.active)
                 {
-                    if (bindingSiteSimulator.ReactWith( otherBindingSiteSimulator ))
+                    foreach (BindingSiteSimulator otherBindingSiteSimulator in other.bindingSiteSimulators.Values)
                     {
-                        return true;
+                        if (otherBindingSiteSimulator.active && bindingSiteSimulator.ReactWith( otherBindingSiteSimulator ))
+                        {
+                            return true;
+                        }
                     }
                 }
             }

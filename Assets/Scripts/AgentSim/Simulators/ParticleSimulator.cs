@@ -22,19 +22,29 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool active
+        public bool active;
+
+        public void UpdateActive (bool aMoleculeIsActive = false)
         {
-            get
+            bool newActive = aMoleculeIsActive ? true : GetActive();
+
+            if (newActive != active)
             {
-                foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
-                {
-                    if (moleculeSimulator.active)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                active = newActive;
+                population.reactor.ParticleSimulatorChangedActiveState( this );
             }
+        }
+
+        bool GetActive ()
+        {
+            foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
+            {
+                if (moleculeSimulator.active)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         float collisionRadius
@@ -57,6 +67,7 @@ namespace AICS.AgentSim
         {
             population = _particlePopulation;
             moleculeSimulators = _moleculeSimulators;
+            active = GetActive();
             population.reactor.RegisterParticleSimulator( this );
         }
 
@@ -126,11 +137,11 @@ namespace AICS.AgentSim
             {
                 foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
                 {
-                    if (moleculeSimulator != null)
+                    if (moleculeSimulator != null && moleculeSimulator.active)
                     {
                         foreach (MoleculeSimulator otherMoleculeSimulator in other.moleculeSimulators)
                         {
-                            if (otherMoleculeSimulator != null)
+                            if (otherMoleculeSimulator != null && otherMoleculeSimulator.active)
                             {
                                 if (moleculeSimulator.InteractWith( otherMoleculeSimulator ))
                                 {

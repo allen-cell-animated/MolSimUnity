@@ -24,7 +24,7 @@ namespace AICS.AgentSim
                 SetFinalSiteState( bindingSiteSimulator1 );
                 SetFinalSiteState( bindingSiteSimulator2 );
 
-                ShowFlash( bindingSiteSimulator1.theTransform );
+                Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }
 

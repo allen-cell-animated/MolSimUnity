@@ -24,18 +24,28 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool active
+        public bool active;
+
+        public void UpdateActive (bool updateMolecule = true)
         {
-            get
+            bool newActive = false;
+
+            foreach (string activeState in population.bindingSite.activeStates)
             {
-                foreach (string activeState in population.bindingSite.activeStates)
+                if (state == activeState)
                 {
-                    if (state == activeState)
-                    {
-                        return true;
-                    }
+                    newActive = true;
+                    break;
                 }
-                return false;
+            }
+
+            if (newActive != active)
+            {
+                active = newActive;
+                if (updateMolecule)
+                {
+                    moleculeSimulator.UpdateActive( active );
+                }
             }
         }
 
