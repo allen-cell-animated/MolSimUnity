@@ -7,9 +7,9 @@ using AICS.AgentSim;
 
 public class AgentSimTests
 {
-    protected bool debug = true;
+    protected static bool debug = true;
 
-    protected void AssertIsTrue (bool value)
+    protected static void AssertIsTrue (bool value)
     {
         if (debug && !value)
         {

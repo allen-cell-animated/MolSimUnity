@@ -129,6 +129,11 @@ namespace AICS.AgentSim
 
         void Update ()
         {
+            if (Input.GetKeyDown( KeyCode.X ))
+            {
+                ObjectStateTests.StateOfReactorIsCorrect( this );
+            }
+
             MoveParticles();
 
             CalculateObservedRates();

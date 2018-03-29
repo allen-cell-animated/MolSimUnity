@@ -77,7 +77,7 @@ public class ObjectStateTests : AgentSimTests
         DestroyReactor( reactor );
     }
 
-    bool StateOfReactorIsCorrect (Reactor reactor)
+    public static bool StateOfReactorIsCorrect (Reactor reactor)
     {
         //particle simulators
         foreach (ParticleSimulator particleSimulator in reactor.particleSimulators)
@@ -200,7 +200,7 @@ public class ObjectStateTests : AgentSimTests
         return true;
     }
 
-    bool ParticleSimulatorReallyIsActive (ParticleSimulator particleSimulator)
+    static bool ParticleSimulatorReallyIsActive (ParticleSimulator particleSimulator)
     {
         foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
         {
@@ -218,7 +218,7 @@ public class ObjectStateTests : AgentSimTests
         return false;
     }
 
-    bool StateOfParticlePopulationIsCorrect (ParticlePopulation particlePopulation)
+    static bool StateOfParticlePopulationIsCorrect (ParticlePopulation particlePopulation)
     {
         //binding site populations
         foreach (BindingSitePopulation bindingSitePopulation in particlePopulation.bindingSitePopulations)
@@ -280,7 +280,7 @@ public class ObjectStateTests : AgentSimTests
         return true;
     }
 
-    bool StateOfBindingSitePopulationIsCorrect (BindingSitePopulation bindingSitePopulation)
+    static bool StateOfBindingSitePopulationIsCorrect (BindingSitePopulation bindingSitePopulation)
     {
         foreach (BindingSiteSimulator bindingSiteSimulator in bindingSitePopulation.bindingSiteSimulators)
         {
@@ -311,7 +311,7 @@ public class ObjectStateTests : AgentSimTests
         return true;
     }
 
-    bool StateOfParticleSimulatorIsCorrect (ParticleSimulator particleSimulator)
+    static bool StateOfParticleSimulatorIsCorrect (ParticleSimulator particleSimulator)
     {
         foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
         {
@@ -377,7 +377,7 @@ public class ObjectStateTests : AgentSimTests
         return true;
     }
 
-    bool StateOfMoleculeSimulatorIsCorrect (MoleculeSimulator moleculeSimulator)
+    static bool StateOfMoleculeSimulatorIsCorrect (MoleculeSimulator moleculeSimulator)
     {
         foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
         {
