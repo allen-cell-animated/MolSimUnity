@@ -7,8 +7,6 @@ using AICS.AgentSim;
 
 public class ObjectStateTests : AgentSimTests
 {
-    bool debug = true;
-
     int numberOfTimesToCheck = 5;
 
     float waitTime
@@ -29,8 +27,9 @@ public class ObjectStateTests : AgentSimTests
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
             yield return new WaitForSeconds( waitTime );
+            yield return new WaitForEndOfFrame();
 
-            Assert.IsTrue( StateOfReactorIsCorrect( reactor ) );
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
         }
 
         DestroyReactor( reactor );
@@ -46,8 +45,9 @@ public class ObjectStateTests : AgentSimTests
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
             yield return new WaitForSeconds( waitTime );
+            yield return new WaitForEndOfFrame();
 
-            Assert.IsTrue( StateOfReactorIsCorrect( reactor ) );
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
         }
 
         DestroyReactor( reactor );
@@ -63,8 +63,9 @@ public class ObjectStateTests : AgentSimTests
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
             yield return new WaitForSeconds( waitTime );
+            yield return new WaitForEndOfFrame();
 
-            Assert.IsTrue( StateOfReactorIsCorrect( reactor ) );
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
         }
 
         DestroyReactor( reactor );
@@ -177,7 +178,7 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( particlePopulation + " is registered to the Reactor " + count + " times" ); }
                 return false;
             }
-            Assert.IsTrue( StateOfParticlePopulationIsCorrect( particlePopulation ) );
+            AssertIsTrue( StateOfParticlePopulationIsCorrect( particlePopulation ) );
         }
         foreach (ParticlePopulation particlePopulation in GameObject.FindObjectsOfType<ParticlePopulation>())
         {
@@ -226,7 +227,7 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( bindingSitePopulation + " is registered to " + particlePopulation + " " + count + " times" ); }
                 return false;
             }
-            Assert.IsTrue( StateOfBindingSitePopulationIsCorrect( bindingSitePopulation ) );
+            AssertIsTrue( StateOfBindingSitePopulationIsCorrect( bindingSitePopulation ) );
         }
         foreach (BindingSitePopulation bindingSitePopulation in particlePopulation.GetComponents<BindingSitePopulation>())
         {
@@ -250,7 +251,7 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( particleSimulator + " is not parented to " + particlePopulation ); }
                 return false;
             }
-            Assert.IsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
+            AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
         }
         return true;
     }
@@ -313,7 +314,7 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( moleculeSimulator + " is registered to " + particleSimulator + " " + count + " times" ); }
                 return false;
             }
-            Assert.IsTrue( StateOfMoleculeSimulatorIsCorrect( moleculeSimulator ) );
+            AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( moleculeSimulator ) );
         }
         foreach (MoleculeSimulator moleculeSimulator in particleSimulator.GetComponentsInChildren<MoleculeSimulator>())
         {

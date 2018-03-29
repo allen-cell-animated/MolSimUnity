@@ -7,12 +7,31 @@ using AICS.AgentSim;
 
 public class AgentSimTests
 {
+    protected bool debug = true;
+
+    protected void AssertIsTrue (bool value)
+    {
+        if (debug && !value)
+        {
+            Debug.LogError( "Test failed" );
+            UnityEditor.EditorApplication.isPaused = true;
+        }
+        else
+        {
+            Assert.IsTrue( value );
+        }
+    }
+
+    GameObject light;
+    GameObject eventSystem;
+    World world;
+
     protected Reactor CreateReactor (string modelName)
     {
-        GameObject.Instantiate( Resources.Load( "DefaultLight" ) as GameObject );
-        GameObject.Instantiate( Resources.Load( "EventSystem" ) as GameObject );
-        new GameObject( "World", typeof(World) );
-        World.Instance.observer = (GameObject.Instantiate( Resources.Load( "Observer" ) as GameObject ) as GameObject).GetComponentInChildren<Observer>();
+        light = GameObject.Instantiate( Resources.Load( "DefaultLight" ) as GameObject );
+        eventSystem = GameObject.Instantiate( Resources.Load( "EventSystem" ) as GameObject );
+        world = new GameObject( "World", typeof(World) ).GetComponent<World>();
+        world.observer = (GameObject.Instantiate( Resources.Load( "Observer" ) as GameObject ) as GameObject).GetComponentInChildren<Observer>();
 
         Reactor reactor = (GameObject.Instantiate( Resources.Load( "DefaultReactor" ) as GameObject ) as GameObject).GetComponent<Reactor>();
         reactor.model = Resources.Load( "Tests/Models/" + modelName ) as Model;
@@ -23,9 +42,9 @@ public class AgentSimTests
     protected void DestroyReactor (Reactor reactor)
     {
         GameObject.Destroy( reactor.gameObject );
-        GameObject.Destroy( GameObject.Find( "EventSystem(Clone)" ) );
-        GameObject.Destroy( GameObject.Find( "DefaultLight(Clone)" ) );
-        GameObject.Destroy( World.Instance.observer.GetComponentInParent<FollowLookZoomCamera>().gameObject );
-        GameObject.Destroy( World.Instance.gameObject );
+        GameObject.Destroy( eventSystem );
+        GameObject.Destroy( light );
+        GameObject.Destroy( world.observer.transform.parent.parent.gameObject );
+        GameObject.Destroy( world.gameObject );
     }
 }

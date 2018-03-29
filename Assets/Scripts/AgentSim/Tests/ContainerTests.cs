@@ -22,7 +22,7 @@ public class ContainerTests : AgentSimTests
 
             foreach (ParticleSimulator particleSimulator in particleSimulators)
             {
-                Assert.IsTrue( reactor.container.IsInBounds( particleSimulator.theTransform.position ) );
+                AssertIsTrue( reactor.container.IsInBounds( particleSimulator.theTransform.position ) );
             }
         }
 

@@ -34,11 +34,13 @@ namespace AICS.AgentSim
             }
         }
 
+        int id = -1;
         string complexName
         {
             get
             {
-                return complexState.species + theTransform.childCount;
+                id++;
+                return complexState.species + id;
             }
         }
 
