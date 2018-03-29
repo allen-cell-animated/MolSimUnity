@@ -24,6 +24,8 @@ public class ObjectStateTests : AgentSimTests
 
         yield return new WaitForEndOfFrame();
 
+        AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
+
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
             yield return new WaitForSeconds( waitTime );
@@ -42,6 +44,8 @@ public class ObjectStateTests : AgentSimTests
 
         yield return new WaitForEndOfFrame();
 
+        AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
+
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
             yield return new WaitForSeconds( waitTime );
@@ -59,6 +63,8 @@ public class ObjectStateTests : AgentSimTests
         Reactor reactor = CreateReactor( "ABReversibleReaction" );
 
         yield return new WaitForEndOfFrame();
+
+        AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
 
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
@@ -200,7 +206,7 @@ public class ObjectStateTests : AgentSimTests
         {
             foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
             {
-                foreach (string activeState in bindingSiteSimulator.population.bindingSite.activeStates)
+                foreach (string activeState in bindingSiteSimulator.population.activeStates)
                 {
                     if (bindingSiteSimulator.state == activeState)
                     {

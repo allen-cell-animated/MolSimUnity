@@ -30,7 +30,7 @@ namespace AICS.AgentSim
         {
             bool newActive = false;
 
-            foreach (string activeState in population.bindingSite.activeStates)
+            foreach (string activeState in population.activeStates)
             {
                 if (state == activeState)
                 {
@@ -118,6 +118,7 @@ namespace AICS.AgentSim
             population = particlePopulation.GetBindingSitePopulation( population.moleculeBindingSite );
             population.RegisterBindingSiteSimulator( this );
             name = moleculeSimulator.name + "_" + id;
+            UpdateActive( false );
         }
 
         public override string ToString()

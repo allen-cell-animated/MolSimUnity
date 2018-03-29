@@ -50,7 +50,6 @@ namespace AICS.AgentSim
     {
         public string id;
         public string[] states;
-        public string[] activeStates;
         public RelativeTransform transformOnMolecule;
         public float radius;
     }

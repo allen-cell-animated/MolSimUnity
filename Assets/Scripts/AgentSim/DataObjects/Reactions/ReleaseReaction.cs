@@ -15,6 +15,9 @@ namespace AICS.AgentSim
                 SetFinalSiteState( bindingSiteSimulator1 );
                 SetFinalSiteState( bindingSiteSimulator2 );
 
+                bindingSiteSimulator1.boundSite = null;
+                bindingSiteSimulator2.boundSite = null;
+
                 BindingSiteSimulator bindingSiteSimulator;
                 ParticlePopulation productPopulation;
                 foreach (ComplexState productState in productStates)
@@ -24,9 +27,6 @@ namespace AICS.AgentSim
                     productPopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator.moleculeSimulator.theTransform, 
                                                                            bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator ) );
                 }
-
-                bindingSiteSimulator1.boundSite = null;
-                bindingSiteSimulator2.boundSite = null;
 
                 Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
             }

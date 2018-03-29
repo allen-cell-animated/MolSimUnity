@@ -92,8 +92,15 @@ namespace AICS.AgentSim
                 NameAndPlaceComplex( complexObject, reactor.container.GetRandomPointInBounds( 0.1f ), Random.rotation );
                 particleSimulator = complexObject.AddComponent<ParticleSimulator>();
 
-                if (singleMolecule) { moleculeSimulators = new MoleculeSimulator[]{ CreateMoleculeSimulator( complexObject, complexState.moleculeStates[0], particleSimulator ) }; }
-                else { moleculeSimulators = SpawnMoleculesInComplex( particleSimulator, complexState, moleculeTransforms ); }
+                if (singleMolecule) 
+                { 
+                    complexObject.name += "_" + complexState.moleculeStates[0].molecule.species;
+                    moleculeSimulators = new MoleculeSimulator[]{ CreateMoleculeSimulator( complexObject, complexState.moleculeStates[0], particleSimulator ) }; 
+                }
+                else 
+                { 
+                    moleculeSimulators = SpawnMoleculesInComplex( particleSimulator, complexState, moleculeTransforms ); 
+                }
 
                 particleSimulator.Init( moleculeSimulators, this );
             }
@@ -192,12 +199,12 @@ namespace AICS.AgentSim
                 particleSimulator = complexObject.AddComponent<ParticleSimulator>();
             }
 
-            particleSimulator.Init( _moleculeSimulators, this );
-            List<MoleculeSimulator> oldSimulators = new List<MoleculeSimulator>( _moleculeSimulators );
-            foreach (MoleculeSimulator moleculeSimulator in oldSimulators)
+            //List<MoleculeSimulator> oldSimulators = new List<MoleculeSimulator>( _moleculeSimulators );
+            foreach (MoleculeSimulator moleculeSimulator in _moleculeSimulators)
             {
-                moleculeSimulator.MoveToComplex( particleSimulator );
+                moleculeSimulator.MoveToComplex( particleSimulator, this );
             }
+            particleSimulator.Init( _moleculeSimulators, this );
         }
 
         protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexState complexState)

@@ -10,6 +10,9 @@ namespace AICS.AgentSim
         {
             if (bindingSiteSimulator1 != null && bindingSiteSimulator2 != null)
             {
+                SetFinalSiteState( bindingSiteSimulator1 );
+                SetFinalSiteState( bindingSiteSimulator2 );
+
                 bindingSiteSimulator1.boundSite = bindingSiteSimulator2;
                 bindingSiteSimulator2.boundSite = bindingSiteSimulator1;
 
@@ -20,9 +23,6 @@ namespace AICS.AgentSim
                 bindingSiteSimulator1.complex.CopyTo( moleculeSimulators, 0 );
                 bindingSiteSimulator2.complex.CopyTo( moleculeSimulators, bindingSiteSimulator1.complex.Length );
                 productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.theTransform, moleculeSimulators );
-
-                SetFinalSiteState( bindingSiteSimulator1 );
-                SetFinalSiteState( bindingSiteSimulator2 );
 
                 Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
             }

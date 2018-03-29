@@ -28,7 +28,7 @@ namespace AICS.AgentSim
         public void UpdateActive (bool aBindingSiteIsActive = false)
         {
             bool newActive = aBindingSiteIsActive ? true : GetActive();
-
+            Debug.Log( this + " | active = " + newActive );
             if (newActive != active)
             {
                 active = newActive;
@@ -110,9 +110,9 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public void MoveToComplex (ParticleSimulator _particleSimulator)
+        public void MoveToComplex (ParticleSimulator _particleSimulator, ParticlePopulation _particlePopulation)
         {
-            theTransform.SetParent( _particleSimulator.gameObject == gameObject ? _particleSimulator.population.theTransform : _particleSimulator.theTransform );
+            theTransform.SetParent( _particleSimulator.gameObject == gameObject ? _particlePopulation.theTransform : _particleSimulator.theTransform );
 
             particleSimulator.RemoveMoleculeSimulator( this );
             particleSimulator = _particleSimulator;
@@ -120,8 +120,9 @@ namespace AICS.AgentSim
 
             foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                bindingSiteSimulator.MoveToPopulation( particleSimulator.population );
+                bindingSiteSimulator.MoveToPopulation( _particlePopulation );
             }
+            active = GetActive();
         }
 
         public override string ToString()

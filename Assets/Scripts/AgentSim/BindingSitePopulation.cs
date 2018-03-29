@@ -56,7 +56,7 @@ namespace AICS.AgentSim
                     {
                         foreach (MoleculeBindingSite site in reactionSimulator.reaction.relevantSites)
                         {
-                            if (moleculeBindingSite.molecule == site.molecule && bindingSite.id == site.bindingSiteID)
+                            if (moleculeBindingSite.Matches( site ))
                             {
                                 reactionSimulatorsList.Add( reactionSimulator );
                             }
@@ -75,10 +75,15 @@ namespace AICS.AgentSim
             {
                 if (_activeStates == null)
                 {
+                    string state = "";
                     List<string> activeStatesList = new List<string>();
                     foreach (BimolecularReactionSimulator bimolecularReactionSimulator in bimolecularReactionSimulators)
                     {
-                        // TODO
+                        state = bimolecularReactionSimulator.reaction.GetInitialStateOfSite( particlePopulation.complexState, moleculeBindingSite );
+                        if (!string.IsNullOrEmpty( state ))
+                        {
+                            activeStatesList.Add( state );
+                        }
                     }
                     _activeStates = activeStatesList.ToArray();
                 }

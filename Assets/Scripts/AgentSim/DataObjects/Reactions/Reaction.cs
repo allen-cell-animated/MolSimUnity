@@ -35,6 +35,27 @@ namespace AICS.AgentSim
         }
         #endregion
 
+        public string GetInitialStateOfSite (ComplexState complexState, MoleculeBindingSite moleculeBindingSite)
+        {
+            foreach (ComplexState reactantState in reactantStates)
+            {
+                if (reactantState.Matches( complexState ))
+                {
+                    foreach (MoleculeState moleculeState in reactantState.moleculeStates)
+                    {
+                        if (moleculeState.molecule == moleculeBindingSite.molecule)
+                        {
+                            if (moleculeState.bindingSiteStates.ContainsKey( moleculeBindingSite.bindingSiteID ))
+                            {
+                                return moleculeState.bindingSiteStates[moleculeBindingSite.bindingSiteID];
+                            }
+                        }
+                    }
+                }
+            }
+            return "";
+        }
+
         public abstract void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
 
         protected virtual void SetFinalSiteState (BindingSiteSimulator bindingSiteSimulator)
@@ -45,24 +66,15 @@ namespace AICS.AgentSim
                 {
                     if (moleculeState.molecule.species == bindingSiteSimulator.species)
                     {
-                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
+                        if (moleculeState.bindingSiteStates.ContainsKey( bindingSiteSimulator.id ))
                         {
-                            if (bindingSiteState.Key == bindingSiteSimulator.id)
-                            {
-                                bindingSiteSimulator.state = bindingSiteState.Value;
-                                bindingSiteSimulator.UpdateActive();
-                                return;
-                            }
+                            bindingSiteSimulator.state = moleculeState.bindingSiteStates[bindingSiteSimulator.id];
+                            return;
                         }
                     }
                 }
             }
             Debug.LogWarning( "reacting binding site " + bindingSiteSimulator.name + " doesn't match any site on product of reaction " + description );
-        }
-
-        protected void UpdateActiveSimulators ()
-        {
-
         }
     }
 }
