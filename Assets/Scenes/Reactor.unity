@@ -235,6 +235,8 @@ MonoBehaviour:
   collisionFreeReactionSimulators: []
   maxMoveAttempts: 20
   periodicBoundary: 1
+  particleSimulators: []
+  activeParticleSimulators: []
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0

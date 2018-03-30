@@ -122,7 +122,17 @@ namespace AICS.AgentSim
             return true;
         }
 
-        public bool Matches (ComplexState other)
+		public override bool Equals (object obj)
+		{
+            ComplexState other = obj as ComplexState;
+            if (other != null)
+            {
+                return Matches( other );
+            }
+            return false;
+		}
+
+		public bool Matches (ComplexState other)
         {
             foreach (MoleculeState moleculeState in moleculeStates)
             {

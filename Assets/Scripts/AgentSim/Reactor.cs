@@ -10,7 +10,7 @@ namespace AICS.AgentSim
         public Model model;
         public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
         public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
-        public Dictionary<string,ParticlePopulation> particlePopulations = new Dictionary<string,ParticlePopulation>();
+        public Dictionary<ComplexState,ParticlePopulation> particlePopulations = new Dictionary<ComplexState,ParticlePopulation>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -69,16 +69,16 @@ namespace AICS.AgentSim
 
             ParticlePopulation particlePopulation = obj.AddComponent<ParticlePopulation>();
             particlePopulation.Init( complexConcentration, this );
-            particlePopulations.Add( complexConcentration.species, particlePopulation );
+            particlePopulations.Add( complexConcentration.complexState, particlePopulation );
         }
 
         public virtual ParticlePopulation GetPopulationForComplex (ComplexState complexState)
         {
-            if (!particlePopulations.ContainsKey( complexState.species ))
+            if (!particlePopulations.ContainsKey( complexState ))
             {
                 CreatePopulation( new ComplexConcentration( complexState, 0 ) );
             }
-            return particlePopulations[complexState.species];
+            return particlePopulations[complexState];
         }
 
         public void RegisterParticleSimulator (ParticleSimulator particleSimulator)

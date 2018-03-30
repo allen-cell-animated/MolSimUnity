@@ -12,8 +12,8 @@ namespace AICS.AgentSim
             {
                 bindingSiteSimulator2 = bindingSiteSimulator1.boundSite;
 
-                SetFinalSiteState( bindingSiteSimulator1 );
-                SetFinalSiteState( bindingSiteSimulator2 );
+                SetFinalStateOfComplex( bindingSiteSimulator1 );
+                SetFinalStateOfComplex( bindingSiteSimulator2 );
 
                 bindingSiteSimulator1.boundSite = null;
                 bindingSiteSimulator2.boundSite = null;

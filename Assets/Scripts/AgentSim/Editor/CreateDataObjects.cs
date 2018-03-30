@@ -10,7 +10,7 @@ namespace AICS.AgentSim
         {
             Model asset = ScriptableObject.CreateInstance<Model>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Models/newModel.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Data/Models/newModel.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;
@@ -22,7 +22,7 @@ namespace AICS.AgentSim
         {
             Molecule asset = ScriptableObject.CreateInstance<Molecule>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Models/Molecules/newMolecule.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Data/Molecules/newMolecule.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;
@@ -34,7 +34,7 @@ namespace AICS.AgentSim
         {
             StateChangeReaction asset = ScriptableObject.CreateInstance<StateChangeReaction>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newStateChangeReaction.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newStateChangeReaction.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;
@@ -46,7 +46,7 @@ namespace AICS.AgentSim
         {
             BindReaction asset = ScriptableObject.CreateInstance<BindReaction>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newBindReaction.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newBindReaction.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;
@@ -58,7 +58,7 @@ namespace AICS.AgentSim
         {
             ReleaseReaction asset = ScriptableObject.CreateInstance<ReleaseReaction>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Models/Reactions/newReleaseReaction.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newReleaseReaction.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;

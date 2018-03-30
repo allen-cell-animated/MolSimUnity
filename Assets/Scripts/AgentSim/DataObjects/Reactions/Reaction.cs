@@ -58,8 +58,9 @@ namespace AICS.AgentSim
 
         public abstract void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
 
-        protected virtual void SetFinalSiteState (BindingSiteSimulator bindingSiteSimulator)
+        protected virtual void SetFinalStateOfComplex (BindingSiteSimulator bindingSiteSimulator)
         {
+            // TODO set state of entire complex
             foreach (ComplexState productState in productStates)
             {
                 foreach (MoleculeState moleculeState in productState.moleculeStates)
