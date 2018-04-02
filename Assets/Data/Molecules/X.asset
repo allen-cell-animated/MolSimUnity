@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: X
   m_EditorClassIdentifier: 
-  species: X
+  _species: X
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 500000

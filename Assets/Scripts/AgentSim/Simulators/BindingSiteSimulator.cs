@@ -73,11 +73,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public string species
+        public Molecule molecule
         {
             get
             {
-                return moleculeSimulator.species;
+                return moleculeSimulator.moleculeState.molecule;
             }
         }
 

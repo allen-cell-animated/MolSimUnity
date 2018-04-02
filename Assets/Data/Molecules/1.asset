@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
-  species: 1
+  _species: 1
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
@@ -20,8 +20,6 @@ MonoBehaviour:
     states:
     - 0
     - '!+'
-    activeStates:
-    - 0
     transformOnMolecule:
       position: {x: 1, y: -1, z: 0}
       rotation: {x: 0, y: 0, z: 0}
@@ -30,8 +28,6 @@ MonoBehaviour:
     states:
     - 0
     - '!+'
-    activeStates:
-    - 0
     transformOnMolecule:
       position: {x: 2, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
@@ -40,8 +36,6 @@ MonoBehaviour:
     states:
     - 0
     - '!+'
-    activeStates:
-    - 0
     transformOnMolecule:
       position: {x: 0, y: 1, z: 0}
       rotation: {x: 0, y: 0, z: 0}

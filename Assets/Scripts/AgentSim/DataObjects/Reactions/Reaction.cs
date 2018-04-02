@@ -39,7 +39,7 @@ namespace AICS.AgentSim
         {
             foreach (ComplexState reactantState in reactantStates)
             {
-                if (reactantState.Matches( complexState ))
+                if (reactantState.IsSatisfiedBy( complexState ))
                 {
                     foreach (MoleculeState moleculeState in reactantState.moleculeStates)
                     {
@@ -57,25 +57,5 @@ namespace AICS.AgentSim
         }
 
         public abstract void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
-
-        protected virtual void SetFinalStateOfComplex (BindingSiteSimulator bindingSiteSimulator)
-        {
-            // TODO set state of entire complex
-            foreach (ComplexState productState in productStates)
-            {
-                foreach (MoleculeState moleculeState in productState.moleculeStates)
-                {
-                    if (moleculeState.molecule.species == bindingSiteSimulator.species)
-                    {
-                        if (moleculeState.bindingSiteStates.ContainsKey( bindingSiteSimulator.id ))
-                        {
-                            bindingSiteSimulator.state = moleculeState.bindingSiteStates[bindingSiteSimulator.id];
-                            return;
-                        }
-                    }
-                }
-            }
-            Debug.LogWarning( "reacting binding site " + bindingSiteSimulator.name + " doesn't match any site on product of reaction " + description );
-        }
     }
 }

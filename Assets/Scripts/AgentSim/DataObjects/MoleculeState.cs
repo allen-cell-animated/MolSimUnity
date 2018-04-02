@@ -30,7 +30,14 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class ComplexState
     {
-        public MoleculeState[] moleculeStates;
+        [SerializeField] MoleculeState[] _moleculeStates;
+        public MoleculeState[] moleculeStates
+        {
+            get
+            {
+                return _moleculeStates;
+            }
+        }
 
         #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
@@ -101,14 +108,19 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool Matches (MoleculeSimulator[] molecules)
+        public ComplexState (MoleculeState[] theMoleculeStates)
+        {
+            _moleculeStates = theMoleculeStates;
+        }
+
+        public bool IsSatisfiedBy (MoleculeSimulator[] moleculeSimulators)
         {
             foreach (MoleculeState moleculeState in moleculeStates)
             {
                 bool stateFound = false;
-                foreach (MoleculeSimulator molecule in molecules)
+                foreach (MoleculeSimulator molecule in moleculeSimulators)
                 {
-                    if (moleculeState.Matches( molecule ))
+                    if (moleculeState.IsSatisfiedBy( molecule ))
                     {
                         stateFound = true;
                         break;
@@ -127,19 +139,35 @@ namespace AICS.AgentSim
             ComplexState other = obj as ComplexState;
             if (other != null)
             {
-                return Matches( other );
+                return IsSatisfiedBy( other ) && other.IsSatisfiedBy( this );
             }
             return false;
-		}
+        }
 
-		public bool Matches (ComplexState other)
+        public override int GetHashCode ()
+        {
+            unchecked
+            {
+                int hash = 0;
+                if (moleculeStates != null)
+                {
+                    foreach (MoleculeState moleculeState in moleculeStates)
+                    {
+                        hash += 7919 * (moleculeState == null ? 1 : moleculeState.GetHashCode());
+                    }
+                }
+                return hash;
+            }
+        }
+
+        public bool IsSatisfiedBy (ComplexState other)
         {
             foreach (MoleculeState moleculeState in moleculeStates)
             {
                 bool stateFound = false;
                 foreach (MoleculeState otherMoleculeState in other.moleculeStates)
                 {
-                    if (moleculeState.Matches( otherMoleculeState ))
+                    if (moleculeState.IsSatisfiedBy( otherMoleculeState ))
                     {
                         stateFound = true;
                         break;
@@ -157,8 +185,23 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class MoleculeState
     {
-        public Molecule molecule;
-        public Dictionary<string,string> bindingSiteStates;
+        [SerializeField] Molecule _molecule;
+        public Molecule molecule 
+        {
+            get 
+            {
+                return _molecule;
+            }
+        }
+
+        Dictionary<string,string> _bindingSiteStates;
+        public Dictionary<string,string> bindingSiteStates
+        {
+            get
+            {
+                return _bindingSiteStates;
+            }
+        }
 
         #region for prototyping in inspector without writing custom property drawer etc
         [SerializeField] SiteState[] siteStates;
@@ -166,15 +209,23 @@ namespace AICS.AgentSim
         public void Init ()
         {
             molecule.Init();
-            bindingSiteStates = new Dictionary<string,string>();
+            _bindingSiteStates = new Dictionary<string,string>();
             foreach (SiteState siteState in siteStates)
             {
-                bindingSiteStates.Add( siteState.id, siteState.state );
+                _bindingSiteStates.Add( siteState.id, siteState.state );
             }
         }
         #endregion
 
-        public bool Matches (MoleculeSimulator _moleculeSimulator)
+        public MoleculeState (Molecule theMolecule, Dictionary<string,string> theBindingSiteStates)
+        {
+            _molecule = theMolecule;
+            molecule.Init();
+
+            _bindingSiteStates = new Dictionary<string, string>( theBindingSiteStates );
+        }
+
+        public bool IsSatisfiedBy (MoleculeSimulator _moleculeSimulator)
         {
             if (_moleculeSimulator.species == molecule.species)
             {
@@ -190,20 +241,43 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool Matches (MoleculeState other)
+        public override bool Equals (object obj)
         {
-            if (other.molecule.species == molecule.species)
+            MoleculeState other = obj as MoleculeState;
+            if (other != null)
             {
-                foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
-                {
-                    if (!other.bindingSiteStates.ContainsKey(siteState.Key) || other.bindingSiteStates[siteState.Key] != siteState.Value)
-                    {
-                        return false;
-                    }
-                }
-                return true;
+                return IsSatisfiedBy( other ) && other.IsSatisfiedBy( this );
             }
             return false;
+        }
+
+        public override int GetHashCode ()
+        {
+            unchecked
+            {
+                int hash = 0;
+                foreach (KeyValuePair<string,string> bindingSiteState in bindingSiteStates)
+                {
+                    hash += 7919 * bindingSiteState.Key.GetHashCode() + 29 * (bindingSiteState.Value == null ? 1 : bindingSiteState.Value.GetHashCode());
+                }
+                return 16777619 * ((molecule == null || molecule.species == null) ? 1 : molecule.species.GetHashCode()) + hash;
+            }
+        }
+
+        public bool IsSatisfiedBy (MoleculeState other)
+        {
+            if (other.molecule.species != molecule.species)
+            {
+                return false;
+            }
+            foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
+            {
+                if (!other.bindingSiteStates.ContainsKey( siteState.Key ) || other.bindingSiteStates[siteState.Key] != siteState.Value)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool ContainsBindingSite (string bindingSiteID)

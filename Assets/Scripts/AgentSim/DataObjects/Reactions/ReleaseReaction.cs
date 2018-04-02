@@ -12,8 +12,8 @@ namespace AICS.AgentSim
             {
                 bindingSiteSimulator2 = bindingSiteSimulator1.boundSite;
 
-                SetFinalStateOfComplex( bindingSiteSimulator1 );
-                SetFinalStateOfComplex( bindingSiteSimulator2 );
+                //SetFinalStateOfComplex( bindingSiteSimulator1 );
+                //SetFinalStateOfComplex( bindingSiteSimulator2 );
 
                 bindingSiteSimulator1.boundSite = null;
                 bindingSiteSimulator2.boundSite = null;
@@ -36,11 +36,11 @@ namespace AICS.AgentSim
         {
             foreach (MoleculeState moleculeState in productState.moleculeStates)
             {
-                if (moleculeState.molecule.species == bindingSiteSimulator1.species && moleculeState.ContainsBindingSite( bindingSiteSimulator1.id ) )
+                if (moleculeState.molecule == bindingSiteSimulator1.molecule && moleculeState.ContainsBindingSite( bindingSiteSimulator1.id ) )
                 {
                     return bindingSiteSimulator1;
                 }
-                if (moleculeState.molecule.species == bindingSiteSimulator2.species && moleculeState.ContainsBindingSite( bindingSiteSimulator2.id ) )
+                if (moleculeState.molecule == bindingSiteSimulator2.molecule && moleculeState.ContainsBindingSite( bindingSiteSimulator2.id ) )
                 {
                     return bindingSiteSimulator2;
                 }

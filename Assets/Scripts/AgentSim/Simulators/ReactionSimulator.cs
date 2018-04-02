@@ -24,7 +24,7 @@ namespace AICS.AgentSim
         {
             foreach (ComplexState reactant in reaction.reactantStates)
             {
-                if (reactant.Matches( complexState ))
+                if (reactant.Equals( complexState ))
                 {
                     return true;
                 }
@@ -69,10 +69,10 @@ namespace AICS.AgentSim
         bool ReactantsEqual (MoleculeSimulator[] complex1, MoleculeSimulator[] complex2)
         {
             return (reaction.reactantStates.Length == 0 && complex1 == null && complex2 == null)
-                || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].Matches( complex1 ) && complex2 == null)
-                                                         || (reaction.reactantStates[0].Matches( complex2 ) && complex1 == null)))
-                || (reaction.reactantStates.Length == 2 && ((reaction.reactantStates[0].Matches( complex1 ) && reaction.reactantStates[1].Matches( complex2 )))
-                                                         || (reaction.reactantStates[0].Matches( complex2 ) && reaction.reactantStates[1].Matches( complex1 )));
+                || (reaction.reactantStates.Length == 1 && ((reaction.reactantStates[0].IsSatisfiedBy( complex1 ) && complex2 == null)
+                                                         || (reaction.reactantStates[0].IsSatisfiedBy( complex2 ) && complex1 == null)))
+                || (reaction.reactantStates.Length == 2 && ((reaction.reactantStates[0].IsSatisfiedBy( complex1 ) && reaction.reactantStates[1].IsSatisfiedBy( complex2 )))
+                                                         || (reaction.reactantStates[0].IsSatisfiedBy( complex2 ) && reaction.reactantStates[1].IsSatisfiedBy( complex1 )));
         }
 	}
 

@@ -14,14 +14,14 @@ MonoBehaviour:
   description: X(P~1) -> X(P~0)
   rate: 10000000
   reactantStates:
-  - moleculeStates:
-    - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
       siteStates:
       - id: P
         state: 1
   productStates:
-  - moleculeStates:
-    - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
       siteStates:
       - id: P
         state: 0

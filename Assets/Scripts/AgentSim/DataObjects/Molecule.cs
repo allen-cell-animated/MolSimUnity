@@ -6,7 +6,15 @@ namespace AICS.AgentSim
 {
     public class Molecule : ScriptableObject
     {
-        public string species;
+        [SerializeField] string _species;
+        public string species
+        {
+            get
+            {
+                return _species;
+            }
+        }
+
         [Tooltip( "[scale] meters" )] 
         public float radius;
         [Tooltip( "conversion factor to meters" )] 
@@ -26,6 +34,10 @@ namespace AICS.AgentSim
                 if (!bindingSites.ContainsKey( site.id ))
                 {
                     bindingSites.Add( site.id, site );
+                }
+                else
+                {
+                    Debug.LogWarning( "can't init Molecule with multiple sites with the same ID (yet)" );
                 }
             }
         }
