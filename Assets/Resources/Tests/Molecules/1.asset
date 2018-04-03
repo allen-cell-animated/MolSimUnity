@@ -40,5 +40,4 @@ MonoBehaviour:
       position: {x: 0, y: 1, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
-  _visualizationPrefab: {fileID: 1516328023671344, guid: 862af2cc05a0b4bf48029cc96dae3905,
-    type: 2}
+  _visualizationPrefab: {fileID: 0}

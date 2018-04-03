@@ -7,7 +7,7 @@ namespace AICS.AgentSim
     public class MoleculeSimulator : MonoBehaviour 
     {
         public ParticleSimulator particleSimulator;
-        public MoleculeState moleculeState;
+        public Molecule molecule;
         public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
 
         Transform _theTransform;
@@ -52,13 +52,13 @@ namespace AICS.AgentSim
         {
             get
             {
-                return moleculeState.molecule.species;
+                return molecule.species;
             }
         }
 
         public virtual void Init (MoleculeState _moleculeState, ParticleSimulator _particleSimulator, ParticlePopulation population)
         {
-            moleculeState = _moleculeState;
+            molecule = _moleculeState.molecule;
             particleSimulator = _particleSimulator;
             CreateBindingSites( population );
 
@@ -71,9 +71,9 @@ namespace AICS.AgentSim
 
         protected virtual void CreateBindingSites (ParticlePopulation population)
         {
-            foreach (string siteID in moleculeState.molecule.bindingSites.Keys)
+            foreach (string siteID in molecule.bindingSites.Keys)
             {
-                CreateBindingSite( moleculeState.molecule, siteID, population );
+                CreateBindingSite( molecule, siteID, population );
             }
         }
 

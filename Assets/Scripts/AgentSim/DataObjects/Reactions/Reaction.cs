@@ -21,9 +21,14 @@ namespace AICS.AgentSim
             }
         }
 
-        #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
+            if (!ReactantAndProductAmountsAreCorrect())
+            {
+                Debug.LogWarning( "Reaction " + name + " doesn't have the correct amount of reactant and product species for a " + GetType() );
+            }
+
+            #region for prototyping in inspector without writing custom property drawer etc
             foreach (ComplexState reactantState in reactantStates)
             {
                 reactantState.Init();
@@ -32,8 +37,10 @@ namespace AICS.AgentSim
             {
                 productState.Init();
             }
+            #endregion
         }
-        #endregion
+
+        protected abstract bool ReactantAndProductAmountsAreCorrect ();
 
         public string GetInitialStateOfSite (ComplexState complexState, MoleculeBindingSite moleculeBindingSite)
         {
@@ -43,7 +50,7 @@ namespace AICS.AgentSim
                 {
                     foreach (MoleculeState moleculeState in reactantState.moleculeStates)
                     {
-                        if (moleculeState.molecule == moleculeBindingSite.molecule)
+                        if (moleculeState.molecule.species == moleculeBindingSite.molecule.species)
                         {
                             if (moleculeState.bindingSiteStates.ContainsKey( moleculeBindingSite.bindingSiteID ))
                             {
@@ -54,6 +61,23 @@ namespace AICS.AgentSim
                 }
             }
             return "";
+        }
+
+        protected virtual void SetComplexToFinalState (MoleculeSimulator[] moleculeSimulators, ComplexState finalState)
+        {
+            foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
+            {
+                foreach (MoleculeState moleculeState in finalState.moleculeStates)
+                {
+                    if (moleculeSimulator.molecule.species == moleculeState.molecule.species)
+                    {
+                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
+                        {
+                            moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value;
+                        }
+                    }
+                }
+            }
         }
 
         public abstract void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);

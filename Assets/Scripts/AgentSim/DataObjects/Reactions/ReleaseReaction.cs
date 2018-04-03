@@ -6,26 +6,30 @@ namespace AICS.AgentSim
 {
     public class ReleaseReaction : Reaction 
     {
+        protected override bool ReactantAndProductAmountsAreCorrect ()
+        {
+            return reactantStates.Length == 1 && productStates.Length == 2;
+        }
+
         public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
             if (bindingSiteSimulator1 != null)
             {
                 bindingSiteSimulator2 = bindingSiteSimulator1.boundSite;
 
-                //SetFinalStateOfComplex( bindingSiteSimulator1 );
-                //SetFinalStateOfComplex( bindingSiteSimulator2 );
-
                 bindingSiteSimulator1.boundSite = null;
                 bindingSiteSimulator2.boundSite = null;
 
                 BindingSiteSimulator bindingSiteSimulator;
                 ParticlePopulation productPopulation;
+                MoleculeSimulator[] moleculeSimulators;
                 foreach (ComplexState productState in productStates)
                 {
                     bindingSiteSimulator = GetBindingSiteForProductState( productState, bindingSiteSimulator1, bindingSiteSimulator2 );
-                    productPopulation = bindingSiteSimulator1.reactor.GetPopulationForComplex( productState );
-                    productPopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator.moleculeSimulator.theTransform, 
-                                                                           bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator ) );
+                    productPopulation = bindingSiteSimulator.reactor.GetPopulationForComplex( productState );
+                    moleculeSimulators = bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
+                    SetComplexToFinalState( moleculeSimulators, productState );
+                    productPopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator.moleculeSimulator.theTransform, moleculeSimulators );
                 }
 
                 Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
@@ -36,11 +40,11 @@ namespace AICS.AgentSim
         {
             foreach (MoleculeState moleculeState in productState.moleculeStates)
             {
-                if (moleculeState.molecule == bindingSiteSimulator1.molecule && moleculeState.ContainsBindingSite( bindingSiteSimulator1.id ) )
+                if (moleculeState.molecule.species == bindingSiteSimulator1.molecule.species && moleculeState.ContainsBindingSite( bindingSiteSimulator1.id ) )
                 {
                     return bindingSiteSimulator1;
                 }
-                if (moleculeState.molecule == bindingSiteSimulator2.molecule && moleculeState.ContainsBindingSite( bindingSiteSimulator2.id ) )
+                if (moleculeState.molecule.species == bindingSiteSimulator2.molecule.species && moleculeState.ContainsBindingSite( bindingSiteSimulator2.id ) )
                 {
                     return bindingSiteSimulator2;
                 }

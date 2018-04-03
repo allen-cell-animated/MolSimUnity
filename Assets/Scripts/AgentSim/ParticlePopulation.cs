@@ -186,8 +186,6 @@ namespace AICS.AgentSim
 
         public virtual ParticleSimulator CreateComplexWithMoleculeSimulators (Transform centerTransform, MoleculeSimulator[] _moleculeSimulators)
         {
-            SetStateOfMoleculeSimulators( _moleculeSimulators );
-
             ParticleSimulator particleSimulator = null;
             if (_moleculeSimulators.Length == 1)
             {
@@ -208,30 +206,6 @@ namespace AICS.AgentSim
             particleSimulator.Init( _moleculeSimulators, this );
 
             return particleSimulator;
-        }
-
-        protected virtual void SetStateOfMoleculeSimulators (MoleculeSimulator[] _moleculeSimulators)
-        {
-            foreach (MoleculeSimulator moleculeSimulator in _moleculeSimulators)
-            {
-                foreach (MoleculeState moleculeState in complexState.moleculeStates)
-                {
-                    if (moleculeState.molecule == moleculeSimulator.moleculeState.molecule)
-                    {
-                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
-                        {
-                            if (moleculeSimulator.bindingSiteSimulators.ContainsKey( bindingSiteState.Key ))
-                            {
-                                moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value;
-                            }
-                            else
-                            {
-                                Debug.LogWarning( moleculeSimulator + " doesn't have binding site " + bindingSiteState.Key + " so its state can't be set!" );
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexState complexState)

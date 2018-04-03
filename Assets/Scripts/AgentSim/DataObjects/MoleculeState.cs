@@ -18,7 +18,7 @@ namespace AICS.AgentSim
 
         public bool Matches (MoleculeBindingSite other)
         {
-            return other.molecule == molecule && other.bindingSiteID == bindingSiteID;
+            return other.molecule.species == molecule.species && other.bindingSiteID == bindingSiteID;
         }
 
         public override string ToString ()
@@ -139,7 +139,31 @@ namespace AICS.AgentSim
             ComplexState other = obj as ComplexState;
             if (other != null)
             {
-                return IsSatisfiedBy( other ) && other.IsSatisfiedBy( this );
+                if (other.moleculeStates.Length != moleculeStates.Length)
+                {
+                    return false;
+                }
+                foreach (MoleculeState moleculeState in moleculeStates)
+                {
+                    bool foundState = false;
+                    if (moleculeState != null && moleculeState.molecule != null)
+                    {
+                        foreach (MoleculeState otherMoleculeState in other.moleculeStates)
+                        {
+                            if (otherMoleculeState != null && otherMoleculeState.molecule != null
+                                && otherMoleculeState.molecule.species == moleculeState.molecule.species)
+                            {
+                                foundState = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!foundState)
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
             return false;
         }
@@ -194,14 +218,7 @@ namespace AICS.AgentSim
             }
         }
 
-        Dictionary<string,string> _bindingSiteStates;
-        public Dictionary<string,string> bindingSiteStates
-        {
-            get
-            {
-                return _bindingSiteStates;
-            }
-        }
+        public Dictionary<string,string> bindingSiteStates;
 
         #region for prototyping in inspector without writing custom property drawer etc
         [SerializeField] SiteState[] siteStates;
@@ -209,20 +226,20 @@ namespace AICS.AgentSim
         public void Init ()
         {
             molecule.Init();
-            _bindingSiteStates = new Dictionary<string,string>();
+            bindingSiteStates = new Dictionary<string,string>();
             foreach (SiteState siteState in siteStates)
             {
-                _bindingSiteStates.Add( siteState.id, siteState.state );
+                bindingSiteStates.Add( siteState.id, siteState.state );
             }
         }
         #endregion
 
-        public MoleculeState (Molecule theMolecule, Dictionary<string,string> theBindingSiteStates)
+        public MoleculeState (Molecule theMolecule, Dictionary<string,string> _bindingSiteStates)
         {
             _molecule = theMolecule;
             molecule.Init();
 
-            _bindingSiteStates = new Dictionary<string, string>( theBindingSiteStates );
+            bindingSiteStates = new Dictionary<string, string>( _bindingSiteStates );
         }
 
         public bool IsSatisfiedBy (MoleculeSimulator _moleculeSimulator)
@@ -246,7 +263,7 @@ namespace AICS.AgentSim
             MoleculeState other = obj as MoleculeState;
             if (other != null)
             {
-                return IsSatisfiedBy( other ) && other.IsSatisfiedBy( this );
+                return other.molecule.species == molecule.species;
             }
             return false;
         }
@@ -255,12 +272,7 @@ namespace AICS.AgentSim
         {
             unchecked
             {
-                int hash = 0;
-                foreach (KeyValuePair<string,string> bindingSiteState in bindingSiteStates)
-                {
-                    hash += 7919 * bindingSiteState.Key.GetHashCode() + 29 * (bindingSiteState.Value == null ? 1 : bindingSiteState.Value.GetHashCode());
-                }
-                return 16777619 * ((molecule == null || molecule.species == null) ? 1 : molecule.species.GetHashCode()) + hash;
+                return 16777619 * ((molecule == null || molecule.species == null) ? 1 : molecule.species.GetHashCode());
             }
         }
 

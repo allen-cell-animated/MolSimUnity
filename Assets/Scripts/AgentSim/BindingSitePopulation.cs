@@ -95,7 +95,8 @@ namespace AICS.AgentSim
         {
             particlePopulation = _particlePopulation;
             moleculeBindingSite = new MoleculeBindingSite( moleculeState.molecule, _bindingSiteID );
-            initialState = string.IsNullOrEmpty( moleculeState.bindingSiteStates[_bindingSiteID] ) ? bindingSite.states[0] :  moleculeState.bindingSiteStates[_bindingSiteID];
+            initialState = (!moleculeState.bindingSiteStates.ContainsKey(_bindingSiteID) || string.IsNullOrEmpty( moleculeState.bindingSiteStates[_bindingSiteID] )) ? 
+                bindingSite.states[0] :  moleculeState.bindingSiteStates[_bindingSiteID];
             interactionRadius = bindingSite.radius;
 
             foreach (CollisionFreeReactionSimulator reactionSimulator in _particlePopulation.reactor.collisionFreeReactionSimulators)
@@ -110,6 +111,10 @@ namespace AICS.AgentSim
             {
                 bindingSiteSimulators.Add(_bindingSiteSimulator );
             }
+            else
+            {
+                Debug.LogWarning( "Trying to register " + _bindingSiteSimulator + " but it's already registered!" );
+            }
         }
 
         public void UnregisterBindingSiteSimulator (BindingSiteSimulator _bindingSiteSimulator)
@@ -117,6 +122,10 @@ namespace AICS.AgentSim
             if (bindingSiteSimulators.Contains( _bindingSiteSimulator ))
             {
                 bindingSiteSimulators.Remove(_bindingSiteSimulator );
+            }
+            else
+            {
+                Debug.LogWarning( "Trying to remove " + _bindingSiteSimulator + " but it's not registered!" );
             }
         }
 

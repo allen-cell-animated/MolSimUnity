@@ -6,18 +6,18 @@ namespace AICS.AgentSim
 {
     public class StateChangeReaction : Reaction 
     {
+        protected override bool ReactantAndProductAmountsAreCorrect ()
+        {
+            return reactantStates.Length == 1 && productStates.Length == 1;
+        }
+
         public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
             if (bindingSiteSimulator1 != null)
             {
-                //SetFinalStateOfComplex( bindingSiteSimulator1 );
+                SetComplexToFinalState( bindingSiteSimulator1.complex, productStates[0] );
 
-                //ParticlePopulation productParticlePopulation = bindingSiteSimulator1.reactor.GetPopulationForComplex( productStates[0] );
-                //MoleculeSimulator[] moleculeSimulators = new MoleculeSimulator[bindingSiteSimulator1.complex.Length];
-                //bindingSiteSimulator1.complex.CopyTo( moleculeSimulators, 0 );
-                //productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.theTransform, moleculeSimulators );
-
-                //Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
+                Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }
     }

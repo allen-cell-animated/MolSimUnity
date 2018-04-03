@@ -87,6 +87,11 @@ namespace AICS.AgentSim
             {
                 particleSimulators.Add( particleSimulator );
             }
+            else
+            {
+                Debug.LogWarning( "Trying to register " + particleSimulator + " but it's already registered!" );
+            }
+
             if (particleSimulator.active && !activeParticleSimulators.Contains( particleSimulator ))
             {
                 activeParticleSimulators.Add( particleSimulator );
@@ -99,13 +104,27 @@ namespace AICS.AgentSim
             {
                 particleSimulators.Remove( particleSimulator );
             }
+            else
+            {
+                Debug.LogWarning( "Trying to remove " + particleSimulator + " but it's not registered!" );
+            }
+
             if (activeParticleSimulators.Contains( particleSimulator ))
             {
                 activeParticleSimulators.Remove( particleSimulator );
             }
+            else
+            {
+                Debug.LogWarning( "Trying to remove " + particleSimulator + " from active but it's not registered as active!" );
+            }
+
             if (!particleSimulatorsToDestroy.Contains( particleSimulator ))
             {
                 particleSimulatorsToDestroy.Add( particleSimulator );
+            }
+            else
+            {
+                Debug.LogWarning( "Trying to destroy " + particleSimulator + " but it's already marked for destruction!" );
             }
         }
 

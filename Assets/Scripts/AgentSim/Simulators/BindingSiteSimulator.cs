@@ -77,7 +77,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return moleculeSimulator.moleculeState.molecule;
+                return moleculeSimulator.molecule;
             }
         }
 

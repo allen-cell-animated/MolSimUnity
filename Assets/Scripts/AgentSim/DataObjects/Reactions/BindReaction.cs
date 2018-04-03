@@ -6,13 +6,15 @@ namespace AICS.AgentSim
 {
     public class BindReaction : Reaction 
     {
+        protected override bool ReactantAndProductAmountsAreCorrect ()
+        {
+            return reactantStates.Length == 2 && productStates.Length == 1;
+        }
+
         public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
             if (bindingSiteSimulator1 != null && bindingSiteSimulator2 != null)
             {
-                //SetFinalStateOfComplex( bindingSiteSimulator1 );
-                //SetFinalStateOfComplex( bindingSiteSimulator2 );
-
                 bindingSiteSimulator1.boundSite = bindingSiteSimulator2;
                 bindingSiteSimulator2.boundSite = bindingSiteSimulator1;
 
@@ -22,6 +24,7 @@ namespace AICS.AgentSim
                 MoleculeSimulator[] moleculeSimulators = new MoleculeSimulator[bindingSiteSimulator1.complex.Length + bindingSiteSimulator2.complex.Length];
                 bindingSiteSimulator1.complex.CopyTo( moleculeSimulators, 0 );
                 bindingSiteSimulator2.complex.CopyTo( moleculeSimulators, bindingSiteSimulator1.complex.Length );
+                SetComplexToFinalState( moleculeSimulators, productStates[0] );
                 productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.theTransform, moleculeSimulators );
 
                 Reactor.ShowFlash( bindingSiteSimulator1.theTransform );

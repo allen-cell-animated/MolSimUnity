@@ -13,10 +13,16 @@ namespace AICS.AgentSim
 
         public void RegisterBindingSitePopulation (BindingSitePopulation bindingSitePopulation, ComplexState complexState)
         {
-            if (!populations.Contains( bindingSitePopulation ) && ComplexIsReactant( complexState ) 
-                && bindingSitePopulation.moleculeBindingSite.Matches( reaction.relevantSites[0] ))
+            if (!populations.Contains( bindingSitePopulation ))
             {
-                populations.Add( bindingSitePopulation );
+                if (ComplexIsReactant( complexState ) && bindingSitePopulation.moleculeBindingSite.Matches( reaction.relevantSites[0] ))
+                {
+                    populations.Add( bindingSitePopulation );
+                }
+            }
+            else
+            {
+                Debug.LogWarning( "Trying to register " + bindingSitePopulation + " but it's already registered!" );
             }
         }
 
@@ -24,7 +30,7 @@ namespace AICS.AgentSim
         {
             foreach (ComplexState reactant in reaction.reactantStates)
             {
-                if (reactant.Equals( complexState ))
+                if (reactant.IsSatisfiedBy( complexState ))
                 {
                     return true;
                 }
@@ -37,6 +43,10 @@ namespace AICS.AgentSim
             if (populations.Contains( bindingSitePopulation ))
             {
                 populations.Remove( bindingSitePopulation );
+            }
+            else
+            {
+                Debug.LogWarning( "Trying to remove " + bindingSitePopulation + " but it's not registered!" );
             }
         }
 
