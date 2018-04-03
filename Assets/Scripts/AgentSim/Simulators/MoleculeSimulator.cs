@@ -23,24 +23,13 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool active;
+        public bool couldReactOnCollision;
 
-        public void UpdateActive (bool aBindingSiteIsActive = false)
-        {
-            bool newActive = aBindingSiteIsActive ? true : GetActive();
-            Debug.Log( this + " | active = " + newActive );
-            if (newActive != active)
-            {
-                active = newActive;
-                particleSimulator.UpdateActive( active );
-            }
-        }
-
-        bool GetActive ()
+        bool GetCouldReactOnCollision ()
         {
             foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                if (bindingSiteSimulator.active)
+                if (bindingSiteSimulator.couldReactOnCollision)
                 {
                     return true;
                 }
@@ -56,51 +45,47 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeState _moleculeState, ParticleSimulator _particleSimulator, ParticlePopulation population)
+        public virtual void Init (MoleculeState moleculeState, ParticleSimulator _particleSimulator, 
+                                  BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            molecule = _moleculeState.molecule;
             particleSimulator = _particleSimulator;
-            CreateBindingSites( population );
-
-            foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
-            {
-                bindingSiteSimulator.UpdateActive( false );
-            }
-            active = GetActive();
+            molecule = moleculeState.molecule;
+            CreateBindingSites( moleculeState, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            couldReactOnCollision = GetCouldReactOnCollision();
         }
 
-        protected virtual void CreateBindingSites (ParticlePopulation population)
+        protected virtual void CreateBindingSites (MoleculeState moleculeState, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+                                                   CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            foreach (string siteID in molecule.bindingSites.Keys)
+            foreach (string bindingSiteID in molecule.bindingSites.Keys)
             {
-                CreateBindingSite( molecule, siteID, population );
+                CreateBindingSite( bindingSiteID, moleculeState, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
             }
         }
 
-        protected virtual void CreateBindingSite (Molecule molecule, string id, ParticlePopulation population)
+        protected virtual void CreateBindingSite (string bindingSiteID, MoleculeState moleculeState, 
+                                                  BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            BindingSitePopulation bindingSitePopulation = population.GetBindingSitePopulation( new MoleculeBindingSite( molecule, id ) );
-
             GameObject bindingSiteObject = new GameObject();
             bindingSiteObject.transform.SetParent( theTransform );
-            bindingSitePopulation.transformOnMolecule.Apply( theTransform, bindingSiteObject.transform );
-            bindingSiteObject.name = name + "_" + bindingSitePopulation.moleculeBindingSite.bindingSiteID;
+            molecule.bindingSites[bindingSiteID].transformOnMolecule.Apply( theTransform, bindingSiteObject.transform );
+            bindingSiteObject.name = name + "_" + bindingSiteID;
 
             BindingSiteSimulator bindingSiteSimulator = bindingSiteObject.AddComponent<BindingSiteSimulator>();
-            bindingSiteSimulator.Init( bindingSitePopulation, this );
+            bindingSiteSimulator.Init( bindingSiteID, moleculeState, relevantBimolecularSimulators, relevantCollisionFreeSimulators, this );
 
-            bindingSiteSimulators.Add( id, bindingSiteSimulator );
+            bindingSiteSimulators.Add( bindingSiteID, bindingSiteSimulator );
         }
 
         public virtual bool InteractWith (MoleculeSimulator other)
         {
             foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                if (bindingSiteSimulator.active)
+                if (bindingSiteSimulator.couldReactOnCollision)
                 {
                     foreach (BindingSiteSimulator otherBindingSiteSimulator in other.bindingSiteSimulators.Values)
                     {
-                        if (otherBindingSiteSimulator.active && bindingSiteSimulator.ReactWith( otherBindingSiteSimulator ))
+                        if (otherBindingSiteSimulator.couldReactOnCollision && bindingSiteSimulator.ReactWith( otherBindingSiteSimulator ))
                         {
                             return true;
                         }
@@ -110,19 +95,19 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public void MoveToComplex (ParticleSimulator _particleSimulator, ParticlePopulation _particlePopulation)
+        public void MoveToComplex (ParticleSimulator _particleSimulator, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+                                   CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Transform newParent)
         {
-            theTransform.SetParent( _particleSimulator.gameObject == gameObject ? _particlePopulation.theTransform : _particleSimulator.theTransform );
-
+            theTransform.SetParent( newParent );
             particleSimulator.RemoveMoleculeSimulator( this );
             particleSimulator = _particleSimulator;
             name = particleSimulator.name + "_" + species;
 
             foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                bindingSiteSimulator.MoveToPopulation( _particlePopulation );
+                bindingSiteSimulator.MoveToComplex( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
             }
-            active = GetActive();
+            couldReactOnCollision = GetCouldReactOnCollision();
         }
 
         public override string ToString()

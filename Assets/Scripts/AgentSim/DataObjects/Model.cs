@@ -35,14 +35,6 @@ namespace AICS.AgentSim
         public float concentration;
         public ComplexState complexState;
 
-        public string species
-        {
-            get
-            {
-                return complexState.species;
-            }
-        }
-
         public int moleculeCount
         {
             get

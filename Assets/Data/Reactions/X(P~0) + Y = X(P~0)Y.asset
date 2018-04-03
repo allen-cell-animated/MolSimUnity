@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be946a43eeb0a483ebac7a3352e538de, type: 3}
-  m_Name: X + Y = XY
+  m_Name: X(P~0) + Y = X(P~0)Y
   m_EditorClassIdentifier: 
   description: X(y,P~0) + Y(x) -> X(y!1,P~0).Y(x!1)
   rate: 10000000

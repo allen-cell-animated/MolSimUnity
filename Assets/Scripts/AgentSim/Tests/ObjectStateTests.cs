@@ -87,12 +87,12 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( "The Reactor has a null ParticleSimulator" ); }
                 return false;
             }
-            if (ParticleSimulatorReallyIsActive( particleSimulator ))
+            if (ParticleSimulatorReallyIsBimolecularReactant( particleSimulator ))
             {
                 bool found = false;
-                foreach (ParticleSimulator activeParticleSimulator in reactor.activeParticleSimulators)
+                foreach (ParticleSimulator bimolecularReactantParticleSimulator in reactor.particleSimulatorsInBimolecularReactions)
                 {
-                    if (particleSimulator == activeParticleSimulator)
+                    if (particleSimulator == bimolecularReactantParticleSimulator)
                     {
                         found = true;
                         break;
@@ -100,7 +100,7 @@ public class ObjectStateTests : AgentSimTests
                 }
                 if (!found)
                 {
-                    if (debug) { Debug.Log( particleSimulator + " is active but isn't registered as active in the Reactor" ); }
+                    if (debug) { Debug.Log( particleSimulator + " is a bimolecular reactant but isn't registered as such in the Reactor" ); }
                     return false;
                 }
             }
@@ -118,20 +118,20 @@ public class ObjectStateTests : AgentSimTests
                 return false;
             }
         }
-        foreach (ParticleSimulator particleSimulator in reactor.activeParticleSimulators)
+        foreach (ParticleSimulator particleSimulator in reactor.particleSimulatorsInBimolecularReactions)
         {
             if (particleSimulator == null)
             {
-                if (debug) { Debug.Log( "The Reactor has a null active ParticleSimulator" ); }
+                if (debug) { Debug.Log( "The Reactor has a null bimolecular reactant ParticleSimulator" ); }
                 return false;
             }
-            if (!ParticleSimulatorReallyIsActive( particleSimulator ))
+            if (!ParticleSimulatorReallyIsBimolecularReactant( particleSimulator ))
             {
-                if (debug) { Debug.Log( particleSimulator + " isn't active but is registered as active in the Reactor" ); }
+                if (debug) { Debug.Log( particleSimulator + " isn't a bimolecular reactant but is registered as such in the Reactor" ); }
                 return false;
             }
             int count = 0;
-            foreach (ParticleSimulator otherParticleSimulator in reactor.activeParticleSimulators)
+            foreach (ParticleSimulator otherParticleSimulator in reactor.particleSimulatorsInBimolecularReactions)
             {
                 if (particleSimulator == otherParticleSimulator)
                 {
@@ -140,7 +140,7 @@ public class ObjectStateTests : AgentSimTests
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( particleSimulator + " is registered as active in the Reactor " + count + " times" ); }
+                if (debug) { Debug.Log( particleSimulator + " is registered as a bimolecular reactant in the Reactor " + count + " times" ); }
                 return false;
             }
         }
@@ -200,69 +200,26 @@ public class ObjectStateTests : AgentSimTests
         return true;
     }
 
-    static bool ParticleSimulatorReallyIsActive (ParticleSimulator particleSimulator)
+    static bool ParticleSimulatorReallyIsBimolecularReactant (ParticleSimulator particleSimulator)
     {
-        foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
-        {
-            foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
-            {
-                foreach (string activeState in bindingSiteSimulator.population.activeStates)
-                {
-                    if (bindingSiteSimulator.state == activeState)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
+        //foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
+        //{
+        //    foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
+        //    {
+        //        foreach (string activeState in bindingSiteSimulator.population.activeStates)
+        //        {
+        //            if (bindingSiteSimulator.state == activeState)
+        //            {
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //}
         return false;
     }
 
     static bool StateOfParticlePopulationIsCorrect (ParticlePopulation particlePopulation)
     {
-        //binding site populations
-        foreach (BindingSitePopulation bindingSitePopulation in particlePopulation.bindingSitePopulations)
-        {
-            if (bindingSitePopulation == null)
-            {
-                if (debug) { Debug.Log( particlePopulation + " has a null BindingSitePopulation" ); }
-                return false;
-            }
-            if (bindingSitePopulation.particlePopulation != particlePopulation)
-            {
-                if (debug) { Debug.Log( bindingSitePopulation + " doesn't reference " + particlePopulation ); }
-                return false;
-            }
-            if (bindingSitePopulation.transform != particlePopulation.theTransform)
-            {
-                if (debug) { Debug.Log( bindingSitePopulation + " is not on the same object as " + particlePopulation ); }
-                return false;
-            }
-            int count = 0;
-            foreach (BindingSitePopulation otherBindingSitePopulation in particlePopulation.bindingSitePopulations)
-            {
-                if (bindingSitePopulation == otherBindingSitePopulation)
-                {
-                    count++;
-                }
-            }
-            if (count > 1)
-            {
-                if (debug) { Debug.Log( bindingSitePopulation + " is registered to " + particlePopulation + " " + count + " times" ); }
-                return false;
-            }
-            AssertIsTrue( StateOfBindingSitePopulationIsCorrect( bindingSitePopulation ) );
-        }
-        foreach (BindingSitePopulation bindingSitePopulation in particlePopulation.GetComponents<BindingSitePopulation>())
-        {
-            if (!particlePopulation.bindingSitePopulations.Contains( bindingSitePopulation ))
-            {
-                if (debug) { Debug.Log( bindingSitePopulation + " isn't registered to " + particlePopulation ); }
-                return false;
-            }
-        }
-
-        //particle simulators
         foreach (ParticleSimulator particleSimulator in particlePopulation.GetComponentsInChildren<ParticleSimulator>())
         {
             if (particleSimulator.population != particlePopulation)
@@ -276,37 +233,6 @@ public class ObjectStateTests : AgentSimTests
                 return false;
             }
             AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
-        }
-        return true;
-    }
-
-    static bool StateOfBindingSitePopulationIsCorrect (BindingSitePopulation bindingSitePopulation)
-    {
-        foreach (BindingSiteSimulator bindingSiteSimulator in bindingSitePopulation.bindingSiteSimulators)
-        {
-            if (bindingSiteSimulator == null)
-            {
-                if (debug) { Debug.Log( bindingSitePopulation + " has a null BindingSiteSimulator" ); }
-                return false;
-            }
-            if (bindingSiteSimulator.population != bindingSitePopulation)
-            {
-                if (debug) { Debug.Log( bindingSiteSimulator + " doesn't reference " + bindingSitePopulation ); }
-                return false;
-            }
-            int count = 0;
-            foreach (BindingSiteSimulator otherBindingSiteSimulator in bindingSitePopulation.bindingSiteSimulators)
-            {
-                if (bindingSiteSimulator == otherBindingSiteSimulator)
-                {
-                    count++;
-                }
-            }
-            if (count > 1)
-            {
-                if (debug) { Debug.Log( bindingSiteSimulator + " is registered to " + bindingSitePopulation + " " + count + " times" ); }
-                return false;
-            }
         }
         return true;
     }

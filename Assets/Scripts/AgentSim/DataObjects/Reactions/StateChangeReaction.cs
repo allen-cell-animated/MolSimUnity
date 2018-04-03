@@ -16,7 +16,7 @@ namespace AICS.AgentSim
             if (bindingSiteSimulator1 != null)
             {
                 SetComplexToFinalState( bindingSiteSimulator1.complex, productStates[0] );
-
+                //update complexes
                 Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }

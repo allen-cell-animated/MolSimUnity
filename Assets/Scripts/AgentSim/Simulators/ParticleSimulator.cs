@@ -22,24 +22,13 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool active;
+        public bool couldReactOnCollision;
 
-        public void UpdateActive (bool aMoleculeIsActive = false)
-        {
-            bool newActive = aMoleculeIsActive ? true : GetActive();
-
-            if (newActive != active)
-            {
-                active = newActive;
-                population.reactor.ParticleSimulatorChangedActiveState( this );
-            }
-        }
-
-        bool GetActive ()
+        bool GetCouldReactOnCollision ()
         {
             foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
             {
-                if (moleculeSimulator.active)
+                if (moleculeSimulator.couldReactOnCollision)
                 {
                     return true;
                 }
@@ -67,7 +56,7 @@ namespace AICS.AgentSim
         {
             population = _particlePopulation;
             moleculeSimulators = _moleculeSimulators;
-            active = GetActive();
+            couldReactOnCollision = GetCouldReactOnCollision();
             population.reactor.RegisterParticleSimulator( this );
         }
 
@@ -122,7 +111,7 @@ namespace AICS.AgentSim
 
         protected float GetDisplacement (float dTime)
         {
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.complexState.diffusionCoefficient * dTime ) );
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.diffusionCoefficient * dTime ) );
         }
 
         public bool IsCollidingWith (ParticleSimulator other, Vector3 newPosition)
@@ -135,13 +124,15 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
+                moleculeSimulators.Shuffle();
                 foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
                 {
-                    if (moleculeSimulator != null && moleculeSimulator.active)
+                    if (moleculeSimulator != null && moleculeSimulator.couldReactOnCollision)
                     {
+                        other.moleculeSimulators.Shuffle();
                         foreach (MoleculeSimulator otherMoleculeSimulator in other.moleculeSimulators)
                         {
-                            if (otherMoleculeSimulator != null && otherMoleculeSimulator.active)
+                            if (otherMoleculeSimulator != null && otherMoleculeSimulator.couldReactOnCollision)
                             {
                                 if (moleculeSimulator.InteractWith( otherMoleculeSimulator ))
                                 {

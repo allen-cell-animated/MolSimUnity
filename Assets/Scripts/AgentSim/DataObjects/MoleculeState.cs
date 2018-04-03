@@ -21,6 +21,11 @@ namespace AICS.AgentSim
             return other.molecule.species == molecule.species && other.bindingSiteID == bindingSiteID;
         }
 
+        public bool Matches (Molecule _molecule, string _bindingSiteID)
+        {
+            return _molecule.species == molecule.species && _bindingSiteID == bindingSiteID;
+        }
+
         public override string ToString ()
         {
             return "site " + bindingSiteID + " on molecule " + molecule.species;
@@ -204,6 +209,22 @@ namespace AICS.AgentSim
             }
             return true;
         }
+
+        public override string ToString()
+        {
+            string s = "";
+            int i = 0;
+            foreach (MoleculeState moleculeState in moleculeStates)
+            {
+                s += moleculeState;
+                if (i < moleculeStates.Length - 1)
+                {
+                    s += " | ";
+                }
+                i++;
+            }
+            return s;
+        }
     }
 
     [System.Serializable]
@@ -303,7 +324,23 @@ namespace AICS.AgentSim
             }
             return false;
         }
-    }
+
+		public override string ToString()
+		{
+            string s = molecule.species + ":";
+            int i = 0;
+            foreach (KeyValuePair<string,string> bindingSiteState in bindingSiteStates)
+            {
+                s += "[" + bindingSiteState.Key + "]=" + bindingSiteState.Value;
+                if (i < bindingSiteStates.Count - 1)
+                {
+                    s += ",";
+                }
+                i++;
+            }
+            return s;
+		}
+	}
 
     //for prototyping in inspector without writing custom property drawer etc
     [System.Serializable]
