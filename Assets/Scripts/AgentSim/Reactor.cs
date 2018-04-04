@@ -197,11 +197,19 @@ namespace AICS.AgentSim
                 ObjectStateTests.StateOfReactorIsCorrect( this );
             }
 
+                UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             MoveParticles();
+                UnityEngine.Profiling.Profiler.EndSample();
 
             CalculateObservedRates();
+
+                UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
             DoCollisionFreeReactions();
+                UnityEngine.Profiling.Profiler.EndSample();
+
+                UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
             DoBimolecularReactions();
+                UnityEngine.Profiling.Profiler.EndSample();
 
             Cleanup();
         }
@@ -220,12 +228,10 @@ namespace AICS.AgentSim
 
         protected virtual void MoveParticles ()
         {
-            UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             foreach (ParticleSimulator particleSimulator in particleSimulators)
             {
                 particleSimulator.Move( dT );
             }
-            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public virtual bool WillCollide (ParticleSimulator particleSimulator, Vector3 newPosition)
@@ -242,17 +248,15 @@ namespace AICS.AgentSim
 
         protected virtual void DoCollisionFreeReactions ()
         {
-            UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+            collisionFreeReactionSimulators.Shuffle();
             foreach (CollisionFreeReactionSimulator collisionFreeReactionSimulator in collisionFreeReactionSimulators)
             {
                 collisionFreeReactionSimulator.TryReact();
             }
-            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         protected virtual void DoBimolecularReactions ()
         {
-            UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
             particleSimulatorsInBimolecularReactions.Shuffle();
             for (int i = 0; i < particleSimulatorsInBimolecularReactions.Count - 1; i++)
             {
@@ -261,7 +265,6 @@ namespace AICS.AgentSim
                     particleSimulatorsInBimolecularReactions[i].InteractWith( particleSimulatorsInBimolecularReactions[j] );
                 }
             }
-            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         protected virtual void Cleanup ()

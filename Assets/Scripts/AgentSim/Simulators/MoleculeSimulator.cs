@@ -52,10 +52,10 @@ namespace AICS.AgentSim
         {
             particleSimulator = _particleSimulator;
             molecule = moleculeState.molecule;
-            CreateBindingSites( moleculeState, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
-            couldReactOnCollision = GetCouldReactOnCollision();
             collisionRadius = interactionRadius = molecule.radius;
             interactionRadius += 1f;
+            CreateBindingSites( moleculeState, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            couldReactOnCollision = GetCouldReactOnCollision();
         }
 
         protected virtual void CreateBindingSites (MoleculeState moleculeState, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
@@ -99,17 +99,22 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public void MoveToComplex (ParticleSimulator _particleSimulator, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                   CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Transform newParent)
+        public virtual void MoveToComplex (ParticleSimulator _particleSimulator, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+                                           CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Transform newParent)
         {
             theTransform.SetParent( newParent );
             particleSimulator.Remove( this );
             particleSimulator = _particleSimulator;
             name = particleSimulator.name + "_" + species;
 
+            UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+        }
+
+        public virtual void UpdateReactions (BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+        {
             foreach (BindingSiteSimulator bindingSiteSimulator in bindingSiteSimulators.Values)
             {
-                bindingSiteSimulator.MoveToComplex( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                bindingSiteSimulator.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
             }
             couldReactOnCollision = GetCouldReactOnCollision();
         }

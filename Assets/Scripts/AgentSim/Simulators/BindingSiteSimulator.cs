@@ -149,7 +149,7 @@ namespace AICS.AgentSim
                 && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
         }
 
-        public void MoveToComplex (BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+        public virtual void UpdateReactions (BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
             SetBimolecularReactionSimulators( relevantBimolecularSimulators );
             UnregisterWithCollisionFreeReactionSimulators();

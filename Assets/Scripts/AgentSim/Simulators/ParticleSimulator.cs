@@ -185,6 +185,17 @@ namespace AICS.AgentSim
             return new MoleculeSimulator[]{bindingSiteSimulator.moleculeSimulator};
         }
 
+        public virtual void UpdateReactions ()
+        {
+            BimolecularReactionSimulator[] relevantBimolecularSimulators = population.reactor.GetRelevantBimolecularReactionSimulators( complex );
+            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = population.reactor.GetRelevantCollisionFreeReactionSimulators( complex );
+            foreach (MoleculeSimulator moleculeSimulator in complex)
+            {
+                moleculeSimulator.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            }
+            UpdateCouldReactOnCollision();
+        }
+
         public void Remove (MoleculeSimulator moleculeSimulatorToRemove)
         {
             if (complex.Length < 2)
@@ -204,6 +215,16 @@ namespace AICS.AgentSim
                     }
                 }
                 complex = newComplex;
+            }
+        }
+
+        public void UpdateCouldReactOnCollision ()
+        {
+            bool newCouldReactOnCollision = GetCouldReactOnCollision();
+            if (newCouldReactOnCollision != couldReactOnCollision)
+            {
+                couldReactOnCollision = newCouldReactOnCollision;
+                population.reactor.ParticleSimulatorChangedCouldReactOnCollisionState( this );
             }
         }
 

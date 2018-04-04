@@ -82,7 +82,7 @@ namespace AICS.AgentSim
         public Reaction reaction;
         
         [SerializeField] int attempts;
-        [SerializeField] int events;
+        public int events;
         [SerializeField] float observedRate;
 
         public ReactionSimulator (Reaction _reaction)
