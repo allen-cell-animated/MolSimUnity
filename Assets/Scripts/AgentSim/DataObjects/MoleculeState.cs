@@ -71,27 +71,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public float radius
-        {
-            get
-            {
-                if (moleculeStates.Length == 1)
-                {
-                    return moleculeStates[0].molecule.radius;
-                }
-                if (moleculeStates.Length > 1)
-                {
-                    float r = 0;
-                    foreach (MoleculeState moleculeState in moleculeStates)
-                    {
-                        r += moleculeState.molecule.radius;
-                    }
-                    return r * 1.5f; //hack for now
-                }
-                return 0;
-            }
-        }
-
         public float diffusionCoefficient
         {
             get
@@ -118,12 +97,33 @@ namespace AICS.AgentSim
             _moleculeStates = theMoleculeStates;
         }
 
-        public bool IsSatisfiedBy (MoleculeSimulator[] moleculeSimulators)
+        public bool IsSatisfiedBy (ComplexState other)
         {
             foreach (MoleculeState moleculeState in moleculeStates)
             {
                 bool stateFound = false;
-                foreach (MoleculeSimulator molecule in moleculeSimulators)
+                foreach (MoleculeState otherMoleculeState in other.moleculeStates)
+                {
+                    if (moleculeState.IsSatisfiedBy( otherMoleculeState ))
+                    {
+                        stateFound = true;
+                        break;
+                    }
+                }
+                if (!stateFound)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool IsSatisfiedBy (MoleculeSimulator[] complex)
+        {
+            foreach (MoleculeState moleculeState in moleculeStates)
+            {
+                bool stateFound = false;
+                foreach (MoleculeSimulator molecule in complex)
                 {
                     if (moleculeState.IsSatisfiedBy( molecule ))
                     {
@@ -189,28 +189,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool IsSatisfiedBy (ComplexState other)
-        {
-            foreach (MoleculeState moleculeState in moleculeStates)
-            {
-                bool stateFound = false;
-                foreach (MoleculeState otherMoleculeState in other.moleculeStates)
-                {
-                    if (moleculeState.IsSatisfiedBy( otherMoleculeState ))
-                    {
-                        stateFound = true;
-                        break;
-                    }
-                }
-                if (!stateFound)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public override string ToString()
+        public override string ToString ()
         {
             string s = "";
             int i = 0;
@@ -263,6 +242,22 @@ namespace AICS.AgentSim
             bindingSiteStates = new Dictionary<string, string>( _bindingSiteStates );
         }
 
+        public bool IsSatisfiedBy (MoleculeState other)
+        {
+            if (other.molecule.species != molecule.species)
+            {
+                return false;
+            }
+            foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
+            {
+                if (!other.bindingSiteStates.ContainsKey( siteState.Key ) || other.bindingSiteStates[siteState.Key] != siteState.Value)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public bool IsSatisfiedBy (MoleculeSimulator _moleculeSimulator)
         {
             if (_moleculeSimulator.species == molecule.species)
@@ -297,22 +292,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool IsSatisfiedBy (MoleculeState other)
-        {
-            if (other.molecule.species != molecule.species)
-            {
-                return false;
-            }
-            foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
-            {
-                if (!other.bindingSiteStates.ContainsKey( siteState.Key ) || other.bindingSiteStates[siteState.Key] != siteState.Value)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         public bool ContainsBindingSite (string bindingSiteID)
         {
             foreach (KeyValuePair<string,string> bindingSiteState in bindingSiteStates)
@@ -325,7 +304,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-		public override string ToString()
+		public override string ToString ()
 		{
             string s = molecule.species + ":";
             int i = 0;

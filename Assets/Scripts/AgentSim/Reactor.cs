@@ -10,7 +10,7 @@ namespace AICS.AgentSim
         public Model model;
         public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
         public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
-        public Dictionary<ComplexState,ParticlePopulation> particlePopulations = new Dictionary<ComplexState,ParticlePopulation>();
+        public Dictionary<ComplexState,Population> populations = new Dictionary<ComplexState,Population>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -30,7 +30,7 @@ namespace AICS.AgentSim
 
         void Start ()
         {
-            SetupReactionData();
+            CreateReactionSimulators();
             CreateContainer();
 
             foreach (ComplexConcentration complex in model.complexes)
@@ -39,7 +39,7 @@ namespace AICS.AgentSim
             }
         }
 
-        protected virtual void SetupReactionData ()
+        protected virtual void CreateReactionSimulators ()
         {
             model.Init(); //for prototyping in inspector without writing custom property drawer etc
 
@@ -67,18 +67,18 @@ namespace AICS.AgentSim
             GameObject obj = new GameObject( complexConcentration.complexState.species + "Population" );
             obj.transform.SetParent( transform );
 
-            ParticlePopulation particlePopulation = obj.AddComponent<ParticlePopulation>();
-            particlePopulation.Init( complexConcentration, this );
-            particlePopulations.Add( complexConcentration.complexState, particlePopulation );
+            Population population = obj.AddComponent<Population>();
+            population.Init( complexConcentration, this );
+            populations.Add( complexConcentration.complexState, population );
         }
 
-        public virtual ParticlePopulation GetPopulationForComplex (ComplexState complexState)
+        public virtual Population GetPopulation (ComplexState complexState)
         {
-            if (!particlePopulations.ContainsKey( complexState ))
+            if (!populations.ContainsKey( complexState ))
             {
                 CreatePopulation( new ComplexConcentration( complexState, 0 ) );
             }
-            return particlePopulations[complexState];
+            return populations[complexState];
         }
 
         public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (ComplexState complexState)
@@ -86,7 +86,7 @@ namespace AICS.AgentSim
             List<BimolecularReactionSimulator> reactionSimulatorsList = new List<BimolecularReactionSimulator>();
             foreach (BimolecularReactionSimulator reactionSimulator in bimolecularReactionSimulators)
             {
-                if (reactionSimulator.ComplexIsReactant( complexState ))
+                if (reactionSimulator.IsReactant( complexState ))
                 {
                     reactionSimulatorsList.Add( reactionSimulator );
                 }
@@ -94,12 +94,12 @@ namespace AICS.AgentSim
             return reactionSimulatorsList.ToArray();
         }
 
-        public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (MoleculeSimulator[] moleculeSimulators)
+        public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (MoleculeSimulator[] complex)
         {
             List<BimolecularReactionSimulator> reactionSimulatorsList = new List<BimolecularReactionSimulator>();
             foreach (BimolecularReactionSimulator reactionSimulator in bimolecularReactionSimulators)
             {
-                if (reactionSimulator.ComplexIsReactant( moleculeSimulators ))
+                if (reactionSimulator.IsReactant( complex ))
                 {
                     reactionSimulatorsList.Add( reactionSimulator );
                 }
@@ -112,7 +112,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReactionSimulator> reactionSimulatorsList = new List<CollisionFreeReactionSimulator>();
             foreach (CollisionFreeReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
             {
-                if (reactionSimulator.ComplexIsReactant( complexState ))
+                if (reactionSimulator.IsReactant( complexState ))
                 {
                     reactionSimulatorsList.Add( reactionSimulator );
                 }
@@ -120,12 +120,12 @@ namespace AICS.AgentSim
             return reactionSimulatorsList.ToArray();
         }
 
-        public CollisionFreeReactionSimulator[] GetRelevantCollisionFreeReactionSimulators (MoleculeSimulator[] moleculeSimulators)
+        public CollisionFreeReactionSimulator[] GetRelevantCollisionFreeReactionSimulators (MoleculeSimulator[] complex)
         {
             List<CollisionFreeReactionSimulator> reactionSimulatorsList = new List<CollisionFreeReactionSimulator>();
             foreach (CollisionFreeReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
             {
-                if (reactionSimulator.ComplexIsReactant( moleculeSimulators ))
+                if (reactionSimulator.IsReactant( complex ))
                 {
                     reactionSimulatorsList.Add( reactionSimulator );
                 }
@@ -133,7 +133,7 @@ namespace AICS.AgentSim
             return reactionSimulatorsList.ToArray();
         }
 
-        public void RegisterParticleSimulator (ParticleSimulator particleSimulator)
+        public void Register (ParticleSimulator particleSimulator)
         {
             if (!particleSimulators.Contains( particleSimulator ))
             {
@@ -150,7 +150,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public void UnregisterParticleSimulator (ParticleSimulator particleSimulator)
+        public void Unregister (ParticleSimulator particleSimulator)
         {
             if (particleSimulators.Contains( particleSimulator ))
             {
@@ -278,27 +278,6 @@ namespace AICS.AgentSim
                 }
             }
             particleSimulatorsToDestroy.Clear();
-        }
-
-        static GameObject _flashPrefab;
-        static GameObject flashPrefab
-        {
-            get
-            {
-                if (_flashPrefab == null)
-                {
-                    _flashPrefab = Resources.Load( "Flash" ) as GameObject;
-                }
-                return _flashPrefab;
-            }
-        }
-
-        public static void ShowFlash (Transform parent)
-        {
-            if (flashPrefab != null)
-            {
-                Instantiate( flashPrefab, parent.position, Quaternion.identity, parent );
-            }
         }
     }
 }

@@ -20,14 +20,14 @@ namespace AICS.AgentSim
 
                 RelativelyPosition( bindingSiteSimulator1.theTransform, bindingSiteSimulator2.theTransform );
 
-                ParticlePopulation productParticlePopulation = bindingSiteSimulator1.reactor.GetPopulationForComplex( productStates[0] );
-                MoleculeSimulator[] moleculeSimulators = new MoleculeSimulator[bindingSiteSimulator1.complex.Length + bindingSiteSimulator2.complex.Length];
-                bindingSiteSimulator1.complex.CopyTo( moleculeSimulators, 0 );
-                bindingSiteSimulator2.complex.CopyTo( moleculeSimulators, bindingSiteSimulator1.complex.Length );
-                SetComplexToFinalState( moleculeSimulators, productStates[0] );
-                productParticlePopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator1.theTransform, moleculeSimulators );
+                Population productPopulation = bindingSiteSimulator1.reactor.GetPopulation( productStates[0] );
+                MoleculeSimulator[] complex = new MoleculeSimulator[bindingSiteSimulator1.complex.Length + bindingSiteSimulator2.complex.Length];
+                bindingSiteSimulator1.complex.CopyTo( complex, 0 );
+                bindingSiteSimulator2.complex.CopyTo( complex, bindingSiteSimulator1.complex.Length );
+                SetComplexToFinalState( complex, productStates[0] );
+                productPopulation.CreateComplex( bindingSiteSimulator1.theTransform, complex );
 
-                Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
+                World.ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }
 

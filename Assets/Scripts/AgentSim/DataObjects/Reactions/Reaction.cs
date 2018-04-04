@@ -63,9 +63,9 @@ namespace AICS.AgentSim
             return "";
         }
 
-        protected virtual void SetComplexToFinalState (MoleculeSimulator[] moleculeSimulators, ComplexState finalState)
+        protected virtual void SetComplexToFinalState (MoleculeSimulator[] complex, ComplexState finalState)
         {
-            foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
+            foreach (MoleculeSimulator moleculeSimulator in complex)
             {
                 foreach (MoleculeState moleculeState in finalState.moleculeStates)
                 {

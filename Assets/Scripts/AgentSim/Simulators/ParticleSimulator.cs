@@ -6,8 +6,8 @@ namespace AICS.AgentSim
 {
     public class ParticleSimulator : MonoBehaviour 
     {
-        public ParticlePopulation population;
-        public MoleculeSimulator[] moleculeSimulators;
+        public Population population;
+        public MoleculeSimulator[] complex;
 
         Transform _theTransform;
         public Transform theTransform
@@ -26,7 +26,7 @@ namespace AICS.AgentSim
 
         bool GetCouldReactOnCollision ()
         {
-            foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
+            foreach (MoleculeSimulator moleculeSimulator in complex)
             {
                 if (moleculeSimulator.couldReactOnCollision)
                 {
@@ -36,28 +36,56 @@ namespace AICS.AgentSim
             return false;
         }
 
+        float _collisionRadius = -1f;
         float collisionRadius
         {
             get 
             {
-                return population.collisionRadius;
+                if (_collisionRadius < 0)
+                {
+                    float d, maxD = 0;
+                    foreach (MoleculeSimulator moleculeSimulator in complex)
+                    {
+                        d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.collisionRadius;
+                        if (d > maxD)
+                        {
+                            maxD = d;
+                        }
+                    }
+                    _collisionRadius = maxD;
+                }
+                return _collisionRadius;
             }
         }
 
+        float _interactionRadius = -1f;
         float interactionRadius
         {
             get 
             {
-                return population.interactionRadius;
+                if (_interactionRadius < 0)
+                {
+                    float d, maxD = 0;
+                    foreach (MoleculeSimulator moleculeSimulator in complex)
+                    {
+                        d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.interactionRadius;
+                        if (d > maxD)
+                        {
+                            maxD = d;
+                        }
+                    }
+                    _interactionRadius = maxD;
+                }
+                return _interactionRadius;
             }
         }
 
-        public virtual void Init (MoleculeSimulator[] _moleculeSimulators, ParticlePopulation _particlePopulation)
+        public virtual void Init (MoleculeSimulator[] _complex, Population _population)
         {
-            population = _particlePopulation;
-            moleculeSimulators = _moleculeSimulators;
+            population = _population;
+            complex = _complex;
             couldReactOnCollision = GetCouldReactOnCollision();
-            population.reactor.RegisterParticleSimulator( this );
+            population.reactor.Register( this );
         }
 
         public virtual void Move (float dTime)
@@ -124,13 +152,13 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
-                moleculeSimulators.Shuffle();
-                foreach (MoleculeSimulator moleculeSimulator in moleculeSimulators)
+                complex.Shuffle();
+                foreach (MoleculeSimulator moleculeSimulator in complex)
                 {
                     if (moleculeSimulator != null && moleculeSimulator.couldReactOnCollision)
                     {
-                        other.moleculeSimulators.Shuffle();
-                        foreach (MoleculeSimulator otherMoleculeSimulator in other.moleculeSimulators)
+                        other.complex.Shuffle();
+                        foreach (MoleculeSimulator otherMoleculeSimulator in other.complex)
                         {
                             if (otherMoleculeSimulator != null && otherMoleculeSimulator.couldReactOnCollision)
                             {
@@ -157,27 +185,29 @@ namespace AICS.AgentSim
             return new MoleculeSimulator[]{bindingSiteSimulator.moleculeSimulator};
         }
 
-        public void RemoveMoleculeSimulator (MoleculeSimulator moleculeSimulatorToRemove)
+        public void Remove (MoleculeSimulator moleculeSimulatorToRemove)
         {
-            MoleculeSimulator[] newMoleculeSimulators = new MoleculeSimulator[moleculeSimulators.Length - 1];
-            int j = 0;
-            for (int i = 0; i < moleculeSimulators.Length; i++)
+            if (complex.Length < 2)
             {
-                if (moleculeSimulators[i] != moleculeSimulatorToRemove)
-                {
-                    newMoleculeSimulators[j] = moleculeSimulators[i];
-                    j++;
-                }
+                population.reactor.Unregister( this );
             }
-            moleculeSimulators = newMoleculeSimulators;
-
-            if (moleculeSimulators.Length == 0)
+            else
             {
-                population.reactor.UnregisterParticleSimulator( this );
+                MoleculeSimulator[] newComplex = new MoleculeSimulator[complex.Length - 1];
+                int j = 0;
+                for (int i = 0; i < complex.Length; i++)
+                {
+                    if (complex[i] != moleculeSimulatorToRemove)
+                    {
+                        newComplex[j] = complex[i];
+                        j++;
+                    }
+                }
+                complex = newComplex;
             }
         }
 
-		public override string ToString()
+		public override string ToString ()
 		{
             return "ParticleSimulator " + name;
 		}

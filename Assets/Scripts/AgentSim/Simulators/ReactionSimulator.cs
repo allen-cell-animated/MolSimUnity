@@ -11,11 +11,11 @@ namespace AICS.AgentSim
 
         public CollisionFreeReactionSimulator (Reaction _reaction) : base (_reaction) { }
 
-        public bool RegisterBindingSiteSimulator (BindingSiteSimulator bindingSitesimulator, ComplexState complexState = null)
+        public bool Register (BindingSiteSimulator bindingSitesimulator, ComplexState complexState = null)
         {
             if (!bindingSiteSimulators.Contains( bindingSitesimulator ))
             {
-                if ((complexState == null || ComplexIsReactant( complexState )) && SiteIsRelevant( bindingSitesimulator ))
+                if ((complexState == null || IsReactant( complexState )) && SiteIsRelevant( bindingSitesimulator ))
                 {
                     bindingSiteSimulators.Add( bindingSitesimulator );
                     return true;
@@ -28,7 +28,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public void UnregisterBindingSiteSimulator (BindingSiteSimulator bindingSitesimulator)
+        public void Unregister (BindingSiteSimulator bindingSitesimulator)
         {
             if (bindingSiteSimulators.Contains( bindingSitesimulator ))
             {
@@ -81,9 +81,9 @@ namespace AICS.AgentSim
     {
         public Reaction reaction;
         
-        public int attempts;
-        public int events;
-        public float observedRate;
+        [SerializeField] int attempts;
+        [SerializeField] int events;
+        [SerializeField] float observedRate;
 
         public ReactionSimulator (Reaction _reaction)
         {
@@ -95,7 +95,7 @@ namespace AICS.AgentSim
             observedRate = events / World.Instance.time;
         }
 
-        public bool ComplexIsReactant (ComplexState complexState)
+        public bool IsReactant (ComplexState complexState)
         {
             foreach (ComplexState reactant in reaction.reactantStates)
             {
@@ -107,11 +107,11 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool ComplexIsReactant (MoleculeSimulator[] moleculeSimulators)
+        public bool IsReactant (MoleculeSimulator[] complex)
         {
             foreach (ComplexState reactantState in reaction.reactantStates)
             {
-                if (reactantState.IsSatisfiedBy( moleculeSimulators ))
+                if (reactantState.IsSatisfiedBy( complex ))
                 {
                     return true;
                 }

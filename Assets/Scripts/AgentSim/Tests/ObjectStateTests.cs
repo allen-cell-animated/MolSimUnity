@@ -154,43 +154,43 @@ public class ObjectStateTests : AgentSimTests
         }
 
         //particle populations
-        foreach (ParticlePopulation particlePopulation in reactor.particlePopulations.Values)
+        foreach (Population population in reactor.populations.Values)
         {
-            if (particlePopulation == null)
+            if (population == null)
             {
-                if (debug) { Debug.Log( "The Reactor has a null ParticlePopulation" ); }
+                if (debug) { Debug.Log( "The Reactor has a null Population" ); }
                 return false;
             }
-            if (particlePopulation.reactor != reactor)
+            if (population.reactor != reactor)
             {
-                if (debug) { Debug.Log( particlePopulation + " doesn't reference the Reactor" ); }
+                if (debug) { Debug.Log( population + " doesn't reference the Reactor" ); }
                 return false;
             }
-            if (particlePopulation.theTransform.parent != reactor.transform)
+            if (population.theTransform.parent != reactor.transform)
             {
-                if (debug) { Debug.Log( particlePopulation + " is not parented to the Reactor" ); }
+                if (debug) { Debug.Log( population + " is not parented to the Reactor" ); }
                 return false;
             }
             int count = 0;
-            foreach (ParticlePopulation otherParticlePopulation in reactor.particlePopulations.Values)
+            foreach (Population otherPopulation in reactor.populations.Values)
             {
-                if (particlePopulation == otherParticlePopulation)
+                if (population == otherPopulation)
                 {
                     count++;
                 }
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( particlePopulation + " is registered to the Reactor " + count + " times" ); }
+                if (debug) { Debug.Log( population + " is registered to the Reactor " + count + " times" ); }
                 return false;
             }
-            AssertIsTrue( StateOfParticlePopulationIsCorrect( particlePopulation ) );
+            AssertIsTrue( StateOfPopulationIsCorrect( population ) );
         }
-        foreach (ParticlePopulation particlePopulation in GameObject.FindObjectsOfType<ParticlePopulation>())
+        foreach (Population population in GameObject.FindObjectsOfType<Population>())
         {
-            if (!reactor.particlePopulations.ContainsValue( particlePopulation ))
+            if (!reactor.populations.ContainsValue( population ))
             {
-                if (debug) { Debug.Log( particlePopulation + " isn't registered to the Reactor" ); }
+                if (debug) { Debug.Log( population + " isn't registered to the Reactor" ); }
                 return false;
             }
         }
@@ -202,7 +202,7 @@ public class ObjectStateTests : AgentSimTests
 
     static bool ParticleSimulatorReallyIsBimolecularReactant (ParticleSimulator particleSimulator)
     {
-        //foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
+        //foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
         //{
         //    foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
         //    {
@@ -218,18 +218,18 @@ public class ObjectStateTests : AgentSimTests
         return false;
     }
 
-    static bool StateOfParticlePopulationIsCorrect (ParticlePopulation particlePopulation)
+    static bool StateOfPopulationIsCorrect (Population population)
     {
-        foreach (ParticleSimulator particleSimulator in particlePopulation.GetComponentsInChildren<ParticleSimulator>())
+        foreach (ParticleSimulator particleSimulator in population.GetComponentsInChildren<ParticleSimulator>())
         {
-            if (particleSimulator.population != particlePopulation)
+            if (particleSimulator.population != population)
             {
-                if (debug) { Debug.Log( particleSimulator + " doesn't reference " + particlePopulation ); }
+                if (debug) { Debug.Log( particleSimulator + " doesn't reference " + population ); }
                 return false;
             }
-            if (particleSimulator.theTransform.parent != particlePopulation.theTransform)
+            if (particleSimulator.theTransform.parent != population.theTransform)
             {
-                if (debug) { Debug.Log( particleSimulator + " is not parented to " + particlePopulation ); }
+                if (debug) { Debug.Log( particleSimulator + " is not parented to " + population ); }
                 return false;
             }
             AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
@@ -239,7 +239,7 @@ public class ObjectStateTests : AgentSimTests
 
     static bool StateOfParticleSimulatorIsCorrect (ParticleSimulator particleSimulator)
     {
-        foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
+        foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
         {
             if (moleculeSimulator == null)
             {
@@ -252,7 +252,7 @@ public class ObjectStateTests : AgentSimTests
                 return false;
             }
             int count = 0;
-            foreach (MoleculeSimulator otherMoleculeSimulator in particleSimulator.moleculeSimulators)
+            foreach (MoleculeSimulator otherMoleculeSimulator in particleSimulator.complex)
             {
                 if (moleculeSimulator == otherMoleculeSimulator)
                 {
@@ -275,18 +275,18 @@ public class ObjectStateTests : AgentSimTests
             }
         }
 
-        if (particleSimulator.moleculeSimulators.Length == 1)
+        if (particleSimulator.complex.Length == 1)
         {
-            if (particleSimulator.moleculeSimulators[0].gameObject != particleSimulator.gameObject)
+            if (particleSimulator.complex[0].gameObject != particleSimulator.gameObject)
             {
-                if (debug) { Debug.Log( particleSimulator.moleculeSimulators[0] + " isn't on the same GameObject as " + particleSimulator 
+                if (debug) { Debug.Log( particleSimulator.complex[0] + " isn't on the same GameObject as " + particleSimulator 
                                         + "even though it's the only molecule in the complex" ); }
                 return false;
             }
         }
-        else if (particleSimulator.moleculeSimulators.Length > 1)
+        else if (particleSimulator.complex.Length > 1)
         {
-            foreach (MoleculeSimulator moleculeSimulator in particleSimulator.moleculeSimulators)
+            foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
             {
                 if (moleculeSimulator.theTransform.parent != particleSimulator.theTransform)
                 {

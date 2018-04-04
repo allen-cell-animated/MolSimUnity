@@ -11,8 +11,8 @@ namespace AICS.AgentSim
         public string state;
         public BindingSiteSimulator boundSite;
 
-        protected BimolecularReactionSimulator[] bimolecularReactionSimulators;
-        protected CollisionFreeReactionSimulator[] collisionFreeReactionSimulators;
+        [SerializeField] protected BimolecularReactionSimulator[] bimolecularReactionSimulators;
+        [SerializeField] protected CollisionFreeReactionSimulator[] collisionFreeReactionSimulators;
 
         Transform _theTransform;
         public Transform theTransform
@@ -55,7 +55,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return particleSimulator.moleculeSimulators;
+                return particleSimulator.complex;
             }
         }
 
@@ -111,7 +111,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReactionSimulator> collisionFreeReactionSimulatorsList = new List<CollisionFreeReactionSimulator>();
             foreach (CollisionFreeReactionSimulator reactionSimulator in relevantCollisionFreeSimulators)
             {
-                if (reactionSimulator.RegisterBindingSiteSimulator( this ))
+                if (reactionSimulator.Register( this ))
                 {
                     collisionFreeReactionSimulatorsList.Add( reactionSimulator );
                 }
@@ -123,7 +123,7 @@ namespace AICS.AgentSim
         {
             foreach (CollisionFreeReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
             {
-                reactionSimulator.UnregisterBindingSiteSimulator( this );
+                reactionSimulator.Unregister( this );
             }
         }
 
@@ -157,7 +157,7 @@ namespace AICS.AgentSim
             name = moleculeSimulator.name + "_" + id;
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return "BindingSiteSimulator " + name;
         }

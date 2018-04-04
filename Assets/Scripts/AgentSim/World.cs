@@ -40,6 +40,27 @@ namespace AICS.AgentSim
     			time += dT;
                 steps++;
             }
-		}
+        }
+
+        static GameObject _flashPrefab;
+        static GameObject flashPrefab
+        {
+            get
+            {
+                if (_flashPrefab == null)
+                {
+                    _flashPrefab = Resources.Load( "Flash" ) as GameObject;
+                }
+                return _flashPrefab;
+            }
+        }
+
+        public static void ShowFlash (Transform parent)
+        {
+            if (flashPrefab != null)
+            {
+                Instantiate( flashPrefab, parent.position, Quaternion.identity, parent );
+            }
+        }
 	}
 }

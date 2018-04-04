@@ -13,19 +13,20 @@ namespace AICS.AgentSim
         public ComplexConcentration[] complexes;
         public Reaction[] reactions;
 
-        #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
+            #region for prototyping in inspector without writing custom property drawer etc
             foreach (ComplexConcentration complex in complexes)
             {
                 complex.complexState.Init();
             }
+            #endregion
+
             foreach (Reaction reaction in reactions)
             {
                 reaction.Init();
             }
         }
-        #endregion
     }
 
     [System.Serializable]

@@ -9,6 +9,8 @@ namespace AICS.AgentSim
         public ParticleSimulator particleSimulator;
         public Molecule molecule;
         public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
+        public float collisionRadius;
+        public float interactionRadius;
 
         Transform _theTransform;
         public Transform theTransform
@@ -52,6 +54,8 @@ namespace AICS.AgentSim
             molecule = moleculeState.molecule;
             CreateBindingSites( moleculeState, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
             couldReactOnCollision = GetCouldReactOnCollision();
+            collisionRadius = interactionRadius = molecule.radius;
+            interactionRadius += 1f;
         }
 
         protected virtual void CreateBindingSites (MoleculeState moleculeState, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
@@ -99,7 +103,7 @@ namespace AICS.AgentSim
                                    CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Transform newParent)
         {
             theTransform.SetParent( newParent );
-            particleSimulator.RemoveMoleculeSimulator( this );
+            particleSimulator.Remove( this );
             particleSimulator = _particleSimulator;
             name = particleSimulator.name + "_" + species;
 
@@ -110,7 +114,7 @@ namespace AICS.AgentSim
             couldReactOnCollision = GetCouldReactOnCollision();
         }
 
-        public override string ToString()
+        public override string ToString ()
         {
             return "MoleculeSimulator " + name;
         }

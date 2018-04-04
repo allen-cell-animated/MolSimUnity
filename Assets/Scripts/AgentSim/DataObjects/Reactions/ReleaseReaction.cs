@@ -21,18 +21,18 @@ namespace AICS.AgentSim
                 bindingSiteSimulator2.boundSite = null;
 
                 BindingSiteSimulator bindingSiteSimulator;
-                ParticlePopulation productPopulation;
-                MoleculeSimulator[] moleculeSimulators;
+                Population productPopulation;
+                MoleculeSimulator[] complex;
                 foreach (ComplexState productState in productStates)
                 {
                     bindingSiteSimulator = GetBindingSiteForProductState( productState, bindingSiteSimulator1, bindingSiteSimulator2 );
-                    productPopulation = bindingSiteSimulator.reactor.GetPopulationForComplex( productState );
-                    moleculeSimulators = bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
-                    SetComplexToFinalState( moleculeSimulators, productState );
-                    productPopulation.CreateComplexWithMoleculeSimulators( bindingSiteSimulator.moleculeSimulator.theTransform, moleculeSimulators );
+                    productPopulation = bindingSiteSimulator.reactor.GetPopulation( productState );
+                    complex = bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
+                    SetComplexToFinalState( complex, productState );
+                    productPopulation.CreateComplex( bindingSiteSimulator.moleculeSimulator.theTransform, complex );
                 }
 
-                Reactor.ShowFlash( bindingSiteSimulator1.theTransform );
+                World.ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }
 
