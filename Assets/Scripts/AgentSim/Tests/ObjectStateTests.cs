@@ -153,7 +153,7 @@ public class ObjectStateTests : AgentSimTests
             }
         }
 
-        //particle populations
+        //populations
         foreach (Population population in reactor.populations.Values)
         {
             if (population == null)
@@ -196,25 +196,18 @@ public class ObjectStateTests : AgentSimTests
         }
 
         if (debug) { Debug.Log( "Reactor passed check" ); }
-
         return true;
     }
 
     static bool ParticleSimulatorReallyIsBimolecularReactant (ParticleSimulator particleSimulator)
     {
-        //foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
-        //{
-        //    foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
-        //    {
-        //        foreach (string activeState in bindingSiteSimulator.population.activeStates)
-        //        {
-        //            if (bindingSiteSimulator.state == activeState)
-        //            {
-        //                return true;
-        //            }
-        //        }
-        //    }
-        //}
+        foreach (BimolecularReactionSimulator reactionSimulator in particleSimulator.population.reactor.bimolecularReactionSimulators)
+        {
+            if (reactionSimulator.IsReactant( particleSimulator.complex ))
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -227,11 +220,6 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( particleSimulator + " doesn't reference " + population ); }
                 return false;
             }
-            if (particleSimulator.theTransform.parent != population.theTransform)
-            {
-                if (debug) { Debug.Log( particleSimulator + " is not parented to " + population ); }
-                return false;
-            }
             AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
         }
         return true;
@@ -239,6 +227,7 @@ public class ObjectStateTests : AgentSimTests
 
     static bool StateOfParticleSimulatorIsCorrect (ParticleSimulator particleSimulator)
     {
+        bool bimolecularReactant = false;
         foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
         {
             if (moleculeSimulator == null)
@@ -264,7 +253,21 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( moleculeSimulator + " is registered to " + particleSimulator + " " + count + " times" ); }
                 return false;
             }
+            if (moleculeSimulator.couldReactOnCollision)
+            {
+                bimolecularReactant = true;
+                if (!particleSimulator.couldReactOnCollision)
+                {
+                    if (debug) { Debug.Log( moleculeSimulator + " is bimolecular reactant but " + particleSimulator + " isn't" ); }
+                    return false;
+                }
+            }
             AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( moleculeSimulator ) );
+        }
+        if (particleSimulator.couldReactOnCollision && !bimolecularReactant)
+        {
+            if (debug) { Debug.Log( particleSimulator + " has no bimolecular reactant molecule but is marked as a bimolecular reactant" ); }
+            return false;
         }
         foreach (MoleculeSimulator moleculeSimulator in particleSimulator.GetComponentsInChildren<MoleculeSimulator>())
         {
@@ -305,6 +308,7 @@ public class ObjectStateTests : AgentSimTests
 
     static bool StateOfMoleculeSimulatorIsCorrect (MoleculeSimulator moleculeSimulator)
     {
+        bool bimolecularReactant = false;
         foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
         {
             if (bindingSiteSimulator == null)
@@ -335,6 +339,20 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( bindingSiteSimulator + " is registered to " + moleculeSimulator + " " + count + " times" ); }
                 return false;
             }
+            if (bindingSiteSimulator.couldReactOnCollision)
+            {
+                bimolecularReactant = true;
+                if (!moleculeSimulator.couldReactOnCollision)
+                {
+                    if (debug) { Debug.Log( bindingSiteSimulator + " is bimolecular reactant but " + moleculeSimulator + " isn't" ); }
+                    return false;
+                }
+            }
+        }
+        if (moleculeSimulator.couldReactOnCollision && !bimolecularReactant)
+        {
+            if (debug) { Debug.Log( moleculeSimulator + " has no bimolecular reactant binding site but is marked as a bimolecular reactant" ); }
+            return false;
         }
         foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.GetComponentsInChildren<BindingSiteSimulator>())
         {
