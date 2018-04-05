@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
+  m_Name: Spawn123Complex
+  m_EditorClassIdentifier: 
+  scale: 0.000001
+  containerVolume: 0.000000125
+  complexes:
+  - concentration: 6.5e-16
+    complexState:
+      _moleculeStates:
+      - _molecule: {fileID: 11400000, guid: 76df77b7b23194409a3a8dc3341eb897, type: 2}
+        siteStates:
+        - id: a
+          state: '!1'
+        - id: b
+          state: '!2'
+        - id: c
+          state: 0
+      - _molecule: {fileID: 11400000, guid: 16a60391589d54247bc15f9d5739c448, type: 2}
+        siteStates:
+        - id: b
+          state: '!2'
+        - id: d
+          state: 0
+      - _molecule: {fileID: 11400000, guid: c8c77442a620d4e41937484977d86c46, type: 2}
+        siteStates:
+        - id: a
+          state: '!1'
+        - id: e
+          state: 0
+        - id: f
+          state: 0
+  reactions: []
