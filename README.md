@@ -1,4 +1,4 @@
-# AgentSim
+# MolSim
 a simulation framework for molecular modeling
 
 our goal is to create a system that:
