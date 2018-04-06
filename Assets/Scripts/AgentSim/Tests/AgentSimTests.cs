@@ -14,7 +14,9 @@ public class AgentSimTests
         if (debug && !value)
         {
             Debug.LogError( "Test failed" );
+            #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPaused = true;
+            #endif
         }
         else
         {

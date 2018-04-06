@@ -9,22 +9,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65922519dfcfa47d680fba9f67aeafe5, type: 3}
-  m_Name: X(P~1) = X(P~0)
+  m_Name: simpleDephosphorylation
   m_EditorClassIdentifier: 
   description: X(P~1) -> X(P~0)
   rate: 10000000
   reactantStates:
   - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+    - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
       siteStates:
       - id: P
         state: 1
   productStates:
   - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+    - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
       siteStates:
       - id: P
         state: 0
   relevantSites:
-  - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  - molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
     bindingSiteID: P
+  productmoleculeColors:
+  - molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+    color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
+  m_Name: simpleOff
+  m_EditorClassIdentifier: 
+  description: X(y!1,P~0).Y(x!1) -> X(y,P~0) + Y(x)
+  rate: 1000000
+  reactantStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+      siteStates:
+      - id: y
+        state: '!1'
+      - id: P
+        state: 0
+    - _molecule: {fileID: 11400000, guid: c015a0325ff8a4348a7768778ad2b845, type: 2}
+      siteStates:
+      - id: x
+        state: '!1'
+  productStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+      siteStates:
+      - id: y
+        state: 0
+      - id: P
+        state: 0
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: c015a0325ff8a4348a7768778ad2b845, type: 2}
+      siteStates:
+      - id: x
+        state: 0
+  relevantSites:
+  - molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+    bindingSiteID: y
+  productmoleculeColors: []

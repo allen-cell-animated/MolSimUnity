@@ -85,14 +85,17 @@ namespace AICS.AgentSim
 
         protected void SetProductColor (MoleculeSimulator[] complex)
         {
-            foreach (MoleculeColor moleculeColor in productmoleculeColors)
+            if (productmoleculeColors != null)
             {
-                foreach (MoleculeSimulator moleculeSimulator in complex)
+                foreach (MoleculeColor moleculeColor in productmoleculeColors)
                 {
-                    if (moleculeSimulator.molecule.species == moleculeColor.molecule.species)
+                    foreach (MoleculeSimulator moleculeSimulator in complex)
                     {
-                        moleculeSimulator.SetColor( moleculeColor.color );
-                        break;
+                        if (moleculeSimulator.molecule.species == moleculeColor.molecule.species)
+                        {
+                            moleculeSimulator.SetColor( moleculeColor.color );
+                            break;
+                        }
                     }
                 }
             }

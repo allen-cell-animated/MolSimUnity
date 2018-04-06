@@ -192,24 +192,26 @@ namespace AICS.AgentSim
 
         void Update ()
         {
+            #if UNITY_EDITOR
             if (Input.GetKeyDown( KeyCode.X ))
             {
                 ObjectStateTests.StateOfReactorIsCorrect( this );
             }
+            #endif
 
-                UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+                //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             MoveParticles();
-                UnityEngine.Profiling.Profiler.EndSample();
+                //UnityEngine.Profiling.Profiler.EndSample();
 
             CalculateObservedRates();
 
-                UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+                //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
             DoCollisionFreeReactions();
-                UnityEngine.Profiling.Profiler.EndSample();
+                //UnityEngine.Profiling.Profiler.EndSample();
 
-                UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
+                //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
             DoBimolecularReactions();
-                UnityEngine.Profiling.Profiler.EndSample();
+                //UnityEngine.Profiling.Profiler.EndSample();
 
             Cleanup();
         }

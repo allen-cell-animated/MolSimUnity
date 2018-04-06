@@ -17,9 +17,9 @@ MonoBehaviour:
   - concentration: 6.5e-16
     complexState:
       _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 662c8dfa572bd4eecb0721a249004980, type: 2}
+      - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
         siteStates:
         - id: P
           state: 1
   reactions:
-  - {fileID: 11400000, guid: e87c04e6d992f4c1d8f2539ead7b4ca4, type: 2}
+  - {fileID: 11400000, guid: f7d774bec80db4077a26f499b2b91394, type: 2}
