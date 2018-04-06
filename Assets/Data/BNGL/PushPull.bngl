@@ -1,0 +1,50 @@
+#  PushPull.bngl
+#  A simple toy example model of an enzymatic reaction systems composed of two
+#  enzymes named C and D that competitively phosphorylate and dephosphorylate
+#   a substrate molecule named S.
+
+
+begin parameters
+  konC 5
+  koffC 2
+  kcatC 0.5
+  konD  4
+  koffD 1.5
+  kcatD 0.4
+end parameters
+
+
+begin species
+ C(s)           100
+ D(s)           100
+ S(active,p~U)  5000
+ S(active,p~P)  0
+end species
+
+
+begin reaction rules
+
+ C(s) + S(active,p~U) <-> C(s!1).S(active!1,p~U) konC,koffC
+ C(s!1).S(active!1,p~U) -> C(s) + S(active,p~P)  kcatC
+ 
+ D(s) + S(active,p~P) <-> D(s!1).S(active!1,p~P) konD,koffD
+ D(s!1).S(active!1,p~P) -> D(s) + S(active,p~U)  kcatD
+
+end reaction rules
+
+
+begin observables
+Molecules    S_unphos S(active,p~U)
+Molecules    S_phos   S(p~P)
+Molecules    S_free   S(active)
+end observables
+
+
+
+writeXML();
+#generate_network({max_iter=>1,overwrite=>1});
+#simulate_ssa({suffix=>ssa,t_end=>4000,n_steps=>40});
+
+# for performance tests, run NFsim with args::
+# -xml PushPull.xml -sim 20 -oSteps 40
+

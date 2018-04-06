@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be946a43eeb0a483ebac7a3352e538de, type: 3}
+  m_Name: multisitePOnE2
+  m_EditorClassIdentifier: 
+  description: E(z) + Z(active,p2~U) -> E(z!1).Z(active!1,p2~U)
+  rate: 1400000
+  reactantStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: caa9047cccc33479d8b8c733eea92b4b, type: 2}
+      siteStates:
+      - id: z
+        state: 0
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+      siteStates:
+      - id: active
+        state: 0
+      - id: p2
+        state: U
+  productStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: caa9047cccc33479d8b8c733eea92b4b, type: 2}
+      siteStates:
+      - id: z
+        state: '!1'
+    - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+      siteStates:
+      - id: active
+        state: '!1'
+      - id: p2
+        state: U
+  relevantSites:
+  - molecule: {fileID: 11400000, guid: caa9047cccc33479d8b8c733eea92b4b, type: 2}
+    bindingSiteID: z
+  - molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+    bindingSiteID: active
+  productmoleculeColors: []

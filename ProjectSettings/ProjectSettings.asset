@@ -606,9 +606,9 @@ PlayerSettings:
     Hub: 0
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 28d11fb4-abad-4871-9f05-935098263c25
+  projectName: MolSim (1)
+  organizationId: blair-lyons
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

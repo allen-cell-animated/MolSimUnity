@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
+  m_Name: multisitePCatalysisF3
+  m_EditorClassIdentifier: 
+  description: F(z!1).Z(active!1,p3~P) -> F(z) + Z(p3~U)
+  rate: 12000000
+  reactantStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+      siteStates:
+      - id: z
+        state: '!1'
+    - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+      siteStates:
+      - id: active
+        state: '!1'
+      - id: p3
+        state: P
+  productStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+      siteStates:
+      - id: z
+        state: 0
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+      siteStates:
+      - id: active
+        state: 0
+      - id: p3
+        state: U
+  relevantSites:
+  - molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+    bindingSiteID: z
+  productmoleculeColors: []

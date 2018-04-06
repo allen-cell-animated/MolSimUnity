@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
+  m_Name: MultisitePhosphorylationE4
+  m_EditorClassIdentifier: 
+  scale: 0.000001
+  containerVolume: 0.0000003
+  complexes:
+  - concentration: 1e-16
+    complexState:
+      _moleculeStates:
+      - _molecule: {fileID: 11400000, guid: caa9047cccc33479d8b8c733eea92b4b, type: 2}
+        siteStates:
+        - id: z
+          state: 0
+  - concentration: 1e-16
+    complexState:
+      _moleculeStates:
+      - _molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+        siteStates:
+        - id: z
+          state: 0
+  - concentration: 1e-15
+    complexState:
+      _moleculeStates:
+      - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+        siteStates:
+        - id: active
+          state: 0
+        - id: p1
+          state: U
+        - id: p2
+          state: U
+        - id: p3
+          state: U
+        - id: p4
+          state: U
+  reactions:
+  - {fileID: 11400000, guid: d837609b2edfe4b0180bfe25fcbfc42f, type: 2}
+  - {fileID: 11400000, guid: 0749acb36b685482fabf0bceb42c46a6, type: 2}
+  - {fileID: 11400000, guid: 665e2e930ec6e41ecad2825671c0b974, type: 2}
+  - {fileID: 11400000, guid: d6b6dbcdb61b2474489a0a7104c2dce8, type: 2}
+  - {fileID: 11400000, guid: d8da79fd48bbb4559be3f0db194adb45, type: 2}
+  - {fileID: 11400000, guid: 8024ba0b25ed942508474e0bf89bb244, type: 2}
+  - {fileID: 11400000, guid: a590e3839c3c74b87b673556d1747d19, type: 2}
+  - {fileID: 11400000, guid: 365c5fa350576443380f25825fc96285, type: 2}
+  - {fileID: 11400000, guid: 3797af7ef7e704994bc8ec0f05ce7d3a, type: 2}
+  - {fileID: 11400000, guid: d6b6dbcdb61b2474489a0a7104c2dce8, type: 2}
+  - {fileID: 11400000, guid: 2170bc9adaf9347cd98231caa7c0072f, type: 2}
+  - {fileID: 11400000, guid: 2a1f6374c42df46d4bc67952474fd5d4, type: 2}
+  - {fileID: 11400000, guid: c1a5cfc3b9cf0479884614dcb300caf2, type: 2}
+  - {fileID: 11400000, guid: 2f7a45ee428cb4911aea611e78f87812, type: 2}
+  - {fileID: 11400000, guid: de7f9bec1b2ee4295b9e323251a3c139, type: 2}
+  - {fileID: 11400000, guid: 7f08845b8f266495a818d5124a22f101, type: 2}
+  - {fileID: 11400000, guid: 1eabf6dc9a31f4e44b60038ebd87551d, type: 2}
+  - {fileID: 11400000, guid: 560bf2ce70ef04f47aa3bd13da15273b, type: 2}
+  - {fileID: 11400000, guid: 9b4b3d4c6e27249b4b4b2155a08fa2ae, type: 2}
+  - {fileID: 11400000, guid: 40432063c9cb745b9a0571c0f8a19b4d, type: 2}
+  - {fileID: 11400000, guid: 3e450861311db44ab97e41d62897d0f1, type: 2}
+  - {fileID: 11400000, guid: 608da3790928847bab24610c9d994734, type: 2}
+  - {fileID: 11400000, guid: 5aac406592b974fd997ec4b2daf46f6d, type: 2}
+  - {fileID: 11400000, guid: eccc9f331b7e6495095247273306fa6f, type: 2}

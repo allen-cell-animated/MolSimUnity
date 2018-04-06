@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
+  m_Name: Z
+  m_EditorClassIdentifier: 
+  _species: Z
+  radius: 0.5
+  scale: 0.000000001
+  diffusionCoefficient: 500000
+  sites:
+  - id: active
+    states:
+    - 0
+    - '!+'
+    transformOnMolecule:
+      position: {x: -0.25, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 1
+  - id: p1
+    states:
+    - U
+    - P
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 1
+  - id: p2
+    states:
+    - U
+    - P
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 1
+  - id: p3
+    states:
+    - U
+    - P
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 1
+  - id: p4
+    states:
+    - U
+    - P
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 1
+  _visualizationPrefab: {fileID: 1386266482134252, guid: 165d64b07f8b643598a4af508250d30e,
+    type: 2}

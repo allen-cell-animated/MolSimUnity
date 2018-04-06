@@ -39,21 +39,21 @@ public class ReactionTests : AgentSimTests
     }
 
     [UnityTest]
-    public IEnumerator StateChangeInSystemOfReactions ()
+    public IEnumerator StateChangeInSingleEnzymeSystemOfReactions ()
     {
         Reactor reactor = CreateReactor( "SimpleSystem" );
-        Reaction catalysisReaction = Resources.Load( "Tests/Reactions/simpleCatalysis" ) as Reaction;
+        Reaction phosphorylationReaction = Resources.Load( "Tests/Reactions/simpleCatalysis" ) as Reaction;
         Reaction dephosphorylationReaction = Resources.Load( "Tests/Reactions/simpleDephosphorylation" ) as Reaction;
 
         yield return new WaitForEndOfFrame();
 
         BindingSite bindingSiteP = reactor.model.complexes[0].complexState.moleculeStates[0].molecule.bindingSites["P"];
-        ReactionSimulator catalysisReactionSimulator = null, dephosphorylationReactionSimulator = null;
+        ReactionSimulator phosphorylationReactionSimulator = null, dephosphorylationReactionSimulator = null;
         foreach (CollisionFreeReactionSimulator reactionSimulator in reactor.collisionFreeReactionSimulators)
         {
-            if (reactionSimulator.reaction == catalysisReaction)
+            if (reactionSimulator.reaction == phosphorylationReaction)
             {
-                catalysisReactionSimulator = reactionSimulator;
+                phosphorylationReactionSimulator = reactionSimulator;
             }
             else if (reactionSimulator.reaction == dephosphorylationReaction)
             {
@@ -66,7 +66,78 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "1" ) == catalysisReactionSimulator.events - dephosphorylationReactionSimulator.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "1" ) == phosphorylationReactionSimulator.events - dephosphorylationReactionSimulator.events );
+        }
+
+        DestroyReactor( reactor );
+    }
+
+    [UnityTest]
+    public IEnumerator StateChangeInMultiEnzymeSystemOfReactions ()
+    {
+        Reactor reactor = CreateReactor( "PushPull" );
+        Reaction phosphorylationReaction = Resources.Load( "Tests/Reactions/pushPullCatalysisC" ) as Reaction;
+        Reaction dephosphorylationReaction = Resources.Load( "Tests/Reactions/pushPullCatalysisD" ) as Reaction;
+
+        yield return new WaitForEndOfFrame();
+
+        BindingSite bindingSiteP = reactor.model.complexes[2].complexState.moleculeStates[0].molecule.bindingSites["p"];
+        ReactionSimulator phosphorylationReactionSimulator = null, dephosphorylationReactionSimulator = null;
+        foreach (CollisionFreeReactionSimulator reactionSimulator in reactor.collisionFreeReactionSimulators)
+        {
+            if (reactionSimulator.reaction == phosphorylationReaction)
+            {
+                phosphorylationReactionSimulator = reactionSimulator;
+            }
+            else if (reactionSimulator.reaction == dephosphorylationReaction)
+            {
+                dephosphorylationReactionSimulator = reactionSimulator;
+            }
+        }
+
+        for (int i = 0; i < numberOfTimesToCheck; i++)
+        {
+            yield return new WaitForSeconds( waitTime );
+            yield return new WaitForEndOfFrame();
+
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "P" ) == phosphorylationReactionSimulator.events - dephosphorylationReactionSimulator.events );
+        }
+
+        DestroyReactor( reactor );
+    }
+
+    [UnityTest]
+    public IEnumerator MultiStateChangeInMultiEnzymeSystemOfReactions ()
+    {
+        //TODO
+
+        Reactor reactor = CreateReactor( "PushPull" );
+        //Reaction phosphorylationReaction = Resources.Load( "Tests/Reactions/pushPullCatalysisC" ) as Reaction;
+        //Reaction dephosphorylationReaction = Resources.Load( "Tests/Reactions/pushPullCatalysisD" ) as Reaction;
+
+        yield return new WaitForEndOfFrame();
+
+        //BindingSite bindingSiteP = reactor.model.complexes[2].complexState.moleculeStates[0].molecule.bindingSites["p"];
+        //ReactionSimulator phosphorylationReactionSimulator = null, dephosphorylationReactionSimulator = null;
+        //foreach (CollisionFreeReactionSimulator reactionSimulator in reactor.collisionFreeReactionSimulators)
+        //{
+        //    if (reactionSimulator.reaction == phosphorylationReaction)
+        //    {
+        //        phosphorylationReactionSimulator = reactionSimulator;
+        //    }
+        //    else if (reactionSimulator.reaction == dephosphorylationReaction)
+        //    {
+        //        dephosphorylationReactionSimulator = reactionSimulator;
+        //    }
+        //}
+
+        for (int i = 0; i < numberOfTimesToCheck; i++)
+        {
+            yield return new WaitForSeconds( waitTime );
+            yield return new WaitForEndOfFrame();
+
+            //AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "P" ) == phosphorylationReactionSimulator.events - dephosphorylationReactionSimulator.events );
+            AssertIsTrue( true );
         }
 
         DestroyReactor( reactor );
@@ -83,7 +154,7 @@ public class ReactionTests : AgentSimTests
                 n++;
             }
         }
-        //Debug.Log( n );
+        Debug.Log( n );
         return n;
     }
 }

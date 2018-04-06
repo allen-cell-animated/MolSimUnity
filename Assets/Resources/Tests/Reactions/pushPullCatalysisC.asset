@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
+  m_Name: pushPullCatalysisC
+  m_EditorClassIdentifier: 
+  description: C(s!1).S(active!1,p~U) -> C(s) + S(active,p~P)
+  rate: 100000000
+  reactantStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: d8749353f48764f87b7978e367140d18, type: 2}
+      siteStates:
+      - id: s
+        state: '!1'
+    - _molecule: {fileID: 11400000, guid: 929be8d8a69df4f3985f1c2f8ec1908e, type: 2}
+      siteStates:
+      - id: active
+        state: '!1'
+      - id: p
+        state: U
+  productStates:
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: d8749353f48764f87b7978e367140d18, type: 2}
+      siteStates:
+      - id: s
+        state: 0
+  - _moleculeStates:
+    - _molecule: {fileID: 11400000, guid: 929be8d8a69df4f3985f1c2f8ec1908e, type: 2}
+      siteStates:
+      - id: active
+        state: 0
+      - id: p
+        state: P
+  relevantSites:
+  - molecule: {fileID: 11400000, guid: d8749353f48764f87b7978e367140d18, type: 2}
+    bindingSiteID: s
+  productmoleculeColors:
+  - molecule: {fileID: 11400000, guid: 929be8d8a69df4f3985f1c2f8ec1908e, type: 2}
+    color: {r: 1, g: 0.68275857, b: 0, a: 1}
