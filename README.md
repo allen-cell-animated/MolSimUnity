@@ -9,6 +9,17 @@ our goal is to create a system that:
 - calculates in real time so that users can change parameters on the fly
 - eventually runs in a web browser, with an easy-to-use UI for defining models and changing parameters
 
-currently prototyping in Unity WebGL, eventually will probably be translated to C++ or something for speed
-
+currently prototyping in Unity WebGL, eventually will use C++ or something for speed
 chart of current architecture: https://www.lucidchart.com/documents/view/25a4e766-d7fe-4a87-b33f-157feaca604d/0
+
+Unity version: 2017.2.0f3 
+(download here https://unity3d.com/get-unity/download/archive)
+
+To run sample models, once project is open in Unity:
+- open Scenes/Reactor
+- press play!
+
+To load a different model: 
+- with Reactor scene open, select Reactor object in Hierarchy
+- drag a model file of your choice from Data/Models to the model slot on Reactor
+- press play!
