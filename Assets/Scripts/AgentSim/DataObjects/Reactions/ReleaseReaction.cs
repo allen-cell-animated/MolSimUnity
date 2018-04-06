@@ -30,6 +30,8 @@ namespace AICS.AgentSim
                     complex = bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
                     SetComplexToFinalState( complex, productState );
                     productPopulation.CreateComplex( bindingSiteSimulator.moleculeSimulator.theTransform, complex );
+
+                    SetProductColor( complex );
                 }
 
                 World.ShowFlash( bindingSiteSimulator1.theTransform );

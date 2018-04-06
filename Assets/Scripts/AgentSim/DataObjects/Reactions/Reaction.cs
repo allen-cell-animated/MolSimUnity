@@ -12,6 +12,7 @@ namespace AICS.AgentSim
         public ComplexState[] reactantStates;
         public ComplexState[] productStates;
         public MoleculeBindingSite[] relevantSites;
+        public MoleculeColor[] productmoleculeColors;
 
         public bool isBimolecular
         {
@@ -81,5 +82,27 @@ namespace AICS.AgentSim
         }
 
         public abstract void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
+
+        protected void SetProductColor (MoleculeSimulator[] complex)
+        {
+            foreach (MoleculeColor moleculeColor in productmoleculeColors)
+            {
+                foreach (MoleculeSimulator moleculeSimulator in complex)
+                {
+                    if (moleculeSimulator.molecule.species == moleculeColor.molecule.species)
+                    {
+                        moleculeSimulator.SetColor( moleculeColor.color );
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class MoleculeColor
+    {
+        public Molecule molecule;
+        public Color color;
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: X(P~1) = X(P~0)
   m_EditorClassIdentifier: 
   description: X(P~1) -> X(P~0)
-  rate: 10000000
+  rate: 50000
   reactantStates:
   - _moleculeStates:
     - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
@@ -28,3 +28,6 @@ MonoBehaviour:
   relevantSites:
   - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
     bindingSiteID: P
+  productmoleculeColors:
+  - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+    color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: SimpleSystem
   m_EditorClassIdentifier: 
   scale: 0.000001
-  containerVolume: 0.000000125
+  containerVolume: 0.0000005
   complexes:
   - concentration: 6.5e-16
     complexState:

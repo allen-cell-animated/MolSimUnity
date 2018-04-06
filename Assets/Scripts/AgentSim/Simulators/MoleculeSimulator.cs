@@ -123,5 +123,23 @@ namespace AICS.AgentSim
         {
             return "MoleculeSimulator " + name;
         }
+
+        Material _material;
+        Material material
+        {
+            get
+            {
+                if (_material == null)
+                {
+                    _material = GetComponent<MeshRenderer>().material;
+                }
+                return _material;
+            }
+        }
+
+        public void SetColor (Color color)
+        {
+            material.color = color;
+        }
 	}
 }

@@ -27,6 +27,7 @@ namespace AICS.AgentSim
                 SetComplexToFinalState( complex, productStates[0] );
                 productPopulation.CreateComplex( bindingSiteSimulator1.theTransform, complex );
 
+                SetProductColor( complex );
                 World.ShowFlash( bindingSiteSimulator1.theTransform );
             }
         }

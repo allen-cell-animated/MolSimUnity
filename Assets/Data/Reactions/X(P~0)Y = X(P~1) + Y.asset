@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: X(P~0)Y = X(P~1) + Y
   m_EditorClassIdentifier: 
   description: X(y!1,P~0).Y(x!1) -> X(y,P~1) + Y(x)
-  rate: 10000000
+  rate: 5000000
   reactantStates:
   - _moleculeStates:
     - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
@@ -41,3 +41,6 @@ MonoBehaviour:
   relevantSites:
   - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
     bindingSiteID: y
+  productmoleculeColors:
+  - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+    color: {r: 1, g: 0.68275857, b: 0, a: 1}
