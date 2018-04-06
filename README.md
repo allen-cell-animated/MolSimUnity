@@ -10,6 +10,7 @@ our goal is to create a system that:
 - eventually runs in a web browser, with an easy-to-use UI for defining models and changing parameters
 
 currently prototyping in Unity WebGL, eventually will use C++ or something for speed
+
 chart of current architecture: https://www.lucidchart.com/documents/view/25a4e766-d7fe-4a87-b33f-157feaca604d/0
 
 Unity version: 2017.2.0f3 
