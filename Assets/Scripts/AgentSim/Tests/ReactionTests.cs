@@ -120,7 +120,7 @@ public class ReactionTests : AgentSimTests
         Reaction f4 = Resources.Load( "Tests/Reactions/multisitePCatalysisF4" ) as Reaction;
 
         yield return new WaitForEndOfFrame();
-        Debug.Log( reactor.model.complexes[2].complexState.moleculeStates[0].molecule.name );
+
         BindingSite bindingSiteP1 = reactor.model.complexes[2].complexState.moleculeStates[0].molecule.bindingSites["p1"];
         BindingSite bindingSiteP2 = reactor.model.complexes[2].complexState.moleculeStates[0].molecule.bindingSites["p2"];
         BindingSite bindingSiteP3 = reactor.model.complexes[2].complexState.moleculeStates[0].molecule.bindingSites["p3"];
@@ -188,7 +188,6 @@ public class ReactionTests : AgentSimTests
                 n++;
             }
         }
-        Debug.Log( n );
         return n;
     }
 }

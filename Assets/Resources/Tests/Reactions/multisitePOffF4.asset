@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: multisitePOffF4
   m_EditorClassIdentifier: 
   description: F(z!1).Z(active!1,p4~P) -> F(z) + Z(p4~P)
-  rate: 6000000
+  rate: 600000000
   reactantStates:
   - _moleculeStates:
     - _molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}

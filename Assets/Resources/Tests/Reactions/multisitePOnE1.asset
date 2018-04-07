@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: multisitePOnE1
   m_EditorClassIdentifier: 
   description: E(z) + Z(active,p1~U) -> E(z!1).Z(active!1,p1~U)
-  rate: 1400000
+  rate: 140000000
   reactantStates:
   - _moleculeStates:
     - _molecule: {fileID: 11400000, guid: caa9047cccc33479d8b8c733eea92b4b, type: 2}

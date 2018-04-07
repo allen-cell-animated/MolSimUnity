@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: multisitePCatalysisE3
   m_EditorClassIdentifier: 
   description: E(z!1).Z(active!1,p3~U) -> E(z) + Z(p3~P)
-  rate: 10000000
+  rate: 1e+9
   reactantStates:
   - _moleculeStates:
     - _molecule: {fileID: 11400000, guid: caa9047cccc33479d8b8c733eea92b4b, type: 2}
