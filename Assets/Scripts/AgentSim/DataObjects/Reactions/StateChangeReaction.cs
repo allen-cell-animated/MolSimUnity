@@ -16,7 +16,7 @@ namespace AICS.AgentSim
             if (bindingSiteSimulator1 != null)
             {
                 SetComplexToFinalState( bindingSiteSimulator1.complex, productStates[0] );
-                bindingSiteSimulator1.particleSimulator.UpdateReactions();
+                bindingSiteSimulator1.complexSimulator.UpdateReactions();
 
                 SetProductColor( bindingSiteSimulator1.complex );
                 World.ShowFlash( bindingSiteSimulator1.theTransform );

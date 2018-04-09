@@ -37,3 +37,4 @@ MonoBehaviour:
   relevantSites:
   - molecule: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
     bindingSiteID: b
+  productmoleculeColors: []

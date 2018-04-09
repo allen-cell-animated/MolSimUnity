@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class MoleculeSimulator : MonoBehaviour 
     {
-        public ParticleSimulator particleSimulator;
+        public ComplexSimulator complexSimulator;
         public Molecule molecule;
         public Dictionary<string,BindingSiteSimulator> bindingSiteSimulators = new Dictionary<string,BindingSiteSimulator>();
         public float collisionRadius;
@@ -47,10 +47,10 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (MoleculeState moleculeState, ParticleSimulator _particleSimulator, 
+        public virtual void Init (MoleculeState moleculeState, ComplexSimulator _complexSimulator, 
                                   BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            particleSimulator = _particleSimulator;
+            complexSimulator = _complexSimulator;
             molecule = moleculeState.molecule;
             collisionRadius = interactionRadius = molecule.radius;
             interactionRadius += 1f;
@@ -99,13 +99,13 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual void MoveToComplex (ParticleSimulator _particleSimulator, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+        public virtual void MoveToComplex (ComplexSimulator _complexSimulator, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
                                            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Transform newParent)
         {
             theTransform.SetParent( newParent );
-            particleSimulator.Remove( this );
-            particleSimulator = _particleSimulator;
-            name = particleSimulator.name + "_" + species;
+            complexSimulator.Remove( this );
+            complexSimulator = _complexSimulator;
+            name = complexSimulator.name + "_" + species;
 
             UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
         }

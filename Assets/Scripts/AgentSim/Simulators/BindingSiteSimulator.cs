@@ -39,15 +39,15 @@ namespace AICS.AgentSim
         {
             get
             {
-                return particleSimulator.population.reactor;
+                return complexSimulator.population.reactor;
             }
         }
 
-        public ParticleSimulator particleSimulator
+        public ComplexSimulator complexSimulator
         {
             get
             {
-                return moleculeSimulator.particleSimulator;
+                return moleculeSimulator.complexSimulator;
             }
         }
 
@@ -55,7 +55,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return particleSimulator.complex;
+                return complexSimulator.complex;
             }
         }
 

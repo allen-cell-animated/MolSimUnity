@@ -87,23 +87,6 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( "The Reactor has a null ParticleSimulator" ); }
                 return false;
             }
-            if (ParticleSimulatorReallyIsBimolecularReactant( particleSimulator ))
-            {
-                bool found = false;
-                foreach (ParticleSimulator bimolecularReactantParticleSimulator in reactor.particleSimulatorsInBimolecularReactions)
-                {
-                    if (particleSimulator == bimolecularReactantParticleSimulator)
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found)
-                {
-                    if (debug) { Debug.Log( particleSimulator + " is a bimolecular reactant but isn't registered as such in the Reactor" ); }
-                    return false;
-                }
-            }
             int count = 0;
             foreach (ParticleSimulator otherParticleSimulator in reactor.particleSimulators)
             {
@@ -118,37 +101,47 @@ public class ObjectStateTests : AgentSimTests
                 return false;
             }
         }
-        foreach (ParticleSimulator particleSimulator in reactor.particleSimulatorsInBimolecularReactions)
+        foreach (ParticleSimulator particleSimulator in GameObject.FindObjectsOfType<ParticleSimulator>())
         {
-            if (particleSimulator == null)
+            if (!reactor.particleSimulators.Contains( particleSimulator ))
             {
-                if (debug) { Debug.Log( "The Reactor has a null bimolecular reactant ParticleSimulator" ); }
+                if (debug) { Debug.Log( particleSimulator + " isn't registered to the Reactor" ); }
                 return false;
             }
-            if (!ParticleSimulatorReallyIsBimolecularReactant( particleSimulator ))
+        }
+
+        //complex simulators
+        foreach (ComplexSimulator complexSimulator in reactor.complexSimulators)
+        {
+            if (complexSimulator == null)
             {
-                if (debug) { Debug.Log( particleSimulator + " isn't a bimolecular reactant but is registered as such in the Reactor" ); }
+                if (debug) { Debug.Log( "The Reactor has a null ComplexSimulator" ); }
+                return false;
+            }
+            if (!ComplexSimulatorReallyIsBimolecularReactant( complexSimulator ))
+            {
+                if (debug) { Debug.Log( complexSimulator + " isn't a bimolecular reactant but is registered as such in the Reactor" ); }
                 return false;
             }
             int count = 0;
-            foreach (ParticleSimulator otherParticleSimulator in reactor.particleSimulatorsInBimolecularReactions)
+            foreach (ComplexSimulator otherComplexSimulator in reactor.complexSimulators)
             {
-                if (particleSimulator == otherParticleSimulator)
+                if (complexSimulator == otherComplexSimulator)
                 {
                     count++;
                 }
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( particleSimulator + " is registered as a bimolecular reactant in the Reactor " + count + " times" ); }
+                if (debug) { Debug.Log( complexSimulator + " is registered to the Reactor " + count + " times" ); }
                 return false;
             }
         }
-        foreach (ParticleSimulator particleSimulator in GameObject.FindObjectsOfType<ParticleSimulator>())
+        foreach (ComplexSimulator complexSimulator in GameObject.FindObjectsOfType<ComplexSimulator>())
         {
-            if (!reactor.particleSimulators.Contains( particleSimulator ))
+            if (ComplexSimulatorReallyIsBimolecularReactant( complexSimulator ) && !reactor.complexSimulators.Contains( complexSimulator ))
             {
-                if (debug) { Debug.Log( particleSimulator + " isn't registered to the Reactor" ); }
+                if (debug) { Debug.Log( complexSimulator + " isn't registered to the Reactor" ); }
                 return false;
             }
         }
@@ -199,11 +192,11 @@ public class ObjectStateTests : AgentSimTests
         return true;
     }
 
-    static bool ParticleSimulatorReallyIsBimolecularReactant (ParticleSimulator particleSimulator)
+    static bool ComplexSimulatorReallyIsBimolecularReactant (ComplexSimulator complexSimulator)
     {
-        foreach (BimolecularReactionSimulator reactionSimulator in particleSimulator.population.reactor.bimolecularReactionSimulators)
+        foreach (BimolecularReactionSimulator reactionSimulator in complexSimulator.population.reactor.bimolecularReactionSimulators)
         {
-            if (reactionSimulator.IsReactant( particleSimulator.complex ))
+            if (reactionSimulator.IsReactant( complexSimulator.complex ))
             {
                 return true;
             }
@@ -215,33 +208,53 @@ public class ObjectStateTests : AgentSimTests
     {
         foreach (ParticleSimulator particleSimulator in population.GetComponentsInChildren<ParticleSimulator>())
         {
-            if (particleSimulator.population != population)
+            AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
+        }
+        foreach (ComplexSimulator complexSimulator in population.GetComponentsInChildren<ComplexSimulator>())
+        {
+            if (complexSimulator.population != population)
             {
-                if (debug) { Debug.Log( particleSimulator + " doesn't reference " + population ); }
+                if (debug) { Debug.Log( complexSimulator + " doesn't reference " + population ); }
                 return false;
             }
-            AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
+            AssertIsTrue( StateOfComplexSimulatorIsCorrect( complexSimulator ) );
         }
         return true;
     }
 
     static bool StateOfParticleSimulatorIsCorrect (ParticleSimulator particleSimulator)
     {
+        ComplexSimulator complexSimulator = particleSimulator.GetComponent<ComplexSimulator>();
+        if (complexSimulator == null)
+        {
+            if (debug) { Debug.Log( particleSimulator + " doesn't have a ComplexSimulator" ); }
+            return false;
+        }
+        if (complexSimulator != particleSimulator.complexSimulator)
+        {
+            if (debug) { Debug.Log( complexSimulator + " doesn't reference " + particleSimulator ); }
+            return false;
+        }
+        return true;
+    }
+
+    static bool StateOfComplexSimulatorIsCorrect (ComplexSimulator complexSimulator)
+    {
         bool bimolecularReactant = false;
-        foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
+        foreach (MoleculeSimulator moleculeSimulator in complexSimulator.complex)
         {
             if (moleculeSimulator == null)
             {
-                if (debug) { Debug.Log( particleSimulator + " has a null MoleculeSimulator" ); }
+                if (debug) { Debug.Log( complexSimulator + " has a null MoleculeSimulator" ); }
                 return false;
             }
-            if (moleculeSimulator.particleSimulator != particleSimulator)
+            if (moleculeSimulator.complexSimulator != complexSimulator)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " doesn't reference " + particleSimulator ); }
+                if (debug) { Debug.Log( moleculeSimulator + " doesn't reference " + complexSimulator ); }
                 return false;
             }
             int count = 0;
-            foreach (MoleculeSimulator otherMoleculeSimulator in particleSimulator.complex)
+            foreach (MoleculeSimulator otherMoleculeSimulator in complexSimulator.complex)
             {
                 if (moleculeSimulator == otherMoleculeSimulator)
                 {
@@ -250,57 +263,58 @@ public class ObjectStateTests : AgentSimTests
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " is registered to " + particleSimulator + " " + count + " times" ); }
+                if (debug) { Debug.Log( moleculeSimulator + " is registered to " + complexSimulator + " " + count + " times" ); }
                 return false;
             }
             if (moleculeSimulator.couldReactOnCollision)
             {
                 bimolecularReactant = true;
-                if (!particleSimulator.couldReactOnCollision)
+                if (!complexSimulator.couldReactOnCollision)
                 {
-                    if (debug) { Debug.Log( moleculeSimulator + " is bimolecular reactant but " + particleSimulator + " isn't" ); }
+                    if (debug) { Debug.Log( moleculeSimulator + " is bimolecular reactant but " + complexSimulator + " isn't" ); }
                     return false;
                 }
             }
             AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( moleculeSimulator ) );
         }
-        if (particleSimulator.couldReactOnCollision && !bimolecularReactant)
+        if (complexSimulator.couldReactOnCollision && !bimolecularReactant)
         {
-            if (debug) { Debug.Log( particleSimulator + " has no bimolecular reactant molecule but is marked as a bimolecular reactant" ); }
+            if (debug) { Debug.Log( complexSimulator + " has no bimolecular reactant molecule but is marked as a bimolecular reactant" ); }
             return false;
         }
-        foreach (MoleculeSimulator moleculeSimulator in particleSimulator.GetComponentsInChildren<MoleculeSimulator>())
+        foreach (MoleculeSimulator moleculeSimulator in complexSimulator.GetComponentsInChildren<MoleculeSimulator>())
         {
-            if (moleculeSimulator.particleSimulator != particleSimulator)
+            if (moleculeSimulator.complexSimulator != complexSimulator)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " isn't registered to " + particleSimulator ); }
+                if (debug) { Debug.Log( moleculeSimulator + " isn't registered to " + complexSimulator ); }
                 return false;
             }
         }
 
-        if (particleSimulator.complex.Length == 1)
+        //parenting relationships
+        if (complexSimulator.complex.Length == 1)
         {
-            if (particleSimulator.complex[0].gameObject != particleSimulator.gameObject)
+            if (complexSimulator.complex[0].gameObject != complexSimulator.gameObject)
             {
-                if (debug) { Debug.Log( particleSimulator.complex[0] + " isn't on the same GameObject as " + particleSimulator 
-                                        + "even though it's the only molecule in the complex" ); }
+                if (debug) { Debug.Log( complexSimulator.complex[0] + " isn't on the same GameObject as " + complexSimulator 
+                                       + "even though it's the only molecule in the complex" ); }
                 return false;
             }
         }
-        else if (particleSimulator.complex.Length > 1)
+        else if (complexSimulator.complex.Length > 1)
         {
-            foreach (MoleculeSimulator moleculeSimulator in particleSimulator.complex)
+            foreach (MoleculeSimulator moleculeSimulator in complexSimulator.complex)
             {
-                if (moleculeSimulator.theTransform.parent != particleSimulator.theTransform)
+                if (moleculeSimulator.theTransform.parent != complexSimulator.theTransform)
                 {
-                    if (debug) { Debug.Log( moleculeSimulator + " is not parented to " + particleSimulator ); }
+                    if (debug) { Debug.Log( moleculeSimulator + " is not parented to " + complexSimulator ); }
                     return false;
                 }
             }
         }
         else 
         {
-            if (debug) { Debug.Log( particleSimulator + " has no MoleculeSimulators and therefore shouldn't exist" ); }
+            if (debug) { Debug.Log( complexSimulator + " has no MoleculeSimulators and therefore shouldn't exist" ); }
             return false;
         }
         return true;

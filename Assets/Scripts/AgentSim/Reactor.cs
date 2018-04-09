@@ -17,8 +17,9 @@ namespace AICS.AgentSim
         public bool periodicBoundary = true;
 
         public List<ParticleSimulator> particleSimulators = new List<ParticleSimulator>();
-        public List<ParticleSimulator> particleSimulatorsInBimolecularReactions = new List<ParticleSimulator>();
+        public List<ComplexSimulator> complexSimulators = new List<ComplexSimulator>();
         protected List<ParticleSimulator> particleSimulatorsToDestroy = new List<ParticleSimulator>();
+        protected List<ComplexSimulator> complexSimulatorsToDestroy = new List<ComplexSimulator>();
 
         float dT
         {
@@ -133,37 +134,19 @@ namespace AICS.AgentSim
             return reactionSimulatorsList.ToArray();
         }
 
-        public void Register (ParticleSimulator particleSimulator)
+        public void RegisterParticle (ParticleSimulator particleSimulator)
         {
             if (!particleSimulators.Contains( particleSimulator ))
             {
                 particleSimulators.Add( particleSimulator );
             }
-            else
-            {
-                Debug.LogWarning( "Trying to register " + particleSimulator + " but it's already registered!" );
-            }
-
-            if (particleSimulator.couldReactOnCollision && !particleSimulatorsInBimolecularReactions.Contains( particleSimulator ))
-            {
-                particleSimulatorsInBimolecularReactions.Add( particleSimulator );
-            }
         }
 
-        public void Unregister (ParticleSimulator particleSimulator)
+        public void UnregisterParticle (ParticleSimulator particleSimulator)
         {
             if (particleSimulators.Contains( particleSimulator ))
             {
                 particleSimulators.Remove( particleSimulator );
-            }
-            else
-            {
-                Debug.LogWarning( "Trying to remove " + particleSimulator + " but it's not registered!" );
-            }
-
-            if (particleSimulatorsInBimolecularReactions.Contains( particleSimulator ))
-            {
-                particleSimulatorsInBimolecularReactions.Remove( particleSimulator );
             }
 
             if (!particleSimulatorsToDestroy.Contains( particleSimulator ))
@@ -172,20 +155,44 @@ namespace AICS.AgentSim
             }
         }
 
-        public void ParticleSimulatorChangedCouldReactOnCollisionState (ParticleSimulator particleSimulator)
+        public void RegisterComplex (ComplexSimulator complexSimulator)
         {
-            if (particleSimulator.couldReactOnCollision)
+            if (complexSimulator.couldReactOnCollision)
             {
-                if (particleSimulatorsInBimolecularReactions.Contains( particleSimulator ))
+                if (!complexSimulators.Contains( complexSimulator ))
                 {
-                    particleSimulatorsInBimolecularReactions.Remove( particleSimulator );
+                    complexSimulators.Add( complexSimulator );
+                }
+            }
+        }
+
+        public void UnregisterComplex (ComplexSimulator complexSimulator)
+        {
+            if (complexSimulators.Contains( complexSimulator ))
+            {
+                complexSimulators.Remove( complexSimulator );
+            }
+
+            if (!complexSimulatorsToDestroy.Contains( complexSimulator ))
+            {
+                complexSimulatorsToDestroy.Add( complexSimulator );
+            }
+        }
+
+        public void ComplexChangedCouldReactOnCollisionState (ComplexSimulator complexSimulator)
+        {
+            if (complexSimulator.couldReactOnCollision)
+            {
+                if (complexSimulators.Contains( complexSimulator ))
+                {
+                    complexSimulators.Remove( complexSimulator );
                 }
             }
             else
             {
-                if (!particleSimulatorsInBimolecularReactions.Contains( particleSimulator ))
+                if (!complexSimulators.Contains( complexSimulator ))
                 {
-                    particleSimulatorsInBimolecularReactions.Add( particleSimulator );
+                    complexSimulators.Add( complexSimulator );
                 }
             }
         }
@@ -259,18 +266,24 @@ namespace AICS.AgentSim
 
         protected virtual void DoBimolecularReactions ()
         {
-            particleSimulatorsInBimolecularReactions.Shuffle();
-            for (int i = 0; i < particleSimulatorsInBimolecularReactions.Count - 1; i++)
+            complexSimulators.Shuffle();
+            for (int i = 0; i < complexSimulators.Count - 1; i++)
             {
-                for (int j = i + 1; j < particleSimulatorsInBimolecularReactions.Count; j++)
+                for (int j = i + 1; j < complexSimulators.Count; j++)
                 {
-                    particleSimulatorsInBimolecularReactions[i].InteractWith( particleSimulatorsInBimolecularReactions[j] );
+                    complexSimulators[i].InteractWith( complexSimulators[j] );
                 }
             }
         }
 
         protected virtual void Cleanup ()
         {
+            foreach (ComplexSimulator complexSimulator in complexSimulatorsToDestroy)
+            {
+                Destroy( complexSimulator );
+            }
+            complexSimulatorsToDestroy.Clear();
+
             foreach (ParticleSimulator particleSimulator in particleSimulatorsToDestroy)
             {
                 if (particleSimulator.GetComponent<MoleculeSimulator>())

@@ -27,7 +27,7 @@ namespace AICS.AgentSim
                 {
                     bindingSiteSimulator = GetBindingSiteForProductState( productState, bindingSiteSimulator1, bindingSiteSimulator2 );
                     productPopulation = bindingSiteSimulator.reactor.GetPopulation( productState );
-                    complex = bindingSiteSimulator.particleSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
+                    complex = bindingSiteSimulator.complexSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
                     SetComplexToFinalState( complex, productState );
                     productPopulation.CreateComplex( bindingSiteSimulator.moleculeSimulator.theTransform, complex );
 
