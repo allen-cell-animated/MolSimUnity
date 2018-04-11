@@ -72,6 +72,28 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
+                //MoleculeSimulator moleculeSimulator, otherMoleculeSimulator;
+                //int start = complex.GetRandomIndex();
+                //for (int i = 0; i < complex.Length; i++)
+                //{
+                //    moleculeSimulator = complex[(start + i) % complex.Length];
+                //    if (moleculeSimulator != null && moleculeSimulator.couldReactOnCollision)
+                //    {
+                //        int startOther = other.complex.GetRandomIndex();
+                //        for (int j = 0; j < complex.Length; j++)
+                //        {
+                //            otherMoleculeSimulator = other.complex[(startOther + j) % other.complex.Length];
+                //            if (otherMoleculeSimulator != null && otherMoleculeSimulator.couldReactOnCollision)
+                //            {
+                //                if (moleculeSimulator.InteractWith( otherMoleculeSimulator ))
+                //                {
+                //                    return;
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
                 complex.Shuffle();
                 foreach (MoleculeSimulator moleculeSimulator in complex)
                 {

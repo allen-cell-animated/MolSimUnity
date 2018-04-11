@@ -42,6 +42,12 @@ namespace AICS.AgentSim
 
         public bool TryReact ()
         {
+            //if (bindingSiteSimulators.Count > 0 && shouldHappen)
+            //{
+            //    reaction.React( bindingSiteSimulators[bindingSiteSimulators.GetRandomIndex()] );
+            //    return true;
+            //}
+
             if (bindingSiteSimulators.Count > 0 && shouldHappen)
             {
                 bindingSiteSimulators.Shuffle();

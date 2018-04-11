@@ -131,6 +131,17 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
+                //BimolecularReactionSimulator bimolecularReactionSimulator;
+                //int start = bimolecularReactionSimulators.GetRandomIndex();
+                //for (int i = 0; i < bimolecularReactionSimulators.Length; i++)
+                //{
+                //    bimolecularReactionSimulator = bimolecularReactionSimulators[(start + i) % bimolecularReactionSimulators.Length];
+                //    if (bimolecularReactionSimulator.TryReactOnCollision( this, other ))
+                //    {
+                //        return true;
+                //    }
+                //}
+
                 bimolecularReactionSimulators.Shuffle();
                 foreach (BimolecularReactionSimulator bimolecularReactionSimulator in bimolecularReactionSimulators)
                 {

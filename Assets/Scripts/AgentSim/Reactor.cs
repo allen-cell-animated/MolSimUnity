@@ -257,6 +257,12 @@ namespace AICS.AgentSim
 
         protected virtual void DoCollisionFreeReactions ()
         {
+            //int start = collisionFreeReactionSimulators.GetRandomIndex();
+            //for (int i = 0; i < collisionFreeReactionSimulators.Count; i++)
+            //{
+            //    collisionFreeReactionSimulators[(start + i) % collisionFreeReactionSimulators.Count].TryReact();
+            //}
+
             collisionFreeReactionSimulators.Shuffle();
             foreach (CollisionFreeReactionSimulator collisionFreeReactionSimulator in collisionFreeReactionSimulators)
             {
@@ -266,12 +272,14 @@ namespace AICS.AgentSim
 
         protected virtual void DoBimolecularReactions ()
         {
-            complexSimulators.Shuffle();
-            for (int i = 0; i < complexSimulators.Count - 1; i++)
+            ComplexSimulator complexSimulator;
+            int start = complexSimulators.GetRandomIndex();
+            for (int i = 0; i < complexSimulators.Count; i++)
             {
+                complexSimulator = complexSimulators[(start + i) % complexSimulators.Count];
                 for (int j = i + 1; j < complexSimulators.Count; j++)
                 {
-                    complexSimulators[i].InteractWith( complexSimulators[j] );
+                    complexSimulator.InteractWith( complexSimulators[(start + j) % complexSimulators.Count] );
                 }
             }
         }

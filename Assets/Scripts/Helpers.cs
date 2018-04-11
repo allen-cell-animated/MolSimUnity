@@ -8,30 +8,46 @@ namespace AICS
     {
         public static void Shuffle<T> (this T[] array)
         {
-            int n = array.Length;
+                //UnityEngine.Profiling.Profiler.BeginSample("Shuffle");
+            int k, n = array.Length;
+            T value;
             while (n > 1) 
             { 
-                int k = Random.Range( 0, n );
+                k = Random.Range( 0, n );
                 n--;
 
-                T value = array[k];  
+                value = array[k];  
                 array[k] = array[n];  
                 array[n] = value; 
             } 
+                //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public static void Shuffle<T> (this List<T> list)
         {
-            int n = list.Count;
+                //UnityEngine.Profiling.Profiler.BeginSample("Shuffle");
+            int k, n = list.Count;
+            T value;
             while (n > 1) 
             { 
-                int k = Random.Range( 0, n );
+                k = Random.Range( 0, n );
                 n--;
 
-                T value = list[k];  
+                value = list[k];  
                 list[k] = list[n];  
                 list[n] = value; 
             } 
+                //UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        public static int GetRandomIndex<T> (this T[] array)
+        {
+            return Mathf.RoundToInt( Random.value * (array.Length - 1) );
+        }
+
+        public static int GetRandomIndex<T> (this List<T> list)
+        {
+            return Mathf.RoundToInt( Random.value * (list.Count - 1) );
         }
 
         public static float SampleExponentialDistribution (float mean)
