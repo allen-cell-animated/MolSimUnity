@@ -65,7 +65,8 @@ namespace AICS.AgentSim
 
         public bool TryReactOnCollision (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
-            if (ReactantsEqual( bindingSiteSimulator1.complex, bindingSiteSimulator2.complex ) && shouldHappen)
+            if (ReactantsEqual( bindingSiteSimulator1.complex, bindingSiteSimulator2.complex ) 
+                && BothSitesAreRelevant( bindingSiteSimulator1, bindingSiteSimulator2 ) && shouldHappen)
             {
                 reaction.React( bindingSiteSimulator1, bindingSiteSimulator2 );
                 return true;
@@ -78,6 +79,12 @@ namespace AICS.AgentSim
             return ((reaction.reactantStates[0].IsSatisfiedBy( complex1 ) && reaction.reactantStates[1].IsSatisfiedBy( complex2 )))
                  || (reaction.reactantStates[0].IsSatisfiedBy( complex2 ) && reaction.reactantStates[1].IsSatisfiedBy( complex1 ));
             
+        }
+
+        bool BothSitesAreRelevant (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
+        {
+            return (reaction.relevantSites[0].Matches( bindingSiteSimulator1 ) && reaction.relevantSites[1].Matches( bindingSiteSimulator2 ))
+                || (reaction.relevantSites[0].Matches( bindingSiteSimulator2 ) && reaction.relevantSites[1].Matches( bindingSiteSimulator1 ));
         }
 	}
 
@@ -129,7 +136,7 @@ namespace AICS.AgentSim
         {
             foreach (MoleculeBindingSite site in reaction.relevantSites)
             {
-                if (site.Matches( bindingSiteSimulator.molecule, bindingSiteSimulator.id ))
+                if (site.Matches( bindingSiteSimulator ))
                 {
                     return true;
                 }

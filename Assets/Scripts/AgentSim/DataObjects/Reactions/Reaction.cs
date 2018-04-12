@@ -74,7 +74,10 @@ namespace AICS.AgentSim
                     {
                         foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
                         {
-                            moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value;
+                            if (!bindingSiteState.Value.Contains( "!" ))
+                            {
+                                moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value;
+                            }
                         }
                     }
                 }

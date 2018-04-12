@@ -1,0 +1,22 @@
+begin molecule types
+
+    Q(x,y)
+
+end molecule types
+
+
+
+begin species
+
+    Q(x,y)
+
+end species
+
+
+
+begin reaction rules
+
+    Q(x,y) + Q(x,y) -> Q(x,y!1).Q(x!1,y)
+    Q(x,y) + Q(x,y!+) -> Q(x,y!1).Q(x!1,y!+)
+
+end reaction rules

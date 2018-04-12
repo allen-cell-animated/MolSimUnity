@@ -21,9 +21,9 @@ namespace AICS.AgentSim
             return other.molecule.species == molecule.species && other.bindingSiteID == bindingSiteID;
         }
 
-        public bool Matches (Molecule _molecule, string _bindingSiteID)
+        public bool Matches (BindingSiteSimulator bindingSiteSimulator)
         {
-            return _molecule.species == molecule.species && _bindingSiteID == bindingSiteID;
+            return bindingSiteSimulator.molecule.species == molecule.species && bindingSiteSimulator.id == bindingSiteID;
         }
 
         public override string ToString ()
@@ -250,9 +250,23 @@ namespace AICS.AgentSim
             }
             foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
             {
-                if (!other.bindingSiteStates.ContainsKey( siteState.Key ) || other.bindingSiteStates[siteState.Key] != siteState.Value)
+                if (!other.bindingSiteStates.ContainsKey( siteState.Key ))
                 {
                     return false;
+                }
+                if (siteState.Value.Contains( "!" ))
+                {
+                    if (!other.bindingSiteStates[siteState.Key].Contains( "!" ))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (other.bindingSiteStates[siteState.Key] != siteState.Value)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -264,9 +278,19 @@ namespace AICS.AgentSim
             {
                 foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {
-                    if (_moleculeSimulator.bindingSiteSimulators[siteState.Key].state != siteState.Value)
+                    if (siteState.Value == "!+")
                     {
-                        return false;
+                        if (_moleculeSimulator.bindingSiteSimulators[siteState.Key].boundSite == null)
+                        {
+                            return false;
+                        }
+                    }
+                    else 
+                    {
+                        if (_moleculeSimulator.bindingSiteSimulators[siteState.Key].state != siteState.Value)
+                        {
+                            return false;
+                        }
                     }
                 }
                 return true;
