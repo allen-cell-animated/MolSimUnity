@@ -4,10 +4,9 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Population : MonoBehaviour 
+    public class ComplexSpawner : MonoBehaviour 
     {
         public Reactor reactor;
-        public float diffusionCoefficient;
 
         Transform _theTransform;
         public Transform theTransform
@@ -22,42 +21,27 @@ namespace AICS.AgentSim
             }
         }
 
-        int amount;
-        public float concentration
-        {
-            get
-            {
-                return amount / ( reactor.container.volume * 6.022141e23f );
-            }
-        }
-
-        string species;
         int id = -1;
-        string complexName
+        string GetComplexName (string species)
         {
-            get
-            {
-                id++;
-                return species + id;
-            }
+            id++;
+            return species + id;
         }
 
-        public virtual void Init (ComplexConcentration complexConcentration, Reactor _reactor)
+        public virtual void Init (Reactor _reactor)
         {
-            ComplexState complexState = complexConcentration.complexState;
             reactor = _reactor;
-            species = complexState.species;
-            diffusionCoefficient = complexState.diffusionCoefficient;
-            amount = Mathf.RoundToInt( complexConcentration.concentration * reactor.container.volume * 6.022141e23f );
-
-            if (amount > 0 && complexConcentration.moleculeCount > 0)
-            {
-                SpawnComplexes( complexState );
-            }
         }
 
-        protected virtual void SpawnComplexes (ComplexState complexState)
+        public virtual void SpawnComplexes (ComplexConcentration complexConcentration)
         {
+            int amount = Mathf.RoundToInt( complexConcentration.concentration * reactor.container.volume * 6.022141e23f );
+            if (amount < 1 || complexConcentration.moleculeCount < 1)
+            {
+                return;
+            }
+
+            ComplexState complexState = complexConcentration.complexState;
             bool singleMolecule = complexState.moleculeStates.Length == 1;
 
             GameObject complexObject;
@@ -90,7 +74,7 @@ namespace AICS.AgentSim
                 }
 
                 complexSimulator.Init( complex, this, particleSimulator );
-                particleSimulator.Init( complexSimulator );
+                particleSimulator.Init( complexSimulator, complexState.diffusionCoefficient );
             }
         }
 

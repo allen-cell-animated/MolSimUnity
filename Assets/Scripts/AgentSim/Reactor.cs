@@ -10,7 +10,7 @@ namespace AICS.AgentSim
         public Model model;
         public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
         public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
-        public Dictionary<ComplexState,Population> populations = new Dictionary<ComplexState,Population>();
+        public ComplexSpawner spawner;
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -34,9 +34,11 @@ namespace AICS.AgentSim
             CreateReactionSimulators();
             CreateContainer();
 
+            spawner = gameObject.AddComponent<ComplexSpawner>();
+            spawner.Init( this );
             foreach (ComplexConcentration complex in model.complexes)
             {
-                CreatePopulation( complex );
+                spawner.SpawnComplexes( complex );
             }
         }
 
@@ -61,25 +63,6 @@ namespace AICS.AgentSim
         {
             container = gameObject.AddComponent<Container>();
             container.Init( model.scale, model.containerVolume, periodicBoundary );
-        }
-
-        protected virtual void CreatePopulation (ComplexConcentration complexConcentration)
-        {
-            GameObject obj = new GameObject( complexConcentration.complexState.species + "Population" );
-            obj.transform.SetParent( transform );
-
-            Population population = obj.AddComponent<Population>();
-            population.Init( complexConcentration, this );
-            populations.Add( complexConcentration.complexState, population );
-        }
-
-        public virtual Population GetPopulation (ComplexState complexState)
-        {
-            if (!populations.ContainsKey( complexState ))
-            {
-                CreatePopulation( new ComplexConcentration( complexState, 0 ) );
-            }
-            return populations[complexState];
         }
 
         public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (ComplexState complexState)
