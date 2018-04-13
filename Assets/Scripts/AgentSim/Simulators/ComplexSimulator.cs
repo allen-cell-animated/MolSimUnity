@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class ComplexSimulator : MonoBehaviour 
     {
-        public Population population;
+        public Reactor reactor;
         public ParticleSimulator particleSimulator;
         public MoleculeSimulator[] complex;
 
@@ -23,6 +23,20 @@ namespace AICS.AgentSim
             }
         }
 
+        string GetSpecies ()
+        {
+            string s = "";
+            for (int i = 0; i < complex.Length; i++)
+            {
+                s += complex[i].molecule.species;
+                if (i < complex.Length - 1)
+                {
+                    s += ".";
+                }
+            }
+            return s;
+        }
+
         public bool couldReactOnCollision;
 
         bool GetCouldReactOnCollision ()
@@ -37,63 +51,139 @@ namespace AICS.AgentSim
             return false;
         }
 
-        float _interactionRadius = -1f;
-        float interactionRadius
+        float interactionRadius;
+
+        float GetInteractionRadius ()
         {
-            get 
+            float d, maxD = 0;
+            foreach (MoleculeSimulator moleculeSimulator in complex)
             {
-                if (_interactionRadius < 0)
+                d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.interactionRadius;
+                if (d > maxD)
                 {
-                    float d, maxD = 0;
-                    foreach (MoleculeSimulator moleculeSimulator in complex)
+                    maxD = d;
+                }
+            }
+            return maxD;
+        }
+
+        float GetCollisionRadius ()
+        {
+            float d, maxD = 0;
+            foreach (MoleculeSimulator moleculeSimulator in complex)
+            {
+                d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.collisionRadius;
+                if (d > maxD)
+                {
+                    maxD = d;
+                }
+            }
+            return maxD;
+        }
+
+        float GetDiffusionCoefficient ()
+        {
+            if (complex.Length == 1)
+            {
+                return complex[0].molecule.diffusionCoefficient;
+            }
+            if (complex.Length > 1)
+            {
+                float d = 0;
+                foreach (MoleculeSimulator moleculeSimulator in complex)
+                {
+                    d += moleculeSimulator.molecule.diffusionCoefficient;
+                }
+                return d / (0.8f * Mathf.Pow( complex.Length, 2f )); //hack for now
+            }
+            return 0;
+        }
+
+        public virtual void Init (Reactor _reactor)
+        {
+            reactor = _reactor;
+
+            name = GetSpecies() + name;
+            interactionRadius = GetInteractionRadius();
+            couldReactOnCollision = GetCouldReactOnCollision();
+
+            particleSimulator = gameObject.AddComponent<ParticleSimulator>();
+            particleSimulator.Init( reactor, GetDiffusionCoefficient(), GetCollisionRadius() );
+
+            reactor.RegisterComplex( this );
+        }
+
+        public virtual void SpawnMolecules (MoleculeInitData initData)
+        {
+            complex = new MoleculeSimulator[initData.complexState.moleculeStates.Length];
+            for (int i = 0; i < initData.complexState.moleculeStates.Length; i++)
+            {
+                complex[i] = SpawnMolecule( i, initData );
+            }
+            ConnectBoundSites();
+        }
+
+        protected virtual MoleculeSimulator SpawnMolecule (int i, MoleculeInitData initData)
+        {
+            GameObject visualizationPrefab = initData.complexState.moleculeStates[i].molecule.visualizationPrefab;
+            if (visualizationPrefab == null)
+            {
+                Debug.LogWarning( name + "'s molecule prefab is null!" );
+                visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
+            }
+
+            GameObject moleculeObject = Instantiate( visualizationPrefab );
+
+            moleculeObject.name = name + "_" + initData.complexState.moleculeStates[i].molecule.species;
+            moleculeObject.transform.SetParent( theTransform );
+            moleculeObject.transform.position = theTransform.TransformPoint( initData.moleculeTransforms[i].position );
+            moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( initData.moleculeTransforms[i].rotation );
+
+            MoleculeSimulator moleculeSimulator = moleculeObject.AddComponent<MoleculeSimulator>();
+            moleculeSimulator.Init( initData.complexState.moleculeStates[i], this, initData.relevantBimolecularSimulators, initData.relevantCollisionFreeSimulators );
+
+            return moleculeSimulator;
+        }
+
+        protected virtual void ConnectBoundSites ()
+        {
+            Dictionary<string,BindingSiteSimulator> boundBindingSiteSimulators = new Dictionary<string, BindingSiteSimulator>();
+            string boundState;
+            foreach (MoleculeSimulator moleculeSimulator in complex)
+            {
+                foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
+                {
+                    boundState = bindingSiteSimulator.state;
+                    if (boundState.Contains( "!" ))
                     {
-                        d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.interactionRadius;
-                        if (d > maxD)
+                        if (!boundBindingSiteSimulators.ContainsKey( boundState ))
                         {
-                            maxD = d;
+                            boundBindingSiteSimulators.Add( boundState, bindingSiteSimulator );
+                        }
+                        else
+                        {
+                            boundBindingSiteSimulators[boundState].boundSite = bindingSiteSimulator;
+                            bindingSiteSimulator.boundSite = boundBindingSiteSimulators[boundState];
                         }
                     }
-                    _interactionRadius = maxD;
                 }
-                return _interactionRadius;
             }
         }
 
-        public virtual void Init (MoleculeSimulator[] _complex, Population _population, ParticleSimulator _particleSimulator)
+        public virtual void SetMolecules (MoleculeSimulator[] _complex, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+                                          CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            population = _population;
-            particleSimulator = _particleSimulator;
             complex = _complex;
-            couldReactOnCollision = GetCouldReactOnCollision();
-            population.reactor.RegisterComplex( this );
+            foreach (MoleculeSimulator moleculeSimulator in complex)
+            {
+                moleculeSimulator.MoveToComplex( this, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            }
         }
 
         public virtual void InteractWith (ComplexSimulator other)
         {
             if (IsNear( other ))
             {
-                //MoleculeSimulator moleculeSimulator, otherMoleculeSimulator;
-                //int start = complex.GetRandomIndex();
-                //for (int i = 0; i < complex.Length; i++)
-                //{
-                //    moleculeSimulator = complex[(start + i) % complex.Length];
-                //    if (moleculeSimulator != null && moleculeSimulator.couldReactOnCollision)
-                //    {
-                //        int startOther = other.complex.GetRandomIndex();
-                //        for (int j = 0; j < complex.Length; j++)
-                //        {
-                //            otherMoleculeSimulator = other.complex[(startOther + j) % other.complex.Length];
-                //            if (otherMoleculeSimulator != null && otherMoleculeSimulator.couldReactOnCollision)
-                //            {
-                //                if (moleculeSimulator.InteractWith( otherMoleculeSimulator ))
-                //                {
-                //                    return;
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
-
                 complex.Shuffle();
                 foreach (MoleculeSimulator moleculeSimulator in complex)
                 {
@@ -129,8 +219,8 @@ namespace AICS.AgentSim
 
         public virtual void UpdateReactions ()
         {
-            BimolecularReactionSimulator[] relevantBimolecularSimulators = population.reactor.GetRelevantBimolecularReactionSimulators( complex );
-            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = population.reactor.GetRelevantCollisionFreeReactionSimulators( complex );
+            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( complex );
+            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( complex );
             foreach (MoleculeSimulator moleculeSimulator in complex)
             {
                 moleculeSimulator.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
@@ -142,7 +232,7 @@ namespace AICS.AgentSim
         {
             if (complex.Length < 2)
             {
-                population.reactor.UnregisterComplex( this );
+                reactor.UnregisterComplex( this );
                 particleSimulator.Destroy();
             }
             else
@@ -167,7 +257,7 @@ namespace AICS.AgentSim
             if (newCouldReactOnCollision != couldReactOnCollision)
             {
                 couldReactOnCollision = newCouldReactOnCollision;
-                population.reactor.ComplexChangedCouldReactOnCollisionState( this );
+                reactor.ComplexChangedCouldReactOnCollisionState( this );
             }
         }
 

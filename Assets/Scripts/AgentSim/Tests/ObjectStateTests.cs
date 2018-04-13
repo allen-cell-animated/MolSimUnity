@@ -87,6 +87,11 @@ public class ObjectStateTests : AgentSimTests
                 if (debug) { Debug.Log( "The Reactor has a null ParticleSimulator" ); }
                 return false;
             }
+            if (particleSimulator.reactor != reactor)
+            {
+                if (debug) { Debug.Log( particleSimulator + " doesn't reference the Reactor" ); }
+                return false;
+            }
             int count = 0;
             foreach (ParticleSimulator otherParticleSimulator in reactor.particleSimulators)
             {
@@ -101,11 +106,17 @@ public class ObjectStateTests : AgentSimTests
                 return false;
             }
         }
-        foreach (ParticleSimulator particleSimulator in GameObject.FindObjectsOfType<ParticleSimulator>())
+        foreach (ParticleSimulator particleSimulator in reactor.GetComponentsInChildren<ParticleSimulator>())
         {
             if (!reactor.particleSimulators.Contains( particleSimulator ))
             {
                 if (debug) { Debug.Log( particleSimulator + " isn't registered to the Reactor" ); }
+                return false;
+            }
+            ComplexSimulator complexSimulator = particleSimulator.GetComponent<ComplexSimulator>();
+            if (complexSimulator == null)
+            {
+                if (debug) { Debug.Log( particleSimulator + " doesn't have a ComplexSimulator" ); }
                 return false;
             }
         }
@@ -116,6 +127,11 @@ public class ObjectStateTests : AgentSimTests
             if (complexSimulator == null)
             {
                 if (debug) { Debug.Log( "The Reactor has a null ComplexSimulator" ); }
+                return false;
+            }
+            if (complexSimulator.reactor != reactor)
+            {
+                if (debug) { Debug.Log( complexSimulator + " doesn't reference the Reactor" ); }
                 return false;
             }
             if (!ComplexSimulatorReallyIsBimolecularReactant( complexSimulator ))
@@ -137,55 +153,14 @@ public class ObjectStateTests : AgentSimTests
                 return false;
             }
         }
-        foreach (ComplexSimulator complexSimulator in GameObject.FindObjectsOfType<ComplexSimulator>())
+        foreach (ComplexSimulator complexSimulator in reactor.GetComponentsInChildren<ComplexSimulator>())
         {
             if (ComplexSimulatorReallyIsBimolecularReactant( complexSimulator ) && !reactor.complexSimulators.Contains( complexSimulator ))
             {
                 if (debug) { Debug.Log( complexSimulator + " isn't registered to the Reactor" ); }
                 return false;
             }
-        }
-
-        //populations
-        foreach (Population population in reactor.populations.Values)
-        {
-            if (population == null)
-            {
-                if (debug) { Debug.Log( "The Reactor has a null Population" ); }
-                return false;
-            }
-            if (population.reactor != reactor)
-            {
-                if (debug) { Debug.Log( population + " doesn't reference the Reactor" ); }
-                return false;
-            }
-            if (population.theTransform.parent != reactor.transform)
-            {
-                if (debug) { Debug.Log( population + " is not parented to the Reactor" ); }
-                return false;
-            }
-            int count = 0;
-            foreach (Population otherPopulation in reactor.populations.Values)
-            {
-                if (population == otherPopulation)
-                {
-                    count++;
-                }
-            }
-            if (count > 1)
-            {
-                if (debug) { Debug.Log( population + " is registered to the Reactor " + count + " times" ); }
-                return false;
-            }
-            AssertIsTrue( StateOfPopulationIsCorrect( population ) );
-        }
-        foreach (Population population in GameObject.FindObjectsOfType<Population>())
-        {
-            if (!reactor.populations.ContainsValue( population ))
-            {
-                if (debug) { Debug.Log( population + " isn't registered to the Reactor" ); }
-                return false;
-            }
+            AssertIsTrue( StateOfComplexSimulatorIsCorrect( complexSimulator ) );
         }
 
         if (debug) { Debug.Log( "Reactor passed check" ); }
@@ -194,7 +169,7 @@ public class ObjectStateTests : AgentSimTests
 
     static bool ComplexSimulatorReallyIsBimolecularReactant (ComplexSimulator complexSimulator)
     {
-        foreach (BimolecularReactionSimulator reactionSimulator in complexSimulator.population.reactor.bimolecularReactionSimulators)
+        foreach (BimolecularReactionSimulator reactionSimulator in complexSimulator.reactor.bimolecularReactionSimulators)
         {
             if (reactionSimulator.IsReactant( complexSimulator.complex ))
             {
@@ -202,40 +177,6 @@ public class ObjectStateTests : AgentSimTests
             }
         }
         return false;
-    }
-
-    static bool StateOfPopulationIsCorrect (Population population)
-    {
-        foreach (ParticleSimulator particleSimulator in population.GetComponentsInChildren<ParticleSimulator>())
-        {
-            AssertIsTrue( StateOfParticleSimulatorIsCorrect( particleSimulator ) );
-        }
-        foreach (ComplexSimulator complexSimulator in population.GetComponentsInChildren<ComplexSimulator>())
-        {
-            if (complexSimulator.population != population)
-            {
-                if (debug) { Debug.Log( complexSimulator + " doesn't reference " + population ); }
-                return false;
-            }
-            AssertIsTrue( StateOfComplexSimulatorIsCorrect( complexSimulator ) );
-        }
-        return true;
-    }
-
-    static bool StateOfParticleSimulatorIsCorrect (ParticleSimulator particleSimulator)
-    {
-        ComplexSimulator complexSimulator = particleSimulator.GetComponent<ComplexSimulator>();
-        if (complexSimulator == null)
-        {
-            if (debug) { Debug.Log( particleSimulator + " doesn't have a ComplexSimulator" ); }
-            return false;
-        }
-        if (complexSimulator != particleSimulator.complexSimulator)
-        {
-            if (debug) { Debug.Log( complexSimulator + " doesn't reference " + particleSimulator ); }
-            return false;
-        }
-        return true;
     }
 
     static bool StateOfComplexSimulatorIsCorrect (ComplexSimulator complexSimulator)
@@ -291,17 +232,8 @@ public class ObjectStateTests : AgentSimTests
             }
         }
 
-        //parenting relationships
-        if (complexSimulator.complex.Length == 1)
-        {
-            if (complexSimulator.complex[0].gameObject != complexSimulator.gameObject)
-            {
-                if (debug) { Debug.Log( complexSimulator.complex[0] + " isn't on the same GameObject as " + complexSimulator 
-                                       + "even though it's the only molecule in the complex" ); }
-                return false;
-            }
-        }
-        else if (complexSimulator.complex.Length > 1)
+        //parenting
+        if (complexSimulator.complex.Length > 0)
         {
             foreach (MoleculeSimulator moleculeSimulator in complexSimulator.complex)
             {

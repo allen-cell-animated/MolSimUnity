@@ -100,12 +100,12 @@ namespace AICS.AgentSim
         }
 
         public virtual void MoveToComplex (ComplexSimulator _complexSimulator, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                           CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Transform newParent)
+                                           CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            theTransform.SetParent( newParent );
             complexSimulator.Remove( this );
             complexSimulator = _complexSimulator;
             name = complexSimulator.name + "_" + species;
+            theTransform.SetParent( complexSimulator.theTransform );
 
             UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
         }
