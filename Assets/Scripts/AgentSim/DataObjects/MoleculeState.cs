@@ -278,7 +278,7 @@ namespace AICS.AgentSim
             {
                 foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {
-                    if (siteState.Value == "!+")
+                    if (siteState.Value.Contains( "!" ))
                     {
                         if (_moleculeSimulator.bindingSiteSimulators[siteState.Key].boundSite == null)
                         {

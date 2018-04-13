@@ -42,6 +42,13 @@ MonoBehaviour:
         state: '!1'
       - id: y
         state: '!+'
+  relevantSiteReferences:
+  - complexIndex: 0
+    moleculeIndex: 0
+    siteID: y
+  - complexIndex: 0
+    moleculeIndex: 1
+    siteID: x
   relevantSites:
   - molecule: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
     bindingSiteID: x

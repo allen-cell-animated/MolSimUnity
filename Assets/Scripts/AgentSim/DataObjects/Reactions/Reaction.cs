@@ -10,8 +10,11 @@ namespace AICS.AgentSim
         [Tooltip( "per second" )] 
         public float rate;
         public ComplexState[] reactantStates;
+        [Tooltip( "for now, molecules should be in same order in products" )]
         public ComplexState[] productStates;
+        public BindingSiteReference[] relevantSiteReferences;
         public MoleculeBindingSite[] relevantSites;
+
         public MoleculeColor[] productmoleculeColors;
 
         public bool isBimolecular
@@ -66,18 +69,15 @@ namespace AICS.AgentSim
 
         protected virtual void SetComplexToFinalState (MoleculeSimulator[] complex, ComplexState finalState)
         {
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            foreach (MoleculeState moleculeState in finalState.moleculeStates) 
             {
-                foreach (MoleculeState moleculeState in finalState.moleculeStates)
+                foreach (MoleculeSimulator moleculeSimulator in complex)
                 {
                     if (moleculeSimulator.molecule.species == moleculeState.molecule.species)
                     {
                         foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
                         {
-                            if (!bindingSiteState.Value.Contains( "!" ))
-                            {
-                                moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value;
-                            }
+                            moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value.Contains( "!" ) ? "!" : bindingSiteState.Value;
                         }
                     }
                 }
@@ -110,5 +110,13 @@ namespace AICS.AgentSim
     {
         public Molecule molecule;
         public Color color;
+    }
+
+    [System.Serializable]
+    public class BindingSiteReference
+    {
+        public int complexIndex;
+        public int moleculeIndex;
+        public string siteID;
     }
 }
