@@ -54,44 +54,6 @@ namespace AICS.AgentSim
         }
         #endregion
 
-        public string species 
-        {
-            get
-            {
-                string s = "";
-                for (int i = 0; i < moleculeStates.Length; i++)
-                {
-                    s += moleculeStates[i].molecule.species;
-                    if (i < moleculeStates.Length - 1)
-                    {
-                        s += ".";
-                    }
-                }
-                return s;
-            }
-        }
-
-        public float diffusionCoefficient
-        {
-            get
-            {
-                if (moleculeStates.Length == 1)
-                {
-                    return moleculeStates[0].molecule.diffusionCoefficient;
-                }
-                if (moleculeStates.Length > 1)
-                {
-                    float d = 0;
-                    foreach (MoleculeState moleculeState in moleculeStates)
-                    {
-                        d += moleculeState.molecule.diffusionCoefficient;
-                    }
-                    return d / (0.8f * Mathf.Pow( moleculeStates.Length, 2f )); //hack for now
-                }
-                return 0;
-            }
-        }
-
         public ComplexState (MoleculeState[] theMoleculeStates)
         {
             _moleculeStates = theMoleculeStates;

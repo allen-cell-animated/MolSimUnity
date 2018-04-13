@@ -39,7 +39,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return complexSimulator.population.reactor;
+                return complexSimulator.reactor;
             }
         }
 

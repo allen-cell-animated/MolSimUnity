@@ -7,10 +7,10 @@ namespace AICS.AgentSim
     public class Reactor : MonoBehaviour 
     {
         [HideInInspector] public Container container;
+        [HideInInspector] public ComplexSpawner spawner;
         public Model model;
         public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
         public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
-        public ComplexSpawner spawner;
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -33,13 +33,7 @@ namespace AICS.AgentSim
         {
             CreateReactionSimulators();
             CreateContainer();
-
-            spawner = gameObject.AddComponent<ComplexSpawner>();
-            spawner.Init( this );
-            foreach (ComplexConcentration complex in model.complexes)
-            {
-                spawner.SpawnComplexes( complex );
-            }
+            SpawnComplexes();
         }
 
         protected virtual void CreateReactionSimulators ()
@@ -63,6 +57,16 @@ namespace AICS.AgentSim
         {
             container = gameObject.AddComponent<Container>();
             container.Init( model.scale, model.containerVolume, periodicBoundary );
+        }
+
+        protected virtual void SpawnComplexes ()
+        {
+            spawner = gameObject.AddComponent<ComplexSpawner>();
+            spawner.Init( this );
+            foreach (ComplexConcentration complex in model.complexes)
+            {
+                spawner.SpawnComplexes( complex );
+            }
         }
 
         public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (ComplexState complexState)

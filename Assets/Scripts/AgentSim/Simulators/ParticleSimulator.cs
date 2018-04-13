@@ -6,15 +6,7 @@ namespace AICS.AgentSim
 {
     public class ParticleSimulator : MonoBehaviour 
     {
-        public ComplexSimulator complexSimulator;
-
-        Population population
-        {
-            get
-            {
-                return complexSimulator.population;
-            }
-        }
+        public Reactor reactor;
 
         Transform _theTransform;
         public Transform theTransform
@@ -29,39 +21,23 @@ namespace AICS.AgentSim
             }
         }
 
-        float _collisionRadius = -1f;
-        float collisionRadius
-        {
-            get 
-            {
-                if (_collisionRadius < 0)
-                {
-                    float d, maxD = 0;
-                    foreach (MoleculeSimulator moleculeSimulator in complexSimulator.complex)
-                    {
-                        d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.collisionRadius;
-                        if (d > maxD)
-                        {
-                            maxD = d;
-                        }
-                    }
-                    _collisionRadius = maxD;
-                }
-                return _collisionRadius;
-            }
-        }
+        float diffusionCoefficient;
+        float collisionRadius;
 
-        public virtual void Init (ComplexSimulator _complexSimulator)
+        public virtual void Init (Reactor _reactor, float _diffusionCoefficient, float _collisionRadius)
         {
-            complexSimulator = _complexSimulator;
-            population.reactor.RegisterParticle( this );
+            reactor = _reactor;
+            diffusionCoefficient = _diffusionCoefficient;
+            collisionRadius = _collisionRadius;
+
+            reactor.RegisterParticle( this );
         }
 
         public virtual void Move (float dTime)
         {
             int i = 0;
             bool moved = false;
-            while (!moved && i < population.reactor.maxMoveAttempts)
+            while (!moved && i < reactor.maxMoveAttempts)
             {
                 moved = MoveRandomStep( dTime );
                 i++;
@@ -73,17 +49,17 @@ namespace AICS.AgentSim
         {
             Vector3 moveStep = 2E3f * GetDisplacement( dTime ) * Random.onUnitSphere;
 
-            if (!population.reactor.container.IsInBounds( theTransform.position + moveStep ))
+            if (!reactor.container.IsInBounds( theTransform.position + moveStep ))
             {
-                if (population.reactor.periodicBoundary)
+                if (reactor.periodicBoundary)
                 {
-                    ReflectPeriodically( population.reactor.container.theTransform.position - (theTransform.position + moveStep) );
+                    ReflectPeriodically( reactor.container.theTransform.position - (theTransform.position + moveStep) );
                     return true;
                 }
                 return false;
             }
 
-            if (population.reactor.WillCollide( this, theTransform.position + moveStep ))
+            if (reactor.WillCollide( this, theTransform.position + moveStep ))
             {
                 return false;
             }
@@ -95,7 +71,7 @@ namespace AICS.AgentSim
         protected virtual void ReflectPeriodically (Vector3 collisionToCenter)
         {
             RaycastHit info;
-            if (Physics.Raycast( theTransform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, population.reactor.container.boundaryLayer ))
+            if (Physics.Raycast( theTransform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, reactor.container.boundaryLayer ))
             {
                 theTransform.position = info.point - collisionToCenter.normalized;
             }
@@ -108,7 +84,7 @@ namespace AICS.AgentSim
 
         protected float GetDisplacement (float dTime)
         {
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( population.diffusionCoefficient * dTime ) );
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime ) );
         }
 
         public bool IsCollidingWith (ParticleSimulator other, Vector3 newPosition)
@@ -119,7 +95,7 @@ namespace AICS.AgentSim
 
 		public void Destroy ()
 		{
-            population.reactor.UnregisterParticle( this );
+            reactor.UnregisterParticle( this );
 		}
 
 		public override string ToString ()

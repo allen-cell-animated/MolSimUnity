@@ -22,10 +22,13 @@ namespace AICS.AgentSim
         }
 
         int id = -1;
-        string GetComplexName (string species)
+        public string nextID
         {
-            id++;
-            return species + id;
+            get
+            {
+                id++;
+                return id.ToString();
+            }
         }
 
         public virtual void Init (Reactor _reactor)
@@ -41,152 +44,34 @@ namespace AICS.AgentSim
                 return;
             }
 
-            ComplexState complexState = complexConcentration.complexState;
-            bool singleMolecule = complexState.moleculeStates.Length == 1;
-
-            GameObject complexObject;
-            ParticleSimulator particleSimulator;
+            MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexState, CalculateMoleculeTransforms( complexConcentration.complexState ),
+                                                              reactor.GetRelevantBimolecularReactionSimulators( complexConcentration.complexState ),
+                                                              reactor.GetRelevantCollisionFreeReactionSimulators( complexConcentration.complexState ) );
             ComplexSimulator complexSimulator;
-            MoleculeSimulator[] complex = null;
-            RelativeTransform[] moleculeTransforms = null;
-            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( complexState );
-            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( complexState );
-            if (!singleMolecule) { moleculeTransforms = CalculateMoleculeTransforms( complexState ); }
-
             for (int i = 0; i < amount; i++)
             {
-                if (singleMolecule) { complexObject = SpawnMolecule( complexState.moleculeStates[0] ); }
-                else { complexObject = new GameObject(); }
+                complexSimulator = new GameObject( nextID ).AddComponent<ComplexSimulator>();
+                complexSimulator.gameObject.transform.SetParent( transform );
+                complexSimulator.gameObject.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
+                complexSimulator.gameObject.transform.rotation = Random.rotation;
 
-                NameAndPlaceComplex( complexObject, reactor.container.GetRandomPointInBounds( 0.1f ), Random.rotation );
-                particleSimulator = complexObject.AddComponent<ParticleSimulator>();
-                complexSimulator = complexObject.AddComponent<ComplexSimulator>();
-
-                if (singleMolecule) 
-                { 
-                    complexObject.name += "_" + complexState.moleculeStates[0].molecule.species;
-                    complex = new MoleculeSimulator[]{ CreateMoleculeSimulator( complexObject, complexState.moleculeStates[0], complexSimulator, 
-                                                                                relevantBimolecularSimulators, relevantCollisionFreeSimulators ) }; 
-                }
-                else 
-                { 
-                    complex = SpawnMoleculesInComplex( complexSimulator, complexState, moleculeTransforms, relevantBimolecularSimulators, relevantCollisionFreeSimulators ); 
-                }
-
-                complexSimulator.Init( complex, this, particleSimulator );
-                particleSimulator.Init( complexSimulator, complexState.diffusionCoefficient );
-            }
-        }
-
-        protected virtual void NameAndPlaceComplex (GameObject complexObject, Vector3 position, Quaternion rotation)
-        {
-            complexObject.name = complexName;
-            complexObject.transform.SetParent( transform );
-            complexObject.transform.position = position;
-            complexObject.transform.rotation = rotation;
-        }
-
-        protected virtual MoleculeSimulator[] SpawnMoleculesInComplex (ComplexSimulator complexSimulator, ComplexState complexState, RelativeTransform[] moleculeTransforms,
-                                                                       BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
-        {
-            GameObject moleculeObject;
-            List<MoleculeSimulator> complexList = new List<MoleculeSimulator>();
-            for (int i = 0; i < complexState.moleculeStates.Length; i++)
-            {
-                moleculeObject = SpawnMolecule( complexState.moleculeStates[i] );
-                if (moleculeObject != null)
-                {
-                    NameAndPlaceMoleculeInComplex( moleculeObject, complexState.moleculeStates[i].molecule.species, complexSimulator.theTransform, moleculeTransforms[i] );
-                    complexList.Add( CreateMoleculeSimulator( moleculeObject, complexState.moleculeStates[i], complexSimulator, relevantBimolecularSimulators, relevantCollisionFreeSimulators ) );
-                }
-            }
-            ConnectBoundSites( complexList );
-            return complexList.ToArray();
-        }
-
-        protected virtual GameObject SpawnMolecule (MoleculeState moleculeState)
-        {
-            GameObject visualizationPrefab = moleculeState.molecule.visualizationPrefab;
-            if (visualizationPrefab == null)
-            {
-                Debug.LogWarning( name + "'s molecule prefab is null!" );
-                visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
-            }
-
-            GameObject molecule = Instantiate( visualizationPrefab );
-            return molecule;
-        }
-
-        protected virtual void NameAndPlaceMoleculeInComplex (GameObject moleculeObject, string species, Transform complexTransform, RelativeTransform relativeTransform)
-        {
-            moleculeObject.name = complexTransform.name + "_" + species;
-            moleculeObject.transform.SetParent( complexTransform );
-            moleculeObject.transform.position = complexTransform.TransformPoint( relativeTransform.position );
-            moleculeObject.transform.rotation = complexTransform.rotation * Quaternion.Euler( relativeTransform.rotation );
-        }
-
-        protected virtual MoleculeSimulator CreateMoleculeSimulator (GameObject moleculeObject, MoleculeState moleculeState, ComplexSimulator complexSimulator, 
-                                                                     BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
-        {
-            MoleculeSimulator moleculeSimulator = moleculeObject.AddComponent<MoleculeSimulator>();
-            moleculeSimulator.Init( moleculeState, complexSimulator, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
-            return moleculeSimulator;
-        }
-
-        protected virtual void ConnectBoundSites (List<MoleculeSimulator> complexList)
-        {
-            Dictionary<string,BindingSiteSimulator> boundBindingSiteSimulators = new Dictionary<string, BindingSiteSimulator>();
-            string boundState;
-            foreach (MoleculeSimulator moleculeSimulator in complexList)
-            {
-                foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
-                {
-                    boundState = bindingSiteSimulator.state;
-                    if (boundState.Contains( "!" ))
-                    {
-                        if (!boundBindingSiteSimulators.ContainsKey( boundState ))
-                        {
-                            boundBindingSiteSimulators.Add( boundState, bindingSiteSimulator );
-                        }
-                        else
-                        {
-                            boundBindingSiteSimulators[boundState].boundSite = bindingSiteSimulator;
-                            bindingSiteSimulator.boundSite = boundBindingSiteSimulators[boundState];
-                        }
-                    }
-                }
+                complexSimulator.SpawnMolecules( initData );
+                complexSimulator.Init( reactor );
             }
         }
 
         public virtual void CreateComplex (Transform centerTransform, MoleculeSimulator[] complex)
         {
-            bool singleMolecule = complex.Length == 1;
-
-            ParticleSimulator particleSimulator = null;
-            ComplexSimulator complexSimulator = null;
-            if (singleMolecule)
-            {
-                particleSimulator = complex[0].gameObject.AddComponent<ParticleSimulator>();
-                complexSimulator = complex[0].gameObject.AddComponent<ComplexSimulator>();
-                complex[0].gameObject.name = complexName;
-            }
-            else if (complex.Length > 1)
-            {
-                GameObject complexObject = new GameObject();
-                NameAndPlaceComplex( complexObject, centerTransform.position, centerTransform.rotation );
-                particleSimulator = complexObject.AddComponent<ParticleSimulator>();
-                complexSimulator = complexObject.AddComponent<ComplexSimulator>();
-            }
+            ComplexSimulator complexSimulator = new GameObject( nextID ).AddComponent<ComplexSimulator>();
+            complexSimulator.gameObject.transform.SetParent( transform );
+            complexSimulator.gameObject.transform.position = centerTransform.position;
+            complexSimulator.gameObject.transform.rotation = centerTransform.rotation;
 
             BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( complex );
             CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( complex );
-            foreach (MoleculeSimulator moleculeSimulator in complex)
-            {
-                moleculeSimulator.MoveToComplex( complexSimulator, relevantBimolecularSimulators, relevantCollisionFreeSimulators, 
-                                                 singleMolecule ? theTransform : particleSimulator.theTransform );
-            }
-            complexSimulator.Init( complex, this, particleSimulator );
-            particleSimulator.Init( complexSimulator );
+            complexSimulator.SetMolecules( complex, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+
+            complexSimulator.Init( reactor );
         }
 
         protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexState complexState)
@@ -248,37 +133,23 @@ namespace AICS.AgentSim
 
             return transforms;
         }
+    }
 
-        public string ComplexToString (MoleculeSimulator[] complex)
+    public class MoleculeInitData
+    {
+        public ComplexState complexState;
+        public RelativeTransform[] moleculeTransforms;
+        public BimolecularReactionSimulator[] relevantBimolecularSimulators;
+        public CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators;
+
+        public MoleculeInitData (ComplexState _complexState, RelativeTransform[] _moleculeTransforms,
+                                 BimolecularReactionSimulator[] _relevantBimolecularSimulators, 
+                                 CollisionFreeReactionSimulator[] _relevantCollisionFreeSimulators)
         {
-            string s = "";
-            int i = 0;
-            foreach (MoleculeSimulator moleculeSimulator in complex)
-            {
-                s += moleculeSimulator.species + ":";
-                int j = 0;
-                foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
-                {
-                    s += "[" + bindingSiteSimulator.id + "]=" + bindingSiteSimulator.state;
-                    if (j < moleculeSimulator.bindingSiteSimulators.Count - 1)
-                    {
-                        s += ",";
-                    }
-                    j++;
-                }
-
-                if (i < complex.Length - 1)
-                {
-                    s += " | ";
-                }
-                i++;
-            }
-            return s;
-        }
-
-        public override string ToString ()
-        {
-            return "Population " + name;
+            complexState = _complexState;
+            moleculeTransforms = _moleculeTransforms;
+            relevantBimolecularSimulators = _relevantBimolecularSimulators;
+            relevantCollisionFreeSimulators = _relevantCollisionFreeSimulators;
         }
     }
 }
