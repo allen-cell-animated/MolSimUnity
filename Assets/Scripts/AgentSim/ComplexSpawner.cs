@@ -8,21 +8,8 @@ namespace AICS.AgentSim
     {
         public Reactor reactor;
 
-        Transform _theTransform;
-        public Transform theTransform
-        {
-            get
-            {
-                if (_theTransform == null)
-                {
-                    _theTransform = transform;
-                }
-                return _theTransform;
-            }
-        }
-
         int id = -1;
-        public string nextID
+        string nextID
         {
             get
             {

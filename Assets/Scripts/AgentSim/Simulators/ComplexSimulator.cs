@@ -7,8 +7,9 @@ namespace AICS.AgentSim
     public class ComplexSimulator : MonoBehaviour 
     {
         public Reactor reactor;
-        public ParticleSimulator particleSimulator;
         public MoleculeSimulator[] complex;
+
+        protected ParticleSimulator particleSimulator;
 
         Transform _theTransform;
         public Transform theTransform
