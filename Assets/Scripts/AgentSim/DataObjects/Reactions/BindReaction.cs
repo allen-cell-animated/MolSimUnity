@@ -11,7 +11,7 @@ namespace AICS.AgentSim
             return reactantStates.Length == 2 && productStates.Length == 1;
         }
 
-        public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
+        public override void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
             if (bindingSiteSimulator1 != null && bindingSiteSimulator2 != null)
             {
@@ -25,7 +25,7 @@ namespace AICS.AgentSim
                 bindingSiteSimulator2.complex.CopyTo( complex, bindingSiteSimulator1.complex.Length );
 
                 SetComplexToFinalState( complex, productStates[0] );
-                bindingSiteSimulator1.reactor.spawner.CreateComplex( bindingSiteSimulator1.theTransform, complex );
+                reactor.spawner.CreateComplex( bindingSiteSimulator1.theTransform, complex, reactor );
 
                 SetProductColor( complex );
                 World.ShowFlash( bindingSiteSimulator1.theTransform );

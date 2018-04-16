@@ -11,7 +11,7 @@ namespace AICS.AgentSim
             return reactantStates.Length == 1 && productStates.Length == 1;
         }
 
-        public override void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
+        public override void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
         {
             if (bindingSiteSimulator1 != null)
             {

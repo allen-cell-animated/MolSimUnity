@@ -9,7 +9,7 @@ namespace AICS.AgentSim
 	{
         [SerializeField] List<BindingSiteSimulator> bindingSiteSimulators = new List<BindingSiteSimulator>();
 
-        public CollisionFreeReactionSimulator (Reaction _reaction) : base (_reaction) { }
+        public CollisionFreeReactionSimulator (Reaction _reaction, Reactor _reactor) : base (_reaction, _reactor) { }
 
         public bool Register (BindingSiteSimulator bindingSitesimulator, ComplexState complexState = null)
         {
@@ -42,16 +42,10 @@ namespace AICS.AgentSim
 
         public bool TryReact ()
         {
-            //if (bindingSiteSimulators.Count > 0 && shouldHappen)
-            //{
-            //    reaction.React( bindingSiteSimulators[bindingSiteSimulators.GetRandomIndex()] );
-            //    return true;
-            //}
-
-            if (bindingSiteSimulators.Count > 0 && shouldHappen)
+            if (bindingSiteSimulators.Count > 0 && ShouldHappen())
             {
                 bindingSiteSimulators.Shuffle();
-                reaction.React( bindingSiteSimulators[0] );
+                reaction.React( reactor, bindingSiteSimulators[0] );
                 return true;
             }
             return false;
@@ -61,14 +55,14 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class BimolecularReactionSimulator : ReactionSimulator
 	{
-        public BimolecularReactionSimulator (Reaction _reaction) : base (_reaction) { }
+        public BimolecularReactionSimulator (Reaction _reaction, Reactor _reactor) : base (_reaction, _reactor) { }
 
         public bool TryReactOnCollision (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
         {
             if (ReactantsEqual( bindingSiteSimulator1.complex, bindingSiteSimulator2.complex ) 
-                && BothSitesAreRelevant( bindingSiteSimulator1, bindingSiteSimulator2 ) && shouldHappen)
+                && BothSitesAreRelevant( bindingSiteSimulator1, bindingSiteSimulator2 ) && ShouldHappen())
             {
-                reaction.React( bindingSiteSimulator1, bindingSiteSimulator2 );
+                reaction.React( reactor, bindingSiteSimulator1, bindingSiteSimulator2 );
                 return true;
             }
             return false;
@@ -92,14 +86,16 @@ namespace AICS.AgentSim
     [System.Serializable]
     public abstract class ReactionSimulator
     {
+        public Reactor reactor;
         public Reaction reaction;
         
         [SerializeField] int attempts;
         public int events;
         [SerializeField] float observedRate;
 
-        public ReactionSimulator (Reaction _reaction)
+        public ReactionSimulator (Reaction _reaction, Reactor _reactor)
         {
+            reactor = _reactor;
             reaction = _reaction;
         }
 
@@ -160,30 +156,27 @@ namespace AICS.AgentSim
             }
         }
 
-        protected bool shouldHappen
+        protected bool ShouldHappen ()
         {
-            get
+            attempts++;
+
+            bool react;
+            if (observedRateTooHigh)
             {
-                attempts++;
-
-                bool react;
-                if (observedRateTooHigh)
-                {
-                    react = false;
-                }
-                else if (observedRateTooLow)
-                {
-                    react = true;
-                }
-                else 
-                {
-                    react = Random.value <= reaction.rate * World.Instance.dT * (World.Instance.steps / attempts);
-                }
-
-                events = react ? events + 1 : events;
-
-                return react;
+                react = false;
             }
+            else if (observedRateTooLow)
+            {
+                react = true;
+            }
+            else 
+            {
+                react = Random.value <= reaction.rate * World.Instance.dT * (World.Instance.steps / attempts);
+            }
+
+            events = react ? events + 1 : events;
+
+            return react;
         }
 
         public void Reset ()

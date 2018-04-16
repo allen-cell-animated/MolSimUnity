@@ -12,9 +12,9 @@ namespace AICS.AgentSim
         public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
         public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
-        public int maxMoveAttempts = 20;
+        public const int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
-        public bool periodicBoundary = true;
+        public const bool periodicBoundary = true;
 
         public List<ParticleSimulator> particleSimulators = new List<ParticleSimulator>();
         public List<ComplexSimulator> complexSimulators = new List<ComplexSimulator>();
@@ -44,11 +44,11 @@ namespace AICS.AgentSim
             {
                 if (reaction.isBimolecular)
                 {
-                    bimolecularReactionSimulators.Add( new BimolecularReactionSimulator( reaction ) );
+                    bimolecularReactionSimulators.Add( new BimolecularReactionSimulator( reaction, this ) );
                 }
                 else
                 {
-                    collisionFreeReactionSimulators.Add( new CollisionFreeReactionSimulator( reaction ) );
+                    collisionFreeReactionSimulators.Add( new CollisionFreeReactionSimulator( reaction, this ) );
                 }
             }
         }
@@ -62,10 +62,9 @@ namespace AICS.AgentSim
         protected virtual void SpawnComplexes ()
         {
             spawner = gameObject.AddComponent<ComplexSpawner>();
-            spawner.Init( this );
             foreach (ComplexConcentration complex in model.complexes)
             {
-                spawner.SpawnComplexes( complex );
+                spawner.SpawnComplexes( complex, this );
             }
         }
 
@@ -244,12 +243,6 @@ namespace AICS.AgentSim
 
         protected virtual void DoCollisionFreeReactions ()
         {
-            //int start = collisionFreeReactionSimulators.GetRandomIndex();
-            //for (int i = 0; i < collisionFreeReactionSimulators.Count; i++)
-            //{
-            //    collisionFreeReactionSimulators[(start + i) % collisionFreeReactionSimulators.Count].TryReact();
-            //}
-
             collisionFreeReactionSimulators.Shuffle();
             foreach (CollisionFreeReactionSimulator collisionFreeReactionSimulator in collisionFreeReactionSimulators)
             {

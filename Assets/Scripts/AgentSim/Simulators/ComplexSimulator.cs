@@ -100,6 +100,7 @@ namespace AICS.AgentSim
             return 0;
         }
 
+        // complex of MoleculeSimulators is set before Init is called so reactions can be set up correctly
         public virtual void Init (Reactor _reactor)
         {
             reactor = _reactor;
@@ -129,7 +130,7 @@ namespace AICS.AgentSim
             GameObject visualizationPrefab = initData.complexState.moleculeStates[i].molecule.visualizationPrefab;
             if (visualizationPrefab == null)
             {
-                Debug.LogWarning( name + "'s molecule prefab is null!" );
+                Debug.LogWarning( initData.complexState.moleculeStates[i].molecule.species + "'s molecule prefab is null!" );
                 visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
             }
 

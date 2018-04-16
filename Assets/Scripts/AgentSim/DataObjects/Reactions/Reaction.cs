@@ -84,7 +84,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public abstract void React (BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
+        public abstract void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
 
         protected void SetProductColor (MoleculeSimulator[] complex)
         {

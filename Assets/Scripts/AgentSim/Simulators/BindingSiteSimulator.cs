@@ -10,6 +10,7 @@ namespace AICS.AgentSim
         public MoleculeSimulator moleculeSimulator;
         public string state;
         public BindingSiteSimulator boundSite;
+        public bool couldReactOnCollision;
 
         [SerializeField] protected BimolecularReactionSimulator[] bimolecularReactionSimulators;
         [SerializeField] protected CollisionFreeReactionSimulator[] collisionFreeReactionSimulators;
@@ -24,14 +25,6 @@ namespace AICS.AgentSim
                     _theTransform = transform;
                 }
                 return _theTransform;
-            }
-        }
-
-        public bool couldReactOnCollision
-        {
-            get
-            {
-                return bimolecularReactionSimulators.Length > 0;
             }
         }
 
@@ -104,6 +97,7 @@ namespace AICS.AgentSim
                 }
             }
             bimolecularReactionSimulators = bimolecularReactionSimulatorsList.ToArray();
+            couldReactOnCollision = bimolecularReactionSimulators.Length > 0;
         }
 
         protected virtual void RegisterWithCollisionFreeReactionSimulators (CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
@@ -131,17 +125,6 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
-                //BimolecularReactionSimulator bimolecularReactionSimulator;
-                //int start = bimolecularReactionSimulators.GetRandomIndex();
-                //for (int i = 0; i < bimolecularReactionSimulators.Length; i++)
-                //{
-                //    bimolecularReactionSimulator = bimolecularReactionSimulators[(start + i) % bimolecularReactionSimulators.Length];
-                //    if (bimolecularReactionSimulator.TryReactOnCollision( this, other ))
-                //    {
-                //        return true;
-                //    }
-                //}
-
                 bimolecularReactionSimulators.Shuffle();
                 foreach (BimolecularReactionSimulator bimolecularReactionSimulator in bimolecularReactionSimulators)
                 {

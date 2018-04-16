@@ -6,8 +6,6 @@ namespace AICS.AgentSim
 {
     public class ComplexSpawner : MonoBehaviour 
     {
-        public Reactor reactor;
-
         int id = -1;
         string nextID
         {
@@ -18,12 +16,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (Reactor _reactor)
-        {
-            reactor = _reactor;
-        }
-
-        public virtual void SpawnComplexes (ComplexConcentration complexConcentration)
+        public virtual void SpawnComplexes (ComplexConcentration complexConcentration, Reactor reactor)
         {
             int amount = Mathf.RoundToInt( complexConcentration.concentration * reactor.container.volume * 6.022141e23f );
             if (amount < 1 || complexConcentration.moleculeCount < 1)
@@ -47,7 +40,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void CreateComplex (Transform centerTransform, MoleculeSimulator[] complex)
+        public virtual void CreateComplex (Transform centerTransform, MoleculeSimulator[] complex, Reactor reactor)
         {
             ComplexSimulator complexSimulator = new GameObject( nextID ).AddComponent<ComplexSimulator>();
             complexSimulator.gameObject.transform.SetParent( transform );
