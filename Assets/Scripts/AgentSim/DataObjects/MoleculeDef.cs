@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Molecule : ScriptableObject
+    public class MoleculeDef : ScriptableObject
     {
         [SerializeField] string _species;
         public string species
@@ -21,19 +21,19 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public Dictionary<string,BindingSite> bindingSites;
+        public Dictionary<string,BindingSiteDef> bindingSiteDefs;
 
         #region for prototyping in inspector without writing custom property drawer etc
-        [SerializeField] BindingSite[] sites = new BindingSite[0];
+        [SerializeField] BindingSiteDef[] siteDefs = new BindingSiteDef[0];
 
         public void Init ()
         {
-            bindingSites = new Dictionary<string,BindingSite>();
-            foreach (BindingSite site in sites)
+            bindingSiteDefs = new Dictionary<string,BindingSiteDef>();
+            foreach (BindingSiteDef siteDef in siteDefs)
             {
-                if (!bindingSites.ContainsKey( site.id ))
+                if (!bindingSiteDefs.ContainsKey( siteDef.id ))
                 {
-                    bindingSites.Add( site.id, site );
+                    bindingSiteDefs.Add( siteDef.id, siteDef );
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class BindingSite
+    public class BindingSiteDef
     {
         public string id;
         public string[] states;

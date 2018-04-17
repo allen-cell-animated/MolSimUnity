@@ -36,7 +36,7 @@ public class AgentSimTests
         world.observer = (GameObject.Instantiate( Resources.Load( "Observer" ) as GameObject ) as GameObject).GetComponentInChildren<Observer>();
 
         Reactor reactor = (GameObject.Instantiate( Resources.Load( "DefaultReactor" ) as GameObject ) as GameObject).GetComponent<Reactor>();
-        reactor.model = Resources.Load( "Tests/Models/" + modelName ) as Model;
+        reactor.modelDef = Resources.Load( "Tests/Models/" + modelName ) as ModelDef;
 
         return reactor;
     }

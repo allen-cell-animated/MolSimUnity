@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public abstract class Reaction : ScriptableObject
+    public abstract class ReactionDef : ScriptableObject
     {
         public string description;
         [Tooltip( "per second" )] 
         public float rate;
-        public ComplexState[] reactantStates;
+        public ComplexSnapshot[] reactantSnapshots;
         [Tooltip( "for now, molecules should be in same order in products" )]
-        public ComplexState[] productStates;
+        public ComplexSnapshot[] productSnapshots;
         public BindingSiteReference[] relevantSiteReferences;
         public MoleculeBindingSite[] relevantSites;
 
@@ -21,7 +21,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return reactantStates.Length > 1;
+                return reactantSnapshots.Length > 1;
             }
         }
 
@@ -33,11 +33,11 @@ namespace AICS.AgentSim
             }
 
             #region for prototyping in inspector without writing custom property drawer etc
-            foreach (ComplexState reactantState in reactantStates)
+            foreach (ComplexSnapshot reactantState in reactantSnapshots)
             {
                 reactantState.Init();
             }
-            foreach (ComplexState productState in productStates)
+            foreach (ComplexSnapshot productState in productSnapshots)
             {
                 productState.Init();
             }
@@ -46,19 +46,19 @@ namespace AICS.AgentSim
 
         protected abstract bool ReactantAndProductAmountsAreCorrect ();
 
-        public string GetInitialStateOfSite (ComplexState complexState, MoleculeBindingSite moleculeBindingSite)
+        public string GetInitialStateOfSite (ComplexSnapshot complexSnapshot, MoleculeBindingSite moleculeBindingSite)
         {
-            foreach (ComplexState reactantState in reactantStates)
+            foreach (ComplexSnapshot reactantSnapshot in reactantSnapshots)
             {
-                if (reactantState.IsSatisfiedBy( complexState ))
+                if (reactantSnapshot.IsSatisfiedBy( complexSnapshot ))
                 {
-                    foreach (MoleculeState moleculeState in reactantState.moleculeStates)
+                    foreach (MoleculeSnapshot moleculeSnapshot in reactantSnapshot.moleculeSnapshots)
                     {
-                        if (moleculeState.molecule.species == moleculeBindingSite.molecule.species)
+                        if (moleculeSnapshot.moleculeDef.species == moleculeBindingSite.moleculeDef.species)
                         {
-                            if (moleculeState.bindingSiteStates.ContainsKey( moleculeBindingSite.bindingSiteID ))
+                            if (moleculeSnapshot.bindingSiteStates.ContainsKey( moleculeBindingSite.bindingSiteID ))
                             {
-                                return moleculeState.bindingSiteStates[moleculeBindingSite.bindingSiteID];
+                                return moleculeSnapshot.bindingSiteStates[moleculeBindingSite.bindingSiteID];
                             }
                         }
                     }
@@ -67,36 +67,36 @@ namespace AICS.AgentSim
             return "";
         }
 
-        protected virtual void SetComplexToFinalState (MoleculeSimulator[] complex, ComplexState finalState)
+        protected virtual void SetComplexToFinalState (Molecule[] molecules, ComplexSnapshot finalSnapshot)
         {
-            foreach (MoleculeState moleculeState in finalState.moleculeStates) 
+            foreach (MoleculeSnapshot moleculeSnapshot in finalSnapshot.moleculeSnapshots) 
             {
-                foreach (MoleculeSimulator moleculeSimulator in complex)
+                foreach (Molecule molecule in molecules)
                 {
-                    if (moleculeSimulator.molecule.species == moleculeState.molecule.species)
+                    if (molecule.definition.species == moleculeSnapshot.moleculeDef.species)
                     {
-                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeState.bindingSiteStates)
+                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeSnapshot.bindingSiteStates)
                         {
-                            moleculeSimulator.bindingSiteSimulators[bindingSiteState.Key].state = bindingSiteState.Value.Contains( "!" ) ? "!" : bindingSiteState.Value;
+                            molecule.bindingSites[bindingSiteState.Key].state = bindingSiteState.Value.Contains( "!" ) ? "!" : bindingSiteState.Value;
                         }
                     }
                 }
             }
         }
 
-        public abstract void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null);
+        public abstract void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null);
 
-        protected void SetProductColor (MoleculeSimulator[] complex)
+        protected void SetProductColor (Molecule[] molecules)
         {
             if (productmoleculeColors != null)
             {
                 foreach (MoleculeColor moleculeColor in productmoleculeColors)
                 {
-                    foreach (MoleculeSimulator moleculeSimulator in complex)
+                    foreach (Molecule molecule in molecules)
                     {
-                        if (moleculeSimulator.molecule.species == moleculeColor.molecule.species)
+                        if (molecule.definition.species == moleculeColor.definition.species)
                         {
-                            moleculeSimulator.SetColor( moleculeColor.color );
+                            molecule.SetColor( moleculeColor.color );
                             break;
                         }
                     }
@@ -108,7 +108,7 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class MoleculeColor
     {
-        public Molecule molecule;
+        public MoleculeDef definition;
         public Color color;
     }
 

@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class ComplexSimulator : MonoBehaviour 
+    public class Complex : MonoBehaviour 
     {
         public Reactor reactor;
-        public MoleculeSimulator[] complex;
+        public Molecule[] molecules;
 
-        protected ParticleSimulator particleSimulator;
+        protected Mover mover;
 
         Transform _theTransform;
         public Transform theTransform
@@ -27,10 +27,10 @@ namespace AICS.AgentSim
         string GetSpecies ()
         {
             string s = "";
-            for (int i = 0; i < complex.Length; i++)
+            for (int i = 0; i < molecules.Length; i++)
             {
-                s += complex[i].molecule.species;
-                if (i < complex.Length - 1)
+                s += molecules[i].definition.species;
+                if (i < molecules.Length - 1)
                 {
                     s += ".";
                 }
@@ -42,9 +42,9 @@ namespace AICS.AgentSim
 
         bool GetCouldReactOnCollision ()
         {
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            foreach (Molecule molecule in molecules)
             {
-                if (moleculeSimulator.couldReactOnCollision)
+                if (molecule.couldReactOnCollision)
                 {
                     return true;
                 }
@@ -57,9 +57,9 @@ namespace AICS.AgentSim
         float GetInteractionRadius ()
         {
             float d, maxD = 0;
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            foreach (Molecule molecule in molecules)
             {
-                d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.interactionRadius;
+                d = Vector3.Distance( theTransform.position, molecule.theTransform.position ) + molecule.interactionRadius;
                 if (d > maxD)
                 {
                     maxD = d;
@@ -71,9 +71,9 @@ namespace AICS.AgentSim
         float GetCollisionRadius ()
         {
             float d, maxD = 0;
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            foreach (Molecule molecule in molecules)
             {
-                d = Vector3.Distance( theTransform.position, moleculeSimulator.theTransform.position ) + moleculeSimulator.collisionRadius;
+                d = Vector3.Distance( theTransform.position, molecule.theTransform.position ) + molecule.collisionRadius;
                 if (d > maxD)
                 {
                     maxD = d;
@@ -84,18 +84,18 @@ namespace AICS.AgentSim
 
         float GetDiffusionCoefficient ()
         {
-            if (complex.Length == 1)
+            if (molecules.Length == 1)
             {
-                return complex[0].molecule.diffusionCoefficient;
+                return molecules[0].definition.diffusionCoefficient;
             }
-            if (complex.Length > 1)
+            if (molecules.Length > 1)
             {
                 float d = 0;
-                foreach (MoleculeSimulator moleculeSimulator in complex)
+                foreach (Molecule molecule in molecules)
                 {
-                    d += moleculeSimulator.molecule.diffusionCoefficient;
+                    d += molecule.definition.diffusionCoefficient;
                 }
-                return d / (0.8f * Mathf.Pow( complex.Length, 2f )); //hack for now
+                return d / (0.8f * Mathf.Pow( molecules.Length, 2f )); //hack for now
             }
             return 0;
         }
@@ -109,94 +109,94 @@ namespace AICS.AgentSim
             interactionRadius = GetInteractionRadius();
             couldReactOnCollision = GetCouldReactOnCollision();
 
-            particleSimulator = gameObject.AddComponent<ParticleSimulator>();
-            particleSimulator.Init( reactor, GetDiffusionCoefficient(), GetCollisionRadius() );
+            mover = gameObject.AddComponent<Mover>();
+            mover.Init( reactor, GetDiffusionCoefficient(), GetCollisionRadius() );
 
             reactor.RegisterComplex( this );
         }
 
         public virtual void SpawnMolecules (MoleculeInitData initData)
         {
-            complex = new MoleculeSimulator[initData.complexState.moleculeStates.Length];
-            for (int i = 0; i < initData.complexState.moleculeStates.Length; i++)
+            molecules = new Molecule[initData.complexSnapshot.moleculeSnapshots.Length];
+            for (int i = 0; i < initData.complexSnapshot.moleculeSnapshots.Length; i++)
             {
-                complex[i] = SpawnMolecule( i, initData );
+                molecules[i] = SpawnMolecule( i, initData );
             }
             ConnectBoundSites();
         }
 
-        protected virtual MoleculeSimulator SpawnMolecule (int i, MoleculeInitData initData)
+        protected virtual Molecule SpawnMolecule (int i, MoleculeInitData initData)
         {
-            GameObject visualizationPrefab = initData.complexState.moleculeStates[i].molecule.visualizationPrefab;
+            GameObject visualizationPrefab = initData.complexSnapshot.moleculeSnapshots[i].moleculeDef.visualizationPrefab;
             if (visualizationPrefab == null)
             {
-                Debug.LogWarning( initData.complexState.moleculeStates[i].molecule.species + "'s molecule prefab is null!" );
+                Debug.LogWarning( initData.complexSnapshot.moleculeSnapshots[i].moleculeDef.species + "'s molecule prefab is null!" );
                 visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
             }
 
             GameObject moleculeObject = Instantiate( visualizationPrefab );
 
-            moleculeObject.name = name + "_" + initData.complexState.moleculeStates[i].molecule.species;
+            moleculeObject.name = name + "_" + initData.complexSnapshot.moleculeSnapshots[i].moleculeDef.species;
             moleculeObject.transform.SetParent( theTransform );
             moleculeObject.transform.position = theTransform.TransformPoint( initData.moleculeTransforms[i].position );
             moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( initData.moleculeTransforms[i].rotation );
 
-            MoleculeSimulator moleculeSimulator = moleculeObject.AddComponent<MoleculeSimulator>();
-            moleculeSimulator.Init( initData.complexState.moleculeStates[i], this, initData.relevantBimolecularSimulators, initData.relevantCollisionFreeSimulators );
+            Molecule molecule = moleculeObject.AddComponent<Molecule>();
+            molecule.Init( initData.complexSnapshot.moleculeSnapshots[i], this, initData.relevantBimolecularSimulators, initData.relevantCollisionFreeSimulators );
 
-            return moleculeSimulator;
+            return molecule;
         }
 
         protected virtual void ConnectBoundSites ()
         {
-            Dictionary<string,BindingSiteSimulator> boundBindingSiteSimulators = new Dictionary<string, BindingSiteSimulator>();
+            Dictionary<string,BindingSite> boundBindingSites = new Dictionary<string, BindingSite>();
             string boundState;
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            foreach (Molecule molecule in molecules)
             {
-                foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
+                foreach (BindingSite bindingSite in molecule.bindingSites.Values)
                 {
-                    boundState = bindingSiteSimulator.state;
+                    boundState = bindingSite.state;
                     if (boundState.Contains( "!" ))
                     {
-                        if (!boundBindingSiteSimulators.ContainsKey( boundState ))
+                        if (!boundBindingSites.ContainsKey( boundState ))
                         {
-                            boundBindingSiteSimulators.Add( boundState, bindingSiteSimulator );
+                            boundBindingSites.Add( boundState, bindingSite );
                         }
                         else
                         {
-                            boundBindingSiteSimulators[boundState].boundSite = bindingSiteSimulator;
-                            bindingSiteSimulator.boundSite = boundBindingSiteSimulators[boundState];
+                            boundBindingSites[boundState].boundSite = bindingSite;
+                            bindingSite.boundSite = boundBindingSites[boundState];
                         }
                     }
                 }
             }
         }
 
-        public virtual void SetMolecules (MoleculeSimulator[] _complex, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+        public virtual void SetMolecules (Molecule[] _molecules, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
                                           CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
         {
-            complex = _complex;
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            molecules = _molecules;
+            foreach (Molecule molecule in molecules)
             {
-                moleculeSimulator.MoveToComplex( this, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                molecule.MoveToComplex( this, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
             }
         }
 
-        public virtual void InteractWith (ComplexSimulator other)
+        public virtual void InteractWith (Complex other)
         {
             if (IsNear( other ))
             {
-                complex.Shuffle();
-                foreach (MoleculeSimulator moleculeSimulator in complex)
+                molecules.Shuffle();
+                foreach (Molecule molecule in molecules)
                 {
-                    if (moleculeSimulator != null && moleculeSimulator.couldReactOnCollision)
+                    if (molecule != null && molecule.couldReactOnCollision)
                     {
-                        other.complex.Shuffle();
-                        foreach (MoleculeSimulator otherMoleculeSimulator in other.complex)
+                        other.molecules.Shuffle();
+                        foreach (Molecule otherMolecule in other.molecules)
                         {
-                            if (otherMoleculeSimulator != null && otherMoleculeSimulator.couldReactOnCollision)
+                            if (otherMolecule != null && otherMolecule.couldReactOnCollision)
                             {
-                                if (moleculeSimulator.InteractWith( otherMoleculeSimulator ))
+                                if (molecule.InteractWith( otherMolecule ))
                                 {
                                     return;
                                 }
@@ -207,49 +207,49 @@ namespace AICS.AgentSim
             }
         }
 
-        bool IsNear (ComplexSimulator other)
+        bool IsNear (Complex other)
         {
             return other != this 
                 && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
         }
 
-        public MoleculeSimulator[] GetComplexAtEndOfBond (BindingSiteSimulator bindingSiteSimulator)
+        public Molecule[] GetMoleculesAtEndOfBond (BindingSite bindingSite)
         {
             // TODO trace complex
-            return new MoleculeSimulator[]{bindingSiteSimulator.moleculeSimulator};
+            return new Molecule[]{bindingSite.molecule};
         }
 
         public virtual void UpdateReactions ()
         {
-            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( complex );
-            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( complex );
-            foreach (MoleculeSimulator moleculeSimulator in complex)
+            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( molecules );
+            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( molecules );
+            foreach (Molecule molecule in molecules)
             {
-                moleculeSimulator.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                molecule.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
             }
             UpdateCouldReactOnCollision();
         }
 
-        public void Remove (MoleculeSimulator moleculeSimulatorToRemove)
+        public void Remove (Molecule moleculeToRemove)
         {
-            if (complex.Length < 2)
+            if (molecules.Length < 2)
             {
                 reactor.UnregisterComplex( this );
-                particleSimulator.Destroy();
+                mover.Destroy();
             }
             else
             {
-                MoleculeSimulator[] newComplex = new MoleculeSimulator[complex.Length - 1];
+                Molecule[] newMolecules = new Molecule[molecules.Length - 1];
                 int j = 0;
-                for (int i = 0; i < complex.Length; i++)
+                for (int i = 0; i < molecules.Length; i++)
                 {
-                    if (complex[i] != moleculeSimulatorToRemove)
+                    if (molecules[i] != moleculeToRemove)
                     {
-                        newComplex[j] = complex[i];
+                        newMolecules[j] = molecules[i];
                         j++;
                     }
                 }
-                complex = newComplex;
+                molecules = newMolecules;
             }
         }
 

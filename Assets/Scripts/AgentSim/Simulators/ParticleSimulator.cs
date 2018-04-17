@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class ParticleSimulator : MonoBehaviour 
+    public class Mover : MonoBehaviour 
     {
         public Reactor reactor;
 
@@ -30,7 +30,7 @@ namespace AICS.AgentSim
             diffusionCoefficient = _diffusionCoefficient;
             collisionRadius = _collisionRadius;
 
-            reactor.RegisterParticle( this );
+            reactor.RegisterMover( this );
         }
 
         public virtual void Move (float dTime)
@@ -87,7 +87,7 @@ namespace AICS.AgentSim
             return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime ) );
         }
 
-        public bool IsCollidingWith (ParticleSimulator other, Vector3 newPosition)
+        public bool IsCollidingWith (Mover other, Vector3 newPosition)
         {
             return other != this 
                 && Vector3.Distance( newPosition, other.theTransform.position ) < collisionRadius + other.collisionRadius;

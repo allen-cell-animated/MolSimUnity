@@ -4,22 +4,22 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class StateChangeReaction : Reaction 
+    public class StateChangeReactionDef : ReactionDef 
     {
         protected override bool ReactantAndProductAmountsAreCorrect ()
         {
-            return reactantStates.Length == 1 && productStates.Length == 1;
+            return reactantSnapshots.Length == 1 && productSnapshots.Length == 1;
         }
 
-        public override void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
+        public override void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null)
         {
-            if (bindingSiteSimulator1 != null)
+            if (bindingSite1 != null)
             {
-                SetComplexToFinalState( bindingSiteSimulator1.complex, productStates[0] );
-                bindingSiteSimulator1.complexSimulator.UpdateReactions();
+                SetComplexToFinalState( bindingSite1.molecules, productSnapshots[0] );
+                bindingSite1.complex.UpdateReactions();
 
-                SetProductColor( bindingSiteSimulator1.complex );
-                World.ShowFlash( bindingSiteSimulator1.theTransform );
+                SetProductColor( bindingSite1.molecules );
+                World.ShowFlash( bindingSite1.theTransform );
             }
         }
     }

@@ -14,15 +14,15 @@ public class ContainerTests : AgentSimTests
 
         yield return new WaitForEndOfFrame();
 
-        ParticleSimulator[] particleSimulators = GameObject.FindObjectsOfType<ParticleSimulator>();
+        Mover[] movers = GameObject.FindObjectsOfType<Mover>();
 
         for (int i = 0; i < 500; i++)
         {
             yield return new WaitForEndOfFrame();
 
-            foreach (ParticleSimulator particleSimulator in particleSimulators)
+            foreach (Mover mover in movers)
             {
-                AssertIsTrue( reactor.container.IsInBounds( particleSimulator.theTransform.position ) );
+                AssertIsTrue( reactor.container.IsInBounds( mover.theTransform.position ) );
             }
         }
 

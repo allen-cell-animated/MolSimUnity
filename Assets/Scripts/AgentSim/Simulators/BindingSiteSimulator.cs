@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class BindingSiteSimulator : MonoBehaviour 
+    public class BindingSite : MonoBehaviour 
     {
-        public BindingSite bindingSite;
-        public MoleculeSimulator moleculeSimulator;
+        public BindingSiteDef definition;
+        public Molecule molecule;
         public string state;
-        public BindingSiteSimulator boundSite;
+        public BindingSite boundSite;
         public bool couldReactOnCollision;
 
         [SerializeField] protected BimolecularReactionSimulator[] bimolecularReactionSimulators;
@@ -32,31 +32,31 @@ namespace AICS.AgentSim
         {
             get
             {
-                return complexSimulator.reactor;
+                return complex.reactor;
             }
         }
 
-        public ComplexSimulator complexSimulator
+        public Complex complex
         {
             get
             {
-                return moleculeSimulator.complexSimulator;
+                return molecule.complex;
             }
         }
 
-        public MoleculeSimulator[] complex
+        public Molecule[] molecules
         {
             get
             {
-                return complexSimulator.complex;
+                return complex.molecules;
             }
         }
 
-        public Molecule molecule
+        public MoleculeDef moleculeDef
         {
             get
             {
-                return moleculeSimulator.molecule;
+                return molecule.definition;
             }
         }
 
@@ -64,7 +64,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return bindingSite.id;
+                return definition.id;
             }
         }
 
@@ -72,16 +72,17 @@ namespace AICS.AgentSim
         {
             get
             {
-                return bindingSite.radius;
+                return definition.radius;
             }
         }
 
-        public virtual void Init (string bindingSiteID, MoleculeState moleculeState, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                  CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, MoleculeSimulator _moleculeSimulator)
+        public virtual void Init (string bindingSiteID, MoleculeSnapshot moleculeSnapshot, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
+                                  CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators, Molecule _molecule)
         {
-            bindingSite = moleculeState.molecule.bindingSites[bindingSiteID];
-            moleculeSimulator = _moleculeSimulator;
-            state = moleculeState.bindingSiteStates.ContainsKey(bindingSiteID) ? moleculeState.bindingSiteStates[bindingSiteID] : molecule.bindingSites[bindingSiteID].states[0];
+            definition = moleculeSnapshot.moleculeDef.bindingSiteDefs[bindingSiteID];
+            molecule = _molecule;
+            state = moleculeSnapshot.bindingSiteStates.ContainsKey(bindingSiteID) ? moleculeSnapshot.bindingSiteStates[bindingSiteID] 
+                                                                                  : moleculeDef.bindingSiteDefs[bindingSiteID].states[0];
             SetBimolecularReactionSimulators( relevantBimolecularSimulators );
             RegisterWithCollisionFreeReactionSimulators( relevantCollisionFreeSimulators );
         }
@@ -121,7 +122,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual bool ReactWith (BindingSiteSimulator other)
+        public virtual bool ReactWith (BindingSite other)
         {
             if (IsNear( other ))
             {
@@ -137,7 +138,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        bool IsNear (BindingSiteSimulator other)
+        bool IsNear (BindingSite other)
         {
             return other != this 
                 && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
@@ -148,7 +149,7 @@ namespace AICS.AgentSim
             SetBimolecularReactionSimulators( relevantBimolecularSimulators );
             UnregisterWithCollisionFreeReactionSimulators();
             RegisterWithCollisionFreeReactionSimulators( relevantCollisionFreeSimulators );
-            name = moleculeSimulator.name + "_" + id;
+            name = molecule.name + "_" + id;
         }
 
         public override string ToString ()

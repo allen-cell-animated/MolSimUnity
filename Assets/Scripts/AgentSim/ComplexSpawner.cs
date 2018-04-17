@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class ComplexSpawner : MonoBehaviour 
+    public class Spawner : MonoBehaviour 
     {
         int id = -1;
         string nextID
@@ -24,39 +24,39 @@ namespace AICS.AgentSim
                 return;
             }
 
-            MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexState, CalculateMoleculeTransforms( complexConcentration.complexState ),
-                                                              reactor.GetRelevantBimolecularReactionSimulators( complexConcentration.complexState ),
-                                                              reactor.GetRelevantCollisionFreeReactionSimulators( complexConcentration.complexState ) );
-            ComplexSimulator complexSimulator;
+            MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexSnapshot, CalculateMoleculeTransforms( complexConcentration.complexSnapshot ),
+                                                              reactor.GetRelevantBimolecularReactionSimulators( complexConcentration.complexSnapshot ),
+                                                              reactor.GetRelevantCollisionFreeReactionSimulators( complexConcentration.complexSnapshot ) );
+            Complex complex;
             for (int i = 0; i < amount; i++)
             {
-                complexSimulator = new GameObject( nextID ).AddComponent<ComplexSimulator>();
-                complexSimulator.gameObject.transform.SetParent( transform );
-                complexSimulator.gameObject.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
-                complexSimulator.gameObject.transform.rotation = Random.rotation;
+                complex = new GameObject( nextID ).AddComponent<Complex>();
+                complex.gameObject.transform.SetParent( transform );
+                complex.gameObject.transform.position = reactor.container.GetRandomPointInBounds( 0.1f );
+                complex.gameObject.transform.rotation = Random.rotation;
 
-                complexSimulator.SpawnMolecules( initData );
-                complexSimulator.Init( reactor );
+                complex.SpawnMolecules( initData );
+                complex.Init( reactor );
             }
         }
 
-        public virtual void CreateComplex (Transform centerTransform, MoleculeSimulator[] complex, Reactor reactor)
+        public virtual void CreateComplex (Transform centerTransform, Molecule[] molecules, Reactor reactor)
         {
-            ComplexSimulator complexSimulator = new GameObject( nextID ).AddComponent<ComplexSimulator>();
-            complexSimulator.gameObject.transform.SetParent( transform );
-            complexSimulator.gameObject.transform.position = centerTransform.position;
-            complexSimulator.gameObject.transform.rotation = centerTransform.rotation;
+            Complex complex = new GameObject( nextID ).AddComponent<Complex>();
+            complex.gameObject.transform.SetParent( transform );
+            complex.gameObject.transform.position = centerTransform.position;
+            complex.gameObject.transform.rotation = centerTransform.rotation;
 
-            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( complex );
-            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( complex );
-            complexSimulator.SetMolecules( complex, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( molecules );
+            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( molecules );
+            complex.SetMolecules( molecules, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
 
-            complexSimulator.Init( reactor );
+            complex.Init( reactor );
         }
 
-        protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexState complexState)
+        protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexSnapshot complexSnapshot)
         {
-            RelativeTransform[] transforms = new RelativeTransform[complexState.moleculeStates.Length];
+            RelativeTransform[] transforms = new RelativeTransform[complexSnapshot.moleculeSnapshots.Length];
             transforms[0] = new RelativeTransform( Vector3.zero, Vector3.zero );
             Vector3 averagePosition = Vector3.zero;
 
@@ -66,28 +66,28 @@ namespace AICS.AgentSim
             site1.SetParent( molecule1 );
             Transform site2 = new GameObject( "site2" ).transform;
             site2.SetParent( molecule2 );
-            BindingSite bindingSite;
+            BindingSiteDef bindingSite;
 
-            for (int i = 0; i < complexState.moleculeStates.Length - 1; i++)
+            for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
             {
-                foreach (KeyValuePair<string,string> siteState1 in complexState.moleculeStates[i].bindingSiteStates)
+                foreach (KeyValuePair<string,string> siteState1 in complexSnapshot.moleculeSnapshots[i].bindingSiteStates)
                 {
                     if (siteState1.Value.Contains( "!" ))
                     {
-                        for (int j = i + 1; j < complexState.moleculeStates.Length; j++)
+                        for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
                         {
-                            foreach (KeyValuePair<string,string> siteState2 in complexState.moleculeStates[j].bindingSiteStates)
+                            foreach (KeyValuePair<string,string> siteState2 in complexSnapshot.moleculeSnapshots[j].bindingSiteStates)
                             {
                                 if (siteState1.Value == siteState2.Value)
                                 {
                                     molecule1.position = transforms[i].position;
                                     molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
-                                    bindingSite = complexState.moleculeStates[i].molecule.bindingSites[siteState1.Key];
+                                    bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.Key];
                                     bindingSite.transformOnMolecule.Apply( molecule1, site1 );
 
                                     molecule2.position = Vector3.zero;
                                     molecule2.rotation = Quaternion.identity;
-                                    bindingSite = complexState.moleculeStates[j].molecule.bindingSites[siteState2.Key];
+                                    bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.Key];
                                     bindingSite.transformOnMolecule.Apply( molecule2, site2 );
 
                                     molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
@@ -117,16 +117,16 @@ namespace AICS.AgentSim
 
     public class MoleculeInitData
     {
-        public ComplexState complexState;
+        public ComplexSnapshot complexSnapshot;
         public RelativeTransform[] moleculeTransforms;
         public BimolecularReactionSimulator[] relevantBimolecularSimulators;
         public CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators;
 
-        public MoleculeInitData (ComplexState _complexState, RelativeTransform[] _moleculeTransforms,
+        public MoleculeInitData (ComplexSnapshot _complexSnapshot, RelativeTransform[] _moleculeTransforms,
                                  BimolecularReactionSimulator[] _relevantBimolecularSimulators, 
                                  CollisionFreeReactionSimulator[] _relevantCollisionFreeSimulators)
         {
-            complexState = _complexState;
+            complexSnapshot = _complexSnapshot;
             moleculeTransforms = _moleculeTransforms;
             relevantBimolecularSimulators = _relevantBimolecularSimulators;
             relevantCollisionFreeSimulators = _relevantCollisionFreeSimulators;

@@ -4,49 +4,49 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class ReleaseReaction : Reaction 
+    public class ReleaseReactionDef : ReactionDef 
     {
         protected override bool ReactantAndProductAmountsAreCorrect ()
         {
-            return reactantStates.Length == 1 && productStates.Length == 2;
+            return reactantSnapshots.Length == 1 && productSnapshots.Length == 2;
         }
 
-        public override void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
+        public override void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null)
         {
-            if (bindingSiteSimulator1 != null)
+            if (bindingSite1 != null)
             {
-                bindingSiteSimulator2 = bindingSiteSimulator1.boundSite;
+                bindingSite2 = bindingSite1.boundSite;
 
-                bindingSiteSimulator1.boundSite = null;
-                bindingSiteSimulator2.boundSite = null;
+                bindingSite1.boundSite = null;
+                bindingSite2.boundSite = null;
 
-                BindingSiteSimulator bindingSiteSimulator;
-                MoleculeSimulator[] complex;
-                foreach (ComplexState productState in productStates)
+                BindingSite bindingSite;
+                Molecule[] molecules;
+                foreach (ComplexSnapshot productSnapshot in productSnapshots)
                 {
-                    bindingSiteSimulator = GetBindingSiteForProductState( productState, bindingSiteSimulator1, bindingSiteSimulator2 );
-                    complex = bindingSiteSimulator.complexSimulator.GetComplexAtEndOfBond( bindingSiteSimulator );
-                    SetComplexToFinalState( complex, productState );
-                    bindingSiteSimulator.reactor.spawner.CreateComplex( bindingSiteSimulator.moleculeSimulator.theTransform, complex, bindingSiteSimulator.reactor );
+                    bindingSite = GetBindingSiteForProductState( productSnapshot, bindingSite1, bindingSite2 );
+                    molecules = bindingSite.complex.GetMoleculesAtEndOfBond( bindingSite );
+                    SetComplexToFinalState( molecules, productSnapshot );
+                    bindingSite.reactor.spawner.CreateComplex( bindingSite.molecule.theTransform, molecules, bindingSite.reactor );
 
-                    SetProductColor( complex );
+                    SetProductColor( molecules );
                 }
 
-                World.ShowFlash( bindingSiteSimulator1.theTransform );
+                World.ShowFlash( bindingSite1.theTransform );
             }
         }
 
-        BindingSiteSimulator GetBindingSiteForProductState (ComplexState productState, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2)
+        BindingSite GetBindingSiteForProductState (ComplexSnapshot productSnapshot, BindingSite bindingSite1, BindingSite bindingSite2)
         {
-            foreach (MoleculeState moleculeState in productState.moleculeStates)
+            foreach (MoleculeSnapshot moleculeSnapshot in productSnapshot.moleculeSnapshots)
             {
-                if (moleculeState.molecule.species == bindingSiteSimulator1.molecule.species && moleculeState.ContainsBindingSite( bindingSiteSimulator1.id ) )
+                if (moleculeSnapshot.moleculeDef.species == bindingSite1.moleculeDef.species && moleculeSnapshot.ContainsBindingSite( bindingSite1.id ) )
                 {
-                    return bindingSiteSimulator1;
+                    return bindingSite1;
                 }
-                if (moleculeState.molecule.species == bindingSiteSimulator2.molecule.species && moleculeState.ContainsBindingSite( bindingSiteSimulator2.id ) )
+                if (moleculeSnapshot.moleculeDef.species == bindingSite2.moleculeDef.species && moleculeSnapshot.ContainsBindingSite( bindingSite2.id ) )
                 {
-                    return bindingSiteSimulator2;
+                    return bindingSite2;
                 }
             }
             return null;

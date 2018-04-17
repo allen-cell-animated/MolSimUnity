@@ -4,27 +4,27 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Model : ScriptableObject
+    public class ModelDef : ScriptableObject
     {
         [Tooltip( "Meters" )] 
         public float scale = 1e-6f;
         [Tooltip( "Liters" )] 
         public float containerVolume;
         public ComplexConcentration[] complexes;
-        public Reaction[] reactions;
+        public ReactionDef[] reactionDefs;
 
         public void Init ()
         {
             #region for prototyping in inspector without writing custom property drawer etc
             foreach (ComplexConcentration complex in complexes)
             {
-                complex.complexState.Init();
+                complex.complexSnapshot.Init();
             }
             #endregion
 
-            foreach (Reaction reaction in reactions)
+            foreach (ReactionDef reactionDef in reactionDefs)
             {
-                reaction.Init();
+                reactionDef.Init();
             }
         }
     }
@@ -34,20 +34,20 @@ namespace AICS.AgentSim
     {
         [Tooltip( "Molar" )] 
         public float concentration;
-        public ComplexState complexState;
+        public ComplexSnapshot complexSnapshot;
 
         public int moleculeCount
         {
             get
             {
-                return complexState.moleculeStates.Length;
+                return complexSnapshot.moleculeSnapshots.Length;
             }
         }
 
-        public ComplexConcentration (ComplexState _complexState, float _concentration)
+        public ComplexConcentration (ComplexSnapshot _complexSnapshot, float _concentration)
         {
-            complexState = _complexState;
-            complexState.Init();
+            complexSnapshot = _complexSnapshot;
+            complexSnapshot.Init();
             concentration = _concentration;
         }
     }

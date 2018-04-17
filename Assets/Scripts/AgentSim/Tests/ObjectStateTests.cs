@@ -79,99 +79,99 @@ public class ObjectStateTests : AgentSimTests
 
     public static bool StateOfReactorIsCorrect (Reactor reactor)
     {
-        //particle simulators
-        foreach (ParticleSimulator particleSimulator in reactor.particleSimulators)
+        //particles
+        foreach (Mover mover in reactor.movers)
         {
-            if (particleSimulator == null)
+            if (mover == null)
             {
-                if (debug) { Debug.Log( "The Reactor has a null ParticleSimulator" ); }
+                if (debug) { Debug.Log( "The Reactor has a null Mover" ); }
                 return false;
             }
-            if (particleSimulator.reactor != reactor)
+            if (mover.reactor != reactor)
             {
-                if (debug) { Debug.Log( particleSimulator + " doesn't reference the Reactor" ); }
+                if (debug) { Debug.Log( mover + " doesn't reference the Reactor" ); }
                 return false;
             }
             int count = 0;
-            foreach (ParticleSimulator otherParticleSimulator in reactor.particleSimulators)
+            foreach (Mover otherMover in reactor.movers)
             {
-                if (particleSimulator == otherParticleSimulator)
+                if (mover == otherMover)
                 {
                     count++;
                 }
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( particleSimulator + " is registered to the Reactor " + count + " times" ); }
+                if (debug) { Debug.Log( mover + " is registered to the Reactor " + count + " times" ); }
                 return false;
             }
         }
-        foreach (ParticleSimulator particleSimulator in reactor.GetComponentsInChildren<ParticleSimulator>())
+        foreach (Mover mover in reactor.GetComponentsInChildren<Mover>())
         {
-            if (!reactor.particleSimulators.Contains( particleSimulator ))
+            if (!reactor.movers.Contains( mover ))
             {
-                if (debug) { Debug.Log( particleSimulator + " isn't registered to the Reactor" ); }
+                if (debug) { Debug.Log( mover + " isn't registered to the Reactor" ); }
                 return false;
             }
-            ComplexSimulator complexSimulator = particleSimulator.GetComponent<ComplexSimulator>();
-            if (complexSimulator == null)
+            Complex complex = mover.GetComponent<Complex>();
+            if (complex == null)
             {
-                if (debug) { Debug.Log( particleSimulator + " doesn't have a ComplexSimulator" ); }
+                if (debug) { Debug.Log( mover + " doesn't have a Complex" ); }
                 return false;
             }
         }
 
-        //complex simulators
-        foreach (ComplexSimulator complexSimulator in reactor.complexSimulators)
+        //complexes
+        foreach (Complex complex in reactor.complexes)
         {
-            if (complexSimulator == null)
+            if (complex == null)
             {
-                if (debug) { Debug.Log( "The Reactor has a null ComplexSimulator" ); }
+                if (debug) { Debug.Log( "The Reactor has a null Complex" ); }
                 return false;
             }
-            if (complexSimulator.reactor != reactor)
+            if (complex.reactor != reactor)
             {
-                if (debug) { Debug.Log( complexSimulator + " doesn't reference the Reactor" ); }
+                if (debug) { Debug.Log( complex + " doesn't reference the Reactor" ); }
                 return false;
             }
-            if (!ComplexSimulatorReallyIsBimolecularReactant( complexSimulator ))
+            if (!ComplexReallyIsBimolecularReactant( complex ))
             {
-                if (debug) { Debug.Log( complexSimulator + " isn't a bimolecular reactant but is registered as such in the Reactor" ); }
+                if (debug) { Debug.Log( complex + " isn't a bimolecular reactant but is registered as such in the Reactor" ); }
                 return false;
             }
             int count = 0;
-            foreach (ComplexSimulator otherComplexSimulator in reactor.complexSimulators)
+            foreach (Complex otherComplex in reactor.complexes)
             {
-                if (complexSimulator == otherComplexSimulator)
+                if (complex == otherComplex)
                 {
                     count++;
                 }
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( complexSimulator + " is registered to the Reactor " + count + " times" ); }
+                if (debug) { Debug.Log( complex + " is registered to the Reactor " + count + " times" ); }
                 return false;
             }
         }
-        foreach (ComplexSimulator complexSimulator in reactor.GetComponentsInChildren<ComplexSimulator>())
+        foreach (Complex complex in reactor.GetComponentsInChildren<Complex>())
         {
-            if (ComplexSimulatorReallyIsBimolecularReactant( complexSimulator ) && !reactor.complexSimulators.Contains( complexSimulator ))
+            if (ComplexReallyIsBimolecularReactant( complex ) && !reactor.complexes.Contains( complex ))
             {
-                if (debug) { Debug.Log( complexSimulator + " isn't registered to the Reactor" ); }
+                if (debug) { Debug.Log( complex + " isn't registered to the Reactor" ); }
                 return false;
             }
-            AssertIsTrue( StateOfComplexSimulatorIsCorrect( complexSimulator ) );
+            AssertIsTrue( StateOfComplexSimulatorIsCorrect( complex ) );
         }
 
         if (debug) { Debug.Log( "Reactor passed check" ); }
         return true;
     }
 
-    static bool ComplexSimulatorReallyIsBimolecularReactant (ComplexSimulator complexSimulator)
+    static bool ComplexReallyIsBimolecularReactant (Complex complex)
     {
-        foreach (BimolecularReactionSimulator reactionSimulator in complexSimulator.reactor.bimolecularReactionSimulators)
+        foreach (BimolecularReactionSimulator reactionSimulator in complex.reactor.bimolecularReactionSimulators)
         {
-            if (reactionSimulator.IsReactant( complexSimulator.complex ))
+            if (reactionSimulator.IsReactant( complex.molecules ))
             {
                 return true;
             }
@@ -179,132 +179,132 @@ public class ObjectStateTests : AgentSimTests
         return false;
     }
 
-    static bool StateOfComplexSimulatorIsCorrect (ComplexSimulator complexSimulator)
+    static bool StateOfComplexSimulatorIsCorrect (Complex complex)
     {
         bool bimolecularReactant = false;
-        foreach (MoleculeSimulator moleculeSimulator in complexSimulator.complex)
+        foreach (Molecule molecule in complex.molecules)
         {
-            if (moleculeSimulator == null)
+            if (molecule == null)
             {
-                if (debug) { Debug.Log( complexSimulator + " has a null MoleculeSimulator" ); }
+                if (debug) { Debug.Log( complex + " has a null Molecule" ); }
                 return false;
             }
-            if (moleculeSimulator.complexSimulator != complexSimulator)
+            if (molecule.complex != complex)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " doesn't reference " + complexSimulator ); }
+                if (debug) { Debug.Log( molecule + " doesn't reference " + complex ); }
                 return false;
             }
             int count = 0;
-            foreach (MoleculeSimulator otherMoleculeSimulator in complexSimulator.complex)
+            foreach (Molecule otherMolecule in complex.molecules)
             {
-                if (moleculeSimulator == otherMoleculeSimulator)
+                if (molecule == otherMolecule)
                 {
                     count++;
                 }
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " is registered to " + complexSimulator + " " + count + " times" ); }
+                if (debug) { Debug.Log( molecule + " is registered to " + complex + " " + count + " times" ); }
                 return false;
             }
-            if (moleculeSimulator.couldReactOnCollision)
+            if (molecule.couldReactOnCollision)
             {
                 bimolecularReactant = true;
-                if (!complexSimulator.couldReactOnCollision)
+                if (!complex.couldReactOnCollision)
                 {
-                    if (debug) { Debug.Log( moleculeSimulator + " is bimolecular reactant but " + complexSimulator + " isn't" ); }
+                    if (debug) { Debug.Log( molecule + " is bimolecular reactant but " + complex + " isn't" ); }
                     return false;
                 }
             }
-            AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( moleculeSimulator ) );
+            AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( molecule ) );
         }
-        if (complexSimulator.couldReactOnCollision && !bimolecularReactant)
+        if (complex.couldReactOnCollision && !bimolecularReactant)
         {
-            if (debug) { Debug.Log( complexSimulator + " has no bimolecular reactant molecule but is marked as a bimolecular reactant" ); }
+            if (debug) { Debug.Log( complex + " has no bimolecular reactant molecule but is marked as a bimolecular reactant" ); }
             return false;
         }
-        foreach (MoleculeSimulator moleculeSimulator in complexSimulator.GetComponentsInChildren<MoleculeSimulator>())
+        foreach (Molecule molecule in complex.GetComponentsInChildren<Molecule>())
         {
-            if (moleculeSimulator.complexSimulator != complexSimulator)
+            if (molecule.complex != complex)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " isn't registered to " + complexSimulator ); }
+                if (debug) { Debug.Log( molecule + " isn't registered to " + complex ); }
                 return false;
             }
         }
 
         //parenting
-        if (complexSimulator.complex.Length > 0)
+        if (complex.molecules.Length > 0)
         {
-            foreach (MoleculeSimulator moleculeSimulator in complexSimulator.complex)
+            foreach (Molecule molecule in complex.molecules)
             {
-                if (moleculeSimulator.theTransform.parent != complexSimulator.theTransform)
+                if (molecule.theTransform.parent != complex.theTransform)
                 {
-                    if (debug) { Debug.Log( moleculeSimulator + " is not parented to " + complexSimulator ); }
+                    if (debug) { Debug.Log( molecule + " is not parented to " + complex ); }
                     return false;
                 }
             }
         }
         else 
         {
-            if (debug) { Debug.Log( complexSimulator + " has no MoleculeSimulators and therefore shouldn't exist" ); }
+            if (debug) { Debug.Log( complex + " has no Molecules and therefore shouldn't exist" ); }
             return false;
         }
         return true;
     }
 
-    static bool StateOfMoleculeSimulatorIsCorrect (MoleculeSimulator moleculeSimulator)
+    static bool StateOfMoleculeSimulatorIsCorrect (Molecule molecule)
     {
         bool bimolecularReactant = false;
-        foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
+        foreach (BindingSite bindingSite in molecule.bindingSites.Values)
         {
-            if (bindingSiteSimulator == null)
+            if (bindingSite == null)
             {
-                if (debug) { Debug.Log( moleculeSimulator + " has a null BindingSiteSimulator" ); }
+                if (debug) { Debug.Log( molecule + " has a null BindingSite" ); }
                 return false;
             }
-            if (bindingSiteSimulator.moleculeSimulator != moleculeSimulator)
+            if (bindingSite.molecule != molecule)
             {
-                if (debug) { Debug.Log( bindingSiteSimulator + " doesn't reference " + moleculeSimulator ); }
+                if (debug) { Debug.Log( bindingSite + " doesn't reference " + molecule ); }
                 return false;
             }
-            if (bindingSiteSimulator.theTransform.parent != moleculeSimulator.theTransform)
+            if (bindingSite.theTransform.parent != molecule.theTransform)
             {
-                if (debug) { Debug.Log( bindingSiteSimulator + " is not parented to " + moleculeSimulator ); }
+                if (debug) { Debug.Log( bindingSite + " is not parented to " + molecule ); }
                 return false;
             }
             int count = 0;
-            foreach (BindingSiteSimulator otherBindingSiteSimulator in moleculeSimulator.bindingSiteSimulators.Values)
+            foreach (BindingSite otherBindingSite in molecule.bindingSites.Values)
             {
-                if (bindingSiteSimulator == otherBindingSiteSimulator)
+                if (bindingSite == otherBindingSite)
                 {
                     count++;
                 }
             }
             if (count > 1)
             {
-                if (debug) { Debug.Log( bindingSiteSimulator + " is registered to " + moleculeSimulator + " " + count + " times" ); }
+                if (debug) { Debug.Log( bindingSite + " is registered to " + molecule + " " + count + " times" ); }
                 return false;
             }
-            if (bindingSiteSimulator.couldReactOnCollision)
+            if (bindingSite.couldReactOnCollision)
             {
                 bimolecularReactant = true;
-                if (!moleculeSimulator.couldReactOnCollision)
+                if (!molecule.couldReactOnCollision)
                 {
-                    if (debug) { Debug.Log( bindingSiteSimulator + " is bimolecular reactant but " + moleculeSimulator + " isn't" ); }
+                    if (debug) { Debug.Log( bindingSite + " is bimolecular reactant but " + molecule + " isn't" ); }
                     return false;
                 }
             }
         }
-        if (moleculeSimulator.couldReactOnCollision && !bimolecularReactant)
+        if (molecule.couldReactOnCollision && !bimolecularReactant)
         {
-            if (debug) { Debug.Log( moleculeSimulator + " has no bimolecular reactant binding site but is marked as a bimolecular reactant" ); }
+            if (debug) { Debug.Log( molecule + " has no bimolecular reactant binding site but is marked as a bimolecular reactant" ); }
             return false;
         }
-        foreach (BindingSiteSimulator bindingSiteSimulator in moleculeSimulator.GetComponentsInChildren<BindingSiteSimulator>())
+        foreach (BindingSite bindingSite in molecule.GetComponentsInChildren<BindingSite>())
         {
-            if (!moleculeSimulator.bindingSiteSimulators.ContainsValue( bindingSiteSimulator ))
+            if (!molecule.bindingSites.ContainsValue( bindingSite ))
             {
-                if (debug) { Debug.Log( bindingSiteSimulator + " isn't registered to " + moleculeSimulator ); }
+                if (debug) { Debug.Log( bindingSite + " isn't registered to " + molecule ); }
                 return false;
             }
         }

@@ -4,31 +4,31 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class BindReaction : Reaction 
+    public class BindReactionDef : ReactionDef 
     {
         protected override bool ReactantAndProductAmountsAreCorrect ()
         {
-            return reactantStates.Length == 2 && productStates.Length == 1;
+            return reactantSnapshots.Length == 2 && productSnapshots.Length == 1;
         }
 
-        public override void React (Reactor reactor, BindingSiteSimulator bindingSiteSimulator1, BindingSiteSimulator bindingSiteSimulator2 = null)
+        public override void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null)
         {
-            if (bindingSiteSimulator1 != null && bindingSiteSimulator2 != null)
+            if (bindingSite1 != null && bindingSite2 != null)
             {
-                bindingSiteSimulator1.boundSite = bindingSiteSimulator2;
-                bindingSiteSimulator2.boundSite = bindingSiteSimulator1;
+                bindingSite1.boundSite = bindingSite2;
+                bindingSite2.boundSite = bindingSite1;
 
-                RelativelyPosition( bindingSiteSimulator1.theTransform, bindingSiteSimulator2.theTransform );
+                RelativelyPosition( bindingSite1.theTransform, bindingSite2.theTransform );
 
-                MoleculeSimulator[] complex = new MoleculeSimulator[bindingSiteSimulator1.complex.Length + bindingSiteSimulator2.complex.Length];
-                bindingSiteSimulator1.complex.CopyTo( complex, 0 );
-                bindingSiteSimulator2.complex.CopyTo( complex, bindingSiteSimulator1.complex.Length );
+                Molecule[] molecules = new Molecule[bindingSite1.molecules.Length + bindingSite2.molecules.Length];
+                bindingSite1.molecules.CopyTo( molecules, 0 );
+                bindingSite2.molecules.CopyTo( molecules, bindingSite1.molecules.Length );
 
-                SetComplexToFinalState( complex, productStates[0] );
-                reactor.spawner.CreateComplex( bindingSiteSimulator1.theTransform, complex, reactor );
+                SetComplexToFinalState( molecules, productSnapshots[0] );
+                reactor.spawner.CreateComplex( bindingSite1.theTransform, molecules, reactor );
 
-                SetProductColor( complex );
-                World.ShowFlash( bindingSiteSimulator1.theTransform );
+                SetProductColor( molecules );
+                World.ShowFlash( bindingSite1.theTransform );
             }
         }
 

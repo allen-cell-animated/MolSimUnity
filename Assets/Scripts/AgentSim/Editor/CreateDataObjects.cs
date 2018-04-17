@@ -8,7 +8,7 @@ namespace AICS.AgentSim
         [MenuItem("AICS/Create/Model")]
         public static void CreateModel ()
         {
-            Model asset = ScriptableObject.CreateInstance<Model>();
+            ModelDef asset = ScriptableObject.CreateInstance<ModelDef>();
 
             AssetDatabase.CreateAsset(asset, "Assets/Data/Models/newModel.asset");
             AssetDatabase.SaveAssets();
@@ -20,7 +20,7 @@ namespace AICS.AgentSim
         [MenuItem("AICS/Create/Molecule")]
         public static void CreateMolecule ()
         {
-            Molecule asset = ScriptableObject.CreateInstance<Molecule>();
+            MoleculeDef asset = ScriptableObject.CreateInstance<MoleculeDef>();
 
             AssetDatabase.CreateAsset(asset, "Assets/Data/Molecules/newMolecule.asset");
             AssetDatabase.SaveAssets();
@@ -32,7 +32,7 @@ namespace AICS.AgentSim
         [MenuItem("AICS/Create/Reaction/StateChange")]
         public static void CreateStateChangeReaction ()
         {
-            StateChangeReaction asset = ScriptableObject.CreateInstance<StateChangeReaction>();
+            StateChangeReactionDef asset = ScriptableObject.CreateInstance<StateChangeReactionDef>();
 
             AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newStateChangeReaction.asset");
             AssetDatabase.SaveAssets();
@@ -44,7 +44,7 @@ namespace AICS.AgentSim
         [MenuItem("AICS/Create/Reaction/Bind")]
         public static void CreateBindReaction ()
         {
-            BindReaction asset = ScriptableObject.CreateInstance<BindReaction>();
+            BindReactionDef asset = ScriptableObject.CreateInstance<BindReactionDef>();
 
             AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newBindReaction.asset");
             AssetDatabase.SaveAssets();
@@ -56,7 +56,7 @@ namespace AICS.AgentSim
         [MenuItem("AICS/Create/Reaction/Release")]
         public static void CreateReleaseReaction ()
         {
-            ReleaseReaction asset = ScriptableObject.CreateInstance<ReleaseReaction>();
+            ReleaseReactionDef asset = ScriptableObject.CreateInstance<ReleaseReactionDef>();
 
             AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newReleaseReaction.asset");
             AssetDatabase.SaveAssets();
