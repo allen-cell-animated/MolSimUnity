@@ -27,6 +27,7 @@ namespace AICS.AgentSim
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexSnapshot, CalculateMoleculeTransforms( complexConcentration.complexSnapshot ),
                                                               reactor.GetRelevantBimolecularReactions( complexConcentration.complexSnapshot ),
                                                               reactor.GetRelevantCollisionFreeReactions( complexConcentration.complexSnapshot ) );
+            
             Complex complex;
             for (int i = 0; i < amount; i++)
             {

@@ -1,0 +1,23 @@
+begin molecule types
+
+    A(b)
+    B(a)
+
+end molecule types
+
+
+
+begin species
+
+    A(b) 6.5e-16 #Molar
+    B(a) 6.5e-16 #Molar
+
+end species
+
+
+
+begin reaction rules
+
+    A(b) + B(a) <-> A(b!1).B(a!1)
+
+end reaction rules

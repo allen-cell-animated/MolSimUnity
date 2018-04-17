@@ -9,25 +9,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
-  m_Name: ReversibleBindReaction
+  m_Name: ReversibleBind
   m_EditorClassIdentifier: 
   scale: 0.000001
   containerVolume: 0.000000125
   complexes:
   - concentration: 6.5e-16
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
         siteStates:
         - id: b
           state: 0
   - concentration: 6.5e-16
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
         siteStates:
         - id: a
           state: 0
-  reactions:
+  reactionDefs:
   - {fileID: 11400000, guid: d9d327902b9ed400cb2b16957dd7fd6a, type: 2}
   - {fileID: 11400000, guid: 167ce20b6dc7244d9a136fce71f8b18b, type: 2}

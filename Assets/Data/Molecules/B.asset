@@ -15,8 +15,8 @@ MonoBehaviour:
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
-  sites:
-  - id: a
+  siteDefs:
+  - id: b
     states:
     - 0
     - '!+'

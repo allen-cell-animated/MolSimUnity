@@ -230,14 +230,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 0}
-  model: {fileID: 11400000, guid: cdeb8b2a8c0a045dcac77f5ab3eb068b, type: 2}
-  bimolecularReactionSimulators: []
-  collisionFreeReactionSimulators: []
   spawner: {fileID: 0}
+  modelDef: {fileID: 11400000, guid: cdeb8b2a8c0a045dcac77f5ab3eb068b, type: 2}
+  bimolecularReactions: []
+  collisionFreeReactions: []
   maxMoveAttempts: 20
   periodicBoundary: 1
-  particleSimulators: []
-  complexSimulators: []
+  movers: []
+  complexes: []
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0
