@@ -10,7 +10,7 @@ public class TestHashCodes
     [Test]
     public void MoleculeStatesSameSpeciesSameSites ()
     {
-        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         Dictionary<string,string> sites = new Dictionary<string, string>();
         sites.Add( "a", "0" );
@@ -28,7 +28,7 @@ public class TestHashCodes
     [Test]
     public void MoleculeStatesSameSpeciesDifferentSites ()
     {
-        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
@@ -52,7 +52,7 @@ public class TestHashCodes
     [Test]
     public void MoleculeStatesSameSpeciesDifferentNumberOfSites ()
     {
-        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
@@ -75,7 +75,7 @@ public class TestHashCodes
     [Test]
     public void MoleculeStatesDifferentSpeciesSameSites ()
     {
-        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
@@ -101,7 +101,7 @@ public class TestHashCodes
     [Test]
     public void MoleculeStatesSameSpeciesSitesInDifferentOrder ()
     {
-        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
@@ -125,14 +125,14 @@ public class TestHashCodes
     [Test]
     public void ComplexStateSameSpeciesSameSites ()
     {
-        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
         sites1.Add( "b", "0" );
         sites1.Add( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
-        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B" ) as MoleculeDef;
+        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         Dictionary<string,string> sites2 = new Dictionary<string, string>();
         sites2.Add( "a", "0" );
         sites2.Add( "b", "0" );
@@ -151,14 +151,14 @@ public class TestHashCodes
     [Test]
     public void ComplexStateDifferentSpeciesSameSites ()
     {
-        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
         sites1.Add( "b", "0" );
         sites1.Add( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
-        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B" ) as MoleculeDef;
+        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         Dictionary<string,string> sites2 = new Dictionary<string, string>();
         sites2.Add( "a", "0" );
         sites2.Add( "b", "0" );
@@ -184,14 +184,14 @@ public class TestHashCodes
     [Test]
     public void ComplexStateSameSpeciesDifferentSites ()
     {
-        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
         sites1.Add( "b", "0" );
         sites1.Add( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
-        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B" ) as MoleculeDef;
+        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         Dictionary<string,string> sites2 = new Dictionary<string, string>();
         sites2.Add( "a", "0" );
         sites2.Add( "b", "0" );
@@ -216,14 +216,14 @@ public class TestHashCodes
     [Test]
     public void ComplexStateSpeciesInDifferentOrder ()
     {
-        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A" ) as MoleculeDef;
+        MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
         sites1.Add( "a", "0" );
         sites1.Add( "b", "0" );
         sites1.Add( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
-        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B" ) as MoleculeDef;
+        MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         Dictionary<string,string> sites2 = new Dictionary<string, string>();
         sites2.Add( "a", "0" );
         sites2.Add( "b", "0" );
@@ -241,6 +241,10 @@ public class TestHashCodes
 
     bool HashCodesMatchEquals (System.Object obj1, System.Object obj2)
     {
-        return (obj1.Equals( obj2 )) == (obj1.GetHashCode() != obj2.GetHashCode());
+        if (obj1.Equals( obj2 ))
+        {
+            return obj1.GetHashCode() == obj2.GetHashCode();
+        }
+        return obj1.GetHashCode() != obj2.GetHashCode();
     }
 }
