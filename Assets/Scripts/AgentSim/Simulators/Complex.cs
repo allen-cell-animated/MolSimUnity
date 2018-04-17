@@ -142,7 +142,7 @@ namespace AICS.AgentSim
             moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( initData.moleculeTransforms[i].rotation );
 
             Molecule molecule = moleculeObject.AddComponent<Molecule>();
-            molecule.Init( initData.complexSnapshot.moleculeSnapshots[i], this, initData.relevantBimolecularSimulators, initData.relevantCollisionFreeSimulators );
+            molecule.Init( initData.complexSnapshot.moleculeSnapshots[i], this, initData.relevantBimolecularReactions, initData.relevantCollisionFreeReactions );
 
             return molecule;
         }
@@ -172,13 +172,13 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void SetMolecules (Molecule[] _molecules, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                          CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+        public virtual void SetMolecules (Molecule[] _molecules, BimolecularReaction[] relevantBimolecularReactions, 
+                                          CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             molecules = _molecules;
             foreach (Molecule molecule in molecules)
             {
-                molecule.MoveToComplex( this, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                molecule.MoveToComplex( this, relevantBimolecularReactions, relevantCollisionFreeReactions );
             }
         }
 
@@ -221,11 +221,11 @@ namespace AICS.AgentSim
 
         public virtual void UpdateReactions ()
         {
-            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( molecules );
-            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( molecules );
+            BimolecularReaction[] relevantBimolecularReactions = reactor.GetRelevantBimolecularReactions( molecules );
+            CollisionFreeReaction[] relevantCollisionFreeReactions = reactor.GetRelevantCollisionFreeReactions( molecules );
             foreach (Molecule molecule in molecules)
             {
-                molecule.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                molecule.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
             }
             UpdateCouldReactOnCollision();
         }
@@ -265,7 +265,7 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "ComplexSimulator " + name;
+            return "Complex " + name;
         }
     }
 }

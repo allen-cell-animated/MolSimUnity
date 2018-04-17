@@ -9,8 +9,8 @@ namespace AICS.AgentSim
         [HideInInspector] public Container container;
         [HideInInspector] public Spawner spawner;
         public ModelDef modelDef;
-        public List<BimolecularReactionSimulator> bimolecularReactionSimulators = new List<BimolecularReactionSimulator>();
-        public List<CollisionFreeReactionSimulator> collisionFreeReactionSimulators = new List<CollisionFreeReactionSimulator>();
+        public List<BimolecularReaction> bimolecularReactions = new List<BimolecularReaction>();
+        public List<CollisionFreeReaction> collisionFreeReactions = new List<CollisionFreeReaction>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -44,11 +44,11 @@ namespace AICS.AgentSim
             {
                 if (reactionDef.isBimolecular)
                 {
-                    bimolecularReactionSimulators.Add( new BimolecularReactionSimulator( reactionDef, this ) );
+                    bimolecularReactions.Add( new BimolecularReaction( reactionDef, this ) );
                 }
                 else
                 {
-                    collisionFreeReactionSimulators.Add( new CollisionFreeReactionSimulator( reactionDef, this ) );
+                    collisionFreeReactions.Add( new CollisionFreeReaction( reactionDef, this ) );
                 }
             }
         }
@@ -68,56 +68,56 @@ namespace AICS.AgentSim
             }
         }
 
-        public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (ComplexSnapshot complexSnapshot)
+        public BimolecularReaction[] GetRelevantBimolecularReactions (ComplexSnapshot complexSnapshot)
         {
-            List<BimolecularReactionSimulator> reactionSimulatorsList = new List<BimolecularReactionSimulator>();
-            foreach (BimolecularReactionSimulator reactionSimulator in bimolecularReactionSimulators)
+            List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
+            foreach (BimolecularReaction reaction in bimolecularReactions)
             {
-                if (reactionSimulator.IsReactant( complexSnapshot ))
+                if (reaction.ComplexIsReactant( complexSnapshot ))
                 {
-                    reactionSimulatorsList.Add( reactionSimulator );
+                    reactionsList.Add( reaction );
                 }
             }
-            return reactionSimulatorsList.ToArray();
+            return reactionsList.ToArray();
         }
 
-        public BimolecularReactionSimulator[] GetRelevantBimolecularReactionSimulators (Molecule[] molecules)
+        public BimolecularReaction[] GetRelevantBimolecularReactions (Molecule[] molecules)
         {
-            List<BimolecularReactionSimulator> reactionSimulatorsList = new List<BimolecularReactionSimulator>();
-            foreach (BimolecularReactionSimulator reactionSimulator in bimolecularReactionSimulators)
+            List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
+            foreach (BimolecularReaction reaction in bimolecularReactions)
             {
-                if (reactionSimulator.IsReactant( molecules ))
+                if (reaction.ComplexIsReactant( molecules ))
                 {
-                    reactionSimulatorsList.Add( reactionSimulator );
+                    reactionsList.Add( reaction );
                 }
             }
-            return reactionSimulatorsList.ToArray();
+            return reactionsList.ToArray();
         }
 
-        public CollisionFreeReactionSimulator[] GetRelevantCollisionFreeReactionSimulators (ComplexSnapshot complexSnapshot)
+        public CollisionFreeReaction[] GetRelevantCollisionFreeReactions (ComplexSnapshot complexSnapshot)
         {
-            List<CollisionFreeReactionSimulator> reactionSimulatorsList = new List<CollisionFreeReactionSimulator>();
-            foreach (CollisionFreeReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
+            List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
+            foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                if (reactionSimulator.IsReactant( complexSnapshot ))
+                if (reaction.ComplexIsReactant( complexSnapshot ))
                 {
-                    reactionSimulatorsList.Add( reactionSimulator );
+                    reactionsList.Add( reaction );
                 }
             }
-            return reactionSimulatorsList.ToArray();
+            return reactionsList.ToArray();
         }
 
-        public CollisionFreeReactionSimulator[] GetRelevantCollisionFreeReactionSimulators (Molecule[] molecules)
+        public CollisionFreeReaction[] GetRelevantCollisionFreeReactions (Molecule[] molecules)
         {
-            List<CollisionFreeReactionSimulator> reactionSimulatorsList = new List<CollisionFreeReactionSimulator>();
-            foreach (CollisionFreeReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
+            List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
+            foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                if (reactionSimulator.IsReactant( molecules ))
+                if (reaction.ComplexIsReactant( molecules ))
                 {
-                    reactionSimulatorsList.Add( reactionSimulator );
+                    reactionsList.Add( reaction );
                 }
             }
-            return reactionSimulatorsList.ToArray();
+            return reactionsList.ToArray();
         }
 
         public void RegisterMover (Mover mover)
@@ -128,7 +128,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public void UnregisterParticle (Mover mover)
+        public void UnregisterMover (Mover mover)
         {
             if (movers.Contains( mover ))
             {
@@ -229,23 +229,23 @@ namespace AICS.AgentSim
 
         protected virtual void DoCollisionFreeReactions ()
         {
-            foreach (ReactionSimulator reactionSimulator in collisionFreeReactionSimulators)
+            foreach (Reaction reaction in collisionFreeReactions)
             {
-                reactionSimulator.CalculateObservedRate();
+                reaction.CalculateObservedRate();
             }
 
-            collisionFreeReactionSimulators.Shuffle();
-            foreach (CollisionFreeReactionSimulator collisionFreeReactionSimulator in collisionFreeReactionSimulators)
+            collisionFreeReactions.Shuffle();
+            foreach (CollisionFreeReaction collisionFreeReaction in collisionFreeReactions)
             {
-                collisionFreeReactionSimulator.TryReact();
+                collisionFreeReaction.TryReact();
             }
         }
 
         protected virtual void DoBimolecularReactions ()
         {
-            foreach (ReactionSimulator reactionSimulator in bimolecularReactionSimulators)
+            foreach (Reaction reaction in bimolecularReactions)
             {
-                reactionSimulator.CalculateObservedRate();
+                reaction.CalculateObservedRate();
             }
 
             Complex complex;

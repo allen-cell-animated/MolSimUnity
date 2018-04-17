@@ -25,14 +25,14 @@ public class ReactionTests : AgentSimTests
         yield return new WaitForEndOfFrame();
 
         BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["P"];
-        ReactionSimulator reactionSimulator = reactor.collisionFreeReactionSimulators[0];
+        Reaction reaction = reactor.collisionFreeReactions[0];
 
         for (int i = 0; i < numberOfTimesToCheck; i++)
         {
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "0" ) == reactionSimulator.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "0" ) == reaction.events );
         }
 
         DestroyReactor( reactor );
@@ -48,16 +48,16 @@ public class ReactionTests : AgentSimTests
         yield return new WaitForEndOfFrame();
 
         BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["P"];
-        ReactionSimulator phosphorylationReactionSimulator = null, dephosphorylationReactionSimulator = null;
-        foreach (CollisionFreeReactionSimulator reactionSimulator in reactor.collisionFreeReactionSimulators)
+        Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
+        foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
-            if (reactionSimulator.reactionDef == phosphorylationReactionDef)
+            if (reaction.reactionDef == phosphorylationReactionDef)
             {
-                phosphorylationReactionSimulator = reactionSimulator;
+                phosphorylationReaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == dephosphorylationReactionDef)
+            else if (reaction.reactionDef == dephosphorylationReactionDef)
             {
-                dephosphorylationReactionSimulator = reactionSimulator;
+                dephosphorylationReaction = reaction;
             }
         }
 
@@ -66,7 +66,7 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "1" ) == phosphorylationReactionSimulator.events - dephosphorylationReactionSimulator.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "1" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
         }
 
         DestroyReactor( reactor );
@@ -82,16 +82,16 @@ public class ReactionTests : AgentSimTests
         yield return new WaitForEndOfFrame();
 
         BindingSiteDef bindingSiteP = reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p"];
-        ReactionSimulator phosphorylationReactionSimulator = null, dephosphorylationReactionSimulator = null;
-        foreach (CollisionFreeReactionSimulator reactionSimulator in reactor.collisionFreeReactionSimulators)
+        Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
+        foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
-            if (reactionSimulator.reactionDef == phosphorylationReactionDef)
+            if (reaction.reactionDef == phosphorylationReactionDef)
             {
-                phosphorylationReactionSimulator = reactionSimulator;
+                phosphorylationReaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == dephosphorylationReactionDef)
+            else if (reaction.reactionDef == dephosphorylationReactionDef)
             {
-                dephosphorylationReactionSimulator = reactionSimulator;
+                dephosphorylationReaction = reaction;
             }
         }
 
@@ -100,7 +100,7 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "P" ) == phosphorylationReactionSimulator.events - dephosphorylationReactionSimulator.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "P" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
         }
 
         DestroyReactor( reactor );
@@ -125,41 +125,41 @@ public class ReactionTests : AgentSimTests
         BindingSiteDef bindingSiteP2 = reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p2"];
         BindingSiteDef bindingSiteP3 = reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p3"];
         BindingSiteDef bindingSiteP4 = reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p4"];
-        ReactionSimulator e1ReactionSimulator = null, f1ReactionSimulator = null, e2ReactionSimulator = null, f2ReactionSimulator = null,
-                          e3ReactionSimulator = null, f3ReactionSimulator = null, e4ReactionSimulator = null, f4ReactionSimulator = null;
-        foreach (CollisionFreeReactionSimulator reactionSimulator in reactor.collisionFreeReactionSimulators)
+        Reaction e1Reaction = null, f1Reaction = null, e2Reaction = null, f2Reaction = null,
+                 e3Reaction = null, f3Reaction = null, e4Reaction = null, f4Reaction = null;
+        foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
-            if (reactionSimulator.reactionDef == e1)
+            if (reaction.reactionDef == e1)
             {
-                e1ReactionSimulator = reactionSimulator;
+                e1Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == f1)
+            else if (reaction.reactionDef == f1)
             {
-                f1ReactionSimulator = reactionSimulator;
+                f1Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == e2)
+            else if (reaction.reactionDef == e2)
             {
-                e2ReactionSimulator = reactionSimulator;
+                e2Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == f2)
+            else if (reaction.reactionDef == f2)
             {
-                f2ReactionSimulator = reactionSimulator;
+                f2Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == e3)
+            else if (reaction.reactionDef == e3)
             {
-                e3ReactionSimulator = reactionSimulator;
+                e3Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == f3)
+            else if (reaction.reactionDef == f3)
             {
-                f3ReactionSimulator = reactionSimulator;
+                f3Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == e4)
+            else if (reaction.reactionDef == e4)
             {
-                e4ReactionSimulator = reactionSimulator;
+                e4Reaction = reaction;
             }
-            else if (reactionSimulator.reactionDef == f4)
+            else if (reaction.reactionDef == f4)
             {
-                f4ReactionSimulator = reactionSimulator;
+                f4Reaction = reaction;
             }
         }
 
@@ -168,10 +168,10 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP1, "P" ) == e1ReactionSimulator.events - f1ReactionSimulator.events );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP2, "P" ) == e2ReactionSimulator.events - f2ReactionSimulator.events );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP3, "P" ) == e3ReactionSimulator.events - f3ReactionSimulator.events );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP4, "P" ) == e4ReactionSimulator.events - f4ReactionSimulator.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP1, "P" ) == e1Reaction.events - f1Reaction.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP2, "P" ) == e2Reaction.events - f2Reaction.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP3, "P" ) == e3Reaction.events - f3Reaction.events );
+            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP4, "P" ) == e4Reaction.events - f4Reaction.events );
         }
 
         DestroyReactor( reactor );

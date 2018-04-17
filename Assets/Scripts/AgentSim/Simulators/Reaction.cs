@@ -5,17 +5,17 @@ using UnityEngine;
 namespace AICS.AgentSim
 {
     [System.Serializable]
-    public class CollisionFreeReactionSimulator : ReactionSimulator
+    public class CollisionFreeReaction : Reaction
 	{
         [SerializeField] List<BindingSite> bindingSites = new List<BindingSite>();
 
-        public CollisionFreeReactionSimulator (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
+        public CollisionFreeReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
         public bool Register (BindingSite bindingSite, ComplexSnapshot complexSnapshot = null)
         {
             if (!bindingSites.Contains( bindingSite ))
             {
-                if ((complexSnapshot == null || IsReactant( complexSnapshot )) && SiteIsRelevant( bindingSite ))
+                if ((complexSnapshot == null || ComplexIsReactant( complexSnapshot )) && SiteIsRelevant( bindingSite ))
                 {
                     bindingSites.Add( bindingSite );
                     return true;
@@ -53,9 +53,9 @@ namespace AICS.AgentSim
 	}
 
     [System.Serializable]
-    public class BimolecularReactionSimulator : ReactionSimulator
+    public class BimolecularReaction : Reaction
 	{
-        public BimolecularReactionSimulator (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
+        public BimolecularReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
         public bool TryReactOnCollision (BindingSite bindingSite1, BindingSite bindingSite2)
         {
@@ -84,7 +84,7 @@ namespace AICS.AgentSim
 
 	// runtime data for a reaction used to keep rate near its theoretical value
     [System.Serializable]
-    public abstract class ReactionSimulator
+    public abstract class Reaction
     {
         public Reactor reactor;
         public ReactionDef reactionDef;
@@ -93,7 +93,7 @@ namespace AICS.AgentSim
         public int events;
         [SerializeField] float observedRate;
 
-        public ReactionSimulator (ReactionDef _reactionDef, Reactor _reactor)
+        public Reaction (ReactionDef _reactionDef, Reactor _reactor)
         {
             reactor = _reactor;
             reactionDef = _reactionDef;
@@ -104,7 +104,7 @@ namespace AICS.AgentSim
             observedRate = events / World.Instance.time;
         }
 
-        public bool IsReactant (ComplexSnapshot complexSnapshot)
+        public bool ComplexIsReactant (ComplexSnapshot complexSnapshot)
         {
             foreach (ComplexSnapshot reactantSnapshot in reactionDef.reactantSnapshots)
             {
@@ -116,7 +116,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool IsReactant (Molecule[] molecules)
+        public bool ComplexIsReactant (Molecule[] molecules)
         {
             foreach (ComplexSnapshot reactantSnapshot in reactionDef.reactantSnapshots)
             {

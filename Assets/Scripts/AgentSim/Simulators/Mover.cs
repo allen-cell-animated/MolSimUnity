@@ -95,12 +95,12 @@ namespace AICS.AgentSim
 
 		public void Destroy ()
 		{
-            reactor.UnregisterParticle( this );
+            reactor.UnregisterMover( this );
 		}
 
 		public override string ToString ()
 		{
-            return "ParticleSimulator " + name;
+            return "Mover " + name;
 		}
 	}
 }

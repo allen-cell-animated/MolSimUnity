@@ -25,8 +25,8 @@ namespace AICS.AgentSim
             }
 
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexSnapshot, CalculateMoleculeTransforms( complexConcentration.complexSnapshot ),
-                                                              reactor.GetRelevantBimolecularReactionSimulators( complexConcentration.complexSnapshot ),
-                                                              reactor.GetRelevantCollisionFreeReactionSimulators( complexConcentration.complexSnapshot ) );
+                                                              reactor.GetRelevantBimolecularReactions( complexConcentration.complexSnapshot ),
+                                                              reactor.GetRelevantCollisionFreeReactions( complexConcentration.complexSnapshot ) );
             Complex complex;
             for (int i = 0; i < amount; i++)
             {
@@ -47,9 +47,9 @@ namespace AICS.AgentSim
             complex.gameObject.transform.position = centerTransform.position;
             complex.gameObject.transform.rotation = centerTransform.rotation;
 
-            BimolecularReactionSimulator[] relevantBimolecularSimulators = reactor.GetRelevantBimolecularReactionSimulators( molecules );
-            CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators = reactor.GetRelevantCollisionFreeReactionSimulators( molecules );
-            complex.SetMolecules( molecules, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            BimolecularReaction[] relevantBimolecularReactions = reactor.GetRelevantBimolecularReactions( molecules );
+            CollisionFreeReaction[] relevantCollisionFreeReactions = reactor.GetRelevantCollisionFreeReactions( molecules );
+            complex.SetMolecules( molecules, relevantBimolecularReactions, relevantCollisionFreeReactions );
 
             complex.Init( reactor );
         }
@@ -119,17 +119,17 @@ namespace AICS.AgentSim
     {
         public ComplexSnapshot complexSnapshot;
         public RelativeTransform[] moleculeTransforms;
-        public BimolecularReactionSimulator[] relevantBimolecularSimulators;
-        public CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators;
+        public BimolecularReaction[] relevantBimolecularReactions;
+        public CollisionFreeReaction[] relevantCollisionFreeReactions;
 
         public MoleculeInitData (ComplexSnapshot _complexSnapshot, RelativeTransform[] _moleculeTransforms,
-                                 BimolecularReactionSimulator[] _relevantBimolecularSimulators, 
-                                 CollisionFreeReactionSimulator[] _relevantCollisionFreeSimulators)
+                                 BimolecularReaction[] _relevantBimolecularReactions, 
+                                 CollisionFreeReaction[] _relevantCollisionFreeReactions)
         {
             complexSnapshot = _complexSnapshot;
             moleculeTransforms = _moleculeTransforms;
-            relevantBimolecularSimulators = _relevantBimolecularSimulators;
-            relevantCollisionFreeSimulators = _relevantCollisionFreeSimulators;
+            relevantBimolecularReactions = _relevantBimolecularReactions;
+            relevantCollisionFreeReactions = _relevantCollisionFreeReactions;
         }
     }
 }

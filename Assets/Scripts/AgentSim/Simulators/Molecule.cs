@@ -48,28 +48,28 @@ namespace AICS.AgentSim
         }
 
         public virtual void Init (MoleculeSnapshot moleculeSnapshot, Complex _complex, 
-                                  BimolecularReactionSimulator[] relevantBimolecularSimulators, CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+                                  BimolecularReaction[] relevantBimolecularReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             complex = _complex;
             definition = moleculeSnapshot.moleculeDef;
             collisionRadius = interactionRadius = definition.radius;
             interactionRadius += 1f;
-            CreateBindingSites( moleculeSnapshot, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            CreateBindingSites( moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions );
             couldReactOnCollision = GetCouldReactOnCollision();
         }
 
-        protected virtual void CreateBindingSites (MoleculeSnapshot moleculeSnapshot, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                                   CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+        protected virtual void CreateBindingSites (MoleculeSnapshot moleculeSnapshot, BimolecularReaction[] relevantBimolecularReactions, 
+                                                   CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             foreach (string bindingSiteID in definition.bindingSiteDefs.Keys)
             {
-                CreateBindingSite( bindingSiteID, moleculeSnapshot, relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                CreateBindingSite( bindingSiteID, moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions );
             }
         }
 
         protected virtual void CreateBindingSite (string bindingSiteID, MoleculeSnapshot moleculeSnapshot, 
-                                                  BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                                  CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+                                                  BimolecularReaction[] relevantBimolecularReactions, 
+                                                  CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             GameObject bindingSiteObject = new GameObject();
             bindingSiteObject.transform.SetParent( theTransform );
@@ -77,7 +77,7 @@ namespace AICS.AgentSim
             bindingSiteObject.name = name + "_" + bindingSiteID;
 
             BindingSite bindingSite = bindingSiteObject.AddComponent<BindingSite>();
-            bindingSite.Init( bindingSiteID, moleculeSnapshot, relevantBimolecularSimulators, relevantCollisionFreeSimulators, this );
+            bindingSite.Init( bindingSiteID, moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions, this );
 
             bindingSites.Add( bindingSiteID, bindingSite );
         }
@@ -100,30 +100,30 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual void MoveToComplex (Complex _complex, BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                           CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+        public virtual void MoveToComplex (Complex _complex, BimolecularReaction[] relevantBimolecularReactions, 
+                                           CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             complex.Remove( this );
             complex = _complex;
             name = complex.name + "_" + species;
             theTransform.SetParent( complex.theTransform );
 
-            UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+            UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
         }
 
-        public virtual void UpdateReactions (BimolecularReactionSimulator[] relevantBimolecularSimulators, 
-                                             CollisionFreeReactionSimulator[] relevantCollisionFreeSimulators)
+        public virtual void UpdateReactions (BimolecularReaction[] relevantBimolecularReactions, 
+                                             CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             foreach (BindingSite bindingSite in bindingSites.Values)
             {
-                bindingSite.UpdateReactions( relevantBimolecularSimulators, relevantCollisionFreeSimulators );
+                bindingSite.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
             }
             couldReactOnCollision = GetCouldReactOnCollision();
         }
 
         public override string ToString ()
         {
-            return "MoleculeSimulator " + name;
+            return "Molecule " + name;
         }
 
         Material _material;

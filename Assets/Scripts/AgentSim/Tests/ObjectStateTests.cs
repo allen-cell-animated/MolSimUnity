@@ -169,9 +169,9 @@ public class ObjectStateTests : AgentSimTests
 
     static bool ComplexReallyIsBimolecularReactant (Complex complex)
     {
-        foreach (BimolecularReactionSimulator reactionSimulator in complex.reactor.bimolecularReactionSimulators)
+        foreach (BimolecularReaction reaction in complex.reactor.bimolecularReactions)
         {
-            if (reactionSimulator.IsReactant( complex.molecules ))
+            if (reaction.ComplexIsReactant( complex.molecules ))
             {
                 return true;
             }

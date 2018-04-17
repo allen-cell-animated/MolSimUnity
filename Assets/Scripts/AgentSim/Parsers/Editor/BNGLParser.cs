@@ -14,7 +14,7 @@ namespace AICS.AgentSim
             string data = Parser.LoadTextData( filePath );
             if (data.Length > 0)
             {
-                //Model model = ScriptableObject.CreateInstance<Model>();
+                //ModelDef model = ScriptableObject.CreateInstance<ModelDef>();
                 string[] lines = data.Split ('\n');
                 bool inSection = false;
                 List<string> sectionLines = new List<string>();
@@ -74,7 +74,7 @@ namespace AICS.AgentSim
 
         static void ParseMoleculeTypes (List<string> lines)
         {
-            //List<Molecule> molecules = new List<Molecule>();
+            //List<MoleculeDef> molecules = new List<MoleculeDef>();
             foreach (string line in lines)
             {
                 line.Trim();
