@@ -11,23 +11,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65922519dfcfa47d680fba9f67aeafe5, type: 3}
   m_Name: dephosphorylation
   m_EditorClassIdentifier: 
-  description: X(P~1) -> X(P~0)
+  description: X(p~1) -> X(p~0)
   rate: 30000000
-  reactantStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+  reactantSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       siteStates:
-      - id: P
+      - id: p
         state: 1
-  productStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+  productSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       siteStates:
-      - id: P
+      - id: p
         state: 0
+  relevantSiteReferences: []
   relevantSites:
-  - molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
-    bindingSiteID: P
+  - moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
+    bindingSiteID: p
   productmoleculeColors:
-  - molecule: {fileID: 11400000, guid: 8bba3a3589ab945dfa44cb0dbf7afacc, type: 2}
+  - definition: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}

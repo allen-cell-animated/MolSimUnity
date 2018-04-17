@@ -15,14 +15,14 @@ MonoBehaviour:
   containerVolume: 0.000000125
   complexes:
   - concentration: 1.3e-15
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
         siteStates:
         - id: x
           state: 0
         - id: y
           state: 0
-  reactions:
+  reactionDefs:
   - {fileID: 11400000, guid: 6a84a6b8b0aea42a3a38dd5c8f0950a6, type: 2}
   - {fileID: 11400000, guid: 52a5365ada32a42589ef32a929e3893b, type: 2}

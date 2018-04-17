@@ -15,32 +15,32 @@ MonoBehaviour:
   containerVolume: 0.000000125
   complexes:
   - concentration: 5e-17
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 8d1e26a1f4fbe438295c388f35e4b413, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 8d1e26a1f4fbe438295c388f35e4b413, type: 2}
         siteStates:
         - id: s
           state: 0
   - concentration: 5e-17
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 70b1f374125ab4ec69ce1f6db895929b, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 70b1f374125ab4ec69ce1f6db895929b, type: 2}
         siteStates:
         - id: s
           state: 0
   - concentration: 2.5e-15
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 6dbcb2069472b43b0b0b9c89c5e16285, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 6dbcb2069472b43b0b0b9c89c5e16285, type: 2}
         siteStates:
         - id: active
           state: 0
         - id: p
           state: U
-  reactions:
+  reactionDefs:
   - {fileID: 11400000, guid: dfb75f5c5e0524e9bb9abcff7a1a2afd, type: 2}
-  - {fileID: 11400000, guid: 066f79e0af783477f9def7868b1f9ec7, type: 2}
   - {fileID: 11400000, guid: c7e0307b0836344599862837e2c93e0e, type: 2}
+  - {fileID: 11400000, guid: 066f79e0af783477f9def7868b1f9ec7, type: 2}
   - {fileID: 11400000, guid: 2f3213818558f4245bc2e661a13b63d6, type: 2}
   - {fileID: 11400000, guid: dcbc425d4f5f24a46a861620f102c9bc, type: 2}
   - {fileID: 11400000, guid: 8b544323e6d314db2a5a98b87d9d266f, type: 2}

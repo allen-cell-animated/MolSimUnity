@@ -11,34 +11,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
   m_Name: multisitePOffF2
   m_EditorClassIdentifier: 
-  description: F(z!1).Z(active!1,p2~P) -> F(z) + Z(p2~P)
+  description: F(z!1).Z(active!1,p2~P) -> F(z) + Z(active,p2~P)
   rate: 600000000
-  reactantStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+  reactantSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: ddc238eb2a0144a0ba41a194eadecc2b, type: 2}
       siteStates:
       - id: z
         state: '!1'
-    - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+    - _moleculeDef: {fileID: 11400000, guid: 4134b5ad80e1f40e8acba073da3b49e2, type: 2}
       siteStates:
       - id: active
         state: '!1'
       - id: p2
         state: P
-  productStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+  productSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: ddc238eb2a0144a0ba41a194eadecc2b, type: 2}
       siteStates:
       - id: z
         state: 0
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 4cd2a88fe83ad453fa21bb3e1d916f76, type: 2}
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: 4134b5ad80e1f40e8acba073da3b49e2, type: 2}
       siteStates:
       - id: active
         state: 0
       - id: p2
         state: P
+  relevantSiteReferences: []
   relevantSites:
-  - molecule: {fileID: 11400000, guid: 3273a8fc665774a5e8d08b91de26fde9, type: 2}
+  - moleculeDef: {fileID: 11400000, guid: ddc238eb2a0144a0ba41a194eadecc2b, type: 2}
     bindingSiteID: z
   productmoleculeColors: []

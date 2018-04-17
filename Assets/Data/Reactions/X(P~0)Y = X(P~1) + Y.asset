@@ -9,38 +9,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
-  m_Name: X(P~0)Y = X(P~1) + Y
+  m_Name: X(p~0)Y = X(p~1) + Y
   m_EditorClassIdentifier: 
-  description: X(y!1,P~0).Y(x!1) -> X(y,P~1) + Y(x)
+  description: X(y!1,p~0).Y(x!1) -> X(y,p~1) + Y(x)
   rate: 5000000
-  reactantStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  reactantSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
       siteStates:
       - id: y
         state: '!1'
-      - id: P
+      - id: p
         state: 0
-    - _molecule: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
+    - _moleculeDef: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
       siteStates:
       - id: x
         state: '!1'
-  productStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  productSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
       siteStates:
       - id: y
         state: 0
-      - id: P
+      - id: p
         state: 1
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
       siteStates:
       - id: x
         state: 0
+  relevantSiteReferences: []
   relevantSites:
-  - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  - moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
     bindingSiteID: y
   productmoleculeColors:
-  - molecule: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
+  - definition: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
     color: {r: 1, g: 0.68275857, b: 0, a: 1}

@@ -11,34 +11,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
   m_Name: EZ(p3~U) = E + Z(p3~U)
   m_EditorClassIdentifier: 
-  description: E(z!1).Z(active!1,p3~U) -> E(z) + Z(p3~U)
+  description: E(z!1).Z(active!1,p3~U) -> E(z) + Z(active,p3~U)
   rate: 6000000
-  reactantStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
+  reactantSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
       siteStates:
       - id: z
         state: '!1'
-    - _molecule: {fileID: 11400000, guid: 1264da4b8ce09498b81ab4f9bdcaba90, type: 2}
+    - _moleculeDef: {fileID: 11400000, guid: 1264da4b8ce09498b81ab4f9bdcaba90, type: 2}
       siteStates:
       - id: active
         state: '!1'
       - id: p3
         state: U
-  productStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
+  productSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
       siteStates:
       - id: z
         state: 0
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 1264da4b8ce09498b81ab4f9bdcaba90, type: 2}
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: 1264da4b8ce09498b81ab4f9bdcaba90, type: 2}
       siteStates:
       - id: active
         state: 0
       - id: p3
         state: U
+  relevantSiteReferences: []
   relevantSites:
-  - molecule: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
+  - moleculeDef: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
     bindingSiteID: z
   productmoleculeColors: []

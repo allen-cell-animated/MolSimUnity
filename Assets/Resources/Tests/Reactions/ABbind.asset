@@ -13,30 +13,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: A(b) + B(a) -> A(b!1).B(a!1)
   rate: 1e+9
-  reactantStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 1591ac0aecb7e4a33bd1ced8237ad062, type: 2}
+  reactantSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
       siteStates:
       - id: b
         state: 0
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 15437008e10e24798bceacaaa0e50c97, type: 2}
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
       siteStates:
       - id: a
         state: 0
-  productStates:
-  - _moleculeStates:
-    - _molecule: {fileID: 11400000, guid: 1591ac0aecb7e4a33bd1ced8237ad062, type: 2}
+  productSnapshots:
+  - _moleculeSnapshots:
+    - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
       siteStates:
       - id: b
         state: '!1'
-    - _molecule: {fileID: 11400000, guid: 15437008e10e24798bceacaaa0e50c97, type: 2}
+    - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
       siteStates:
       - id: a
         state: '!1'
+  relevantSiteReferences: []
   relevantSites:
-  - molecule: {fileID: 11400000, guid: 1591ac0aecb7e4a33bd1ced8237ad062, type: 2}
+  - moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
     bindingSiteID: b
-  - molecule: {fileID: 11400000, guid: 15437008e10e24798bceacaaa0e50c97, type: 2}
+  - moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
     bindingSiteID: a
   productmoleculeColors: []

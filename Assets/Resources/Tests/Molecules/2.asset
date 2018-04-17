@@ -15,14 +15,14 @@ MonoBehaviour:
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
-  sites:
+  siteDefs:
   - id: b
     states:
     - 0
     - '!+'
     transformOnMolecule:
-      position: {x: 0, y: 0, z: -2}
-      rotation: {x: 0, y: -90, z: 0}
+      position: {x: -1, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
     radius: 1
   - id: d
     states:
@@ -30,6 +30,7 @@ MonoBehaviour:
     - '!+'
     transformOnMolecule:
       position: {x: 0, y: 1, z: 0}
-      rotation: {x: 0, y: -90, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
     radius: 1
-  _visualizationPrefab: {fileID: 0}
+  _visualizationPrefab: {fileID: 1954374533173014, guid: 7d2b59a7500ba4b5ab8a9b9c1266d2af,
+    type: 2}

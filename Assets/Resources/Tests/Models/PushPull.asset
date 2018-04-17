@@ -15,32 +15,32 @@ MonoBehaviour:
   containerVolume: 0.000000125
   complexes:
   - concentration: 5e-17
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: d8749353f48764f87b7978e367140d18, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 2294ccab4067d4abfbf6b926ac5fa49d, type: 2}
         siteStates:
         - id: s
           state: 0
   - concentration: 5e-17
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 0454510d3b9fe48bf9b0cf2098b11832, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
         siteStates:
         - id: s
           state: 0
   - concentration: 2.5e-15
-    complexState:
-      _moleculeStates:
-      - _molecule: {fileID: 11400000, guid: 929be8d8a69df4f3985f1c2f8ec1908e, type: 2}
+    complexSnapshot:
+      _moleculeSnapshots:
+      - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
         siteStates:
         - id: active
           state: 0
         - id: p
           state: U
-  reactions:
-  - {fileID: 11400000, guid: 400957e7089244570915c9873da4eedd, type: 2}
-  - {fileID: 11400000, guid: fb6ce46aaa13e464b8dd579a28c2c018, type: 2}
-  - {fileID: 11400000, guid: ee56c6f6b6bf043829b2ba2cec33bf01, type: 2}
-  - {fileID: 11400000, guid: ab47bbe3215e74604b20cc67ab6dd2be, type: 2}
-  - {fileID: 11400000, guid: 4fde0f81f8f724301ab0fedf4ea1c4c3, type: 2}
-  - {fileID: 11400000, guid: fa108cd0a8a35487f924b82ae2b59e14, type: 2}
+  reactionDefs:
+  - {fileID: 11400000, guid: 33e7d9b7b9f924f8797f1ce6db7cfe95, type: 2}
+  - {fileID: 11400000, guid: 48a258d5aed1b4585bcc9f470e70c66d, type: 2}
+  - {fileID: 11400000, guid: bf41234c255624b92acf9960765b5b79, type: 2}
+  - {fileID: 11400000, guid: 19cbb4e00c8644b7186afe76600b7a04, type: 2}
+  - {fileID: 11400000, guid: 84e4b6211183041a193027723af335bc, type: 2}
+  - {fileID: 11400000, guid: 8584996dbee6544f6a9cd42421138aa8, type: 2}

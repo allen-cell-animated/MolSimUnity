@@ -24,7 +24,7 @@ public class ReactionTests : AgentSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["P"];
+        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p"];
         Reaction reaction = reactor.collisionFreeReactions[0];
 
         for (int i = 0; i < numberOfTimesToCheck; i++)
@@ -47,7 +47,7 @@ public class ReactionTests : AgentSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["P"];
+        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p"];
         Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
