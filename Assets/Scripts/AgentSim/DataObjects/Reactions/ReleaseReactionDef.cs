@@ -36,7 +36,7 @@ namespace AICS.AgentSim
             }
         }
 
-        BindingSite GetBindingSiteForProductState (ComplexSnapshot productSnapshot, BindingSite bindingSite1, BindingSite bindingSite2)
+        protected BindingSite GetBindingSiteForProductState (ComplexSnapshot productSnapshot, BindingSite bindingSite1, BindingSite bindingSite2)
         {
             foreach (MoleculeSnapshot moleculeSnapshot in productSnapshot.moleculeSnapshots)
             {

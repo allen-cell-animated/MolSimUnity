@@ -18,8 +18,6 @@ namespace AICS.AgentSim
 
         public List<Mover> movers = new List<Mover>();
         public List<Complex> complexes = new List<Complex>();
-        protected List<Mover> moversToDestroy = new List<Mover>();
-        protected List<Complex> complexesToDestroy = new List<Complex>();
 
         float dT
         {
@@ -134,11 +132,6 @@ namespace AICS.AgentSim
             {
                 movers.Remove( mover );
             }
-
-            if (!moversToDestroy.Contains( mover ))
-            {
-                moversToDestroy.Add( mover );
-            }
         }
 
         public void RegisterComplex (Complex complex)
@@ -152,59 +145,30 @@ namespace AICS.AgentSim
             }
         }
 
-        public void UnregisterComplex (Complex complex)
-        {
-            if (complexes.Contains( complex ))
-            {
-                complexes.Remove( complex );
-            }
-
-            if (!complexesToDestroy.Contains( complex ))
-            {
-                complexesToDestroy.Add( complex );
-            }
-        }
-
-        public void ComplexChangedCouldReactOnCollisionState (Complex complex)
-        {
-            if (complex.couldReactOnCollision)
-            {
-                if (complexes.Contains( complex ))
-                {
-                    complexes.Remove( complex );
-                }
-            }
-            else
-            {
-                if (!complexes.Contains( complex ))
-                {
-                    complexes.Add( complex );
-                }
-            }
-        }
-
         void Update ()
         {
             #if UNITY_EDITOR
             if (Input.GetKeyDown( KeyCode.X ))
             {
-                ObjectStateTests.StateOfReactorIsCorrect( this );
+                MolSimTests.StateOfReactorIsCorrect( this );
             }
             #endif
 
-                //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
-            MoveParticles();
-                //UnityEngine.Profiling.Profiler.EndSample();
-
-                //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
-            DoCollisionFreeReactions();
-                //UnityEngine.Profiling.Profiler.EndSample();
-
-                //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
-            DoBimolecularReactions();
-                //UnityEngine.Profiling.Profiler.EndSample();
-
             Cleanup();
+
+            //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+            MoveParticles();
+            //UnityEngine.Profiling.Profiler.EndSample();
+
+            //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+            DoCollisionFreeReactions();
+            //UnityEngine.Profiling.Profiler.EndSample();
+
+            //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
+            DoBimolecularReactions();
+            //UnityEngine.Profiling.Profiler.EndSample();
+
+            DestroyOldComplexes();
         }
 
         protected virtual void MoveParticles ()
@@ -248,31 +212,37 @@ namespace AICS.AgentSim
                 reaction.CalculateObservedRate();
             }
 
-            Complex complex;
+            Complex complex1, complex2;
             int start = complexes.GetRandomIndex();
             for (int i = 0; i < complexes.Count; i++)
             {
-                complex = complexes[(start + i) % complexes.Count];
-                for (int j = i + 1; j < complexes.Count; j++)
+                complex1 = complexes[(start + i) % complexes.Count];
+                if (!complex1.readyToBeDestroyed)
                 {
-                    complex.InteractWith( complexes[(start + j) % complexes.Count] );
+                    for (int j = i + 1; j < complexes.Count; j++)
+                    {
+                        complex2 = complexes[(start + j) % complexes.Count];
+                        if (!complex2.readyToBeDestroyed)
+                        {
+                            complex1.InteractWith( complex2 );
+                        }
+                    }
                 }
             }
         }
 
-        protected virtual void Cleanup ()
+        protected void DestroyOldComplexes ()
         {
+            List<Complex> complexesToDestroy = complexes.FindAll( c => c.readyToBeDestroyed );
             foreach (Complex complex in complexesToDestroy)
             {
                 Destroy( complex );
             }
-            complexesToDestroy.Clear();
+        }
 
-            foreach (Mover mover in moversToDestroy)
-            {
-                Destroy( mover.gameObject );
-            }
-            moversToDestroy.Clear();
+        public void Cleanup ()
+        {
+            int n = complexes.RemoveAll( c => c == null || !c.couldReactOnCollision );
         }
     }
 }

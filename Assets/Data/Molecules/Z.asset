@@ -200,7 +200,7 @@ MonoBehaviour:
         state: P
       - id: p4
         state: P
-    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+    color: {r: 1, g: 0.2689655, b: 0, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
@@ -212,7 +212,7 @@ MonoBehaviour:
         state: P
       - id: p4
         state: P
-    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+    color: {r: 1, g: 0.2689655, b: 0, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
@@ -224,7 +224,7 @@ MonoBehaviour:
         state: U
       - id: p4
         state: P
-    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+    color: {r: 1, g: 0.2689655, b: 0, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
@@ -236,7 +236,7 @@ MonoBehaviour:
         state: P
       - id: p4
         state: U
-    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+    color: {r: 1, g: 0.2689655, b: 0, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:

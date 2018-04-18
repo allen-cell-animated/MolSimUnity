@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 using UnityEngine.TestTools;
 using AICS.AgentSim;
 
-public class ReactionTests : AgentSimTests
+public class ReactionTests : MolSimTests
 {
     int numberOfTimesToCheck = 5;
 
@@ -32,6 +32,7 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
             AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "0" ) == reaction.events );
         }
 
@@ -66,6 +67,7 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
             AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "1" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
         }
 
@@ -100,6 +102,7 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
             AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "P" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
         }
 
@@ -168,6 +171,7 @@ public class ReactionTests : AgentSimTests
             yield return new WaitForSeconds( waitTime );
             yield return new WaitForEndOfFrame();
 
+            AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
             AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP1, "P" ) == e1Reaction.events - f1Reaction.events );
             AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP2, "P" ) == e2Reaction.events - f2Reaction.events );
             AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP3, "P" ) == e3Reaction.events - f3Reaction.events );

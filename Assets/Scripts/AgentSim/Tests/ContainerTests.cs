@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 using UnityEngine.TestTools;
 using AICS.AgentSim;
 
-public class ContainerTests : AgentSimTests
+public class ContainerTests : MolSimTests
 {
     [UnityTest]
     public IEnumerator ParticlesStayInBounds ()

@@ -40,7 +40,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool TryReact ()
+        public virtual bool TryReact ()
         {
             if (bindingSites.Count > 0 && ShouldHappen())
             {
@@ -57,7 +57,7 @@ namespace AICS.AgentSim
 	{
         public BimolecularReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public bool TryReactOnCollision (BindingSite bindingSite1, BindingSite bindingSite2)
+        public virtual bool TryReactOnCollision (BindingSite bindingSite1, BindingSite bindingSite2)
         {
             if (ReactantsEqual( bindingSite1.molecules, bindingSite2.molecules ) 
                 && BothSitesAreRelevant( bindingSite1, bindingSite2 ) && ShouldHappen())

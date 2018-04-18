@@ -96,6 +96,7 @@ namespace AICS.AgentSim
 		public void Destroy ()
 		{
             reactor.UnregisterMover( this );
+            Destroy( gameObject );
 		}
 
 		public override string ToString ()

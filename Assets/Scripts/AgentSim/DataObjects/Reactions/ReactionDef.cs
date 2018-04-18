@@ -44,27 +44,6 @@ namespace AICS.AgentSim
 
         protected abstract bool ReactantAndProductAmountsAreCorrect ();
 
-        public string GetInitialStateOfSite (ComplexSnapshot complexSnapshot, MoleculeBindingSite moleculeBindingSite)
-        {
-            foreach (ComplexSnapshot reactantSnapshot in reactantSnapshots)
-            {
-                if (reactantSnapshot.IsSatisfiedBy( complexSnapshot ))
-                {
-                    foreach (MoleculeSnapshot moleculeSnapshot in reactantSnapshot.moleculeSnapshots)
-                    {
-                        if (moleculeSnapshot.moleculeDef.Equals( moleculeBindingSite.moleculeDef ))
-                        {
-                            if (moleculeSnapshot.bindingSiteStates.ContainsKey( moleculeBindingSite.bindingSiteID ))
-                            {
-                                return moleculeSnapshot.bindingSiteStates[moleculeBindingSite.bindingSiteID];
-                            }
-                        }
-                    }
-                }
-            }
-            return "";
-        }
-
         public abstract void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null);
 
         protected virtual void SetComplexToFinalState (Molecule[] molecules, ComplexSnapshot finalSnapshot)
@@ -88,17 +67,7 @@ namespace AICS.AgentSim
         {
             foreach (Molecule molecule in molecules)
             {
-                if (molecule.definition.colors != null)
-                {
-                    foreach (MoleculeSnapshotColor moleculeColor in molecule.definition.colors)
-                    {
-                        if (moleculeColor.snapshot.IsSatisfiedBy( molecule ))
-                        {
-                            molecule.SetColor( moleculeColor.color );
-                            break;
-                        }
-                    }
-                }
+                molecule.SetColorForCurrentState();
             }
         }
     }

@@ -56,6 +56,7 @@ namespace AICS.AgentSim
             interactionRadius += 1f;
             CreateBindingSites( moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions );
             couldReactOnCollision = GetCouldReactOnCollision();
+            SetColorForCurrentState();
         }
 
         protected virtual void CreateBindingSites (MoleculeSnapshot moleculeSnapshot, BimolecularReaction[] relevantBimolecularReactions, 
@@ -103,7 +104,7 @@ namespace AICS.AgentSim
         public virtual void MoveToComplex (Complex _complex, BimolecularReaction[] relevantBimolecularReactions, 
                                            CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
-            complex.Remove( this );
+            complex.RemoveMolecule( this );
             complex = _complex;
             name = complex.name + "_" + species;
             theTransform.SetParent( complex.theTransform );
@@ -139,9 +140,19 @@ namespace AICS.AgentSim
             }
         }
 
-        public void SetColor (Color color)
+        public void SetColorForCurrentState ()
         {
-            material.color = color;
+            if (definition.colors != null)
+            {
+                foreach (MoleculeSnapshotColor moleculeColor in definition.colors)
+                {
+                    if (moleculeColor.snapshot.IsSatisfiedBy( this ))
+                    {
+                        material.color = moleculeColor.color;
+                        return;
+                    }
+                }
+            }
         }
 	}
 }

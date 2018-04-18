@@ -87,7 +87,7 @@ namespace AICS.AgentSim
             RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
         }
 
-        protected virtual void SetBimolecularReactions (BimolecularReaction[] relevantBimolecularReactions)
+        protected void SetBimolecularReactions (BimolecularReaction[] relevantBimolecularReactions)
         {
             List<BimolecularReaction> bimolecularReactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in relevantBimolecularReactions)
@@ -101,7 +101,7 @@ namespace AICS.AgentSim
             couldReactOnCollision = bimolecularReactions.Length > 0;
         }
 
-        protected virtual void RegisterWithCollisionFreeReactions (CollisionFreeReaction[] relevantCollisionFreeReactions)
+        protected void RegisterWithCollisionFreeReactions (CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             List<CollisionFreeReaction> collisionFreeReactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in relevantCollisionFreeReactions)
@@ -114,7 +114,7 @@ namespace AICS.AgentSim
             collisionFreeReactions = collisionFreeReactionsList.ToArray();
         }
 
-        protected virtual void UnregisterWithCollisionFreeReactions ()
+        protected void UnregisterWithCollisionFreeReactions ()
         {
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {

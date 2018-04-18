@@ -32,7 +32,7 @@ namespace AICS.AgentSim
             }
         }
 
-        void RelativelyPosition (Transform parentBindingSite, Transform childBindingSite)
+        protected void RelativelyPosition (Transform parentBindingSite, Transform childBindingSite)
         {
             childBindingSite.parent.position = parentBindingSite.TransformPoint( childBindingSite.InverseTransformPoint( childBindingSite.parent.position ) );
             childBindingSite.parent.rotation = childBindingSite.parent.rotation * Quaternion.Inverse( childBindingSite.rotation ) * parentBindingSite.rotation;

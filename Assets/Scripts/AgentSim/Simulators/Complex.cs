@@ -8,6 +8,7 @@ namespace AICS.AgentSim
     {
         public Reactor reactor;
         public Molecule[] molecules;
+        public bool readyToBeDestroyed;
 
         protected Mover mover;
 
@@ -230,11 +231,25 @@ namespace AICS.AgentSim
             UpdateCouldReactOnCollision();
         }
 
-        public void Remove (Molecule moleculeToRemove)
+        protected void UpdateCouldReactOnCollision ()
+        {
+            bool oldCouldReactOnCollision = couldReactOnCollision;
+            couldReactOnCollision = GetCouldReactOnCollision();
+
+            if (couldReactOnCollision != oldCouldReactOnCollision)
+            {
+                if (!oldCouldReactOnCollision)
+                {
+                    reactor.RegisterComplex( this );
+                }
+            }
+        }
+
+        public void RemoveMolecule (Molecule moleculeToRemove)
         {
             if (molecules.Length < 2)
             {
-                reactor.UnregisterComplex( this );
+                readyToBeDestroyed = true;
                 mover.Destroy();
             }
             else
@@ -250,16 +265,6 @@ namespace AICS.AgentSim
                     }
                 }
                 molecules = newMolecules;
-            }
-        }
-
-        protected void UpdateCouldReactOnCollision ()
-        {
-            bool newCouldReactOnCollision = GetCouldReactOnCollision();
-            if (newCouldReactOnCollision != couldReactOnCollision)
-            {
-                couldReactOnCollision = newCouldReactOnCollision;
-                reactor.ComplexChangedCouldReactOnCollisionState( this );
             }
         }
 
