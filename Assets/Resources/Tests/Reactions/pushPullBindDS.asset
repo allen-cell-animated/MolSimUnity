@@ -32,17 +32,14 @@ MonoBehaviour:
       siteStates:
       - id: s
         state: '!1'
-  - _moleculeSnapshots:
     - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
       siteStates:
       - id: active
         state: '!1'
       - id: p
         state: P
-  relevantSiteReferences: []
   relevantSites:
   - moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
     bindingSiteID: s
   - moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
     bindingSiteID: active
-  productmoleculeColors: []

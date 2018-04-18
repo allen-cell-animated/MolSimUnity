@@ -5,7 +5,7 @@ using AICS.AgentSim;
 
 public class TestHashCodes
 {
-    public bool debug = false;
+    public bool debug = true;
 
     [Test]
     public void MoleculeStatesSameSpeciesSameSites ()

@@ -12,10 +12,8 @@ namespace AICS.AgentSim
         public ComplexSnapshot[] reactantSnapshots;
         [Tooltip( "for now, molecules should be in same order in products" )]
         public ComplexSnapshot[] productSnapshots;
-        public BindingSiteReference[] relevantSiteReferences;
+        //public BindingSiteReference[] relevantSiteReferences;
         public MoleculeBindingSite[] relevantSites;
-
-        public MoleculeColor[] productmoleculeColors;
 
         public bool isBimolecular
         {
@@ -67,6 +65,8 @@ namespace AICS.AgentSim
             return "";
         }
 
+        public abstract void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null);
+
         protected virtual void SetComplexToFinalState (Molecule[] molecules, ComplexSnapshot finalSnapshot)
         {
             foreach (MoleculeSnapshot moleculeSnapshot in finalSnapshot.moleculeSnapshots) 
@@ -84,17 +84,15 @@ namespace AICS.AgentSim
             }
         }
 
-        public abstract void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null);
-
         protected void SetProductColor (Molecule[] molecules)
         {
-            if (productmoleculeColors != null)
+            foreach (Molecule molecule in molecules)
             {
-                foreach (MoleculeColor moleculeColor in productmoleculeColors)
+                if (molecule.definition.colors != null)
                 {
-                    foreach (Molecule molecule in molecules)
+                    foreach (MoleculeSnapshotColor moleculeColor in molecule.definition.colors)
                     {
-                        if (molecule.definition.species == moleculeColor.definition.species)
+                        if (moleculeColor.snapshot.IsSatisfiedBy( molecule ))
                         {
                             molecule.SetColor( moleculeColor.color );
                             break;
@@ -105,18 +103,11 @@ namespace AICS.AgentSim
         }
     }
 
-    [System.Serializable]
-    public class MoleculeColor
-    {
-        public MoleculeDef definition;
-        public Color color;
-    }
-
-    [System.Serializable]
-    public class BindingSiteReference
-    {
-        public int complexIndex;
-        public int moleculeIndex;
-        public string siteID;
-    }
+    //[System.Serializable]
+    //public class BindingSiteReference
+    //{
+    //    public int complexIndex;
+    //    public int moleculeIndex;
+    //    public string siteID;
+    //}
 }

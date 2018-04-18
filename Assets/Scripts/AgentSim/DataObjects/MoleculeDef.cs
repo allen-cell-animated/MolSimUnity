@@ -25,6 +25,7 @@ namespace AICS.AgentSim
 
         #region for prototyping in inspector without writing custom property drawer etc
         [SerializeField] BindingSiteDef[] siteDefs = new BindingSiteDef[0];
+        public MoleculeSnapshotColor[] colors;
 
         public void Init ()
         {
@@ -38,6 +39,13 @@ namespace AICS.AgentSim
                 else
                 {
                     Debug.LogWarning( "can't init Molecule with multiple sites with the same ID (yet)" );
+                }
+            }
+            if (colors != null)
+            {
+                foreach (MoleculeSnapshotColor moleculeColor in colors)
+                {
+                    moleculeColor.Init();
                 }
             }
         }
@@ -82,6 +90,19 @@ namespace AICS.AgentSim
         {
             child.position = parent.TransformPoint( position );
             child.rotation = parent.rotation * Quaternion.Euler( rotation );
+        }
+    }
+
+    [System.Serializable]
+    public class MoleculeSnapshotColor
+    {
+        public MoleculeSnapshot snapshot;
+        public Color color;
+
+        //To avoid circular ref in MoleculeSnapshot.Init()
+        public void Init ()
+        {
+            snapshot.InitSites();
         }
     }
 }

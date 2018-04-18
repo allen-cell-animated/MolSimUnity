@@ -24,6 +24,11 @@ namespace AICS.AgentSim
         public void Init ()
         {
             moleculeDef.Init();
+            InitSites();
+        }
+
+        public void InitSites ()
+        {
             bindingSiteStates = new Dictionary<string,string>();
             foreach (SiteState siteState in siteStates)
             {

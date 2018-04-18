@@ -56,5 +56,198 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
+  colors:
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: U
+      - id: p3
+        state: U
+      - id: p4
+        state: U
+    color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: U
+      - id: p3
+        state: U
+      - id: p4
+        state: U
+    color: {r: 0, g: 0.3298893, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: P
+      - id: p3
+        state: U
+      - id: p4
+        state: U
+    color: {r: 0, g: 0.3298893, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: U
+      - id: p3
+        state: P
+      - id: p4
+        state: U
+    color: {r: 0, g: 0.3298893, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: U
+      - id: p3
+        state: U
+      - id: p4
+        state: P
+    color: {r: 0, g: 0.3298893, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: P
+      - id: p3
+        state: U
+      - id: p4
+        state: U
+    color: {r: 0.4896555, g: 0, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: U
+      - id: p3
+        state: P
+      - id: p4
+        state: U
+    color: {r: 0.4896555, g: 0, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: U
+      - id: p3
+        state: U
+      - id: p4
+        state: P
+    color: {r: 0.4896555, g: 0, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: P
+      - id: p3
+        state: P
+      - id: p4
+        state: U
+    color: {r: 0.4896555, g: 0, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: P
+      - id: p3
+        state: U
+      - id: p4
+        state: P
+    color: {r: 0.4896555, g: 0, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: U
+      - id: p3
+        state: P
+      - id: p4
+        state: P
+    color: {r: 0.4896555, g: 0, b: 1, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: U
+      - id: p2
+        state: P
+      - id: p3
+        state: P
+      - id: p4
+        state: P
+    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: U
+      - id: p3
+        state: P
+      - id: p4
+        state: P
+    color: {r: 0.9558824, g: 0.37954155, b: 0.7968917, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: P
+      - id: p3
+        state: U
+      - id: p4
+        state: P
+    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: P
+      - id: p3
+        state: P
+      - id: p4
+        state: U
+    color: {r: 1, g: 0, b: 0.7241378, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p1
+        state: P
+      - id: p2
+        state: P
+      - id: p3
+        state: P
+      - id: p4
+        state: P
+    color: {r: 1, g: 0.80689657, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1386266482134252, guid: 165d64b07f8b643598a4af508250d30e,
     type: 2}

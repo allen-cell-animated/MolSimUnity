@@ -32,5 +32,18 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
+  colors:
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p
+        state: 0
+    color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
+  - snapshot:
+      _moleculeDef: {fileID: 11400000}
+      siteStates:
+      - id: p
+        state: 1
+    color: {r: 1, g: 0.68275857, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1743744978614082, guid: 098c4d6fcf1184cadacb41dd40a9fddc,
     type: 2}
