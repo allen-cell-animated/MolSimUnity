@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: EZ(p2~U) = E + Z(p2~U)
   m_EditorClassIdentifier: 
   description: E(z!1).Z(active!1,p2~U) -> E(z) + Z(active,p2~U)
-  rate: 6000000
+  rate: 60000000
   reactantSnapshots:
   - _moleculeSnapshots:
     - _moleculeDef: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
@@ -38,8 +38,6 @@ MonoBehaviour:
         state: 0
       - id: p2
         state: U
-  relevantSiteReferences: []
   relevantSites:
   - moleculeDef: {fileID: 11400000, guid: fc3a51714588a4c9d893be99f02e1c0f, type: 2}
     bindingSiteID: z
-  productmoleculeColors: []

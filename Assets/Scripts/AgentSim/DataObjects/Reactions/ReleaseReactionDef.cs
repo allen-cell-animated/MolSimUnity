@@ -40,11 +40,11 @@ namespace AICS.AgentSim
         {
             foreach (MoleculeSnapshot moleculeSnapshot in productSnapshot.moleculeSnapshots)
             {
-                if (moleculeSnapshot.moleculeDef.species == bindingSite1.moleculeDef.species && moleculeSnapshot.ContainsBindingSite( bindingSite1.id ) )
+                if (moleculeSnapshot.moleculeDef.Equals( bindingSite1.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite1.id ) )
                 {
                     return bindingSite1;
                 }
-                if (moleculeSnapshot.moleculeDef.species == bindingSite2.moleculeDef.species && moleculeSnapshot.ContainsBindingSite( bindingSite2.id ) )
+                if (moleculeSnapshot.moleculeDef.Equals( bindingSite2.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite2.id ) )
                 {
                     return bindingSite2;
                 }

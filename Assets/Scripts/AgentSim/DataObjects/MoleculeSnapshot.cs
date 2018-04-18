@@ -47,7 +47,7 @@ namespace AICS.AgentSim
 
         public bool IsSatisfiedBy (MoleculeSnapshot other)
         {
-            if (other.moleculeDef.species != moleculeDef.species)
+            if (!other.moleculeDef.Equals( moleculeDef ))
             {
                 return false;
             }
@@ -77,7 +77,7 @@ namespace AICS.AgentSim
 
         public bool IsSatisfiedBy (Molecule _molecule)
         {
-            if (_molecule.species == moleculeDef.species)
+            if (_molecule.definition.Equals( moleculeDef ))
             {
                 foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
                 {
@@ -111,7 +111,7 @@ namespace AICS.AgentSim
             MoleculeSnapshot other = obj as MoleculeSnapshot;
             if (other != null)
             {
-                return other.moleculeDef.species == moleculeDef.species;
+                return other.moleculeDef.Equals( moleculeDef );
             }
             return false;
         }
@@ -120,7 +120,7 @@ namespace AICS.AgentSim
         {
             unchecked
             {
-                return 16777619 * ((moleculeDef == null || moleculeDef.species == null) ? 1 : moleculeDef.species.GetHashCode());
+                return 16777619 * ((moleculeDef == null) ? 1 : moleculeDef.GetHashCode());
             }
         }
 
@@ -163,7 +163,7 @@ namespace AICS.AgentSim
 
         public bool Matches (BindingSite bindingSite)
         {
-            return bindingSite.moleculeDef.species == moleculeDef.species && bindingSite.id == bindingSiteID;
+            return bindingSite.moleculeDef.Equals( moleculeDef ) && bindingSite.id == bindingSiteID;
         }
 
         public override string ToString ()

@@ -52,7 +52,7 @@ namespace AICS.AgentSim
                 {
                     foreach (MoleculeSnapshot moleculeSnapshot in reactantSnapshot.moleculeSnapshots)
                     {
-                        if (moleculeSnapshot.moleculeDef.species == moleculeBindingSite.moleculeDef.species)
+                        if (moleculeSnapshot.moleculeDef.Equals( moleculeBindingSite.moleculeDef ))
                         {
                             if (moleculeSnapshot.bindingSiteStates.ContainsKey( moleculeBindingSite.bindingSiteID ))
                             {
@@ -73,7 +73,7 @@ namespace AICS.AgentSim
             {
                 foreach (Molecule molecule in molecules)
                 {
-                    if (molecule.definition.species == moleculeSnapshot.moleculeDef.species)
+                    if (molecule.definition.Equals( moleculeSnapshot.moleculeDef ))
                     {
                         foreach (KeyValuePair<string,string> bindingSiteState in moleculeSnapshot.bindingSiteStates)
                         {

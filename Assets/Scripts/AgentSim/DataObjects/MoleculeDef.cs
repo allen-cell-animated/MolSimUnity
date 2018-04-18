@@ -63,6 +63,24 @@ namespace AICS.AgentSim
                 return _visualizationPrefab;
             }
         }
+
+        public override bool Equals (object obj)
+        {
+            MoleculeDef other = obj as MoleculeDef;
+            if (other != null)
+            {
+                return other.species == species;
+            }
+            return false;
+        }
+
+        public override int GetHashCode ()
+        {
+            unchecked
+            {
+                return 16777619 * species.GetHashCode();
+            }
+        }
     }
 
     [System.Serializable]

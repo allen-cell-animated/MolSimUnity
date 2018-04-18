@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: F + Z(p3~P) = FZ(p3~P)
   m_EditorClassIdentifier: 
   description: F(z) + Z(active,p3~P) -> F(z!1).Z(active!1,p3~P)
-  rate: 1400000
+  rate: 14000000
   reactantSnapshots:
   - _moleculeSnapshots:
     - _moleculeDef: {fileID: 11400000, guid: c493b1bfdc8ad4a23ba0a9d02184057e, type: 2}
@@ -38,10 +38,8 @@ MonoBehaviour:
         state: '!1'
       - id: p3
         state: P
-  relevantSiteReferences: []
   relevantSites:
   - moleculeDef: {fileID: 11400000, guid: c493b1bfdc8ad4a23ba0a9d02184057e, type: 2}
     bindingSiteID: z
   - moleculeDef: {fileID: 11400000, guid: 1264da4b8ce09498b81ab4f9bdcaba90, type: 2}
     bindingSiteID: active
-  productmoleculeColors: []

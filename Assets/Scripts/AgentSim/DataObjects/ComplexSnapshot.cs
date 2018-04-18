@@ -90,7 +90,7 @@ namespace AICS.AgentSim
                         foreach (MoleculeSnapshot otherMoleculeSnapshot in other.moleculeSnapshots)
                         {
                             if (otherMoleculeSnapshot != null && otherMoleculeSnapshot.moleculeDef != null
-                                && otherMoleculeSnapshot.moleculeDef.species == moleculeSnapshot.moleculeDef.species)
+                                && otherMoleculeSnapshot.moleculeDef.Equals( moleculeSnapshot.moleculeDef ))
                             {
                                 foundState = true;
                                 break;
