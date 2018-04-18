@@ -11,7 +11,7 @@ namespace AICS.AgentSim
         public bool periodicBoundary = true;
 
         [HideInInspector] public LayerMask boundaryLayer = 1 << 8;
-        Vector3 size;
+        [HideInInspector] public Vector3 size;
         Walls walls;
 
         Transform _theTransform;

@@ -42,6 +42,7 @@ namespace AICS.AgentSim
                 moved = MoveRandomStep( dTime );
                 i++;
             }
+            //if (!moved) { reactor.moveFails++; }
             RotateRandomly( dTime );
         }
 

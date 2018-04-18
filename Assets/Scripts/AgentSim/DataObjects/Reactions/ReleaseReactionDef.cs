@@ -31,6 +31,7 @@ namespace AICS.AgentSim
                     reactor.MoveMoleculesToNewComplex( molecules, bindingSite.molecule.theTransform );
 
                     SetProductColor( molecules );
+                    AnimateReaction( molecules );
                 }
                 World.ShowFlash( bindingSite1.theTransform );
             }

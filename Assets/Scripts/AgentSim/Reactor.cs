@@ -18,6 +18,21 @@ namespace AICS.AgentSim
         public List<Mover> movers = new List<Mover>();
         public List<Complex> complexes = new List<Complex>();
 
+        //[HideInInspector] public int moveFails;
+        //[SerializeField] float stepsPerMoveFail;
+        //[SerializeField] float percentOccupiedVolume;
+
+        float GetPercentOccupiedVolume ()
+        {
+            float occupiedVolume = 0;
+            Molecule[] allMolecules = GetComponentsInChildren<Molecule>();
+            foreach (Molecule molecule in allMolecules)
+            {
+                occupiedVolume += Mathf.PI * Mathf.Pow( molecule.collisionRadius, 2f );
+            }
+            return 100f * occupiedVolume / (container.size.x * container.size.y * container.size.z);
+        }
+
         float dT
         {
             get
@@ -41,6 +56,7 @@ namespace AICS.AgentSim
             CreateReactionSimulators();
             CreateContainer();
             SpawnComplexes();
+            //percentOccupiedVolume = GetPercentOccupiedVolume();
         }
 
         protected virtual void CreateReactionSimulators ()
@@ -265,6 +281,8 @@ namespace AICS.AgentSim
             //UnityEngine.Profiling.Profiler.EndSample();
 
             DestroyOldComplexes();
+
+            //stepsPerMoveFail = World.Instance.steps / (float)moveFails;
         }
 
         protected virtual void MoveParticles ()

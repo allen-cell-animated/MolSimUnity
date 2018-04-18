@@ -5,10 +5,10 @@ using AICS.AgentSim;
 
 public class TestHashCodes
 {
-    public bool debug = true;
+    public bool debug = false;
 
     [Test]
-    public void MoleculeStatesSameSpeciesSameSites ()
+    public void MoleculeSnapshotSameSpeciesSameSites ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
@@ -26,7 +26,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void MoleculeStatesSameSpeciesDifferentSites ()
+    public void MoleculeSnapshotSameSpeciesDifferentSites ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
@@ -50,7 +50,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void MoleculeStatesSameSpeciesDifferentNumberOfSites ()
+    public void MoleculeSnapshotSameSpeciesDifferentNumberOfSites ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
@@ -73,7 +73,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void MoleculeStatesDifferentSpeciesSameSites ()
+    public void MoleculeSnapshotDifferentSpeciesSameSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
@@ -99,7 +99,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void MoleculeStatesSameSpeciesSitesInDifferentOrder ()
+    public void MoleculeSnapshotSameSpeciesSitesInDifferentOrder ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
@@ -123,7 +123,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void ComplexStateSameSpeciesSameSites ()
+    public void ComplexSnapshotSameSpeciesSameSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
@@ -149,7 +149,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void ComplexStateDifferentSpeciesSameSites ()
+    public void ComplexSnapshotDifferentSpeciesSameSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
@@ -182,7 +182,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void ComplexStateSameSpeciesDifferentSites ()
+    public void ComplexSnapshotSameSpeciesDifferentSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();
@@ -214,7 +214,7 @@ public class TestHashCodes
     }
 
     [Test]
-    public void ComplexStateSpeciesInDifferentOrder ()
+    public void ComplexSnapshotSpeciesInDifferentOrder ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         Dictionary<string,string> sites1 = new Dictionary<string, string>();

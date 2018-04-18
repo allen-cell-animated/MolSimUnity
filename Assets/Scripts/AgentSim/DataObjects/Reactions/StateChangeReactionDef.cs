@@ -19,6 +19,7 @@ namespace AICS.AgentSim
                 bindingSite1.complex.UpdateReactions();
 
                 SetProductColor( bindingSite1.molecules );
+                AnimateReaction( bindingSite1.molecules );
                 World.ShowFlash( bindingSite1.theTransform );
             }
         }

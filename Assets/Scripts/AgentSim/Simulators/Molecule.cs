@@ -154,5 +154,26 @@ namespace AICS.AgentSim
                 }
             }
         }
+
+        Animator _animator;
+        Animator animator
+        {
+            get
+            {
+                if (_animator == null && transform.childCount > 0)
+                {
+                    _animator = transform.GetChild( 0 ).GetComponent<Animator>();
+                }
+                return _animator;
+            }
+        }
+
+        public void AnimateReaction ()
+        {
+            if (animator != null)
+            {
+                animator.SetTrigger( "React" );
+            }
+        }
 	}
 }

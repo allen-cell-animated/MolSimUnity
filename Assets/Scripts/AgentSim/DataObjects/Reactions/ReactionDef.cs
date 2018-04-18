@@ -70,6 +70,14 @@ namespace AICS.AgentSim
                 molecule.SetColorForCurrentState();
             }
         }
+
+        protected void AnimateReaction (Molecule[] molecules)
+        {
+            foreach (Molecule molecule in molecules)
+            {
+                molecule.AnimateReaction();
+            }
+        }
     }
 
     //[System.Serializable]
