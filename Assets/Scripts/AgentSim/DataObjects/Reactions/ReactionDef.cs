@@ -46,7 +46,7 @@ namespace AICS.AgentSim
 
         public abstract void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null);
 
-        protected virtual void SetComplexToFinalState (Molecule[] molecules, ComplexSnapshot finalSnapshot)
+        protected virtual void SetMoleculesToFinalState (Molecule[] molecules, ComplexSnapshot finalSnapshot)
         {
             foreach (MoleculeSnapshot moleculeSnapshot in finalSnapshot.moleculeSnapshots) 
             {

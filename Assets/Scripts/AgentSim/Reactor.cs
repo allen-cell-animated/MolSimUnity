@@ -7,7 +7,6 @@ namespace AICS.AgentSim
     public class Reactor : MonoBehaviour 
     {
         [HideInInspector] public Container container;
-        [HideInInspector] public Spawner spawner;
         public ModelDef modelDef;
         public List<BimolecularReaction> bimolecularReactions = new List<BimolecularReaction>();
         public List<CollisionFreeReaction> collisionFreeReactions = new List<CollisionFreeReaction>();
@@ -24,6 +23,16 @@ namespace AICS.AgentSim
             get
             {
                 return World.Instance.dT;
+            }
+        }
+
+        int id = -1;
+        string nextID
+        {
+            get
+            {
+                id++;
+                return id.ToString();
             }
         }
 
@@ -59,11 +68,95 @@ namespace AICS.AgentSim
 
         protected virtual void SpawnComplexes ()
         {
-            spawner = gameObject.AddComponent<Spawner>();
             foreach (ComplexConcentration complex in modelDef.complexes)
             {
-                spawner.SpawnComplexes( complex, this );
+                SpawnComplexInstances( complex );
             }
+        }
+
+        protected virtual void SpawnComplexInstances (ComplexConcentration complexConcentration)
+        {
+            int amount = Mathf.RoundToInt( complexConcentration.concentration * container.volume * 6.022141e23f );
+            if (amount < 1 || complexConcentration.moleculeCount < 1)
+            {
+                return;
+            }
+
+            MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexSnapshot, CalculateMoleculeTransforms( complexConcentration.complexSnapshot ),
+                                                              GetRelevantBimolecularReactions( complexConcentration.complexSnapshot ),
+                                                              GetRelevantCollisionFreeReactions( complexConcentration.complexSnapshot ) );
+
+            Complex complex;
+            for (int i = 0; i < amount; i++)
+            {
+                complex = new GameObject( nextID ).AddComponent<Complex>();
+                complex.gameObject.transform.SetParent( transform );
+                complex.gameObject.transform.position = container.GetRandomPointInBounds( 0.1f );
+                complex.gameObject.transform.rotation = Random.rotation;
+
+                complex.SpawnMolecules( initData );
+                complex.Init( this );
+            }
+        }
+
+        protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexSnapshot complexSnapshot)
+        {
+            RelativeTransform[] transforms = new RelativeTransform[complexSnapshot.moleculeSnapshots.Length];
+            transforms[0] = new RelativeTransform( Vector3.zero, Vector3.zero );
+            Vector3 averagePosition = Vector3.zero;
+
+            Transform molecule1 = new GameObject( "molecule1" ).transform;
+            Transform molecule2 = new GameObject( "molecule2" ).transform;
+            Transform site1 = new GameObject( "site1" ).transform;
+            site1.SetParent( molecule1 );
+            Transform site2 = new GameObject( "site2" ).transform;
+            site2.SetParent( molecule2 );
+            BindingSiteDef bindingSite;
+
+            for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
+            {
+                foreach (KeyValuePair<string,string> siteState1 in complexSnapshot.moleculeSnapshots[i].bindingSiteStates)
+                {
+                    if (siteState1.Value.Contains( "!" ))
+                    {
+                        for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
+                        {
+                            foreach (KeyValuePair<string,string> siteState2 in complexSnapshot.moleculeSnapshots[j].bindingSiteStates)
+                            {
+                                if (siteState1.Value == siteState2.Value)
+                                {
+                                    molecule1.position = transforms[i].position;
+                                    molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
+                                    bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.Key];
+                                    bindingSite.transformOnMolecule.Apply( molecule1, site1 );
+
+                                    molecule2.position = Vector3.zero;
+                                    molecule2.rotation = Quaternion.identity;
+                                    bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.Key];
+                                    bindingSite.transformOnMolecule.Apply( molecule2, site2 );
+
+                                    molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
+                                    molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
+
+                                    transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
+                                    averagePosition += transforms[j].position;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            averagePosition /= transforms.Length;
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                transforms[i].position -= averagePosition;
+            }
+
+            Destroy( molecule1.gameObject );
+            Destroy( molecule2.gameObject );
+
+            return transforms;
         }
 
         public BimolecularReaction[] GetRelevantBimolecularReactions (ComplexSnapshot complexSnapshot)
@@ -150,7 +243,10 @@ namespace AICS.AgentSim
             #if UNITY_EDITOR
             if (Input.GetKeyDown( KeyCode.X ))
             {
-                MolSimTests.StateOfReactorIsCorrect( this );
+                if (MolSimTests.StateOfReactorIsCorrect( this ) && !MolSimTests.debug)
+                {
+                    Debug.Log( "Reactor passed check" );
+                }
             }
             #endif
 
@@ -231,6 +327,26 @@ namespace AICS.AgentSim
             }
         }
 
+        public virtual void MoveMoleculesToNewComplex (Molecule[] molecules, Transform centerTransform)
+        {
+            //create complex
+            Complex complex = new GameObject( nextID ).AddComponent<Complex>();
+            complex.gameObject.transform.SetParent( transform );
+            complex.gameObject.transform.position = centerTransform.position;
+            complex.gameObject.transform.rotation = centerTransform.rotation;
+
+            //move molecules
+            BimolecularReaction[] relevantBimolecularReactions = GetRelevantBimolecularReactions( molecules );
+            CollisionFreeReaction[] relevantCollisionFreeReactions = GetRelevantCollisionFreeReactions( molecules );
+            complex.molecules = molecules;
+            foreach (Molecule molecule in molecules)
+            {
+                molecule.MoveToComplex( complex, relevantBimolecularReactions, relevantCollisionFreeReactions );
+            }
+
+            complex.Init( this );
+        }
+
         protected void DestroyOldComplexes ()
         {
             List<Complex> complexesToDestroy = complexes.FindAll( c => c.readyToBeDestroyed );
@@ -242,7 +358,25 @@ namespace AICS.AgentSim
 
         public void Cleanup ()
         {
-            int n = complexes.RemoveAll( c => c == null || !c.couldReactOnCollision );
+            complexes.RemoveAll( c => c == null || !c.couldReactOnCollision );
+        }
+    }
+
+    public class MoleculeInitData
+    {
+        public ComplexSnapshot complexSnapshot;
+        public RelativeTransform[] moleculeTransforms;
+        public BimolecularReaction[] relevantBimolecularReactions;
+        public CollisionFreeReaction[] relevantCollisionFreeReactions;
+
+        public MoleculeInitData (ComplexSnapshot _complexSnapshot, RelativeTransform[] _moleculeTransforms,
+                                 BimolecularReaction[] _relevantBimolecularReactions, 
+                                 CollisionFreeReaction[] _relevantCollisionFreeReactions)
+        {
+            complexSnapshot = _complexSnapshot;
+            moleculeTransforms = _moleculeTransforms;
+            relevantBimolecularReactions = _relevantBimolecularReactions;
+            relevantCollisionFreeReactions = _relevantCollisionFreeReactions;
         }
     }
 }

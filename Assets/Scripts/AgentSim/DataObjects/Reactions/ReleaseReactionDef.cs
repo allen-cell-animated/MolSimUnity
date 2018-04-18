@@ -26,12 +26,12 @@ namespace AICS.AgentSim
                 {
                     bindingSite = GetBindingSiteForProductState( productSnapshot, bindingSite1, bindingSite2 );
                     molecules = bindingSite.complex.GetMoleculesAtEndOfBond( bindingSite );
-                    SetComplexToFinalState( molecules, productSnapshot );
-                    bindingSite.reactor.spawner.CreateComplex( bindingSite.molecule.theTransform, molecules, bindingSite.reactor );
+
+                    SetMoleculesToFinalState( molecules, productSnapshot );
+                    reactor.MoveMoleculesToNewComplex( molecules, bindingSite.molecule.theTransform );
 
                     SetProductColor( molecules );
                 }
-
                 World.ShowFlash( bindingSite1.theTransform );
             }
         }

@@ -173,16 +173,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void SetMolecules (Molecule[] _molecules, BimolecularReaction[] relevantBimolecularReactions, 
-                                          CollisionFreeReaction[] relevantCollisionFreeReactions)
-        {
-            molecules = _molecules;
-            foreach (Molecule molecule in molecules)
-            {
-                molecule.MoveToComplex( this, relevantBimolecularReactions, relevantCollisionFreeReactions );
-            }
-        }
-
         public virtual void InteractWith (Complex other)
         {
             if (IsNear( other ))

@@ -24,8 +24,8 @@ namespace AICS.AgentSim
                 bindingSite1.molecules.CopyTo( molecules, 0 );
                 bindingSite2.molecules.CopyTo( molecules, bindingSite1.molecules.Length );
 
-                SetComplexToFinalState( molecules, productSnapshots[0] );
-                reactor.spawner.CreateComplex( bindingSite1.theTransform, molecules, reactor );
+                SetMoleculesToFinalState( molecules, productSnapshots[0] );
+                reactor.MoveMoleculesToNewComplex( molecules, bindingSite1.theTransform );
 
                 SetProductColor( molecules );
                 World.ShowFlash( bindingSite1.theTransform );

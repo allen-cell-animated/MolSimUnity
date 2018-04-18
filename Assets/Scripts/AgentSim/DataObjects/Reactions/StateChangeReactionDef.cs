@@ -15,7 +15,7 @@ namespace AICS.AgentSim
         {
             if (bindingSite1 != null)
             {
-                SetComplexToFinalState( bindingSite1.molecules, productSnapshots[0] );
+                SetMoleculesToFinalState( bindingSite1.molecules, productSnapshots[0] );
                 bindingSite1.complex.UpdateReactions();
 
                 SetProductColor( bindingSite1.molecules );
