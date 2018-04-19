@@ -11,6 +11,7 @@ namespace AICS.AgentSim
         public Dictionary<string,BindingSite> bindingSites = new Dictionary<string,BindingSite>();
         public float collisionRadius;
         public float interactionRadius;
+        public bool couldReactOnCollision;
 
         Transform _theTransform;
         public Transform theTransform
@@ -25,8 +26,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public bool couldReactOnCollision;
-
         bool GetCouldReactOnCollision ()
         {
             foreach (BindingSite bindingSite in bindingSites.Values)
@@ -37,14 +36,6 @@ namespace AICS.AgentSim
                 }
             }
             return false;
-        }
-
-        public string species
-        {
-            get
-            {
-                return definition.species;
-            }
         }
 
         public virtual void Init (MoleculeSnapshot moleculeSnapshot, Complex _complex, 
@@ -106,7 +97,7 @@ namespace AICS.AgentSim
         {
             complex.RemoveMolecule( this );
             complex = _complex;
-            name = complex.name + "_" + species;
+            name = complex.name + "_" + definition.species;
             theTransform.SetParent( complex.theTransform );
 
             UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
@@ -120,11 +111,6 @@ namespace AICS.AgentSim
                 bindingSite.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
             }
             couldReactOnCollision = GetCouldReactOnCollision();
-        }
-
-        public override string ToString ()
-        {
-            return "Molecule " + name;
         }
 
         Material _material;
@@ -174,6 +160,11 @@ namespace AICS.AgentSim
             {
                 animator.SetTrigger( "React" );
             }
+        }
+
+        public override string ToString ()
+        {
+            return "Molecule " + name;
         }
 	}
 }

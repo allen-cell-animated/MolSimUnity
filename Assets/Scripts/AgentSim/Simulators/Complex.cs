@@ -8,9 +8,11 @@ namespace AICS.AgentSim
     {
         public Reactor reactor;
         public Molecule[] molecules;
+        public bool couldReactOnCollision;
         public bool readyToBeDestroyed;
 
         protected Mover mover;
+        float interactionRadius;
 
         Transform _theTransform;
         public Transform theTransform
@@ -39,8 +41,6 @@ namespace AICS.AgentSim
             return s;
         }
 
-        public bool couldReactOnCollision;
-
         bool GetCouldReactOnCollision ()
         {
             foreach (Molecule molecule in molecules)
@@ -52,8 +52,6 @@ namespace AICS.AgentSim
             }
             return false;
         }
-
-        float interactionRadius;
 
         float GetInteractionRadius ()
         {

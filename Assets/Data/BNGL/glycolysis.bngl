@@ -2,15 +2,43 @@
 
 begin molecule types
 
-    
+    # Enzymes
+    Hexokinase(s,a)
+    Glc6PIsomerase(s,s)
+    PFK(s,s,a,a)
+    Aldolase(s,s)
+    TriosePIsomerase(s)
+    GAPDH(s,s,n,n)
+    PGKinase(s,a)
+    PGMutase(s,s,s,s)
+    Enolase(s,s)
+    PyrKinase(s,s,s,s,a,a,a,a)
+
+    # Substrates
+    S(e,s,p1~0~1,p2~0~1,id~halfGlc~halfFru~DHAP~GADP~glyc~PEP~pyr)
+    ADP(e,p~0~1)
+    NAD(e,h~0~1)
 
 end molecule types
 
 
 
 begin species
-
     
+    Hexokinase(s)
+    Glc6PIsomerase(s,s)
+    PFK(s,s)
+    Aldolase(s,s)
+    TriosePIsomerase(s)
+    GAPDH(s,s)
+    PGKinase(s)
+    PGMutase(s,s,s,s)
+    Enolase(s,s)
+    PyrKinase(s,s,s,s)
+
+    S(e,s!1,p1~0,p2~0,id~halfGlc).S(e,s!1,p1~0,p2~0,id~halfGlc) # glucose
+    ADP(e,p~1) # ATP
+    NAD(e,h~0) # NAD+
 
 end species
 
@@ -18,6 +46,131 @@ end species
 
 begin reaction rules
 
-    
+    # 0 Hexokinase -----------------------------------------------------------
+
+    # bind glucose
+    Hexokinase(s) + S(e,s!1,p1~0,id~halfGlc).S(e,s!1,p1~0,id~halfGlc) <-> Hexokinase(s!2).S(e!2,s!1,p1~0,id~halfGlc).S(e,s!1,p1~0,id~halfGlc)
+    # bind ATP
+    Hexokinase(a) + ADP(e,p~1) <-> Hexokinase(a!1).ADP(e!1,p~1)
+    # catalysis: Glc + ATP -> Glc-6-P + ADP
+    Hexokinase(s!2,a!3).S(e!2,s!1,p1~0,id~halfGlc).S(e,s!1,p1~0,id~halfGlc).ADP(e!3,p~1) -> Hexokinase(s!2,a!3).S(e!2,s!1,p1~1,id~halfGlc).S(e,s!1,p1~0,id~halfGlc).ADP(e!3,p~0)
+    # release Glc-6-P
+    Hexokinase(s!2).S(e!2,s!1,p1~1,id~halfGlc).S(e,s!1,p1~0,id~halfGlc) <-> Hexokinase(s) + S(e,s!1,p1~1,id~halfGlc).S(e,s!1,p1~0,id~halfGlc)
+    # release ADP
+    Hexokinase(a!1).ADP(e!1,p~0) <-> Hexokinase(a) + ADP(e,p~0)
+
+    # 1 Glc-6-P Isomerase -----------------------------------------------------------
+
+    # bind Glc-6-P
+    Glc6PIsomerase(s) + S(e,s!1,p1~1,id~halfGlc).S(e,s!1,p1~0,id~halfGlc) <-> Glc6PIsomerase(s!2).S(e,s!1,p1~1,id~halfGlc).S(e,s!1,p1~0,id~halfGlc)
+    # catalysis and release: Glc-6-P <-> Fru-6-P
+    Glc6PIsomerase(s!2).S(e,s!1,p1~1,id~halfGlc).S(e,s!1,p1~0,id~halfGlc) <-> Glc6PIsomerase(s) + S(e,s!1,p1~1,id~halfFru).S(e,s!1,p1~0,id~halfFru)
+
+    # 2 PFK -----------------------------------------------------------
+
+    # bind Fru-6-P
+    PFK(s) + S(e,s!1,p1~1,id~halfFru).S(e,s!1,p1~0,id~halfFru) <-> PFK(s!2).S(e!2,s!1,p1~1,id~halfFru).S(e,s!1,p1~0,id~halfFru)
+    # bind ATP
+    PFK(a) + ADP(e,p~1) <-> Hexokinase(a!1).ADP(e!1,p~1)
+    # catalysis: Fru-6-P + ATP -> Fru-1,6-bisP + ADP
+    PFK(s!2,a!3).S(e!2,s!1,p1~1,id~halfFru).S(e,s!1,p1~0,id~halfFru).ADP(e!3,p~1) -> PFK(s!2,a!3).S(e!2,s!1,p1~1,id~halfFru).S(e,s!1,p1~1,id~halfFru).ADP(e!3,p~0)
+    # release Fru-1,6-bisP
+    PFK(s!2).S(e!2,s!1,p1~1,id~halfFru).S(e,s!1,p1~1,id~halfFru) <-> PFK(s) + S(e,s!1,p1~1,id~halfFru).S(e,s!1,p1~1,id~halfFru)
+    # release ADP
+    PFK(a!1).ADP(e!1,p~0) <-> PFK(a) + ADP(e,p~0)
+
+    # 3 Aldolase -----------------------------------------------------------
+
+    # bind Fru-1,6-bisP
+    Aldolase(s) + S(e,s!1,p1~1,id~halfFru).S(e,s!1,p1~1,id~halfFru) <-> Aldolase(s!2).S(e!2,s!1,p1~1,id~halfFru).S(e,s!1,p1~1,id~halfFru)
+    # catalysis: Fru-1,6-bisP <-> DHAP + GADP
+    Aldolase(s!2).S(e!2,s!1,p1~1,id~halfFru).S(e,s!1,p1~1,id~halfFru) <-> Aldolase(s!2).S(e!2,s!1,p1~1,id~DHAP).S(e,s!1,p1~1,id~GDAP)
+    # switch substrate bond
+    Aldolase(s!2).S(e!2,s!1,id~DHAP).S(e,s!1,id~GDAP) <-> Aldolase(s!2).S(e,s!1,id~DHAP).S(e!2,s!1,id~GDAP)
+    # release GDAP first
+    Aldolase(s!2).S(e!2,s!1,id~DHAP).S(e,s!1,id~GDAP) <-> Aldolase(s!2).S(e!2,s,id~DHAP) + S(e,s,id~GDAP)
+    # release DHAP second
+    Aldolase(s!2).S(e!2,s,id~DHAP) <-> Aldolase(s) + S(e,s,id~DHAP)
+    # release DHAP first
+    Aldolase(s!2).S(e,s!1,id~DHAP).S(e!2,s!1,id~GDAP) <-> Aldolase(s!2).S(e!2,s,id~GDAP) + S(e,s,id~DHAP)
+    # release GDAP second
+    Aldolase(s!2).S(e!2,s,id~GDAP) <-> Aldolase(s) + S(e,s,id~GDAP)
+
+    # 4 TriosePIsomerase -----------------------------------------------------------
+
+    # bind DHAP
+    TriosePIsomerase(s) + S(e,s,id~DHAP) <-> TriosePIsomerase(s!1).S(e!1,s,id~DHAP)
+    # catalysis and release: DHAP <-> GADP
+    TriosePIsomerase(s!1).S(e!1,s,id~DHAP) <-> TriosePIsomerase(s) + S(e,s,id~GDAP)
+
+    # 5 GAPDH -----------------------------------------------------------
+
+    # bind GADP
+    GAPDH(s) + S(e,s,id~GDAP) <-> GAPDH(s!1).S(e!1,s,id~GDAP)
+    # bind NAD+
+    GAPDH(n) + NAD(e,h~0) <-> GAPDH(n!1).NAD(e!1,h~0)
+    # catalysis: GADP + NAD+ <-> 1,3-bisPglycerate + NADH
+    GAPDH(s!1,n!2).S(e!1,s,p2~0,id~GDAP).NAD(e!2,h~0) <-> GAPDH(s!1,n!2).S(e!1,p1~1,p2~1,id~glyc).NAD(e!2,h~1)
+    # release 1,3-bisPglycerate
+    GAPDH(s!1).S(e!1,p1~1,p2~1,id~glyc) <-> GAPDH(s) + S(e,p1~1,p2~1,id~glyc)
+    # release NADH
+    GAPDH(n!1).NAD(e!1,h~1) <-> GAPDH(n) + NAD(e,h~1)
+
+    # 6 PGKinase -----------------------------------------------------------
+
+    # bind 1,3-bisPglycerate
+    PGKinase(s) + S(e,p1~1,p2~1,id~glyc) <-> PGKinase(s!1).S(e!1,p1~1,p2~1,id~glyc)
+    # bind ADP
+    PGKinase(a) + ADP(e,p~0) <-> PGKinase(a!1).ADP(e!1,p~0)
+    # catalysis: 1,3-bisPglycerate + ADP <-> 3Pglycerate + ATP
+    PGKinase(s!1,a!2).S(e!1,p1~1,p2~1,id~glyc).ADP(e!2,p~0) <-> PGKinase(s!1,a!2).S(e!1,p1~1,p2~0,id~glyc).ADP(e!2,p~1)
+    # release 3Pglycerate
+    PGKinase(s!1).S(e!1,p1~1,p2~0,id~glyc) <-> PGKinase(s) + S(e,p1~1,p2~0,id~glyc)
+    # release ATP
+    PGKinase(a!1).ADP(e!1,p~1) <-> PGKinase(a) + ADP(e,p~1)
+
+    # 7 PGMutase -----------------------------------------------------------
+
+    # bind 3Pglycerate
+    PGMutase(s) + S(e,p1~1,p2~0,id~glyc) <-> PGMutase(s!1).S(e!1,p1~1,p2~0,id~glyc)
+    # catalysis and release: 3Pglycerate <-> 2Pglycerate
+    PGMutase(s!1).S(e!1,p1~1,p2~0,id~glyc) <-> PGMutase(s) + S(e,p1~0,p2~1,id~glyc)
+
+    # 8 Enolase -----------------------------------------------------------
+
+    # bind 2Pglycerate
+    Enolase(s) + S(e,p1~0,p2~1,id~glyc) <-> Enolase(s!1).S(e!1,p1~0,p2~1,id~glyc)
+    # catalysis and release: 2Pglycerate <-> PEP
+    Enolase(s!1).S(e!1,p1~0,p2~1,id~glyc) <-> Enolase(s) + S(e,p1~0,p2~1,id~PEP)
+
+    # 9 PyrKinase -----------------------------------------------------------
+
+    # bind PEP
+    PyrKinase(s) + S(e,id~PEP) <-> PyrKinase(s!1).S(e!1,id~PEP)
+    # bind ADP
+    PyrKinase(a) + ADP(e,p~0) <-> PyrKinase(a!1).ADP(e!1,p~0)
+    # catalysis: PEP + ADP -> pyruvate + ATP
+    PyrKinase(s!1,a!2).S(e!1,id~PEP).ADP(e!2,p~0) -> PyrKinase(s!1,a!2).S(e!1,p1~0,p2~0,id~pyr).ADP(e!2,p~1)
+    # release pyruvate
+    PyrKinase(s!1).S(e!1,id~pyr) <-> PyrKinase(s) + S(e,id~pyr)
+    # release ATP
+    PyrKinase(a!1).ADP(e!1,p~1) <-> PyrKinase(a) + ADP(e,p~1)
 
 end reaction rules
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

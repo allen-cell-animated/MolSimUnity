@@ -11,11 +11,11 @@ namespace AICS.AgentSim
 
         public CollisionFreeReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public bool Register (BindingSite bindingSite, ComplexSnapshot complexSnapshot = null)
+        public bool RegisterBindingSite (BindingSite bindingSite)
         {
             if (!bindingSites.Contains( bindingSite ))
             {
-                if ((complexSnapshot == null || ComplexIsReactant( complexSnapshot )) && SiteIsRelevant( bindingSite ))
+                if (SiteIsRelevant( bindingSite ))
                 {
                     bindingSites.Add( bindingSite );
                     return true;
@@ -28,7 +28,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public void Unregister (BindingSite bindingSite)
+        public void UnregisterBindingSite (BindingSite bindingSite)
         {
             if (bindingSites.Contains( bindingSite ))
             {

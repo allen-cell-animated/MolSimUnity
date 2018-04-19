@@ -28,14 +28,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public Reactor reactor
-        {
-            get
-            {
-                return complex.reactor;
-            }
-        }
-
         public Complex complex
         {
             get
@@ -68,7 +60,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public float interactionRadius
+        protected float interactionRadius
         {
             get
             {
@@ -106,7 +98,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReaction> collisionFreeReactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in relevantCollisionFreeReactions)
             {
-                if (reaction.Register( this ))
+                if (reaction.RegisterBindingSite( this ))
                 {
                     collisionFreeReactionsList.Add( reaction );
                 }
@@ -118,7 +110,7 @@ namespace AICS.AgentSim
         {
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                reaction.Unregister( this );
+                reaction.UnregisterBindingSite( this );
             }
         }
 

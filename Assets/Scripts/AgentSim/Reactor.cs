@@ -175,7 +175,7 @@ namespace AICS.AgentSim
             return transforms;
         }
 
-        public BimolecularReaction[] GetRelevantBimolecularReactions (ComplexSnapshot complexSnapshot)
+        protected BimolecularReaction[] GetRelevantBimolecularReactions (ComplexSnapshot complexSnapshot)
         {
             List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in bimolecularReactions)
@@ -201,7 +201,7 @@ namespace AICS.AgentSim
             return reactionsList.ToArray();
         }
 
-        public CollisionFreeReaction[] GetRelevantCollisionFreeReactions (ComplexSnapshot complexSnapshot)
+        protected CollisionFreeReaction[] GetRelevantCollisionFreeReactions (ComplexSnapshot complexSnapshot)
         {
             List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
