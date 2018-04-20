@@ -1,0 +1,29 @@
+
+
+begin molecule types
+
+    PGMutase(s,s,s,s)
+    glycerate(e,p2~0~1,p3~0~1)
+
+end molecule types
+
+
+
+begin species
+    
+    PGMutase(s,s,s,s)
+    glycerate(e,p2~0,p3~1) # 3-P-glycerate
+
+end species
+
+
+
+begin reaction rules
+
+    # bind 
+    PGMutase(s) + glycerate(e,p2~0,p3~1) <-> PGMutase(s!1).glycerate(e!1,p2~0,p3~1)
+    # catalysis and release
+    PGMutase(s!1).glycerate(e!1,p2~0,p3~1) <-> PGMutase(s) + glycerate(e,p2~1,p3~0)
+
+end reaction rules
+
