@@ -21,7 +21,7 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public Dictionary<string,BindingSiteDef> bindingSiteDefs;
+        public Dictionary<BindingSiteRef,BindingSiteDef> bindingSiteDefs;
 
         #region for prototyping in inspector without writing custom property drawer etc
         [SerializeField] BindingSiteDef[] siteDefs = new BindingSiteDef[0];
@@ -29,24 +29,19 @@ namespace AICS.AgentSim
 
         public void Init ()
         {
-            bindingSiteDefs = new Dictionary<string,BindingSiteDef>();
+            bindingSiteDefs = new Dictionary<BindingSiteRef,BindingSiteDef>();
+            Dictionary<string,int> indexForID = new Dictionary<string, int>();
             foreach (BindingSiteDef siteDef in siteDefs)
             {
-                if (!bindingSiteDefs.ContainsKey( siteDef.id ))
+                if (!indexForID.ContainsKey( siteDef.id ))
                 {
-                    bindingSiteDefs.Add( siteDef.id, siteDef );
+                    indexForID.Add( siteDef.id, 0 );
                 }
                 else
                 {
-                    Debug.LogWarning( "can't init Molecule with multiple sites with the same ID (yet)" );
+                    indexForID[siteDef.id]++;
                 }
-            }
-            if (colors != null)
-            {
-                foreach (MoleculeSnapshotColor moleculeColor in colors)
-                {
-                    moleculeColor.Init();
-                }
+                bindingSiteDefs.Add( new BindingSiteRef( siteDef.id, indexForID[siteDef.id] ),  siteDef );
             }
         }
         #endregion
@@ -116,11 +111,56 @@ namespace AICS.AgentSim
     {
         public MoleculeSnapshot snapshot;
         public Color color;
+    }
 
-        //To avoid circular ref in MoleculeSnapshot.Init()
-        public void Init ()
+    [System.Serializable]
+    public class BindingSiteRef
+    {
+        [SerializeField] string _id;
+        public string id
         {
-            snapshot.InitSites();
+            get
+            {
+                return _id;
+            }
+        }
+
+        [SerializeField] int _index;
+        public int index
+        {
+            get
+            {
+                return _index;
+            }
+        }
+
+        public BindingSiteRef (string siteID, int siteIndex)
+        {
+            _id = siteID;
+            _index = siteIndex;
+        }
+
+        public bool IsSatisfiedBy (BindingSiteRef other)
+        {
+            return other.id == id && (index < 0 || other.index == index);
+        }
+
+        public override bool Equals (object obj)
+        {
+            BindingSiteRef other = obj as BindingSiteRef;
+            if (other != null)
+            {
+                return other.id == id && other.index == index;
+            }
+            return false;
+        }
+
+        public override int GetHashCode ()
+        {
+            unchecked
+            {
+                return 16777619 * id.GetHashCode() + index;
+            }
         }
     }
 }

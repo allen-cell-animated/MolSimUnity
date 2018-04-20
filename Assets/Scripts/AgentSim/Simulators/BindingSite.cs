@@ -71,10 +71,11 @@ namespace AICS.AgentSim
         public virtual void Init (string bindingSiteID, MoleculeSnapshot moleculeSnapshot, BimolecularReaction[] relevantBimolecularReactions, 
                                   CollisionFreeReaction[] relevantCollisionFreeReactions, Molecule _molecule)
         {
-            definition = moleculeSnapshot.moleculeDef.bindingSiteDefs[bindingSiteID];
+            //TODO
+            //definition = moleculeSnapshot.moleculeDef.bindingSiteDefs[bindingSiteID];
             molecule = _molecule;
-            state = moleculeSnapshot.bindingSiteStates.ContainsKey(bindingSiteID) ? moleculeSnapshot.bindingSiteStates[bindingSiteID] 
-                                                                                  : moleculeDef.bindingSiteDefs[bindingSiteID].states[0];
+            //state = moleculeSnapshot.bindingSiteStates.ContainsKey(bindingSiteID) ? moleculeSnapshot.bindingSiteStates[bindingSiteID] 
+                                                                                  //: moleculeDef.bindingSiteDefs[bindingSiteID].states[0];
             SetBimolecularReactions( relevantBimolecularReactions );
             RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
         }

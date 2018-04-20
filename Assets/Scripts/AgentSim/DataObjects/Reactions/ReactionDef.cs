@@ -54,10 +54,11 @@ namespace AICS.AgentSim
                 {
                     if (molecule.definition.Equals( moleculeSnapshot.moleculeDef ))
                     {
-                        foreach (KeyValuePair<string,string> bindingSiteState in moleculeSnapshot.bindingSiteStates)
-                        {
-                            molecule.bindingSites[bindingSiteState.Key].state = bindingSiteState.Value.Contains( "!" ) ? "!" : bindingSiteState.Value;
-                        }
+                        // TODO
+                        //foreach (KeyValuePair<string,string> bindingSiteState in moleculeSnapshot.bindingSiteStates)
+                        //{
+                        //    molecule.bindingSites[bindingSiteState.Key].state = bindingSiteState.Value.Contains( "!" ) ? "!" : bindingSiteState.Value;
+                        //}
                     }
                 }
             }
@@ -79,12 +80,4 @@ namespace AICS.AgentSim
             }
         }
     }
-
-    //[System.Serializable]
-    //public class BindingSiteReference
-    //{
-    //    public int complexIndex;
-    //    public int moleculeIndex;
-    //    public string siteID;
-    //}
 }

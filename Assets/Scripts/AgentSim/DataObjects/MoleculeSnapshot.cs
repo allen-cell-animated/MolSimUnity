@@ -16,33 +16,21 @@ namespace AICS.AgentSim
             }
         }
 
-        public Dictionary<string,string> bindingSiteStates;
-
-        #region for prototyping in inspector without writing custom property drawer etc
         [SerializeField] SiteState[] siteStates;
 
+        #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
             moleculeDef.Init();
-            InitSites();
-        }
-
-        public void InitSites ()
-        {
-            bindingSiteStates = new Dictionary<string,string>();
-            foreach (SiteState siteState in siteStates)
-            {
-                bindingSiteStates.Add( siteState.id, siteState.state );
-            }
         }
         #endregion
 
-        public MoleculeSnapshot (MoleculeDef theMoleculeDef, Dictionary<string,string> _bindingSiteStates)
+        public MoleculeSnapshot (MoleculeDef theMoleculeDef, SiteState[] _siteStates)
         {
             _moleculeDef = theMoleculeDef;
             moleculeDef.Init();
 
-            bindingSiteStates = new Dictionary<string, string>( _bindingSiteStates );
+            siteStates = _siteStates;
         }
 
         public bool IsSatisfiedBy (MoleculeSnapshot other)
@@ -51,22 +39,100 @@ namespace AICS.AgentSim
             {
                 return false;
             }
-            foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
+
+            //find all sites that satisfy each other
+            Dictionary<SiteState,List<SiteState>> foundSiteStatesThis = new Dictionary<SiteState,List<SiteState>>();
+            foreach (SiteState site in siteStates)
             {
-                if (!other.bindingSiteStates.ContainsKey( siteState.Key ))
+                if (!foundSiteStatesThis.ContainsKey( site ))
                 {
-                    return false;
+                    foundSiteStatesThis.Add( site, new List<SiteState>() );
                 }
-                if (siteState.Value.Contains( "!" ))
+                foreach (SiteState otherSite in other.siteStates)
                 {
-                    if (!other.bindingSiteStates[siteState.Key].Contains( "!" ))
+                    if (site.siteRef.IsSatisfiedBy( otherSite.siteRef ))
+                    {
+                        foundSiteStatesThis[site].Add( otherSite );
+                    }
+                }
+                if (foundSiteStatesThis[site].Count < 1)
+                {
+                    return false; //the other doesn't have any sites that satisfy one of our sites
+                }
+            }
+            Dictionary<SiteState,List<SiteState>> foundSiteStatesOther = new Dictionary<SiteState,List<SiteState>>();
+            foreach (SiteState otherSite in other.siteStates)
+            {
+                if (!foundSiteStatesOther.ContainsKey( otherSite ))
+                {
+                    foundSiteStatesOther.Add( otherSite, new List<SiteState>() );
+                }
+                foreach (SiteState site in siteStates)
+                {
+                    if (otherSite.siteRef.IsSatisfiedBy( site.siteRef ))
+                    {
+                        foundSiteStatesOther[otherSite].Add( site );
+                    }
+                }
+                //we don't care if the other has a site that we don't satisfy since this is a one-way check
+            }
+
+            //match pairs of sites
+            List<SiteState> sortedSitesThis = new List<SiteState>();
+            List<SiteState> sortedSitesOther = new List<SiteState>();
+
+            //make unique matches
+            foreach (SiteState site in foundSiteStatesThis.Keys)
+            {
+                if (foundSiteStatesThis[site].Count == 1)
+                {
+                    sortedSitesThis.Add( site );
+                    sortedSitesOther.Add( foundSiteStatesThis[site][0] );
+
+                    foundSiteStatesOther.Remove( foundSiteStatesThis[site][0] );
+                }
+            }
+            foreach (SiteState otherSite in foundSiteStatesOther.Keys)
+            {
+                if (foundSiteStatesOther[otherSite].Count == 1)
+                {
+                    sortedSitesThis.Add( foundSiteStatesOther[otherSite][0] );
+                    sortedSitesOther.Add( otherSite );
+
+                    foundSiteStatesThis.Remove( foundSiteStatesOther[otherSite][0] );
+                }
+            }
+
+            //match everything else
+            foreach (SiteState site in foundSiteStatesThis.Keys)
+            {
+                if (foundSiteStatesThis[site].Count > 1)
+                {
+                    foreach (SiteState otherSite in foundSiteStatesThis[site])
+                    {
+                        if (foundSiteStatesOther.ContainsKey( otherSite ))
+                        {
+                            sortedSitesThis.Add( site );
+                            sortedSitesOther.Add( otherSite );
+                        }
+                    }
+                }
+            }
+            //TODO cover more cases
+
+            //compare states
+            for (int i = 0; i < sortedSitesThis.Count; i++)
+            {
+                if (sortedSitesThis[i].state.Contains( "!" ))
+                {
+                    if (!sortedSitesOther[i].state.Contains( "!" ))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (other.bindingSiteStates[siteState.Key] != siteState.Value)
+                    if (sortedSitesOther[i].state != sortedSitesThis[i].state)
                     {
                         return false;
                     }
@@ -77,33 +143,41 @@ namespace AICS.AgentSim
 
         public bool IsSatisfiedBy (Molecule _molecule)
         {
-            if (_molecule.definition.Equals( moleculeDef ))
-            {
-                foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
-                {
-                    if (siteState.Value.Contains( "!" ))
-                    {
-                        if (_molecule.bindingSites[siteState.Key].boundSite == null)
-                        {
-                            return false;
-                        }
-                    }
-                    else 
-                    {
-                        if (_molecule.bindingSites[siteState.Key].state != siteState.Value)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            }
+            // TODO
+            //if (_molecule.definition.Equals( moleculeDef ))
+            //{
+            //    foreach (KeyValuePair<string,string> siteState in bindingSiteStates)
+            //    {
+            //        if (siteState.Value.Contains( "!" ))
+            //        {
+            //            if (_molecule.bindingSites[siteState.Key].boundSite == null)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //        else 
+            //        {
+            //            if (_molecule.bindingSites[siteState.Key].state != siteState.Value)
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //    return true;
+            //}
             return false;
         }
 
         public bool ContainsBindingSite (string bindingSiteID)
         {
-            return bindingSiteStates.ContainsKey( bindingSiteID );
+            foreach (SiteState site in siteStates)
+            {
+                if (site.siteRef.id == bindingSiteID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override bool Equals (object obj)
@@ -128,10 +202,10 @@ namespace AICS.AgentSim
 		{
             string s = moleculeDef.species + ":";
             int i = 0;
-            foreach (KeyValuePair<string,string> bindingSiteState in bindingSiteStates)
+            foreach (SiteState site in siteStates)
             {
-                s += "[" + bindingSiteState.Key + "]=" + bindingSiteState.Value;
-                if (i < bindingSiteStates.Count - 1)
+                s += "[" + site.siteRef.id + ":" + site.siteRef.index + "]=" + site.state;
+                if (i < siteStates.Length - 1)
                 {
                     s += ",";
                 }
@@ -145,8 +219,14 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class SiteState
     {
-        public string id;
+        public BindingSiteRef siteRef;
         public string state;
+
+        public SiteState (BindingSiteRef _siteRef, string _state)
+        {
+            siteRef = _siteRef;
+            state = _state;
+        }
     }
 
     [System.Serializable]

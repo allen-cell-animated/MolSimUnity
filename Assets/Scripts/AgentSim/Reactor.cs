@@ -127,41 +127,42 @@ namespace AICS.AgentSim
             site1.SetParent( molecule1 );
             Transform site2 = new GameObject( "site2" ).transform;
             site2.SetParent( molecule2 );
-            BindingSiteDef bindingSite;
+            //BindingSiteDef bindingSite;
 
-            for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
-            {
-                foreach (KeyValuePair<string,string> siteState1 in complexSnapshot.moleculeSnapshots[i].bindingSiteStates)
-                {
-                    if (siteState1.Value.Contains( "!" ))
-                    {
-                        for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
-                        {
-                            foreach (KeyValuePair<string,string> siteState2 in complexSnapshot.moleculeSnapshots[j].bindingSiteStates)
-                            {
-                                if (siteState1.Value == siteState2.Value)
-                                {
-                                    molecule1.position = transforms[i].position;
-                                    molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
-                                    bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.Key];
-                                    bindingSite.transformOnMolecule.Apply( molecule1, site1 );
+            //TODO
+            //for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
+            //{
+            //    foreach (KeyValuePair<string,string> siteState1 in complexSnapshot.moleculeSnapshots[i].bindingSiteStates)
+            //    {
+            //        if (siteState1.Value.Contains( "!" ))
+            //        {
+            //            for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
+            //            {
+            //                foreach (KeyValuePair<string,string> siteState2 in complexSnapshot.moleculeSnapshots[j].bindingSiteStates)
+            //                {
+            //                    if (siteState1.Value == siteState2.Value)
+            //                    {
+            //                        molecule1.position = transforms[i].position;
+            //                        molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
+            //                        bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.Key];
+            //                        bindingSite.transformOnMolecule.Apply( molecule1, site1 );
 
-                                    molecule2.position = Vector3.zero;
-                                    molecule2.rotation = Quaternion.identity;
-                                    bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.Key];
-                                    bindingSite.transformOnMolecule.Apply( molecule2, site2 );
+            //                        molecule2.position = Vector3.zero;
+            //                        molecule2.rotation = Quaternion.identity;
+            //                        bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.Key];
+            //                        bindingSite.transformOnMolecule.Apply( molecule2, site2 );
 
-                                    molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
-                                    molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
+            //                        molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
+            //                        molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
 
-                                    transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
-                                    averagePosition += transforms[j].position;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //                        transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
+            //                        averagePosition += transforms[j].position;
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             averagePosition /= transforms.Length;
             for (int i = 0; i < transforms.Length; i++)
