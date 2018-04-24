@@ -37,6 +37,7 @@ namespace AICS.AgentSim
         {
             if (!other.moleculeDef.Equals( moleculeDef ))
             {
+                Debug.Log( "molecules are not the same" );
                 return false;
             }
 
@@ -50,14 +51,22 @@ namespace AICS.AgentSim
                 }
                 foreach (SiteState otherSite in other.siteStates)
                 {
-                    if (site.siteRef.IsSatisfiedBy( otherSite.siteRef ))
+                    if (site.IsEquivalentTo( otherSite ))
                     {
                         foundSiteStatesThis[site].Add( otherSite );
                     }
                 }
                 if (foundSiteStatesThis[site].Count < 1)
                 {
+                    Debug.Log( site + " not found" );
                     return false; //the other doesn't have any sites that satisfy one of our sites
+                }
+            }
+            foreach (KeyValuePair<SiteState,List<SiteState>> matchToThis in foundSiteStatesThis)
+            {
+                foreach (SiteState match in matchToThis.Value)
+                {
+                    Debug.Log( "this: " + matchToThis.Key + " --> " + match );
                 }
             }
             Dictionary<SiteState,List<SiteState>> foundSiteStatesOther = new Dictionary<SiteState,List<SiteState>>();
@@ -69,12 +78,19 @@ namespace AICS.AgentSim
                 }
                 foreach (SiteState site in siteStates)
                 {
-                    if (otherSite.siteRef.IsSatisfiedBy( site.siteRef ))
+                    if (otherSite.IsEquivalentTo( site ))
                     {
                         foundSiteStatesOther[otherSite].Add( site );
                     }
                 }
                 //we don't care if the other has a site that we don't satisfy since this is a one-way check
+            }
+            foreach (KeyValuePair<SiteState,List<SiteState>> matchToOther in foundSiteStatesOther)
+            {
+                foreach (SiteState match in matchToOther.Value)
+                {
+                    Debug.Log( "other: " + matchToOther.Key + " --> " + match );
+                }
             }
 
             //match pairs of sites
@@ -84,8 +100,9 @@ namespace AICS.AgentSim
             //make unique matches
             foreach (SiteState site in foundSiteStatesThis.Keys)
             {
-                if (foundSiteStatesThis[site].Count == 1)
+                if (foundSiteStatesThis[site].Count == 1 && !sortedSitesOther.Contains( foundSiteStatesThis[site][0] ))
                 {
+                    Debug.Log( "unique this: " + site + " --> " + foundSiteStatesThis[site][0] );
                     sortedSitesThis.Add( site );
                     sortedSitesOther.Add( foundSiteStatesThis[site][0] );
 
@@ -94,8 +111,9 @@ namespace AICS.AgentSim
             }
             foreach (SiteState otherSite in foundSiteStatesOther.Keys)
             {
-                if (foundSiteStatesOther[otherSite].Count == 1)
+                if (foundSiteStatesOther[otherSite].Count == 1 && !sortedSitesThis.Contains( foundSiteStatesOther[otherSite][0] ))
                 {
+                    Debug.Log( "unique other: " + otherSite + " --> " + foundSiteStatesOther[otherSite][0] );
                     sortedSitesThis.Add( foundSiteStatesOther[otherSite][0] );
                     sortedSitesOther.Add( otherSite );
 
@@ -106,23 +124,32 @@ namespace AICS.AgentSim
             //match everything else
             foreach (SiteState site in foundSiteStatesThis.Keys)
             {
-                if (foundSiteStatesThis[site].Count > 1)
+                if (!sortedSitesThis.Contains( site ))
                 {
+                    bool foundMatch = false;
                     foreach (SiteState otherSite in foundSiteStatesThis[site])
                     {
-                        if (foundSiteStatesOther.ContainsKey( otherSite ))
+                        if (!sortedSitesOther.Contains( otherSite ))
                         {
+                            Debug.Log( "everything else: " + site + " --> " + otherSite );
                             sortedSitesThis.Add( site );
                             sortedSitesOther.Add( otherSite );
+                            foundMatch = true;
+                            break;
                         }
+                    }
+                    if (!foundMatch)
+                    {
+                        Debug.Log( site + " NOT FOUND!!!" );
+                        return false; //this site's match is matched to something else now so it no longer has a match
                     }
                 }
             }
-            //TODO cover more cases
 
             //compare states
             for (int i = 0; i < sortedSitesThis.Count; i++)
             {
+                Debug.Log( "COMPARING: " + sortedSitesThis[i] + " --> " + sortedSitesOther[i] );
                 if (sortedSitesThis[i].state.Contains( "!" ))
                 {
                     if (!sortedSitesOther[i].state.Contains( "!" ))
@@ -227,7 +254,17 @@ namespace AICS.AgentSim
             siteRef = _siteRef;
             state = _state;
         }
-    }
+
+        public bool IsEquivalentTo (SiteState other)
+        {
+            return siteRef.IsEquivalentTo( other.siteRef ) && other.state == state;
+        }
+
+		public override string ToString()
+		{
+            return "(" + siteRef + " state = " + state + ")";
+		}
+	}
 
     [System.Serializable]
     public class MoleculeBindingSite

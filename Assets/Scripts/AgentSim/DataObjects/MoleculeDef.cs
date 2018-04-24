@@ -140,7 +140,7 @@ namespace AICS.AgentSim
             _index = siteIndex;
         }
 
-        public bool IsSatisfiedBy (BindingSiteRef other)
+        public bool IsEquivalentTo (BindingSiteRef other)
         {
             return other.id == id && (index < 0 || other.index == index);
         }
@@ -162,5 +162,10 @@ namespace AICS.AgentSim
                 return 16777619 * id.GetHashCode() + index;
             }
         }
-    }
+
+		public override string ToString()
+		{
+            return id + ":" + ((index < 0) ? "?" : index.ToString());
+		}
+	}
 }
