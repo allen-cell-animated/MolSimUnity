@@ -39,13 +39,14 @@ namespace AICS.AgentSim
 
         protected BindingSite GetBindingSiteForProductState (ComplexSnapshot productSnapshot, BindingSite bindingSite1, BindingSite bindingSite2)
         {
+            //TODO this won't work for binding sites with same ID that are in different states
             foreach (MoleculeSnapshot moleculeSnapshot in productSnapshot.moleculeSnapshots)
             {
-                if (moleculeSnapshot.moleculeDef.Equals( bindingSite1.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite1.id ) )
+                if (moleculeSnapshot.moleculeDef.Equals( bindingSite1.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite1.definition.bindingSiteRef ) )
                 {
                     return bindingSite1;
                 }
-                if (moleculeSnapshot.moleculeDef.Equals( bindingSite2.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite2.id ) )
+                if (moleculeSnapshot.moleculeDef.Equals( bindingSite2.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite2.definition.bindingSiteRef ) )
                 {
                     return bindingSite2;
                 }

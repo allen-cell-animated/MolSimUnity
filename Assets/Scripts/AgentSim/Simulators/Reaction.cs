@@ -15,6 +15,7 @@ namespace AICS.AgentSim
         {
             if (!bindingSites.Contains( bindingSite ))
             {
+                Debug.Log( bindingSite + " " + SiteIsRelevant( bindingSite ) );
                 if (SiteIsRelevant( bindingSite ))
                 {
                     bindingSites.Add( bindingSite );
@@ -77,8 +78,8 @@ namespace AICS.AgentSim
 
         bool BothSitesAreRelevant (BindingSite bindingSite1, BindingSite bindingSite2)
         {
-            return (reactionDef.relevantSites[0].Matches( bindingSite1 ) && reactionDef.relevantSites[1].Matches( bindingSite2 ))
-                || (reactionDef.relevantSites[0].Matches( bindingSite2 ) && reactionDef.relevantSites[1].Matches( bindingSite1 ));
+            return (reactionDef.relevantSites[0].IsSatisfiedBy( bindingSite1 ) && reactionDef.relevantSites[1].IsSatisfiedBy( bindingSite2 ))
+                || (reactionDef.relevantSites[0].IsSatisfiedBy( bindingSite2 ) && reactionDef.relevantSites[1].IsSatisfiedBy( bindingSite1 ));
         }
 	}
 
@@ -132,7 +133,7 @@ namespace AICS.AgentSim
         {
             foreach (MoleculeBindingSite site in reactionDef.relevantSites)
             {
-                if (site.Matches( bindingSite ))
+                if (site.IsSatisfiedBy( bindingSite ))
                 {
                     return true;
                 }

@@ -8,7 +8,7 @@ namespace AICS.AgentSim
     {
         public Complex complex;
         public MoleculeDef definition;
-        public Dictionary<string,BindingSite> bindingSites = new Dictionary<string,BindingSite>();
+        public Dictionary<BindingSiteRef,BindingSite> bindingSites = new Dictionary<BindingSiteRef,BindingSite>();
         public float collisionRadius;
         public float interactionRadius;
         public bool couldReactOnCollision;
@@ -57,22 +57,34 @@ namespace AICS.AgentSim
             {
                 CreateBindingSite( bindingSiteRef, moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions );
             }
+            SetBindingSiteStates( moleculeSnapshot );
         }
 
         protected virtual void CreateBindingSite (BindingSiteRef bindingSiteRef, MoleculeSnapshot moleculeSnapshot, 
                                                   BimolecularReaction[] relevantBimolecularReactions, 
                                                   CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
-            //TODO
             GameObject bindingSiteObject = new GameObject();
             bindingSiteObject.transform.SetParent( theTransform );
-            //definition.bindingSiteDefs[bindingSiteID].transformOnMolecule.Apply( theTransform, bindingSiteObject.transform );
-            //bindingSiteObject.name = name + "_" + bindingSiteID;
+            definition.bindingSiteDefs[bindingSiteRef].transformOnMolecule.Apply( theTransform, bindingSiteObject.transform );
+            bindingSiteObject.name = name + "_" + bindingSiteRef;
 
-            //BindingSite bindingSite = bindingSiteObject.AddComponent<BindingSite>();
-            //bindingSite.Init( bindingSiteID, moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions, this );
+            BindingSite bindingSite = bindingSiteObject.AddComponent<BindingSite>();
+            bindingSite.Init( bindingSiteRef, moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions, this );
 
-            //bindingSites.Add( bindingSiteID, bindingSite );
+            bindingSites.Add( bindingSiteRef, bindingSite );
+        }
+
+        public virtual void SetBindingSiteStates (MoleculeSnapshot moleculeSnapshot)
+        {
+            //TODO consider current states for binding sites with same ID
+            foreach (SiteState site in moleculeSnapshot.siteStates)
+            {
+                if (bindingSites.ContainsKey( site.siteRef ))
+                {
+                    bindingSites[site.siteRef].state = site.state;
+                }
+            }
         }
 
         public virtual bool InteractWith (Molecule other)

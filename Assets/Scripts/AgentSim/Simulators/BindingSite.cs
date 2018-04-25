@@ -56,7 +56,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return definition.id;
+                return definition.bindingSiteRef.id;
             }
         }
 
@@ -68,14 +68,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (string bindingSiteID, MoleculeSnapshot moleculeSnapshot, BimolecularReaction[] relevantBimolecularReactions, 
+        public virtual void Init (BindingSiteRef bindingSiteRef, MoleculeSnapshot moleculeSnapshot, BimolecularReaction[] relevantBimolecularReactions, 
                                   CollisionFreeReaction[] relevantCollisionFreeReactions, Molecule _molecule)
         {
-            //TODO
-            //definition = moleculeSnapshot.moleculeDef.bindingSiteDefs[bindingSiteID];
+            definition = moleculeSnapshot.moleculeDef.bindingSiteDefs[bindingSiteRef];
             molecule = _molecule;
-            //state = moleculeSnapshot.bindingSiteStates.ContainsKey(bindingSiteID) ? moleculeSnapshot.bindingSiteStates[bindingSiteID] 
-                                                                                  //: moleculeDef.bindingSiteDefs[bindingSiteID].states[0];
             SetBimolecularReactions( relevantBimolecularReactions );
             RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
         }

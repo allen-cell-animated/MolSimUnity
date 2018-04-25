@@ -6,7 +6,7 @@ namespace AICS.AgentSim
 {
     public class MoleculeDef : ScriptableObject
     {
-        [SerializeField] string _species;
+        [SerializeField] string _species = "";
         public string species
         {
             get
@@ -30,18 +30,9 @@ namespace AICS.AgentSim
         public void Init ()
         {
             bindingSiteDefs = new Dictionary<BindingSiteRef,BindingSiteDef>();
-            Dictionary<string,int> indexForID = new Dictionary<string, int>();
             foreach (BindingSiteDef siteDef in siteDefs)
             {
-                if (!indexForID.ContainsKey( siteDef.id ))
-                {
-                    indexForID.Add( siteDef.id, 0 );
-                }
-                else
-                {
-                    indexForID[siteDef.id]++;
-                }
-                bindingSiteDefs.Add( new BindingSiteRef( siteDef.id, indexForID[siteDef.id] ),  siteDef );
+                bindingSiteDefs.Add( siteDef.bindingSiteRef, siteDef );
             }
         }
         #endregion
@@ -73,7 +64,7 @@ namespace AICS.AgentSim
         {
             unchecked
             {
-                return 16777619 * species.GetHashCode();
+                return 16777619 * (species == null ? 0 : species.GetHashCode());
             }
         }
     }
@@ -81,7 +72,7 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class BindingSiteDef
     {
-        public string id;
+        public BindingSiteRef bindingSiteRef;
         public string[] states;
         public RelativeTransform transformOnMolecule;
         public float radius;
@@ -116,7 +107,7 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class BindingSiteRef
     {
-        [SerializeField] string _id;
+        [SerializeField] string _id = "";
         public string id
         {
             get
@@ -140,9 +131,9 @@ namespace AICS.AgentSim
             _index = siteIndex;
         }
 
-        public bool IsEquivalentTo (BindingSiteRef other)
+        public bool matchesID (BindingSiteRef other)
         {
-            return other.id == id && (index < 0 || other.index == index);
+            return other.id == id;
         }
 
         public override bool Equals (object obj)
@@ -159,13 +150,13 @@ namespace AICS.AgentSim
         {
             unchecked
             {
-                return 16777619 * id.GetHashCode() + index;
+                return 16777619 * (id == null ? 0 : id.GetHashCode()) + index;
             }
         }
 
 		public override string ToString()
 		{
-            return id + ":" + ((index < 0) ? "?" : index.ToString());
+            return id + ":" + index;
 		}
 	}
 }

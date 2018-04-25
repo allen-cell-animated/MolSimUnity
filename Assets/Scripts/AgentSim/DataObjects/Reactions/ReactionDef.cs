@@ -54,11 +54,7 @@ namespace AICS.AgentSim
                 {
                     if (molecule.definition.Equals( moleculeSnapshot.moleculeDef ))
                     {
-                        // TODO
-                        //foreach (KeyValuePair<string,string> bindingSiteState in moleculeSnapshot.bindingSiteStates)
-                        //{
-                        //    molecule.bindingSites[bindingSiteState.Key].state = bindingSiteState.Value.Contains( "!" ) ? "!" : bindingSiteState.Value;
-                        //}
+                        molecule.SetBindingSiteStates( moleculeSnapshot );
                     }
                 }
             }
