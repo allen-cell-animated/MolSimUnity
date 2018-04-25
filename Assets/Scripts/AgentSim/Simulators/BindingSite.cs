@@ -73,6 +73,7 @@ namespace AICS.AgentSim
         {
             definition = moleculeSnapshot.moleculeDef.bindingSiteDefs[bindingSiteRef];
             molecule = _molecule;
+            state = (definition.states == null || definition.states.Length < 1) ? "" : definition.states[0];
             SetBimolecularReactions( relevantBimolecularReactions );
             RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
         }

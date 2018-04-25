@@ -16,7 +16,9 @@ MonoBehaviour:
   scale: 0.000000001
   diffusionCoefficient: 100000
   siteDefs:
-  - id: s
+  - bindingSiteRef:
+      _id: s
+      _index: 0
     states:
     - 0
     - '!+'
@@ -24,5 +26,6 @@ MonoBehaviour:
       position: {x: 0.45, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
+  colors: []
   _visualizationPrefab: {fileID: 1297089520443062, guid: ddf4e3358a5f845309756313f5033e48,
     type: 2}

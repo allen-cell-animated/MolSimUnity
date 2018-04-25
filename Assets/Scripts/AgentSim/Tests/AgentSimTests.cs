@@ -7,7 +7,7 @@ using AICS.AgentSim;
 
 public class MolSimTests
 {
-    public static bool debug = false;
+    public static bool debug = true;
 
     protected static void AssertIsTrue (bool value)
     {

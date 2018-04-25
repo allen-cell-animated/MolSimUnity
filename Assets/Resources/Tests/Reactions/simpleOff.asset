@@ -17,29 +17,41 @@ MonoBehaviour:
   - _moleculeSnapshots:
     - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       siteStates:
-      - id: y
+      - siteRef:
+          _id: y
+          _index: 0
         state: '!1'
-      - id: p
+      - siteRef:
+          _id: p
+          _index: 0
         state: 0
     - _moleculeDef: {fileID: 11400000, guid: 8063a59044c4f46e9acaaf6d2303bf68, type: 2}
       siteStates:
-      - id: x
+      - siteRef:
+          _id: x
+          _index: 0
         state: '!1'
   productSnapshots:
   - _moleculeSnapshots:
     - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       siteStates:
-      - id: y
+      - siteRef:
+          _id: y
+          _index: 0
         state: 0
-      - id: p
+      - siteRef:
+          _id: p
+          _index: 0
         state: 0
   - _moleculeSnapshots:
     - _moleculeDef: {fileID: 11400000, guid: 8063a59044c4f46e9acaaf6d2303bf68, type: 2}
       siteStates:
-      - id: x
+      - siteRef:
+          _id: x
+          _index: 0
         state: 0
-  relevantSiteReferences: []
   relevantSites:
   - moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
-    bindingSiteID: y
-  productmoleculeColors: []
+    bindingSiteRef:
+      _id: y
+      _index: 0

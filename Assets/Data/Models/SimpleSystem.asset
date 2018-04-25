@@ -19,16 +19,22 @@ MonoBehaviour:
       _moleculeSnapshots:
       - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
         siteStates:
-        - id: y
+        - siteRef:
+            _id: y
+            _index: 0
           state: 0
-        - id: p
+        - siteRef:
+            _id: p
+            _index: 0
           state: 0
   - concentration: 1e-16
     complexSnapshot:
       _moleculeSnapshots:
       - _moleculeDef: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
         siteStates:
-        - id: x
+        - siteRef:
+            _id: x
+            _index: 0
           state: 0
   reactionDefs:
   - {fileID: 11400000, guid: 04942d3486c3b439e9ac20512199b4ce, type: 2}

@@ -15,7 +15,6 @@ namespace AICS.AgentSim
         {
             if (!bindingSites.Contains( bindingSite ))
             {
-                Debug.Log( bindingSite + " " + SiteIsRelevant( bindingSite ) );
                 if (SiteIsRelevant( bindingSite ))
                 {
                     bindingSites.Add( bindingSite );
@@ -185,5 +184,10 @@ namespace AICS.AgentSim
             events = attempts = 0;
             observedRate = 0;
         }
-    }
+
+		public override string ToString()
+		{
+            return reactionDef.description;
+		}
+	}
 }

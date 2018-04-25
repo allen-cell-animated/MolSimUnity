@@ -298,7 +298,7 @@ namespace AICS.AgentSim
             int i = 0;
             foreach (SiteState site in siteStates)
             {
-                s += "[" + site.siteRef.id + ":" + site.siteRef.index + "]=" + site.state;
+                s += site;
                 if (i < siteStates.Length - 1)
                 {
                     s += ",";

@@ -16,7 +16,9 @@ MonoBehaviour:
   scale: 0.000000001
   diffusionCoefficient: 100000
   siteDefs:
-  - id: x
+  - bindingSiteRef:
+      _id: x
+      _index: 0
     states:
     - 0
     - '!+'
