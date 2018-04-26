@@ -31,6 +31,20 @@ namespace AICS.AgentSim
             _moleculeSnapshots = theMoleculeSnapshots;
         }
 
+        public virtual void SetStateOfComplex (Molecule[] molecules)
+        {
+            foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots) 
+            {
+                foreach (Molecule molecule in molecules)
+                {
+                    if (molecule.definition.Equals( moleculeSnapshot.moleculeDef ))
+                    {
+                        moleculeSnapshot.SetStateOfMolecule( molecule );
+                    }
+                }
+            }
+        }
+
         public bool IsSatisfiedBy (ComplexSnapshot other)
         {
             foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)

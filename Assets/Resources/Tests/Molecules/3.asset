@@ -16,9 +16,7 @@ MonoBehaviour:
   scale: 0.000000001
   diffusionCoefficient: 300000
   siteDefs:
-  - bindingSiteRef:
-      _id: a
-      _index: 0
+  - id: a
     states:
     - 0
     - '!+'
@@ -26,9 +24,7 @@ MonoBehaviour:
       position: {x: -0.5, y: 1, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
-  - bindingSiteRef:
-      _id: e
-      _index: 0
+  - id: e
     states:
     - 0
     - '!+'
@@ -36,9 +32,7 @@ MonoBehaviour:
       position: {x: -1, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 11
-  - bindingSiteRef:
-      _id: f
-      _index: 0
+  - id: f
     states:
     - 0
     - '!+'

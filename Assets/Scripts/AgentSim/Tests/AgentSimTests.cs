@@ -241,43 +241,49 @@ public class MolSimTests
     static bool StateOfMoleculeSimulatorIsCorrect (Molecule molecule)
     {
         bool bimolecularReactant = false;
-        foreach (BindingSite bindingSite in molecule.bindingSites.Values)
+        foreach (List<BindingSite> aTypeOfBindingSite in molecule.bindingSites.Values)
         {
-            if (bindingSite == null)
+            foreach (BindingSite bindingSite in aTypeOfBindingSite)
             {
-                if (debug) { Debug.Log( molecule + " has a null BindingSite" ); }
-                return false;
-            }
-            if (bindingSite.molecule != molecule)
-            {
-                if (debug) { Debug.Log( bindingSite + " doesn't reference " + molecule ); }
-                return false;
-            }
-            if (bindingSite.theTransform.parent != molecule.theTransform)
-            {
-                if (debug) { Debug.Log( bindingSite + " is not parented to " + molecule ); }
-                return false;
-            }
-            int count = 0;
-            foreach (BindingSite otherBindingSite in molecule.bindingSites.Values)
-            {
-                if (bindingSite == otherBindingSite)
+                if (bindingSite == null)
                 {
-                    count++;
-                }
-            }
-            if (count > 1)
-            {
-                if (debug) { Debug.Log( bindingSite + " is registered to " + molecule + " " + count + " times" ); }
-                return false;
-            }
-            if (bindingSite.couldReactOnCollision)
-            {
-                bimolecularReactant = true;
-                if (!molecule.couldReactOnCollision)
-                {
-                    if (debug) { Debug.Log( bindingSite + " is bimolecular reactant but " + molecule + " isn't" ); }
+                    if (debug) { Debug.Log( molecule + " has a null BindingSite" ); }
                     return false;
+                }
+                if (bindingSite.molecule != molecule)
+                {
+                    if (debug) { Debug.Log( bindingSite + " doesn't reference " + molecule ); }
+                    return false;
+                }
+                if (bindingSite.theTransform.parent != molecule.theTransform)
+                {
+                    if (debug) { Debug.Log( bindingSite + " is not parented to " + molecule ); }
+                    return false;
+                }
+                int count = 0;
+                foreach (List<BindingSite> anotherTypeOfBindingSite in molecule.bindingSites.Values)
+                {
+                    foreach (BindingSite otherBindingSite in anotherTypeOfBindingSite)
+                    {
+                        if (bindingSite == otherBindingSite)
+                        {
+                            count++;
+                        }
+                    }
+                }
+                if (count > 1)
+                {
+                    if (debug) { Debug.Log( bindingSite + " is registered to " + molecule + " " + count + " times" ); }
+                    return false;
+                }
+                if (bindingSite.couldReactOnCollision)
+                {
+                    bimolecularReactant = true;
+                    if (!molecule.couldReactOnCollision)
+                    {
+                        if (debug) { Debug.Log( bindingSite + " is bimolecular reactant but " + molecule + " isn't" ); }
+                        return false;
+                    }
                 }
             }
         }
@@ -288,7 +294,16 @@ public class MolSimTests
         }
         foreach (BindingSite bindingSite in molecule.GetComponentsInChildren<BindingSite>())
         {
-            if (!molecule.bindingSites.ContainsValue( bindingSite ))
+            bool found = false;
+            foreach (List<BindingSite> aTypeOfBindingSite in molecule.bindingSites.Values)
+            {
+                if (aTypeOfBindingSite.Contains( bindingSite ))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
             {
                 if (debug) { Debug.Log( bindingSite + " isn't registered to " + molecule ); }
                 return false;

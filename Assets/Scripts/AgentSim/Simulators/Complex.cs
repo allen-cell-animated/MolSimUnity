@@ -32,6 +32,10 @@ namespace AICS.AgentSim
             string s = "";
             for (int i = 0; i < molecules.Length; i++)
             {
+                if (molecules[i] == null)
+                {
+                    UnityEditor.EditorApplication.isPaused = true;
+                }
                 s += molecules[i].definition.species;
                 if (i < molecules.Length - 1)
                 {
@@ -152,19 +156,22 @@ namespace AICS.AgentSim
             string boundState;
             foreach (Molecule molecule in molecules)
             {
-                foreach (BindingSite bindingSite in molecule.bindingSites.Values)
+                foreach (List<BindingSite> aTypeOfBindingSite in molecule.bindingSites.Values)
                 {
-                    boundState = bindingSite.state;
-                    if (boundState.Contains( "!" ))
+                    foreach (BindingSite bindingSite in aTypeOfBindingSite)
                     {
-                        if (!boundBindingSites.ContainsKey( boundState ))
+                        boundState = bindingSite.state;
+                        if (boundState.Contains( "!" ))
                         {
-                            boundBindingSites.Add( boundState, bindingSite );
-                        }
-                        else
-                        {
-                            boundBindingSites[boundState].boundSite = bindingSite;
-                            bindingSite.boundSite = boundBindingSites[boundState];
+                            if (!boundBindingSites.ContainsKey( boundState ))
+                            {
+                                boundBindingSites.Add( boundState, bindingSite );
+                            }
+                            else
+                            {
+                                boundBindingSites[boundState].boundSite = bindingSite;
+                                bindingSite.boundSite = boundBindingSites[boundState];
+                            }
                         }
                     }
                 }

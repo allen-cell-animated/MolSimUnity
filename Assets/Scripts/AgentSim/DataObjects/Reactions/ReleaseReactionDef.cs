@@ -15,6 +15,7 @@ namespace AICS.AgentSim
         {
             if (bindingSite1 != null)
             {
+                Debug.Log( "Reaction happened: " + description );
                 bindingSite2 = bindingSite1.boundSite;
 
                 bindingSite1.boundSite = null;
@@ -27,7 +28,7 @@ namespace AICS.AgentSim
                     bindingSite = GetBindingSiteForProductState( productSnapshot, bindingSite1, bindingSite2 );
                     molecules = bindingSite.complex.GetMoleculesAtEndOfBond( bindingSite );
 
-                    SetMoleculesToFinalState( molecules, productSnapshot );
+                    productSnapshot.SetStateOfComplex( molecules );
                     reactor.MoveMoleculesToNewComplex( molecules, bindingSite.molecule.theTransform );
 
                     SetProductColor( molecules );
@@ -39,14 +40,14 @@ namespace AICS.AgentSim
 
         protected BindingSite GetBindingSiteForProductState (ComplexSnapshot productSnapshot, BindingSite bindingSite1, BindingSite bindingSite2)
         {
-            //TODO this won't work for binding sites with same ID that are in different states
+            //TODO this won't work anymore...
             foreach (MoleculeSnapshot moleculeSnapshot in productSnapshot.moleculeSnapshots)
             {
-                if (moleculeSnapshot.moleculeDef.Equals( bindingSite1.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite1.definition.bindingSiteRef ) )
+                if (moleculeSnapshot.moleculeDef.Equals( bindingSite1.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite1.id ) )
                 {
                     return bindingSite1;
                 }
-                if (moleculeSnapshot.moleculeDef.Equals( bindingSite2.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite2.definition.bindingSiteRef ) )
+                if (moleculeSnapshot.moleculeDef.Equals( bindingSite2.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite2.id ) )
                 {
                     return bindingSite2;
                 }

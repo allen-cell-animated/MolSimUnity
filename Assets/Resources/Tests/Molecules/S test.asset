@@ -16,9 +16,7 @@ MonoBehaviour:
   scale: 0.000000001
   diffusionCoefficient: 500000
   siteDefs:
-  - bindingSiteRef:
-      _id: active
-      _index: 0
+  - id: active
     states:
     - 0
     - '!+'
@@ -26,9 +24,7 @@ MonoBehaviour:
       position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
-  - bindingSiteRef:
-      _id: p
-      _index: 0
+  - id: p
     states:
     - U
     - P
@@ -40,17 +36,13 @@ MonoBehaviour:
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p
-          _index: 0
+      - id: p
         state: U
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p
-          _index: 0
+      - id: p
         state: P
     color: {r: 1, g: 0.68275857, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1386266482134252, guid: 69287cda75c2448509b20a1cb1cb44ca,

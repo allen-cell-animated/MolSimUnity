@@ -24,15 +24,7 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p")
-            {
-                bindingSiteP = site.Value;
-                break;
-            }
-        }
+        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p"][0];
         Reaction reaction = reactor.collisionFreeReactions[0];
 
         for (int i = 0; i < numberOfTimesToCheck; i++)
@@ -56,15 +48,7 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p")
-            {
-                bindingSiteP = site.Value;
-                break;
-            }
-        }
+        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p"][0];
         Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
@@ -99,15 +83,7 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p")
-            {
-                bindingSiteP = site.Value;
-                break;
-            }
-        }
+        BindingSiteDef bindingSiteP = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p"][0];
         Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
@@ -148,26 +124,11 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP1 = null, bindingSiteP2 = null, bindingSiteP3 = null, bindingSiteP4 = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p1")
-            {
-                bindingSiteP1 = site.Value;
-            }
-            else if (site.Key.id == "p2")
-            {
-                bindingSiteP2 = site.Value;
-            }
-            else if (site.Key.id == "p3")
-            {
-                bindingSiteP3 = site.Value;
-            }
-            else if (site.Key.id == "p4")
-            {
-                bindingSiteP4 = site.Value;
-            }
-        }
+        BindingSiteDef bindingSiteP1 = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p1"][0];
+        BindingSiteDef bindingSiteP2 = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p2"][0];
+        BindingSiteDef bindingSiteP3 = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p3"][0];
+        BindingSiteDef bindingSiteP4 = reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs["p4"][0];
+
         Reaction e1Reaction = null, f1Reaction = null, e2Reaction = null, f2Reaction = null,
                  e3Reaction = null, f3Reaction = null, e4Reaction = null, f4Reaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)

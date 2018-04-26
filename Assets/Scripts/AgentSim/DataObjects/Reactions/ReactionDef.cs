@@ -46,20 +46,6 @@ namespace AICS.AgentSim
 
         public abstract void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null);
 
-        protected virtual void SetMoleculesToFinalState (Molecule[] molecules, ComplexSnapshot finalSnapshot)
-        {
-            foreach (MoleculeSnapshot moleculeSnapshot in finalSnapshot.moleculeSnapshots) 
-            {
-                foreach (Molecule molecule in molecules)
-                {
-                    if (molecule.definition.Equals( moleculeSnapshot.moleculeDef ))
-                    {
-                        molecule.SetBindingSiteStates( moleculeSnapshot );
-                    }
-                }
-            }
-        }
-
         protected void SetProductColor (Molecule[] molecules)
         {
             foreach (Molecule molecule in molecules)

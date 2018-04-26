@@ -127,47 +127,54 @@ namespace AICS.AgentSim
             site1.SetParent( molecule1 );
             Transform site2 = new GameObject( "site2" ).transform;
             site2.SetParent( molecule2 );
-            BindingSiteDef bindingSite;
+            //BindingSiteDef bindingSite;
 
-            for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
-            {
-                foreach (SiteState siteState1 in complexSnapshot.moleculeSnapshots[i].siteStates)
-                {
-                    if (siteState1.state.Contains( "!" ))
-                    {
-                        for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
-                        {
-                            foreach (SiteState siteState2 in complexSnapshot.moleculeSnapshots[j].siteStates)
-                            {
-                                if (siteState1.state == siteState2.state)
-                                {
-                                    molecule1.position = transforms[i].position;
-                                    molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
-                                    bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.siteRef];
-                                    bindingSite.transformOnMolecule.Apply( molecule1, site1 );
+            //TODO
+            //for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
+            //{
+            //    foreach (List<SiteState> aTypeOfSiteState1 in complexSnapshot.moleculeSnapshots[i].bindingSiteStates.Values)
+            //    {
+            //        foreach (SiteState siteState1 in aTypeOfSiteState1)
+            //        {
+            //            if (siteState1.state.Contains( "!" ))
+            //            {
+            //                for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
+            //                {
+            //                    foreach (List<SiteState> aTypeOfSiteState2 in complexSnapshot.moleculeSnapshots[j].bindingSiteStates.Values)
+            //                    {
+            //                        foreach (SiteState siteState2 in aTypeOfSiteState1)
+            //                        {
+            //                            if (siteState1.state == siteState2.state)
+            //                            {
+            //                                molecule1.position = transforms[i].position;
+            //                                molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
+            //                                bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.siteRef];
+            //                                bindingSite.transformOnMolecule.Apply( molecule1, site1 );
 
-                                    molecule2.position = Vector3.zero;
-                                    molecule2.rotation = Quaternion.identity;
-                                    bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.siteRef];
-                                    bindingSite.transformOnMolecule.Apply( molecule2, site2 );
+            //                                molecule2.position = Vector3.zero;
+            //                                molecule2.rotation = Quaternion.identity;
+            //                                bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.siteRef];
+            //                                bindingSite.transformOnMolecule.Apply( molecule2, site2 );
 
-                                    molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
-                                    molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
+            //                                molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
+            //                                molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
 
-                                    transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
-                                    averagePosition += transforms[j].position;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            //                                transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
+            //                                averagePosition += transforms[j].position;
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
-            averagePosition /= transforms.Length;
-            for (int i = 0; i < transforms.Length; i++)
-            {
-                transforms[i].position -= averagePosition;
-            }
+            //averagePosition /= transforms.Length;
+            //for (int i = 0; i < transforms.Length; i++)
+            //{
+            //    transforms[i].position -= averagePosition;
+            //}
 
             Destroy( molecule1.gameObject );
             Destroy( molecule2.gameObject );

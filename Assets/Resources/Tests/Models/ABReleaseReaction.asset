@@ -19,15 +19,11 @@ MonoBehaviour:
       _moleculeSnapshots:
       - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
         siteStates:
-        - siteRef:
-            _id: b
-            _index: 0
+        - id: b
           state: '!1'
       - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
         siteStates:
-        - siteRef:
-            _id: a
-            _index: 0
+        - id: a
           state: '!1'
   reactionDefs:
   - {fileID: 11400000, guid: 0effac8f9ae0741d6bde2eff6e7f3150, type: 2}

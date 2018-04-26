@@ -16,12 +16,28 @@ namespace AICS.AgentSim
             }
         }
 
-        public SiteState[] siteStates;
+        [SerializeField] SiteState[] siteStates;
+        public Dictionary<string,List<SiteState>> bindingSiteStates;
+
 
         #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
             moleculeDef.Init();
+            InitSiteStates();
+        }
+
+        public void InitSiteStates ()
+        {
+            bindingSiteStates = new Dictionary<string,List<SiteState>>();
+            foreach (SiteState site in siteStates)
+            {
+                if (!bindingSiteStates.ContainsKey( site.id ))
+                {
+                    bindingSiteStates.Add( site.id, new List<SiteState>() );
+                }
+                bindingSiteStates[site.id].Add( site );
+            }
         }
         #endregion
 
@@ -31,118 +47,74 @@ namespace AICS.AgentSim
             moleculeDef.Init();
 
             siteStates = _siteStates;
+            InitSiteStates();
+        }
+
+        public virtual void SetStateOfMolecule (Molecule molecule)
+        {
+            //TODO match BindingSites to SiteStates
         }
 
         public bool IsSatisfiedBy (MoleculeSnapshot other)
         {
             if (!other.moleculeDef.Equals( moleculeDef ))
             {
+                //Debug.Log( "molecules don't match" );
                 return false;
             }
 
-            //find all sites that satisfy each other
-            Dictionary<SiteState,List<SiteState>> foundSiteStatesThis = new Dictionary<SiteState,List<SiteState>>();
-            foreach (SiteState site in siteStates)
+            string state;
+            Dictionary<string,int> sitesInStateThis = new Dictionary<string,int>();
+            Dictionary<string,int> sitesInStateOther = new Dictionary<string,int>();
+            foreach (string bindingSiteID in bindingSiteStates.Keys)
             {
-                if (!foundSiteStatesThis.ContainsKey( site ))
+                if (!other.bindingSiteStates.ContainsKey( bindingSiteID )) //does this type of site exist in the other?
                 {
-                    foundSiteStatesThis.Add( site, new List<SiteState>() );
+                    //Debug.Log( "site " + bindingSiteID + " doesn't exist in other" );
+                    return false;
                 }
-                foreach (SiteState otherSite in other.siteStates)
+
+                foreach (SiteState site in bindingSiteStates[bindingSiteID]) //how many of our sites are in each state?
                 {
-                    if (site.MatchesIDAndState( otherSite ))
+                    state = site.state.Contains( "!" ) ? "!" : site.state;
+                    if (!sitesInStateThis.ContainsKey( state ))
                     {
-                        foundSiteStatesThis[site].Add( otherSite );
+                        sitesInStateThis[state] = 1;
+                    }
+                    else
+                    {
+                        sitesInStateThis[state]++;
                     }
                 }
-                if (foundSiteStatesThis[site].Count < 1)
+                foreach (SiteState otherSite in other.bindingSiteStates[bindingSiteID]) //how many of the other's sites are in each state?
                 {
-                    return false; //the other doesn't have any sites that satisfy one of our sites
-                }
-            }
-            Dictionary<SiteState,List<SiteState>> foundSiteStatesOther = new Dictionary<SiteState,List<SiteState>>();
-            foreach (SiteState otherSite in other.siteStates)
-            {
-                if (!foundSiteStatesOther.ContainsKey( otherSite ))
-                {
-                    foundSiteStatesOther.Add( otherSite, new List<SiteState>() );
-                }
-                foreach (SiteState site in siteStates)
-                {
-                    if (otherSite.MatchesIDAndState( site ))
+                    state = otherSite.state.Contains( "!" ) ? "!" : otherSite.state;
+                    if (!sitesInStateOther.ContainsKey( state ))
                     {
-                        foundSiteStatesOther[otherSite].Add( site );
+                        sitesInStateOther[state] = 1;
+                    }
+                    else
+                    {
+                        sitesInStateOther[state]++;
                     }
                 }
-                //we don't care if the other has a site that we don't satisfy since this is a one-way check
-            }
 
-            //match pairs of sites
-            List<SiteState> sortedSitesThis = new List<SiteState>();
-            List<SiteState> sortedSitesOther = new List<SiteState>();
-
-            //make unique matches
-            foreach (SiteState site in foundSiteStatesThis.Keys)
-            {
-                if (foundSiteStatesThis[site].Count == 1 && !sortedSitesOther.Contains( foundSiteStatesThis[site][0] ))
+                foreach (string s in sitesInStateThis.Keys) //does the other at least have as many sites in each state as we do?
                 {
-                    sortedSitesThis.Add( site );
-                    sortedSitesOther.Add( foundSiteStatesThis[site][0] );
-
-                    foundSiteStatesOther.Remove( foundSiteStatesThis[site][0] );
-                }
-            }
-            foreach (SiteState otherSite in foundSiteStatesOther.Keys)
-            {
-                if (foundSiteStatesOther[otherSite].Count == 1 && !sortedSitesThis.Contains( foundSiteStatesOther[otherSite][0] ))
-                {
-                    sortedSitesThis.Add( foundSiteStatesOther[otherSite][0] );
-                    sortedSitesOther.Add( otherSite );
-
-                    foundSiteStatesThis.Remove( foundSiteStatesOther[otherSite][0] );
-                }
-            }
-
-            //match everything else
-            foreach (SiteState site in foundSiteStatesThis.Keys)
-            {
-                if (!sortedSitesThis.Contains( site ))
-                {
-                    bool foundMatch = false;
-                    foreach (SiteState otherSite in foundSiteStatesThis[site])
+                    if (!sitesInStateOther.ContainsKey( s ))
                     {
-                        if (!sortedSitesOther.Contains( otherSite ))
-                        {
-                            sortedSitesThis.Add( site );
-                            sortedSitesOther.Add( otherSite );
-                            foundMatch = true;
-                            break;
-                        }
+                        //Debug.Log( "there are no " + bindingSiteID + " sites in state " + s );
+                        return false;
                     }
-                    if (!foundMatch)
+                    if (sitesInStateOther[s] < sitesInStateThis[s])
                     {
-                        return false; //this site's match is matched to something else now so it no longer has a match
-                    }
-                }
-            }
-
-            //compare states
-            for (int i = 0; i < sortedSitesThis.Count; i++)
-            {
-                if (sortedSitesThis[i].state.Contains( "!" ))
-                {
-                    if (!sortedSitesOther[i].state.Contains( "!" ))
-                    {
+                        //Debug.Log( "number of " + bindingSiteID + " sites in state " + s + " is " + sitesInStateOther[s] + " when it should be at least " + sitesInStateThis[s] );
                         return false;
                     }
                 }
-                else
-                {
-                    if (sortedSitesOther[i].state != sortedSitesThis[i].state)
-                    {
-                        return false;
-                    }
-                }
+
+                sitesInStateThis.Clear();
+                sitesInStateOther.Clear();
             }
             return true;
         }
@@ -151,127 +123,69 @@ namespace AICS.AgentSim
         {
             if (!_molecule.definition.Equals( moleculeDef ))
             {
+                //Debug.Log( "molecules don't match" );
                 return false;
             }
 
-            //find all sites that satisfy each other
-            Dictionary<SiteState,List<BindingSite>> foundSiteStatesThis = new Dictionary<SiteState,List<BindingSite>>();
-            foreach (SiteState site in siteStates)
+            string state;
+            Dictionary<string,int> sitesInStateThis = new Dictionary<string,int>();
+            Dictionary<string,int> sitesInStateOther = new Dictionary<string,int>();
+            foreach (string bindingSiteID in bindingSiteStates.Keys)
             {
-                if (!foundSiteStatesThis.ContainsKey( site ))
+                if (!_molecule.bindingSites.ContainsKey( bindingSiteID )) //does this type of site exist in the other?
                 {
-                    foundSiteStatesThis.Add( site, new List<BindingSite>() );
+                    //Debug.Log( "site " + bindingSiteID + " doesn't exist in other" );
+                    return false;
                 }
-                foreach (BindingSite otherSite in _molecule.bindingSites.Values)
+
+                foreach (SiteState site in bindingSiteStates[bindingSiteID]) //how many of our sites are in each state?
                 {
-                    if (site.MatchesIDAndState( otherSite ))
+                    state = site.state.Contains( "!" ) ? "!" : site.state;
+                    if (!sitesInStateThis.ContainsKey( state ))
                     {
-                        foundSiteStatesThis[site].Add( otherSite );
+                        sitesInStateThis[state] = 1;
+                    }
+                    else
+                    {
+                        sitesInStateThis[state]++;
                     }
                 }
-                if (foundSiteStatesThis[site].Count < 1)
+                foreach (BindingSite otherSite in _molecule.bindingSites[bindingSiteID]) //how many of the other's sites are in each state?
                 {
-                    return false; //the other doesn't have any sites that satisfy one of our sites
-                }
-            }
-            Dictionary<BindingSite,List<SiteState>> foundSiteStatesOther = new Dictionary<BindingSite,List<SiteState>>();
-            foreach (BindingSite otherSite in _molecule.bindingSites.Values)
-            {
-                if (!foundSiteStatesOther.ContainsKey( otherSite ))
-                {
-                    foundSiteStatesOther.Add( otherSite, new List<SiteState>() );
-                }
-                foreach (SiteState site in siteStates)
-                {
-                    if (site.MatchesIDAndState( otherSite ))
+                    state = otherSite.state.Contains( "!" ) ? "!" : otherSite.state;
+                    if (!sitesInStateOther.ContainsKey( state ))
                     {
-                        foundSiteStatesOther[otherSite].Add( site );
+                        sitesInStateOther[state] = 1;
+                    }
+                    else
+                    {
+                        sitesInStateOther[state]++;
                     }
                 }
-                //we don't care if the other has a site that we don't satisfy since this is a one-way check
-            }
 
-            //match pairs of sites
-            List<SiteState> sortedSitesThis = new List<SiteState>();
-            List<BindingSite> sortedSitesOther = new List<BindingSite>();
-
-            //make unique matches
-            foreach (SiteState site in foundSiteStatesThis.Keys)
-            {
-                if (foundSiteStatesThis[site].Count == 1 && !sortedSitesOther.Contains( foundSiteStatesThis[site][0] ))
+                foreach (string s in sitesInStateThis.Keys) //does the other at least have as many sites in each state as we do?
                 {
-                    sortedSitesThis.Add( site );
-                    sortedSitesOther.Add( foundSiteStatesThis[site][0] );
-
-                    foundSiteStatesOther.Remove( foundSiteStatesThis[site][0] );
-                }
-            }
-            foreach (BindingSite otherSite in foundSiteStatesOther.Keys)
-            {
-                if (foundSiteStatesOther[otherSite].Count == 1 && !sortedSitesThis.Contains( foundSiteStatesOther[otherSite][0] ))
-                {
-                    sortedSitesThis.Add( foundSiteStatesOther[otherSite][0] );
-                    sortedSitesOther.Add( otherSite );
-
-                    foundSiteStatesThis.Remove( foundSiteStatesOther[otherSite][0] );
-                }
-            }
-
-            //match everything else
-            foreach (SiteState site in foundSiteStatesThis.Keys)
-            {
-                if (!sortedSitesThis.Contains( site ))
-                {
-                    bool foundMatch = false;
-                    foreach (BindingSite otherSite in foundSiteStatesThis[site])
+                    if (!sitesInStateOther.ContainsKey( s ))
                     {
-                        if (!sortedSitesOther.Contains( otherSite ))
-                        {
-                            sortedSitesThis.Add( site );
-                            sortedSitesOther.Add( otherSite );
-                            foundMatch = true;
-                            break;
-                        }
+                        //Debug.Log( "there are no " + bindingSiteID + " sites in state " + s );
+                        return false;
                     }
-                    if (!foundMatch)
+                    if (sitesInStateOther[s] < sitesInStateThis[s])
                     {
-                        return false; //this site's match is matched to something else now so it no longer has a match
-                    }
-                }
-            }
-
-            //compare states
-            for (int i = 0; i < sortedSitesThis.Count; i++)
-            {
-                if (sortedSitesThis[i].state.Contains( "!" ))
-                {
-                    if (!sortedSitesOther[i].state.Contains( "!" ))
-                    {
+                        //Debug.Log( "number of " + bindingSiteID + " sites in state " + s + " is " + sitesInStateOther[s] + " when it should be at least " + sitesInStateThis[s] );
                         return false;
                     }
                 }
-                else
-                {
-                    if (sortedSitesOther[i].state != sortedSitesThis[i].state)
-                    {
-                        return false;
-                    }
-                }
+
+                sitesInStateThis.Clear();
+                sitesInStateOther.Clear();
             }
             return true;
         }
 
-        public virtual bool ContainsBindingSite (BindingSiteRef bindingSiteRef)
+        public virtual bool ContainsBindingSite (string bindingSiteID)
         {
-            //TODO probably can't use this
-            foreach (SiteState siteState in siteStates)
-            {
-                if (siteState.siteRef.matchesID( bindingSiteRef ))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return bindingSiteStates.ContainsKey( bindingSiteID );
         }
 
         public override bool Equals (object obj)
@@ -313,28 +227,28 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class SiteState
     {
-        public BindingSiteRef siteRef;
+        public string id;
         public string state;
 
-        public SiteState (BindingSiteRef _siteRef, string _state)
+        public SiteState (string _id, string _state)
         {
-            siteRef = _siteRef;
+            id = _id;
             state = _state;
         }
 
         public bool MatchesIDAndState (SiteState other)
         {
-            return siteRef.matchesID( other.siteRef ) && other.state == state;
+            return other.id == id && other.state == state;
         }
 
         public bool MatchesIDAndState (BindingSite bindingSite)
         {
-            return siteRef.matchesID( bindingSite.definition.bindingSiteRef ) && bindingSite.state == state;
+            return bindingSite.definition.id == id && bindingSite.state == state;
         }
 
 		public override string ToString()
 		{
-            return "(" + siteRef + " state = " + state + ")";
+            return "(" + id + " state = " + state + ")";
 		}
 	}
 
@@ -342,22 +256,22 @@ namespace AICS.AgentSim
     public class MoleculeBindingSite
     {
         public MoleculeDef moleculeDef;
-        public BindingSiteRef bindingSiteRef;
+        public string bindingSiteID;
 
-        public MoleculeBindingSite (MoleculeDef _moleculeDef, BindingSiteRef _bindingSiteRef)
+        public MoleculeBindingSite (MoleculeDef _moleculeDef, string _bindingSiteID)
         {
             moleculeDef = _moleculeDef;
-            bindingSiteRef = _bindingSiteRef;
+            bindingSiteID = _bindingSiteID;
         }
 
         public bool IsSatisfiedBy (BindingSite bindingSite)
         {
-            return bindingSite.moleculeDef.Equals( moleculeDef ) && bindingSiteRef.matchesID( bindingSite.definition.bindingSiteRef );
+            return bindingSite.moleculeDef.Equals( moleculeDef ) && bindingSite.id == bindingSiteID;
         }
 
         public override string ToString ()
         {
-            return "site " + bindingSiteRef + " on molecule " + moleculeDef.species;
+            return "site " + bindingSiteID + " on " + moleculeDef;
         }
     }
 }

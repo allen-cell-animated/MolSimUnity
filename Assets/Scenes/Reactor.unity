@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 0}
-  modelDef: {fileID: 11400000, guid: bde827afcd1904ef1b0c46b54d26af92, type: 2}
+  modelDef: {fileID: 11400000, guid: 64e2470c8cbef4b03859f165afbdb059, type: 2}
   bimolecularReactions: []
   collisionFreeReactions: []
   maxMoveAttempts: 20

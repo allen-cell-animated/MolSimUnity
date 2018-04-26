@@ -21,7 +21,7 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public Dictionary<BindingSiteRef,BindingSiteDef> bindingSiteDefs;
+        public Dictionary<string,List<BindingSiteDef>> bindingSiteDefs;
 
         #region for prototyping in inspector without writing custom property drawer etc
         [SerializeField] BindingSiteDef[] siteDefs = new BindingSiteDef[0];
@@ -29,10 +29,21 @@ namespace AICS.AgentSim
 
         public void Init ()
         {
-            bindingSiteDefs = new Dictionary<BindingSiteRef,BindingSiteDef>();
+            bindingSiteDefs = new Dictionary<string, List<BindingSiteDef>>();
             foreach (BindingSiteDef siteDef in siteDefs)
             {
-                bindingSiteDefs.Add( siteDef.bindingSiteRef, siteDef );
+                if (!bindingSiteDefs.ContainsKey( siteDef.id ))
+                {
+                    bindingSiteDefs.Add( siteDef.id, new List<BindingSiteDef>() );
+                }
+                bindingSiteDefs[siteDef.id].Add( siteDef );
+            }
+            if (colors != null)
+            {
+                foreach (MoleculeSnapshotColor color in colors)
+                {
+                    color.snapshot.InitSiteStates();
+                }
             }
         }
         #endregion
@@ -67,12 +78,17 @@ namespace AICS.AgentSim
                 return 16777619 * (species == null ? 0 : species.GetHashCode());
             }
         }
-    }
+
+		public override string ToString()
+		{
+            return "molecule " + species;
+		}
+	}
 
     [System.Serializable]
     public class BindingSiteDef
     {
-        public BindingSiteRef bindingSiteRef;
+        public string id;
         public string[] states;
         public RelativeTransform transformOnMolecule;
         public float radius;
@@ -103,60 +119,4 @@ namespace AICS.AgentSim
         public MoleculeSnapshot snapshot;
         public Color color;
     }
-
-    [System.Serializable]
-    public class BindingSiteRef
-    {
-        [SerializeField] string _id = "";
-        public string id
-        {
-            get
-            {
-                return _id;
-            }
-        }
-
-        [SerializeField] int _index;
-        public int index
-        {
-            get
-            {
-                return _index;
-            }
-        }
-
-        public BindingSiteRef (string siteID, int siteIndex)
-        {
-            _id = siteID;
-            _index = siteIndex;
-        }
-
-        public bool matchesID (BindingSiteRef other)
-        {
-            return other.id == id;
-        }
-
-        public override bool Equals (object obj)
-        {
-            BindingSiteRef other = obj as BindingSiteRef;
-            if (other != null)
-            {
-                return other.id == id && other.index == index;
-            }
-            return false;
-        }
-
-        public override int GetHashCode ()
-        {
-            unchecked
-            {
-                return 16777619 * (id == null ? 0 : id.GetHashCode()) + index;
-            }
-        }
-
-		public override string ToString()
-		{
-            return id + ":" + index;
-		}
-	}
 }

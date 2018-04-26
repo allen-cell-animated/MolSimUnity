@@ -13,9 +13,9 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         SiteState[] sites = new SiteState[3];
-        sites[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites[0] = new SiteState( "a", "0" );
+        sites[1] = new SiteState( "b", "0" );
+        sites[2] = new SiteState( "c", "0" );
 
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites );
@@ -31,14 +31,14 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
 
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "P" );
-        sites2[1] = new SiteState( new BindingSiteRef( "b", 0 ), "P" );
-        sites2[2] = new SiteState( new BindingSiteRef( "c", 0 ), "P" );
+        sites2[0] = new SiteState( "a", "P" );
+        sites2[1] = new SiteState( "b", "P" );
+        sites2[2] = new SiteState( "c", "P" );
 
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites1 );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites2 );
@@ -55,13 +55,13 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
 
         SiteState[] sites2 = new SiteState[2];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites2[0] = new SiteState( "a", "0" );
+        sites2[1] = new SiteState( "c", "0" );
 
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites1 );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites2 );
@@ -78,16 +78,16 @@ public class TestHashCodes
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/Basic" ) as MoleculeDef;
 
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites2[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites2[0] = new SiteState( "a", "0" );
+        sites2[1] = new SiteState( "b", "0" );
+        sites2[2] = new SiteState( "c", "0" );
 
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
@@ -104,14 +104,14 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
 
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[2] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
+        sites2[0] = new SiteState( "c", "0" );
+        sites2[1] = new SiteState( "a", "0" );
+        sites2[2] = new SiteState( "b", "0" );
 
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites1 );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites2 );
@@ -127,16 +127,16 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites2[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites2[0] = new SiteState( "a", "0" );
+        sites2[1] = new SiteState( "b", "0" );
+        sites2[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
 
         ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
@@ -153,23 +153,23 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites2[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites2[0] = new SiteState( "a", "0" );
+        sites2[1] = new SiteState( "b", "0" );
+        sites2[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
 
         MoleculeDef moleculeDef3 = Resources.Load( "Tests/Molecules/Basic" ) as MoleculeDef;
         SiteState[] sites3 = new SiteState[3];
-        sites3[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites3[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites3[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites3[0] = new SiteState( "a", "0" );
+        sites3[1] = new SiteState( "b", "0" );
+        sites3[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot3 = new MoleculeSnapshot( moleculeDef3, sites3 );
 
         ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
@@ -186,22 +186,22 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites2[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites2[0] = new SiteState( "a", "0" );
+        sites2[1] = new SiteState( "b", "0" );
+        sites2[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
 
         SiteState[] sites3 = new SiteState[3];
-        sites3[0] = new SiteState( new BindingSiteRef( "a", 0 ), "P" );
-        sites3[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites3[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites3[0] = new SiteState( "a", "P" );
+        sites3[1] = new SiteState( "b", "0" );
+        sites3[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot3 = new MoleculeSnapshot( moleculeDef2, sites3 );
 
         ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
@@ -218,16 +218,16 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites1[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites1[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites1[0] = new SiteState( "a", "0" );
+        sites1[1] = new SiteState( "b", "0" );
+        sites1[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( new BindingSiteRef( "a", 0 ), "0" );
-        sites2[1] = new SiteState( new BindingSiteRef( "b", 0 ), "0" );
-        sites2[2] = new SiteState( new BindingSiteRef( "c", 0 ), "0" );
+        sites2[0] = new SiteState( "a", "0" );
+        sites2[1] = new SiteState( "b", "0" );
+        sites2[2] = new SiteState( "c", "0" );
         MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
 
         ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
@@ -237,23 +237,6 @@ public class TestHashCodes
                                 + " ? " + complexSnapshot1.Equals( complexSnapshot2 ) ); }
 
         Assert.IsTrue( HashCodesMatchEquals( complexSnapshot1, complexSnapshot2 ) );
-    }
-
-    [Test]
-    public void BindingSiteReferences ()
-    {
-        BindingSiteRef bs1 = new BindingSiteRef( "active", 4 );
-        BindingSiteRef bs2 = new BindingSiteRef( "active", 5 );
-        BindingSiteRef bs3 = new BindingSiteRef( "p", 0 );
-        BindingSiteRef bs4 = new BindingSiteRef( "p", 2 );
-        BindingSiteRef bs5 = new BindingSiteRef( "e", 0 );
-        BindingSiteRef bs6 = new BindingSiteRef( "e", 0 );
-
-        Assert.IsTrue( HashCodesMatchEquals( bs1, bs2 ) );
-        Assert.IsTrue( HashCodesMatchEquals( bs3, bs4 ) );
-        Assert.IsTrue( HashCodesMatchEquals( bs5, bs6 ) );
-        Assert.IsTrue( HashCodesMatchEquals( bs2, bs3 ) );
-        Assert.IsTrue( HashCodesMatchEquals( bs3, bs5 ) );
     }
 
     bool HashCodesMatchEquals (System.Object obj1, System.Object obj2)

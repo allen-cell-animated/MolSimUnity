@@ -32,5 +32,6 @@ MonoBehaviour:
       position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
+  colors: []
   _visualizationPrefab: {fileID: 1910556595932608, guid: 8d6bb97589eab4cc7a1d065c82f24f4a,
     type: 2}

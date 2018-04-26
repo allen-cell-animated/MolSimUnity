@@ -15,6 +15,7 @@ namespace AICS.AgentSim
         {
             if (bindingSite1 != null && bindingSite2 != null)
             {
+                Debug.Log( "Reaction happened: " + description );
                 bindingSite1.boundSite = bindingSite2;
                 bindingSite2.boundSite = bindingSite1;
 
@@ -24,7 +25,7 @@ namespace AICS.AgentSim
                 bindingSite1.molecules.CopyTo( molecules, 0 );
                 bindingSite2.molecules.CopyTo( molecules, bindingSite1.molecules.Length );
 
-                SetMoleculesToFinalState( molecules, productSnapshots[0] );
+                productSnapshots[0].SetStateOfComplex( molecules );
                 reactor.MoveMoleculesToNewComplex( molecules, bindingSite1.theTransform );
 
                 SetProductColor( molecules );

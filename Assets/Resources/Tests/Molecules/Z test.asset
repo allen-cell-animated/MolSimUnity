@@ -16,9 +16,7 @@ MonoBehaviour:
   scale: 0.000000001
   diffusionCoefficient: 500000
   siteDefs:
-  - bindingSiteRef:
-      _id: active
-      _index: 0
+  - id: active
     states:
     - 0
     - '!+'
@@ -26,9 +24,7 @@ MonoBehaviour:
       position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
-  - bindingSiteRef:
-      _id: p1
-      _index: 0
+  - id: p1
     states:
     - U
     - P
@@ -36,9 +32,7 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
-  - bindingSiteRef:
-      _id: p2
-      _index: 0
+  - id: p2
     states:
     - U
     - P
@@ -46,9 +40,7 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
-  - bindingSiteRef:
-      _id: p3
-      _index: 0
+  - id: p3
     states:
     - U
     - P
@@ -56,9 +48,7 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
-  - bindingSiteRef:
-      _id: p4
-      _index: 0
+  - id: p4
     states:
     - U
     - P
@@ -70,321 +60,193 @@ MonoBehaviour:
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: U
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: U
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: U
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: U
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - snapshot:
       _moleculeDef: {fileID: 11400000}
       siteStates:
-      - siteRef:
-          _id: p1
-          _index: 0
+      - id: p1
         state: P
-      - siteRef:
-          _id: p2
-          _index: 0
+      - id: p2
         state: P
-      - siteRef:
-          _id: p3
-          _index: 0
+      - id: p3
         state: P
-      - siteRef:
-          _id: p4
-          _index: 0
+      - id: p4
         state: P
     color: {r: 1, g: 0.80689657, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1386266482134252, guid: 165d64b07f8b643598a4af508250d30e,
