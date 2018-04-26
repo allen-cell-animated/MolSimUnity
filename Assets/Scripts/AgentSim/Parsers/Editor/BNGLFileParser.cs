@@ -68,7 +68,7 @@ namespace AICS.AgentSim
             // Divide the string by new lines
             string[] file_lines = file_contents.Split(
                                 new[] { "\r\n", "\r", "\n" },
-                                StringSplitOptions.None);
+                                StringSplitOptions.RemoveEmptyEntries);
 
             Queue<int> begin_indicies = new Queue<int>();
             Queue<int> end_indicies = new Queue<int>();
@@ -210,7 +210,7 @@ namespace AICS.AgentSim
             // split the binding site info by the "," character
             string[] binding_site_strings = line.Split(
                                 new[] { "," },
-                                StringSplitOptions.None);
+                                StringSplitOptions.RemoveEmptyEntries);
 
             // parse the info for each binding site
             for(int i = 0; i < binding_site_strings.Length; ++i)
@@ -225,6 +225,26 @@ namespace AICS.AgentSim
         {
             BindingSiteFileData b = new BindingSiteFileData();
             
+            // check if the binding site has states specified
+            if(line.Contains("~"))
+            {
+                int t = line.IndexOf("~");
+                b.name = line.Substring(0, t);
+
+                string[] states = line.Substring(t).Split(
+                                        new[] { "~" }, 
+                                        StringSplitOptions.RemoveEmptyEntries);
+
+                foreach(string s in states)
+                {
+                    b.allowableStates.Add(s);
+                }
+            }
+            else
+            {
+                // no states specified
+            }
+
             return b;
         }
         #endregion
