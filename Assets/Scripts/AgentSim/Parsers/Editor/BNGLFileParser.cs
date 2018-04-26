@@ -31,6 +31,8 @@ namespace AICS.AgentSim
 
         private const string commentSymbol = "#";
 
+        private const string fileErrorMsg = "Improperly Formatted BNGL File:";
+
         // A BNGL Parser singleton, for static access in the Unity Editor
         private static BNGLFileParser bnglParser_instance;
         private static BNGLFileParser Instance
@@ -101,13 +103,13 @@ namespace AICS.AgentSim
             // Validity checks
             if(begin_indicies.Count != end_indicies.Count)
             {
-                Debug.LogError("Improperly formatted BNGL File: the number of begin statments does not equal the number of end statements");
+                Debug.LogError(String.Format("{0} the number of begin statments does not equal the number of end statements",fileErrorMsg));
                 return;
             }
 
             if (begin_indicies.Count != keywords.Count)
             {
-                Debug.LogError("Improperly formatted BNGL File: the number of begin statments does not equal the number of keywords");
+                Debug.LogError(String.Format("{0} the number of begin statments does not equal the number of keywords", fileErrorMsg));
                 return;
             }
 
@@ -124,7 +126,19 @@ namespace AICS.AgentSim
 
                 for(int j = begin + 1; j < end; ++j) // ignore the lines with 'begin' or 'end'
                 {
-                    info.Add(file_lines[j]);
+                    // Check for comment lines
+                    string currentLine = file_lines[j];
+                    if (currentLine.Contains(commentSymbol))
+                    {
+                        currentLine = currentLine.Substring(0, currentLine.IndexOf(commentSymbol)); // remove comments from file line
+                    }
+
+                    // Check for empty or null lines
+                    currentLine = currentLine.Trim();
+                    if (string.IsNullOrEmpty(currentLine)) continue;
+
+                    // If the line isn't a comment line, empty, or null, add the line to the parseable info
+                    info.Add(currentLine);
                 }
 
                 // If the keyword matches one of the defined symbols, call the needed parse-helper function
@@ -146,15 +160,7 @@ namespace AICS.AgentSim
                 for(int i = 0; i < info.Count; ++i)
                 {
                     string line = info[i];
-                    if (line.Contains(commentSymbol))
-                    {
-                        line = line.Substring(0, line.IndexOf(commentSymbol)); // remove comments from file line
-                    }
-
-                    line = line.Trim();
-                    if (string.IsNullOrEmpty(line)) continue;
-
-
+  
                     MoleculeFileData md = ParseMolecule(line);
                     fdata.molecules.Add(md);
                 }
@@ -170,6 +176,20 @@ namespace AICS.AgentSim
 
         private int ParseParameters(List<string> info, BNGLFileData fdata)
         {
+            foreach (string p in info)
+            {
+                string[] p_arr = p.Split(
+                                        new[] { " " },
+                                        StringSplitOptions.RemoveEmptyEntries);
+                if (p_arr.Length != 2)
+                {
+                    Debug.LogError(String.Format("{0} Parameter has too many or too few arguments.\n{1}", fileErrorMsg, p));
+                    return -1;
+                }
+
+                fdata.parameters.Add(p_arr[0], float.Parse(p_arr[1]));
+            }
+
             return 0;
         }
 
@@ -190,11 +210,13 @@ namespace AICS.AgentSim
         #endregion
 
         #region Private Data Type Parsing
+        // All of the Private Data Type Parsing functions assume previous validation for null, empty, or comment lines
+
         private MoleculeFileData ParseMolecule(string line)
         {
             if(!line.Contains("(") || !line.Contains(")"))
             {
-                Debug.LogError("Improperly formatted BNGL File: a molecule is missing parentheses or binding site information");
+                Debug.LogError(String.Format("{0} a molecule is missing parentheses or binding site information.\n{1}", fileErrorMsg,line));
                 return new MoleculeFileData();
             }
 
@@ -254,6 +276,7 @@ namespace AICS.AgentSim
         private class BNGLFileData
         {
             public List<MoleculeFileData> molecules = new List<MoleculeFileData>();
+            public Dictionary<string, float> parameters = new Dictionary<string, float>();
         }
 
         private class BindingSiteFileData
