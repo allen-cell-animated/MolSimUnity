@@ -15,6 +15,7 @@ namespace AICS.AgentSim
 
         private BNGLFileParser()
         {
+            // Parameters pulled from the BioNetGen spec in "Systems Biology (Ivan V. Maly)"
             symbols["parameters"] = new Func<List<string>, BNGLFileData, int>(ParseParameters);
             symbols["molecule types"] = new Func<List<string>, BNGLFileData, int>(ParseMoleculeTypes);
             symbols["seed species"] = new Func<List<string>, BNGLFileData, int>(ParseSeedSpecies);
@@ -22,7 +23,8 @@ namespace AICS.AgentSim
             symbols["reaction rules"] = new Func<List<string>, BNGLFileData, int>(ParseReactionRules);
             symbols["actions"] = new Func<List<string>, BNGLFileData, int>(ParseActions);
 
-            //@TODO: What are species? They are not in the textbook spec
+            // Not in the creator's spec, but seems to pop up in the community, same as seed species
+            symbols["species"] = new Func<List<string>, BNGLFileData, int>(ParseSeedSpecies);
         }
 
         // The Directory where we expect to find BNGL files
@@ -33,6 +35,8 @@ namespace AICS.AgentSim
 
         private const string commentSymbol = "#";
 
+        // This is the string printed out whenever a file parsing error is encountered
+        //  more specifically, an error related to expected file format (unexpected format, missing data, etc.)
         private const string fileErrorMsg = "Improperly Formatted BNGL File:";
 
         // A BNGL Parser singleton, for static access in the Unity Editor
@@ -128,7 +132,7 @@ namespace AICS.AgentSim
                 int begin = begin_indicies.Dequeue();
                 int end = end_indicies.Dequeue();
                 List<string> info = new List<string>();
-                string key = keywords.Dequeue();
+                string key = keywords.Dequeue().Trim().ToLower();
 
                 for(int j = begin + 1; j < end; ++j) // ignore the lines with 'begin' or 'end'
                 {
@@ -157,12 +161,14 @@ namespace AICS.AgentSim
                 }
 
                 // If the keyword matches one of the defined symbols, call the needed parse-helper function
-                foreach(string k in symbols.Keys)
+                if(symbols.ContainsKey(key))
                 {
-                    if (k.Equals(key.Trim().ToLower()))
-                    {
-                        symbols[k].DynamicInvoke(info, fdata);
-                    }
+                    symbols[key].DynamicInvoke(info, fdata);
+                }
+                else
+                {
+                    // Keyword not found in the known parsing keywords
+                    Debug.LogWarning(String.Format("{0} Unrecognized keyword in file.\n{1}", fileErrorMsg, key));
                 }
             }
         }
@@ -311,7 +317,7 @@ namespace AICS.AgentSim
         // Unsure if needed at the moment (specifically for the unity simulation prototype)
         private int ParseActions(List<string> info, BNGLFileData fdata)
         {
-            Debug.LogWarning("Parsing actions is currently unimplemented");
+            Debug.LogWarning("Parsing actions is currently unimplemented.");
             return -1;
         }
         #endregion
@@ -418,6 +424,9 @@ namespace AICS.AgentSim
             public List<BindingSiteFileData> bindingSites = new List<BindingSiteFileData>();
         }
 
+        /// <summary>
+        /// A file IO internal data object containing information about a parsed Seed Species
+        /// </summary>
         private class SeedSpeciesFileData
         {
             public MoleculeFileData molecule = new MoleculeFileData();
