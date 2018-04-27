@@ -44,7 +44,7 @@ namespace AICS.AgentSim
 
         /// <summary>
         /// Evaluate a simple mathematical expression
-        /// Recognizes +, -, *, /, and ()
+        /// Recognizes +, -, *, /, ^,and ()
         /// Uses the Dijkstra Shunting-yard algorithm
         /// </summary>
         /// <param name="expression"></param>
