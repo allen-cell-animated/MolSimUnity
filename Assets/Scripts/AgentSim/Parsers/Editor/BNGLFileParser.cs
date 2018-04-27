@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Text.RegularExpressions;
 
 namespace AICS.AgentSim
 {
@@ -252,7 +253,7 @@ namespace AICS.AgentSim
                 int rp = s.IndexOf(")"); // assuming the following layout:
                                          // [molecule]"(" [binding-sites] ")" [numerical value]
 
-                MoleculeFileData md = ParseMolecule(s.Substring(0, rp + 1));
+                ComplexFileData cd = ParseComplex(s.Substring(0, rp + 1));
                 string iv_string = s.Substring(rp + 1).Trim();
 
                 // Check that a value was specified for the seed species
@@ -263,7 +264,7 @@ namespace AICS.AgentSim
                 }
 
                 SeedSpeciesFileData ssd = new SeedSpeciesFileData();
-                ssd.molecule = md;
+                ssd.complex = cd;
 
                 float n = 0;
                 bool isNum = float.TryParse(iv_string, out n);
@@ -283,6 +284,8 @@ namespace AICS.AgentSim
 
                     ssd.initialValue = fdata.parameters[iv_string];
                 }
+
+                fdata.seedSpecies.Add(ssd);
             }
 
             return 0;
@@ -298,6 +301,23 @@ namespace AICS.AgentSim
         /// <returns>0(int) for successfull completion</returns>
         private int ParseObservables(List<string> info, BNGLFileData fdata)
         {
+            foreach (string s in info)
+            {
+                string tmp = s;
+                if (Regex.IsMatch(tmp, @"^\d+")) // Check if this line starts with a number
+                {
+                    tmp = s.Substring(s.IndexOf(" ")).Trim(); // index # will be delimited by space
+                }
+
+                string[] toParse = tmp.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+                ObservableFileData od = new ObservableFileData();
+                od.metricName = toParse[1];
+                od.complexOfInterest = ParseComplex(toParse[2]);
+
+                fdata.observables.Add(od);
+            }
+
             return 0;
         }
 
@@ -311,6 +331,7 @@ namespace AICS.AgentSim
         /// <returns>0(int) for successfull completion</returns>
         private int ParseReactionRules(List<string> info, BNGLFileData fdata)
         {
+            //@TODO: Implement Reaction Rule Parsing
             return 0;
         }
 
@@ -324,6 +345,24 @@ namespace AICS.AgentSim
 
         #region Private Data Type Parsing
         // All of the Private Data Type Parsing functions assume previous validation for null, empty, or comment lines
+
+        private ComplexFileData ParseComplex(string line)
+        {
+            ComplexFileData cd = new ComplexFileData();
+
+            // split the complex by the '.' character
+            string[] complex_strings = line.Split(
+                                new[] { "." },
+                                StringSplitOptions.RemoveEmptyEntries);
+
+            // parse the info for each molecule in the complex
+            for (int i = 0; i < complex_strings.Length; ++i)
+            {
+                cd.molecules.Add(ParseMolecule(complex_strings[i]));
+            }
+
+            return cd;
+        }
 
         /// <summary>
         /// Parse a file line into a molecule type data object, with a list of binding sites
@@ -385,9 +424,12 @@ namespace AICS.AgentSim
                     b.allowableStates.Add(s);
                 }
             }
-            else
+
+            // Check if the binding site has bonds specified
+            if(line.Contains("!"))
             {
-                // no states specified
+                int e = line.IndexOf("!");
+                b.bond = line.Substring(e+1,1);
             }
 
             return b;
@@ -404,6 +446,9 @@ namespace AICS.AgentSim
         {
             public List<MoleculeFileData> molecules = new List<MoleculeFileData>();
             public Dictionary<string, float> parameters = new Dictionary<string, float>();
+            public List<SeedSpeciesFileData> seedSpecies = new List<SeedSpeciesFileData>();
+            public List<ComplexFileData> complexes = new List<ComplexFileData>();
+            public List<ObservableFileData> observables = new List<ObservableFileData>();
         }
 
         /// <summary>
@@ -413,6 +458,7 @@ namespace AICS.AgentSim
         {
             public string name = "";
             public List<string> allowableStates = new List<string>();
+            public string bond;
         }
 
         /// <summary>
@@ -429,9 +475,26 @@ namespace AICS.AgentSim
         /// </summary>
         private class SeedSpeciesFileData
         {
-            public MoleculeFileData molecule = new MoleculeFileData();
+            public ComplexFileData complex = new ComplexFileData();
             public float initialValue = 0.0f;
         }
+        /// <summary>
+        /// A file IO internal data object containing information about a complex of molecules
+        /// </summary>
+        private class ComplexFileData
+        {
+            public List<MoleculeFileData> molecules = new List<MoleculeFileData>();
+        }
+
+        /// <summary>
+        /// A file IO internal data object containing information about a metric of interest
+        /// </summary>
+        private class ObservableFileData
+        {
+            public string metricName = "";
+            public ComplexFileData complexOfInterest = new ComplexFileData();
+        }
+
         #endregion
     }
 }
