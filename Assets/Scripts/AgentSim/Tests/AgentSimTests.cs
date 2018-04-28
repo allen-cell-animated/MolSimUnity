@@ -157,7 +157,7 @@ public class MolSimTests
     {
         foreach (BimolecularReaction reaction in complex.reactor.bimolecularReactions)
         {
-            if (reaction.ComplexIsReactant( complex.molecules ))
+            if (reaction.definition.ComplexIsReactant( complex.molecules ))
             {
                 return true;
             }
@@ -241,31 +241,31 @@ public class MolSimTests
     static bool StateOfMoleculeSimulatorIsCorrect (Molecule molecule)
     {
         bool bimolecularReactant = false;
-        foreach (List<BindingSite> aTypeOfBindingSite in molecule.bindingSites.Values)
+        foreach (List<MoleculeComponent> aTypeOfComponent in molecule.components.Values)
         {
-            foreach (BindingSite bindingSite in aTypeOfBindingSite)
+            foreach (MoleculeComponent component in aTypeOfComponent)
             {
-                if (bindingSite == null)
+                if (component == null)
                 {
-                    if (debug) { Debug.Log( molecule + " has a null BindingSite" ); }
+                    if (debug) { Debug.Log( molecule + " has a null MoleculeComponent" ); }
                     return false;
                 }
-                if (bindingSite.molecule != molecule)
+                if (component.molecule != molecule)
                 {
-                    if (debug) { Debug.Log( bindingSite + " doesn't reference " + molecule ); }
+                    if (debug) { Debug.Log( component + " doesn't reference " + molecule ); }
                     return false;
                 }
-                if (bindingSite.theTransform.parent != molecule.theTransform)
+                if (component.theTransform.parent != molecule.theTransform)
                 {
-                    if (debug) { Debug.Log( bindingSite + " is not parented to " + molecule ); }
+                    if (debug) { Debug.Log( component + " is not parented to " + molecule ); }
                     return false;
                 }
                 int count = 0;
-                foreach (List<BindingSite> anotherTypeOfBindingSite in molecule.bindingSites.Values)
+                foreach (List<MoleculeComponent> anotherTypeOfComponent in molecule.components.Values)
                 {
-                    foreach (BindingSite otherBindingSite in anotherTypeOfBindingSite)
+                    foreach (MoleculeComponent otherComponent in anotherTypeOfComponent)
                     {
-                        if (bindingSite == otherBindingSite)
+                        if (component == otherComponent)
                         {
                             count++;
                         }
@@ -273,15 +273,15 @@ public class MolSimTests
                 }
                 if (count > 1)
                 {
-                    if (debug) { Debug.Log( bindingSite + " is registered to " + molecule + " " + count + " times" ); }
+                    if (debug) { Debug.Log( component + " is registered to " + molecule + " " + count + " times" ); }
                     return false;
                 }
-                if (bindingSite.couldReactOnCollision)
+                if (component.couldReactOnCollision)
                 {
                     bimolecularReactant = true;
                     if (!molecule.couldReactOnCollision)
                     {
-                        if (debug) { Debug.Log( bindingSite + " is bimolecular reactant but " + molecule + " isn't" ); }
+                        if (debug) { Debug.Log( component + " is bimolecular reactant but " + molecule + " isn't" ); }
                         return false;
                     }
                 }
@@ -289,15 +289,15 @@ public class MolSimTests
         }
         if (molecule.couldReactOnCollision && !bimolecularReactant)
         {
-            if (debug) { Debug.Log( molecule + " has no bimolecular reactant binding site but is marked as a bimolecular reactant" ); }
+            if (debug) { Debug.Log( molecule + " has no bimolecular reactant component but is marked as a bimolecular reactant" ); }
             return false;
         }
-        foreach (BindingSite bindingSite in molecule.GetComponentsInChildren<BindingSite>())
+        foreach (MoleculeComponent component in molecule.GetComponentsInChildren<MoleculeComponent>())
         {
             bool found = false;
-            foreach (List<BindingSite> aTypeOfBindingSite in molecule.bindingSites.Values)
+            foreach (List<MoleculeComponent> aTypeOfComponent in molecule.components.Values)
             {
-                if (aTypeOfBindingSite.Contains( bindingSite ))
+                if (aTypeOfComponent.Contains( component ))
                 {
                     found = true;
                     break;
@@ -305,7 +305,7 @@ public class MolSimTests
             }
             if (!found)
             {
-                if (debug) { Debug.Log( bindingSite + " isn't registered to " + molecule ); }
+                if (debug) { Debug.Log( component + " isn't registered to " + molecule ); }
                 return false;
             }
         }

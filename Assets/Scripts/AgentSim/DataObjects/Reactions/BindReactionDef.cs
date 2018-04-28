@@ -8,36 +8,36 @@ namespace AICS.AgentSim
     {
         protected override bool ReactantAndProductAmountsAreCorrect ()
         {
-            return reactantSnapshots.Length == 2 && productSnapshots.Length == 1;
+            return reactantPatterns.Length == 2 && productPatterns.Length == 1;
         }
 
-        public override void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null)
+        public override void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
         {
-            if (bindingSite1 != null && bindingSite2 != null)
+            if (component1 != null && component2 != null)
             {
                 Debug.Log( "Reaction happened: " + description );
-                bindingSite1.boundSite = bindingSite2;
-                bindingSite2.boundSite = bindingSite1;
+                component1.boundComponent = component2;
+                component2.boundComponent = component1;
 
-                RelativelyPosition( bindingSite1.theTransform, bindingSite2.theTransform );
+                RelativelyPosition( component1.theTransform, component2.theTransform );
 
-                Molecule[] molecules = new Molecule[bindingSite1.molecules.Length + bindingSite2.molecules.Length];
-                bindingSite1.molecules.CopyTo( molecules, 0 );
-                bindingSite2.molecules.CopyTo( molecules, bindingSite1.molecules.Length );
+                Molecule[] molecules = new Molecule[component1.molecules.Length + component2.molecules.Length];
+                component1.molecules.CopyTo( molecules, 0 );
+                component2.molecules.CopyTo( molecules, component1.molecules.Length );
 
-                productSnapshots[0].SetStateOfComplex( molecules );
-                reactor.MoveMoleculesToNewComplex( molecules, bindingSite1.theTransform );
+                productPatterns[0].SetStateOfComplex( molecules );
+                reactor.MoveMoleculesToNewComplex( molecules, component1.theTransform );
 
                 SetProductColor( molecules );
                 AnimateReaction( molecules );
-                World.ShowFlash( bindingSite1.theTransform );
+                World.ShowFlash( component1.theTransform );
             }
         }
 
-        protected void RelativelyPosition (Transform parentBindingSite, Transform childBindingSite)
+        protected void RelativelyPosition (Transform parentComponent, Transform childComponent)
         {
-            childBindingSite.parent.position = parentBindingSite.TransformPoint( childBindingSite.InverseTransformPoint( childBindingSite.parent.position ) );
-            childBindingSite.parent.rotation = childBindingSite.parent.rotation * Quaternion.Inverse( childBindingSite.rotation ) * parentBindingSite.rotation;
+            childComponent.parent.position = parentComponent.TransformPoint( childComponent.InverseTransformPoint( childComponent.parent.position ) );
+            childComponent.parent.rotation = childComponent.parent.rotation * Quaternion.Inverse( childComponent.rotation ) * parentComponent.rotation;
         }
     }
 }

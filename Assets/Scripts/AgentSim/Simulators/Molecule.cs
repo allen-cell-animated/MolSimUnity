@@ -8,7 +8,7 @@ namespace AICS.AgentSim
     {
         public Complex complex;
         public MoleculeDef definition;
-        public Dictionary<string,List<BindingSite>> bindingSites = new Dictionary<string, List<BindingSite>>();
+        public Dictionary<string,List<MoleculeComponent>> components = new Dictionary<string, List<MoleculeComponent>>();
         public float collisionRadius;
         public float interactionRadius;
         public bool couldReactOnCollision;
@@ -28,11 +28,11 @@ namespace AICS.AgentSim
 
         bool GetCouldReactOnCollision ()
         {
-            foreach (List<BindingSite> aTypeOfBindingSite in bindingSites.Values)
+            foreach (List<MoleculeComponent> aTypeOfComponent in components.Values)
             {
-                foreach (BindingSite bindingSite in aTypeOfBindingSite)
+                foreach (MoleculeComponent component in aTypeOfComponent)
                 {
-                    if (bindingSite.couldReactOnCollision)
+                    if (component.couldReactOnCollision)
                     {
                         return true;
                     }
@@ -41,62 +41,62 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual void Init (MoleculeSnapshot moleculeSnapshot, Complex _complex, 
+        public virtual void Init (MoleculePattern moleculePattern, Complex _complex, 
                                   BimolecularReaction[] relevantBimolecularReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
             complex = _complex;
-            definition = moleculeSnapshot.moleculeDef;
+            definition = moleculePattern.moleculeDef;
             collisionRadius = interactionRadius = definition.radius;
             interactionRadius += 1f;
-            CreateBindingSites( moleculeSnapshot, relevantBimolecularReactions, relevantCollisionFreeReactions );
+            CreateComponents( moleculePattern, relevantBimolecularReactions, relevantCollisionFreeReactions );
             couldReactOnCollision = GetCouldReactOnCollision();
             SetColorForCurrentState();
         }
 
-        protected virtual void CreateBindingSites (MoleculeSnapshot moleculeSnapshot, BimolecularReaction[] relevantBimolecularReactions, 
-                                                   CollisionFreeReaction[] relevantCollisionFreeReactions)
+        protected virtual void CreateComponents (MoleculePattern moleculePattern, BimolecularReaction[] relevantBimolecularReactions, 
+                                                 CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
-            foreach (List<BindingSiteDef> aTypeOfBindingSite in definition.bindingSiteDefs.Values)
+            foreach (List<ComponentDef> aTypeOfComponent in definition.componentDefs.Values)
             {
-                foreach (BindingSiteDef bindingSiteDef in aTypeOfBindingSite)
+                foreach (ComponentDef componentDef in aTypeOfComponent)
                 {
-                    CreateBindingSite( bindingSiteDef, relevantBimolecularReactions, relevantCollisionFreeReactions );
+                    CreateComponent( componentDef, relevantBimolecularReactions, relevantCollisionFreeReactions );
                 }
             }
-            moleculeSnapshot.SetStateOfMolecule( this );
+            moleculePattern.SetStateOfMolecule( this );
         }
 
-        protected virtual void CreateBindingSite (BindingSiteDef bindingSiteDef, BimolecularReaction[] relevantBimolecularReactions, 
-                                                  CollisionFreeReaction[] relevantCollisionFreeReactions)
+        protected virtual void CreateComponent (ComponentDef componentDef, BimolecularReaction[] relevantBimolecularReactions, 
+                                                CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
-            GameObject bindingSiteObject = new GameObject();
-            bindingSiteObject.transform.SetParent( theTransform );
-            bindingSiteDef.transformOnMolecule.Apply( theTransform, bindingSiteObject.transform );
-            bindingSiteObject.name = name + "_" + bindingSiteDef.id;
+            GameObject componentObject = new GameObject();
+            componentObject.transform.SetParent( theTransform );
+            componentDef.transformOnMolecule.Apply( theTransform, componentObject.transform );
+            componentObject.name = name + "_" + componentDef.componentName;
 
-            BindingSite bindingSite = bindingSiteObject.AddComponent<BindingSite>();
-            bindingSite.Init( bindingSiteDef, relevantBimolecularReactions, relevantCollisionFreeReactions, this );
+            MoleculeComponent component = componentObject.AddComponent<MoleculeComponent>();
+            component.Init( componentDef, relevantBimolecularReactions, relevantCollisionFreeReactions, this );
 
-            if (!bindingSites.ContainsKey( bindingSiteDef.id))
+            if (!components.ContainsKey( componentDef.componentName ))
             {
-                bindingSites.Add( bindingSiteDef.id, new List<BindingSite>() );
+                components.Add( componentDef.componentName, new List<MoleculeComponent>() );
             }
-            bindingSites[bindingSiteDef.id].Add( bindingSite );
+            components[componentDef.componentName].Add( component );
         }
 
         public virtual bool InteractWith (Molecule other)
         {
-            foreach (List<BindingSite> aTypeOfBindingSite in bindingSites.Values)
+            foreach (List<MoleculeComponent> aTypeOfComponent in components.Values)
             {
-                foreach (BindingSite bindingSite in aTypeOfBindingSite)
+                foreach (MoleculeComponent component in aTypeOfComponent)
                 {
-                    if (bindingSite.couldReactOnCollision)
+                    if (component.couldReactOnCollision)
                     {
-                        foreach (List<BindingSite> aTypeOfBindingSiteOther in other.bindingSites.Values)
+                        foreach (List<MoleculeComponent> aTypeOfComponentOther in other.components.Values)
                         {
-                            foreach (BindingSite otherBindingSite in aTypeOfBindingSiteOther)
+                            foreach (MoleculeComponent otherComponent in aTypeOfComponentOther)
                             {
-                                if (otherBindingSite.couldReactOnCollision && bindingSite.ReactWith( otherBindingSite ))
+                                if (otherComponent.couldReactOnCollision && component.ReactWith( otherComponent ))
                                 {
                                     return true;
                                 }
@@ -113,7 +113,7 @@ namespace AICS.AgentSim
         {
             complex.RemoveMolecule( this );
             complex = _complex;
-            name = complex.name + "_" + definition.species;
+            name = complex.name + "_" + definition.moleculeName;
             theTransform.SetParent( complex.theTransform );
 
             UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
@@ -122,11 +122,11 @@ namespace AICS.AgentSim
         public virtual void UpdateReactions (BimolecularReaction[] relevantBimolecularReactions, 
                                              CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
-            foreach (List<BindingSite> aTypeOfBindingSite in bindingSites.Values)
+            foreach (List<MoleculeComponent> aTypeOfComponent in components.Values)
             {
-                foreach (BindingSite bindingSite in aTypeOfBindingSite)
+                foreach (MoleculeComponent component in aTypeOfComponent)
                 {
-                    bindingSite.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
+                    component.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
                 }
             }
             couldReactOnCollision = GetCouldReactOnCollision();
@@ -149,9 +149,9 @@ namespace AICS.AgentSim
         {
             if (definition.colors != null)
             {
-                foreach (MoleculeSnapshotColor moleculeColor in definition.colors)
+                foreach (MoleculePatternColor moleculeColor in definition.colors)
                 {
-                    if (moleculeColor.snapshot.IsSatisfiedBy( this ))
+                    if (moleculeColor.pattern.Matches( this ))
                     {
                         material.color = moleculeColor.color;
                         return;

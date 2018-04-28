@@ -8,48 +8,48 @@ namespace AICS.AgentSim
     {
         protected override bool ReactantAndProductAmountsAreCorrect ()
         {
-            return reactantSnapshots.Length == 1 && productSnapshots.Length == 2;
+            return reactantPatterns.Length == 1 && productPatterns.Length == 2;
         }
 
-        public override void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null)
+        public override void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
         {
-            if (bindingSite1 != null)
+            if (component1 != null)
             {
                 Debug.Log( "Reaction happened: " + description );
-                bindingSite2 = bindingSite1.boundSite;
+                component2 = component1.boundComponent;
 
-                bindingSite1.boundSite = null;
-                bindingSite2.boundSite = null;
+                component1.boundComponent = null;
+                component2.boundComponent = null;
 
-                BindingSite bindingSite;
+                MoleculeComponent component;
                 Molecule[] molecules;
-                foreach (ComplexSnapshot productSnapshot in productSnapshots)
+                foreach (ComplexPattern productPattern in productPatterns)
                 {
-                    bindingSite = GetBindingSiteForProductState( productSnapshot, bindingSite1, bindingSite2 );
-                    molecules = bindingSite.complex.GetMoleculesAtEndOfBond( bindingSite );
+                    component = GetComponentForProductState( productPattern, component1, component2 );
+                    molecules = component.complex.GetMoleculesAtEndOfBond( component );
 
-                    productSnapshot.SetStateOfComplex( molecules );
-                    reactor.MoveMoleculesToNewComplex( molecules, bindingSite.molecule.theTransform );
+                    productPattern.SetStateOfComplex( molecules );
+                    reactor.MoveMoleculesToNewComplex( molecules, component.molecule.theTransform );
 
                     SetProductColor( molecules );
                     AnimateReaction( molecules );
                 }
-                World.ShowFlash( bindingSite1.theTransform );
+                World.ShowFlash( component1.theTransform );
             }
         }
 
-        protected BindingSite GetBindingSiteForProductState (ComplexSnapshot productSnapshot, BindingSite bindingSite1, BindingSite bindingSite2)
+        protected MoleculeComponent GetComponentForProductState (ComplexPattern productPattern, MoleculeComponent component1, MoleculeComponent component2)
         {
             //TODO this won't work anymore...
-            foreach (MoleculeSnapshot moleculeSnapshot in productSnapshot.moleculeSnapshots)
+            foreach (MoleculePattern moleculePattern in productPattern.moleculePatterns)
             {
-                if (moleculeSnapshot.moleculeDef.Equals( bindingSite1.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite1.id ) )
+                if (moleculePattern.moleculeDef.Equals( component1.moleculeDef ) && moleculePattern.ContainsComponent( component1.componentName ) )
                 {
-                    return bindingSite1;
+                    return component1;
                 }
-                if (moleculeSnapshot.moleculeDef.Equals( bindingSite2.moleculeDef ) && moleculeSnapshot.ContainsBindingSite( bindingSite2.id ) )
+                if (moleculePattern.moleculeDef.Equals( component2.moleculeDef ) && moleculePattern.ContainsComponent( component2.componentName ) )
                 {
-                    return bindingSite2;
+                    return component2;
                 }
             }
             return null;

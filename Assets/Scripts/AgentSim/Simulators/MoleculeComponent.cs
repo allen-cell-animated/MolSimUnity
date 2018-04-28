@@ -4,13 +4,33 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class BindingSite : MonoBehaviour 
+    public class MoleculeComponent : MonoBehaviour, IComponent
     {
-        public BindingSiteDef definition;
+        public ComponentDef definition;
         public Molecule molecule;
-        public string state;
-        public BindingSite boundSite;
+        public MoleculeComponent boundComponent;
         public bool couldReactOnCollision;
+
+        [SerializeField] string _state;
+        public string state
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+            }
+        }
+
+        public string componentName
+        {
+            get
+            {
+                return definition.componentName;
+            }
+        }
 
         [SerializeField] protected BimolecularReaction[] bimolecularReactions;
         [SerializeField] protected CollisionFreeReaction[] collisionFreeReactions;
@@ -52,14 +72,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public string id
-        {
-            get
-            {
-                return definition.id;
-            }
-        }
-
         protected float interactionRadius
         {
             get
@@ -68,10 +80,10 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (BindingSiteDef bindingSiteDef, BimolecularReaction[] relevantBimolecularReactions, 
+        public virtual void Init (ComponentDef componentDef, BimolecularReaction[] relevantBimolecularReactions, 
                                   CollisionFreeReaction[] relevantCollisionFreeReactions, Molecule _molecule)
         {
-            definition = bindingSiteDef;
+            definition = componentDef;
             molecule = _molecule;
             state = (definition.states == null || definition.states.Length < 1) ? "" : definition.states[0];
             SetBimolecularReactions( relevantBimolecularReactions );
@@ -83,7 +95,7 @@ namespace AICS.AgentSim
             List<BimolecularReaction> bimolecularReactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in relevantBimolecularReactions)
             {
-                if (reaction.SiteIsRelevant( this ))
+                if (reaction.definition.ComponentIsInReactionCenter( this ))
                 {
                     bimolecularReactionsList.Add( reaction );
                 }
@@ -97,7 +109,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReaction> collisionFreeReactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in relevantCollisionFreeReactions)
             {
-                if (reaction.RegisterBindingSite( this ))
+                if (reaction.RegisterComponent( this ))
                 {
                     collisionFreeReactionsList.Add( reaction );
                 }
@@ -109,11 +121,11 @@ namespace AICS.AgentSim
         {
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                reaction.UnregisterBindingSite( this );
+                reaction.UnregisterComponent( this );
             }
         }
 
-        public virtual bool ReactWith (BindingSite other)
+        public virtual bool ReactWith (MoleculeComponent other)
         {
             if (IsNear( other ))
             {
@@ -129,7 +141,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        bool IsNear (BindingSite other)
+        bool IsNear (MoleculeComponent other)
         {
             return other != this 
                 && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
@@ -140,12 +152,12 @@ namespace AICS.AgentSim
             SetBimolecularReactions( relevantBimolecularReactions );
             UnregisterWithCollisionFreeReactions();
             RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
-            name = molecule.name + "_" + id;
+            name = molecule.name + "_" + componentName;
         }
 
         public override string ToString ()
         {
-            return "BindingSite " + name;
+            return "Component " + name;
         }
     }
 }

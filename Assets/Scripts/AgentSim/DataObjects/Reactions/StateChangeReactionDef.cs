@@ -8,20 +8,20 @@ namespace AICS.AgentSim
     {
         protected override bool ReactantAndProductAmountsAreCorrect ()
         {
-            return reactantSnapshots.Length == 1 && productSnapshots.Length == 1;
+            return reactantPatterns.Length == 1 && productPatterns.Length == 1;
         }
 
-        public override void React (Reactor reactor, BindingSite bindingSite1, BindingSite bindingSite2 = null)
+        public override void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
         {
-            if (bindingSite1 != null)
+            if (component1 != null)
             {
                 Debug.Log( "Reaction happened: " + description );
-                productSnapshots[0].SetStateOfComplex( bindingSite1.molecules );
-                bindingSite1.complex.UpdateReactions();
+                productPatterns[0].SetStateOfComplex( component1.molecules );
+                component1.complex.UpdateReactions();
 
-                SetProductColor( bindingSite1.molecules );
-                AnimateReaction( bindingSite1.molecules );
-                World.ShowFlash( bindingSite1.theTransform );
+                SetProductColor( component1.molecules );
+                AnimateReaction( component1.molecules );
+                World.ShowFlash( component1.theTransform );
             }
         }
     }

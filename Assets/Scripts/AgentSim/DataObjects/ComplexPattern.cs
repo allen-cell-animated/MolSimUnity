@@ -5,54 +5,54 @@ using UnityEngine;
 namespace AICS.AgentSim
 {
     [System.Serializable]
-    public class ComplexSnapshot
+    public class ComplexPattern
     {
-        [SerializeField] MoleculeSnapshot[] _moleculeSnapshots;
-        public MoleculeSnapshot[] moleculeSnapshots
+        [SerializeField] MoleculePattern[] _moleculePatterns;
+        public MoleculePattern[] moleculePatterns
         {
             get
             {
-                return _moleculeSnapshots;
+                return _moleculePatterns;
             }
         }
 
         #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
-            foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)
+            foreach (MoleculePattern moleculePattern in moleculePatterns)
             {
-                moleculeSnapshot.Init();
+                moleculePattern.Init();
             }
         }
         #endregion
 
-        public ComplexSnapshot (MoleculeSnapshot[] theMoleculeSnapshots)
+        public ComplexPattern (MoleculePattern[] theMoleculePatterns)
         {
-            _moleculeSnapshots = theMoleculeSnapshots;
+            _moleculePatterns = theMoleculePatterns;
         }
 
         public virtual void SetStateOfComplex (Molecule[] molecules)
         {
-            foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots) 
+            foreach (MoleculePattern moleculePattern in moleculePatterns) 
             {
                 foreach (Molecule molecule in molecules)
                 {
-                    if (molecule.definition.Equals( moleculeSnapshot.moleculeDef ))
+                    if (molecule.definition.Equals( moleculePattern.moleculeDef ))
                     {
-                        moleculeSnapshot.SetStateOfMolecule( molecule );
+                        moleculePattern.SetStateOfMolecule( molecule );
                     }
                 }
             }
         }
 
-        public bool IsSatisfiedBy (ComplexSnapshot other)
+        public bool Matches (ComplexPattern other)
         {
-            foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)
+            foreach (MoleculePattern moleculePattern in moleculePatterns)
             {
                 bool stateFound = false;
-                foreach (MoleculeSnapshot otherMoleculeSnapshot in other.moleculeSnapshots)
+                foreach (MoleculePattern otherMoleculePattern in other.moleculePatterns)
                 {
-                    if (moleculeSnapshot.IsSatisfiedBy( otherMoleculeSnapshot ))
+                    if (moleculePattern.Matches( otherMoleculePattern ))
                     {
                         stateFound = true;
                         break;
@@ -66,14 +66,14 @@ namespace AICS.AgentSim
             return true;
         }
 
-        public bool IsSatisfiedBy (Molecule[] molecules)
+        public bool Matches (Molecule[] molecules)
         {
-            foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)
+            foreach (MoleculePattern moleculePattern in moleculePatterns)
             {
                 bool stateFound = false;
                 foreach (Molecule molecule in molecules)
                 {
-                    if (moleculeSnapshot.IsSatisfiedBy( molecule ))
+                    if (moleculePattern.Matches( molecule ))
                     {
                         stateFound = true;
                         break;
@@ -89,22 +89,22 @@ namespace AICS.AgentSim
 
 		public override bool Equals (object obj)
 		{
-            ComplexSnapshot other = obj as ComplexSnapshot;
+            ComplexPattern other = obj as ComplexPattern;
             if (other != null)
             {
-                if (other.moleculeSnapshots.Length != moleculeSnapshots.Length)
+                if (other.moleculePatterns.Length != moleculePatterns.Length)
                 {
                     return false;
                 }
-                foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)
+                foreach (MoleculePattern moleculePattern in moleculePatterns)
                 {
                     bool foundState = false;
-                    if (moleculeSnapshot != null && moleculeSnapshot.moleculeDef != null)
+                    if (moleculePattern != null && moleculePattern.moleculeDef != null)
                     {
-                        foreach (MoleculeSnapshot otherMoleculeSnapshot in other.moleculeSnapshots)
+                        foreach (MoleculePattern otherMoleculePattern in other.moleculePatterns)
                         {
-                            if (otherMoleculeSnapshot != null && otherMoleculeSnapshot.moleculeDef != null
-                                && otherMoleculeSnapshot.moleculeDef.Equals( moleculeSnapshot.moleculeDef ))
+                            if (otherMoleculePattern != null && otherMoleculePattern.moleculeDef != null
+                                && otherMoleculePattern.moleculeDef.Equals( moleculePattern.moleculeDef ))
                             {
                                 foundState = true;
                                 break;
@@ -126,11 +126,11 @@ namespace AICS.AgentSim
             unchecked
             {
                 int hash = 0;
-                if (moleculeSnapshots != null)
+                if (moleculePatterns != null)
                 {
-                    foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)
+                    foreach (MoleculePattern moleculePattern in moleculePatterns)
                     {
-                        hash += 7919 * (moleculeSnapshot == null ? 1 : moleculeSnapshot.GetHashCode());
+                        hash += 7919 * (moleculePattern == null ? 1 : moleculePattern.GetHashCode());
                     }
                 }
                 return hash;
@@ -141,10 +141,10 @@ namespace AICS.AgentSim
         {
             string s = "";
             int i = 0;
-            foreach (MoleculeSnapshot moleculeSnapshot in moleculeSnapshots)
+            foreach (MoleculePattern moleculePattern in moleculePatterns)
             {
-                s += moleculeSnapshot;
-                if (i < moleculeSnapshots.Length - 1)
+                s += moleculePattern;
+                if (i < moleculePatterns.Length - 1)
                 {
                     s += " | ";
                 }

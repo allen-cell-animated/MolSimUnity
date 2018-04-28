@@ -98,9 +98,9 @@ namespace AICS.AgentSim
                 return;
             }
 
-            MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexSnapshot, CalculateMoleculeTransforms( complexConcentration.complexSnapshot ),
-                                                              GetRelevantBimolecularReactions( complexConcentration.complexSnapshot ),
-                                                              GetRelevantCollisionFreeReactions( complexConcentration.complexSnapshot ) );
+            MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
+                                                              GetRelevantBimolecularReactions( complexConcentration.complexPattern ),
+                                                              GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );
 
             Complex complex;
             for (int i = 0; i < amount; i++)
@@ -115,9 +115,9 @@ namespace AICS.AgentSim
             }
         }
 
-        protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexSnapshot complexSnapshot)
+        protected virtual RelativeTransform[] CalculateMoleculeTransforms (ComplexPattern complexPattern)
         {
-            RelativeTransform[] transforms = new RelativeTransform[complexSnapshot.moleculeSnapshots.Length];
+            RelativeTransform[] transforms = new RelativeTransform[complexPattern.moleculePatterns.Length];
             transforms[0] = new RelativeTransform( Vector3.zero, Vector3.zero );
             Vector3 averagePosition = Vector3.zero;
 
@@ -129,18 +129,18 @@ namespace AICS.AgentSim
             site2.SetParent( molecule2 );
             //BindingSiteDef bindingSite;
 
-            //TODO
-            //for (int i = 0; i < complexSnapshot.moleculeSnapshots.Length - 1; i++)
+            ////TODO
+            //for (int i = 0; i < complexPattern.moleculePatterns.Length - 1; i++)
             //{
-            //    foreach (List<SiteState> aTypeOfSiteState1 in complexSnapshot.moleculeSnapshots[i].bindingSiteStates.Values)
+            //    foreach (List<SiteState> aTypeOfSiteState1 in complexPattern.moleculePatterns[i].bindingSiteStates.Values)
             //    {
             //        foreach (SiteState siteState1 in aTypeOfSiteState1)
             //        {
             //            if (siteState1.state.Contains( "!" ))
             //            {
-            //                for (int j = i + 1; j < complexSnapshot.moleculeSnapshots.Length; j++)
+            //                for (int j = i + 1; j < complexPattern.moleculePatterns.Length; j++)
             //                {
-            //                    foreach (List<SiteState> aTypeOfSiteState2 in complexSnapshot.moleculeSnapshots[j].bindingSiteStates.Values)
+            //                    foreach (List<SiteState> aTypeOfSiteState2 in complexPattern.moleculePatterns[j].bindingSiteStates.Values)
             //                    {
             //                        foreach (SiteState siteState2 in aTypeOfSiteState1)
             //                        {
@@ -148,12 +148,12 @@ namespace AICS.AgentSim
             //                            {
             //                                molecule1.position = transforms[i].position;
             //                                molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
-            //                                bindingSite = complexSnapshot.moleculeSnapshots[i].moleculeDef.bindingSiteDefs[siteState1.siteRef];
+            //                                bindingSite = complexPattern.moleculePatterns[i].moleculeDef.bindingSiteDefs[siteState1.id][0];
             //                                bindingSite.transformOnMolecule.Apply( molecule1, site1 );
 
             //                                molecule2.position = Vector3.zero;
             //                                molecule2.rotation = Quaternion.identity;
-            //                                bindingSite = complexSnapshot.moleculeSnapshots[j].moleculeDef.bindingSiteDefs[siteState2.siteRef];
+            //                                bindingSite = complexPattern.moleculePatterns[j].moleculeDef.bindingSiteDefs[siteState2.id][0];
             //                                bindingSite.transformOnMolecule.Apply( molecule2, site2 );
 
             //                                molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
@@ -182,12 +182,12 @@ namespace AICS.AgentSim
             return transforms;
         }
 
-        protected BimolecularReaction[] GetRelevantBimolecularReactions (ComplexSnapshot complexSnapshot)
+        protected BimolecularReaction[] GetRelevantBimolecularReactions (ComplexPattern complexPattern)
         {
             List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in bimolecularReactions)
             {
-                if (reaction.ComplexIsReactant( complexSnapshot ))
+                if (reaction.definition.ComplexIsReactant( complexPattern ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -200,7 +200,7 @@ namespace AICS.AgentSim
             List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in bimolecularReactions)
             {
-                if (reaction.ComplexIsReactant( molecules ))
+                if (reaction.definition.ComplexIsReactant( molecules ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -208,12 +208,12 @@ namespace AICS.AgentSim
             return reactionsList.ToArray();
         }
 
-        protected CollisionFreeReaction[] GetRelevantCollisionFreeReactions (ComplexSnapshot complexSnapshot)
+        protected CollisionFreeReaction[] GetRelevantCollisionFreeReactions (ComplexPattern complexPattern)
         {
             List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                if (reaction.ComplexIsReactant( complexSnapshot ))
+                if (reaction.definition.ComplexIsReactant( complexPattern ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -226,7 +226,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                if (reaction.ComplexIsReactant( molecules ))
+                if (reaction.definition.ComplexIsReactant( molecules ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -389,16 +389,16 @@ namespace AICS.AgentSim
 
     public class MoleculeInitData
     {
-        public ComplexSnapshot complexSnapshot;
+        public ComplexPattern complexPattern;
         public RelativeTransform[] moleculeTransforms;
         public BimolecularReaction[] relevantBimolecularReactions;
         public CollisionFreeReaction[] relevantCollisionFreeReactions;
 
-        public MoleculeInitData (ComplexSnapshot _complexSnapshot, RelativeTransform[] _moleculeTransforms,
+        public MoleculeInitData (ComplexPattern _complexPattern, RelativeTransform[] _moleculeTransforms,
                                  BimolecularReaction[] _relevantBimolecularReactions, 
                                  CollisionFreeReaction[] _relevantCollisionFreeReactions)
         {
-            complexSnapshot = _complexSnapshot;
+            complexPattern = _complexPattern;
             moleculeTransforms = _moleculeTransforms;
             relevantBimolecularReactions = _relevantBimolecularReactions;
             relevantCollisionFreeReactions = _relevantCollisionFreeReactions;

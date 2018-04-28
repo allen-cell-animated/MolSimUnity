@@ -18,7 +18,7 @@ namespace AICS.AgentSim
             #region for prototyping in inspector without writing custom property drawer etc
             foreach (ComplexConcentration complex in complexes)
             {
-                complex.complexSnapshot.Init();
+                complex.complexPattern.Init();
             }
             #endregion
 
@@ -34,20 +34,20 @@ namespace AICS.AgentSim
     {
         [Tooltip( "Molar" )] 
         public float concentration;
-        public ComplexSnapshot complexSnapshot;
+        public ComplexPattern complexPattern;
 
         public int moleculeCount
         {
             get
             {
-                return complexSnapshot.moleculeSnapshots.Length;
+                return complexPattern.moleculePatterns.Length;
             }
         }
 
-        public ComplexConcentration (ComplexSnapshot _complexSnapshot, float _concentration)
+        public ComplexConcentration (ComplexPattern _complexPattern, float _concentration)
         {
-            complexSnapshot = _complexSnapshot;
-            complexSnapshot.Init();
+            complexPattern = _complexPattern;
+            complexPattern.Init();
             concentration = _concentration;
         }
     }

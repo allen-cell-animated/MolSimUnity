@@ -6,12 +6,12 @@ namespace AICS.AgentSim
 {
     public class MoleculeDef : ScriptableObject
     {
-        [SerializeField] string _species = "";
-        public string species
+        [SerializeField] string _moleculeName = "";
+        public string moleculeName
         {
             get
             {
-                return _species;
+                return _moleculeName;
             }
         }
 
@@ -21,28 +21,28 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public Dictionary<string,List<BindingSiteDef>> bindingSiteDefs;
+        public Dictionary<string,List<ComponentDef>> componentDefs;
 
         #region for prototyping in inspector without writing custom property drawer etc
-        [SerializeField] BindingSiteDef[] siteDefs = new BindingSiteDef[0];
-        public MoleculeSnapshotColor[] colors;
+        [SerializeField] ComponentDef[] componentDefsTemp = new ComponentDef[0];
+        public MoleculePatternColor[] colors;
 
         public void Init ()
         {
-            bindingSiteDefs = new Dictionary<string, List<BindingSiteDef>>();
-            foreach (BindingSiteDef siteDef in siteDefs)
+            componentDefs = new Dictionary<string, List<ComponentDef>>();
+            foreach (ComponentDef componentDef in componentDefsTemp)
             {
-                if (!bindingSiteDefs.ContainsKey( siteDef.id ))
+                if (!componentDefs.ContainsKey( componentDef.componentName ))
                 {
-                    bindingSiteDefs.Add( siteDef.id, new List<BindingSiteDef>() );
+                    componentDefs.Add( componentDef.componentName, new List<ComponentDef>() );
                 }
-                bindingSiteDefs[siteDef.id].Add( siteDef );
+                componentDefs[componentDef.componentName].Add( componentDef );
             }
             if (colors != null)
             {
-                foreach (MoleculeSnapshotColor color in colors)
+                foreach (MoleculePatternColor color in colors)
                 {
-                    color.snapshot.InitSiteStates();
+                    color.pattern.InitSiteStates();
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace AICS.AgentSim
             MoleculeDef other = obj as MoleculeDef;
             if (other != null)
             {
-                return other.species == species;
+                return other.moleculeName == moleculeName;
             }
             return false;
         }
@@ -75,20 +75,20 @@ namespace AICS.AgentSim
         {
             unchecked
             {
-                return 16777619 * (species == null ? 0 : species.GetHashCode());
+                return 16777619 * (moleculeName == null ? 0 : moleculeName.GetHashCode());
             }
         }
 
 		public override string ToString()
 		{
-            return "molecule " + species;
+            return "molecule " + moleculeName;
 		}
 	}
 
     [System.Serializable]
-    public class BindingSiteDef
+    public class ComponentDef
     {
-        public string id;
+        public string componentName;
         public string[] states;
         public RelativeTransform transformOnMolecule;
         public float radius;
@@ -114,9 +114,9 @@ namespace AICS.AgentSim
     }
 
     [System.Serializable]
-    public class MoleculeSnapshotColor
+    public class MoleculePatternColor
     {
-        public MoleculeSnapshot snapshot;
+        public MoleculePattern pattern;
         public Color color;
     }
 }

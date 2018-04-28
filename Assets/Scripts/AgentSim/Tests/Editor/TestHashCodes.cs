@@ -8,235 +8,235 @@ public class TestHashCodes
     public bool debug = false;
 
     [Test]
-    public void MoleculeSnapshotSameSpeciesSameSites ()
+    public void MoleculePatternSameSpeciesSameSites ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
-        SiteState[] sites = new SiteState[3];
-        sites[0] = new SiteState( "a", "0" );
-        sites[1] = new SiteState( "b", "0" );
-        sites[2] = new SiteState( "c", "0" );
+        ComponentState[] components = new ComponentState[3];
+        components[0] = new ComponentState( "a", "0" );
+        components[1] = new ComponentState( "b", "0" );
+        components[2] = new ComponentState( "c", "0" );
 
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components );
 
-        if (debug) { Debug.Log( "MoleculeStatesSameSpeciesSameSites: " + snapshot1.GetHashCode() + " != " + snapshot2.GetHashCode() + " ? " + snapshot1.Equals( snapshot2 ) ); }
+        if (debug) { Debug.Log( "MoleculePatternSameSpeciesSameSites: " + pattern1.GetHashCode() + " != " + pattern2.GetHashCode() + " ? " + pattern1.Equals( pattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( snapshot1, snapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( pattern1, pattern2 ) );
     }
 
     [Test]
-    public void MoleculeSnapshotSameSpeciesDifferentSites ()
+    public void MoleculePatternSameSpeciesDifferentSites ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
 
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "a", "P" );
-        sites2[1] = new SiteState( "b", "P" );
-        sites2[2] = new SiteState( "c", "P" );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "a", "P" );
+        components2[1] = new ComponentState( "b", "P" );
+        components2[2] = new ComponentState( "c", "P" );
 
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites1 );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites2 );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components1 );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components2 );
 
-        if (debug) { Debug.Log( "MoleculeStatesSameSpeciesDifferentSites: " + snapshot1.GetHashCode() + " != " + snapshot2.GetHashCode() 
-                                + " ? " + snapshot1.Equals( snapshot2 ) ); }
+        if (debug) { Debug.Log( "MoleculePatternSameSpeciesDifferentSites: " + pattern1.GetHashCode() + " != " + pattern2.GetHashCode() 
+                                + " ? " + pattern1.Equals( pattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( snapshot1, snapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( pattern1, pattern2 ) );
     }
 
     [Test]
-    public void MoleculeSnapshotSameSpeciesDifferentNumberOfSites ()
+    public void MoleculePatternSameSpeciesDifferentNumberOfSites ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
 
-        SiteState[] sites2 = new SiteState[2];
-        sites2[0] = new SiteState( "a", "0" );
-        sites2[1] = new SiteState( "c", "0" );
+        ComponentState[] components2 = new ComponentState[2];
+        components2[0] = new ComponentState( "a", "0" );
+        components2[1] = new ComponentState( "c", "0" );
 
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites1 );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites2 );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components1 );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components2 );
 
-        if (debug) { Debug.Log( "MoleculeStatesSameSpeciesDifferentNumberOfSites: " + snapshot1.GetHashCode() + " != " + snapshot2.GetHashCode() 
-                                + " ? " + snapshot1.Equals( snapshot2 ) ); }
+        if (debug) { Debug.Log( "MoleculePatternSameSpeciesDifferentNumberOfSites: " + pattern1.GetHashCode() + " != " + pattern2.GetHashCode() 
+                                + " ? " + pattern1.Equals( pattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( snapshot1, snapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( pattern1, pattern2 ) );
     }
 
     [Test]
-    public void MoleculeSnapshotDifferentSpeciesSameSites ()
+    public void MoleculePatternDifferentSpeciesSameSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/Basic" ) as MoleculeDef;
 
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "a", "0" );
-        sites2[1] = new SiteState( "b", "0" );
-        sites2[2] = new SiteState( "c", "0" );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "a", "0" );
+        components2[1] = new ComponentState( "b", "0" );
+        components2[2] = new ComponentState( "c", "0" );
 
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
-        if (debug) { Debug.Log( "MoleculeStatesDifferentSpeciesSameSites: " + snapshot1.GetHashCode() + " != " + snapshot2.GetHashCode() 
-                                + " ? " + snapshot1.Equals( snapshot2 ) ); }
+        if (debug) { Debug.Log( "MoleculePatternDifferentSpeciesSameSites: " + pattern1.GetHashCode() + " != " + pattern2.GetHashCode() 
+                                + " ? " + pattern1.Equals( pattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( snapshot1, snapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( pattern1, pattern2 ) );
     }
 
     [Test]
-    public void MoleculeSnapshotSameSpeciesSitesInDifferentOrder ()
+    public void MoleculePatternSameSpeciesSitesInDifferentOrder ()
     {
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
 
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "c", "0" );
-        sites2[1] = new SiteState( "a", "0" );
-        sites2[2] = new SiteState( "b", "0" );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "c", "0" );
+        components2[1] = new ComponentState( "a", "0" );
+        components2[2] = new ComponentState( "b", "0" );
 
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef, sites1 );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef, sites2 );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components1 );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components2 );
 
-        if (debug) { Debug.Log( "MoleculeStatesSameSpeciesSitesInDifferentOrder: " + snapshot1.GetHashCode() + " != " + snapshot2.GetHashCode() 
-                                + " ? " + snapshot1.Equals( snapshot2 ) ); }
+        if (debug) { Debug.Log( "MoleculePatternSameSpeciesSitesInDifferentOrder: " + pattern1.GetHashCode() + " != " + pattern2.GetHashCode() 
+                                + " ? " + pattern1.Equals( pattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( snapshot1, snapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( pattern1, pattern2 ) );
     }
 
     [Test]
-    public void ComplexSnapshotSameSpeciesSameSites ()
+    public void ComplexPatternSameSpeciesSameSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "a", "0" );
-        sites2[1] = new SiteState( "b", "0" );
-        sites2[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "a", "0" );
+        components2[1] = new ComponentState( "b", "0" );
+        components2[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
-        ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
-        ComplexSnapshot complexSnapshot2 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
+        ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
+        ComplexPattern complexPattern2 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
 
-        if (debug) { Debug.Log( "ComplexStateSameSpeciesSameSites: " + complexSnapshot1.GetHashCode() + " != " + complexSnapshot2.GetHashCode() 
-                                + " ? " + complexSnapshot1.Equals( complexSnapshot2 ) ); }
+        if (debug) { Debug.Log( "ComplexPatternSameSpeciesSameSites: " + complexPattern1.GetHashCode() + " != " + complexPattern2.GetHashCode() 
+                                + " ? " + complexPattern1.Equals( complexPattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( complexSnapshot1, complexSnapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( complexPattern1, complexPattern2 ) );
     }
 
     [Test]
-    public void ComplexSnapshotDifferentSpeciesSameSites ()
+    public void ComplexPatternDifferentSpeciesSameSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "a", "0" );
-        sites2[1] = new SiteState( "b", "0" );
-        sites2[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "a", "0" );
+        components2[1] = new ComponentState( "b", "0" );
+        components2[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
         MoleculeDef moleculeDef3 = Resources.Load( "Tests/Molecules/Basic" ) as MoleculeDef;
-        SiteState[] sites3 = new SiteState[3];
-        sites3[0] = new SiteState( "a", "0" );
-        sites3[1] = new SiteState( "b", "0" );
-        sites3[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot3 = new MoleculeSnapshot( moleculeDef3, sites3 );
+        ComponentState[] components3 = new ComponentState[3];
+        components3[0] = new ComponentState( "a", "0" );
+        components3[1] = new ComponentState( "b", "0" );
+        components3[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern3 = new MoleculePattern( moleculeDef3, components3 );
 
-        ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
-        ComplexSnapshot complexSnapshot2 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot2, snapshot3} );
+        ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
+        ComplexPattern complexPattern2 = new ComplexPattern( new MoleculePattern[] {pattern2, pattern3} );
 
-        if (debug) { Debug.Log( "ComplexStateDifferentSpeciesSameSites: " + complexSnapshot1.GetHashCode() + " != " + complexSnapshot2.GetHashCode() 
-                                + " ? " + complexSnapshot1.Equals( complexSnapshot2 ) ); }
+        if (debug) { Debug.Log( "ComplexPatternDifferentSpeciesSameSites: " + complexPattern1.GetHashCode() + " != " + complexPattern2.GetHashCode() 
+                                + " ? " + complexPattern1.Equals( complexPattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( complexSnapshot1, complexSnapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( complexPattern1, complexPattern2 ) );
     }
 
     [Test]
-    public void ComplexSnapshotSameSpeciesDifferentSites ()
+    public void ComplexPatternSameSpeciesDifferentSites ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "a", "0" );
-        sites2[1] = new SiteState( "b", "0" );
-        sites2[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "a", "0" );
+        components2[1] = new ComponentState( "b", "0" );
+        components2[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
-        SiteState[] sites3 = new SiteState[3];
-        sites3[0] = new SiteState( "a", "P" );
-        sites3[1] = new SiteState( "b", "0" );
-        sites3[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot3 = new MoleculeSnapshot( moleculeDef2, sites3 );
+        ComponentState[] components3 = new ComponentState[3];
+        components3[0] = new ComponentState( "a", "P" );
+        components3[1] = new ComponentState( "b", "0" );
+        components3[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern3 = new MoleculePattern( moleculeDef2, components3 );
 
-        ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
-        ComplexSnapshot complexSnapshot2 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot3} );
+        ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
+        ComplexPattern complexPattern2 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern3} );
 
-        if (debug) { Debug.Log( "ComplexStateSameSpeciesDifferentSites: " + complexSnapshot1.GetHashCode() + " != " + complexSnapshot2.GetHashCode() 
-                                + " ? " + complexSnapshot1.Equals( complexSnapshot2 ) ); }
+        if (debug) { Debug.Log( "ComplexPatternSameSpeciesDifferentSites: " + complexPattern1.GetHashCode() + " != " + complexPattern2.GetHashCode() 
+                                + " ? " + complexPattern1.Equals( complexPattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( complexSnapshot1, complexSnapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( complexPattern1, complexPattern2 ) );
     }
 
     [Test]
-    public void ComplexSnapshotSpeciesInDifferentOrder ()
+    public void ComplexPatternSpeciesInDifferentOrder ()
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
-        SiteState[] sites1 = new SiteState[3];
-        sites1[0] = new SiteState( "a", "0" );
-        sites1[1] = new SiteState( "b", "0" );
-        sites1[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot1 = new MoleculeSnapshot( moleculeDef1, sites1 );
+        ComponentState[] components1 = new ComponentState[3];
+        components1[0] = new ComponentState( "a", "0" );
+        components1[1] = new ComponentState( "b", "0" );
+        components1[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
-        SiteState[] sites2 = new SiteState[3];
-        sites2[0] = new SiteState( "a", "0" );
-        sites2[1] = new SiteState( "b", "0" );
-        sites2[2] = new SiteState( "c", "0" );
-        MoleculeSnapshot snapshot2 = new MoleculeSnapshot( moleculeDef2, sites2 );
+        ComponentState[] components2 = new ComponentState[3];
+        components2[0] = new ComponentState( "a", "0" );
+        components2[1] = new ComponentState( "b", "0" );
+        components2[2] = new ComponentState( "c", "0" );
+        MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
-        ComplexSnapshot complexSnapshot1 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot1, snapshot2} );
-        ComplexSnapshot complexSnapshot2 = new ComplexSnapshot( new MoleculeSnapshot[] {snapshot2, snapshot1} );
+        ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
+        ComplexPattern complexPattern2 = new ComplexPattern( new MoleculePattern[] {pattern2, pattern1} );
 
-        if (debug) { Debug.Log( "ComplexStateSpeciesInDifferentOrder: " + complexSnapshot1.GetHashCode() + " != " + complexSnapshot2.GetHashCode() 
-                                + " ? " + complexSnapshot1.Equals( complexSnapshot2 ) ); }
+        if (debug) { Debug.Log( "ComplexPatternSpeciesInDifferentOrder: " + complexPattern1.GetHashCode() + " != " + complexPattern2.GetHashCode() 
+                                + " ? " + complexPattern1.Equals( complexPattern2 ) ); }
 
-        Assert.IsTrue( HashCodesMatchEquals( complexSnapshot1, complexSnapshot2 ) );
+        Assert.IsTrue( HashCodesMatchEquals( complexPattern1, complexPattern2 ) );
     }
 
     bool HashCodesMatchEquals (System.Object obj1, System.Object obj2)
