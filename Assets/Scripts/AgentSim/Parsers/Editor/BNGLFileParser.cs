@@ -66,10 +66,12 @@ namespace AICS.AgentSim
         {
             string file_contents = "";
             this.ReadIntoMemory(file_path, out file_contents);
-            this.ParseForKeywords(file_contents);
+
+            BNGLFileData fdata;
+            this.ParseForKeywords(file_contents, out fdata);
+            this.ConstructEngineObjects(fdata);
         }
         #endregion
-
 
         #region BNGL Specific Parsing
         /// <summary>
@@ -77,8 +79,10 @@ namespace AICS.AgentSim
         /// e.g. "molecule type" -> Molecule specific parsing
         /// </summary>
         /// <param name="file_contents"> A string containing the contents of a local file read into memory</param>
-        private void ParseForKeywords(string file_contents)
+        private void ParseForKeywords(string file_contents, out BNGLFileData fdata)
         {
+            fdata = new BNGLFileData();
+
             // Divide the string by new lines
             string[] file_lines = file_contents.Split(
                                 new[] { "\r\n", "\r", "\n" },
@@ -113,9 +117,9 @@ namespace AICS.AgentSim
             }
 
             // Validity checks
-            if(begin_indicies.Count != end_indicies.Count)
+            if (begin_indicies.Count != end_indicies.Count)
             {
-                Debug.LogError(String.Format("{0} the number of begin statments does not equal the number of end statements",fileErrorMsg));
+                Debug.LogError(String.Format("{0} the number of begin statments does not equal the number of end statements", fileErrorMsg));
                 return;
             }
 
@@ -125,8 +129,6 @@ namespace AICS.AgentSim
                 return;
             }
 
-            BNGLFileData fdata = new BNGLFileData();
-
             // Divide the document into info-blocks and parse accordingly
             while (begin_indicies.Count > 0)
             {
@@ -135,7 +137,7 @@ namespace AICS.AgentSim
                 List<string> info = new List<string>();
                 string key = keywords.Dequeue().Trim().ToLower();
 
-                for(int j = begin + 1; j < end; ++j) // ignore the lines with 'begin' or 'end'
+                for (int j = begin + 1; j < end; ++j) // ignore the lines with 'begin' or 'end'
                 {
                     // Check for comment lines
                     string currentLine = file_lines[j];
@@ -149,7 +151,7 @@ namespace AICS.AgentSim
                     if (string.IsNullOrEmpty(currentLine)) continue;
 
                     // Check for the line continuation character
-                    while(currentLine.EndsWith(@"\") && j < (end - 1))
+                    while (currentLine.EndsWith(@"\") && j < (end - 1))
                     {
                         j++;
 
@@ -162,7 +164,7 @@ namespace AICS.AgentSim
                 }
 
                 // If the keyword matches one of the defined symbols, call the needed parse-helper function
-                if(symbols.ContainsKey(key))
+                if (symbols.ContainsKey(key))
                 {
                     symbols[key].DynamicInvoke(info, fdata);
                 }
@@ -248,7 +250,7 @@ namespace AICS.AgentSim
         /// <returns>0(int) for successfull completion</returns>
         private int ParseSeedSpecies(List<string> info, BNGLFileData fdata)
         {
-            foreach(string s in info)
+            foreach (string s in info)
             {
                 int rp = s.IndexOf(")"); // assuming the following layout:
                                          // [molecule]"(" [binding-sites] ")" [numerical value]
@@ -257,7 +259,7 @@ namespace AICS.AgentSim
                 string iv_string = s.Substring(rp + 1).Trim();
 
                 // Check that a value was specified for the seed species
-                if(String.IsNullOrEmpty(iv_string))
+                if (String.IsNullOrEmpty(iv_string))
                 {
                     Debug.LogError(String.Format("{0} Seed Species is missing a value.\n{1}", fileErrorMsg, s));
                     return -1;
@@ -269,16 +271,16 @@ namespace AICS.AgentSim
                 float n = 0;
                 bool isNum = float.TryParse(iv_string, out n);
 
-                if(isNum) // A number was specified as the initial value for this seed species
+                if (isNum) // A number was specified as the initial value for this seed species
                 {
                     ssd.initialValue = n;
                 }
                 else // A parameter was specified as the initial value for this seed species
                 {
                     // Check that the specified parameter was specified and parsed
-                    if(!fdata.parameters.ContainsKey(iv_string))
+                    if (!fdata.parameters.ContainsKey(iv_string))
                     {
-                        Debug.LogError(String.Format("{0} A Seed Species referenced an undefined parameter.\n{1}",fileErrorMsg,s));
+                        Debug.LogError(String.Format("{0} A Seed Species referenced an undefined parameter.\n{1}", fileErrorMsg, s));
                         return -1;
                     }
 
@@ -331,14 +333,67 @@ namespace AICS.AgentSim
         /// <returns>0(int) for successfull completion</returns>
         private int ParseReactionRules(List<string> info, BNGLFileData fdata)
         {
-            //@TODO: Implement Reaction Rule Parsing
+            foreach(string s in info)
+            {
+                ReactionRulesFileData rd = new ReactionRulesFileData();
+
+                string tmp = s;
+                if (Regex.IsMatch(tmp, @"^\d+")) // Check if this line starts with a number
+                {
+                    tmp = s.Substring(s.IndexOf(" ")).Trim(); // index # will be delimited by space
+                }
+
+                // find keywords in reation def string
+                int r_end = tmp.LastIndexOf(")"); // find the end of the last product (the end of the reaction def)
+                string keywords = tmp.Substring(r_end + 1);
+
+                // remove keywords from reaction def string
+                tmp = tmp.Substring(0, r_end + 1);
+
+                // parse keywords
+                string[] keywords_arr = keywords.Split(new[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
+                foreach(string k in keywords_arr)
+                {
+                    rd.keywords.Add(k.Trim());
+                }
+
+
+                // Check if the reaction can occur in both directions
+                if (tmp.Contains("<->")) { rd.isBidirectional = true; }
+
+                // Copy the entire reaction into the description
+                rd.description = tmp;
+
+                // Find the indicies needed to split the string into reactants and products
+                int productStart = tmp.IndexOf(">");
+                int reactantEnd = tmp.IndexOf("-");
+
+                if (tmp.Contains("<")) reactantEnd = tmp.IndexOf("<");
+
+                // Parse products and reactants
+                string rs = tmp.Substring(0, reactantEnd);
+                string ps = tmp.Substring(productStart + 1);
+
+                string[] reactants = rs.Split(new[] { " + "}, StringSplitOptions.RemoveEmptyEntries);
+                string[] products = ps.Split(new[] { " + " }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string r in reactants)
+                {
+                    rd.Reactants.Add(ParseComplex(r));
+                }
+
+                foreach (string p in products)
+                {
+                    rd.Products.Add(ParseComplex(p));
+                }
+            }
             return 0;
         }
 
-        // Unsure if needed at the moment (specifically for the unity simulation prototype)
+        // Not needed for Unity Simulation Prototype at this moment
         private int ParseActions(List<string> info, BNGLFileData fdata)
         {
-            Debug.LogWarning("Parsing actions is currently unimplemented.");
+            Debug.LogWarning("Parsing actions is currently unimplemented. The actions defined in this BNGL file have been ignored.");
             return -1;
         }
         #endregion
@@ -371,9 +426,9 @@ namespace AICS.AgentSim
         /// <returns> The data constructed by parsing the file line</returns>
         private MoleculeFileData ParseMolecule(string line)
         {
-            if(!line.Contains("(") || !line.Contains(")"))
+            if (!line.Contains("(") || !line.Contains(")"))
             {
-                Debug.LogError(String.Format("{0} a molecule is missing parentheses or binding site information.\n{1}", fileErrorMsg,line));
+                Debug.LogError(String.Format("{0} a molecule is missing parentheses or binding site information.\n{1}", fileErrorMsg, line));
                 return new MoleculeFileData();
             }
 
@@ -392,7 +447,7 @@ namespace AICS.AgentSim
                                 StringSplitOptions.RemoveEmptyEntries);
 
             // parse the info for each binding site
-            for(int i = 0; i < binding_site_strings.Length; ++i)
+            for (int i = 0; i < binding_site_strings.Length; ++i)
             {
                 m.bindingSites.Add(ParseBindingSite(binding_site_strings[i]));
             }
@@ -408,28 +463,28 @@ namespace AICS.AgentSim
         private BindingSiteFileData ParseBindingSite(string line)
         {
             BindingSiteFileData b = new BindingSiteFileData();
-            
+
             // check if the binding site has states specified
-            if(line.Contains("~"))
+            if (line.Contains("~"))
             {
                 int t = line.IndexOf("~");
                 b.name = line.Substring(0, t);
 
                 string[] states = line.Substring(t).Split(
-                                        new[] { "~" }, 
+                                        new[] { "~" },
                                         StringSplitOptions.RemoveEmptyEntries);
 
-                foreach(string s in states)
+                foreach (string s in states)
                 {
                     b.allowableStates.Add(s);
                 }
             }
 
             // Check if the binding site has bonds specified
-            if(line.Contains("!"))
+            if (line.Contains("!"))
             {
                 int e = line.IndexOf("!");
-                b.bond = line.Substring(e+1,1);
+                b.bond = line.Substring(e + 1, 1);
             }
 
             return b;
@@ -495,6 +550,28 @@ namespace AICS.AgentSim
             public ComplexFileData complexOfInterest = new ComplexFileData();
         }
 
+        private class ReactionRulesFileData
+        {
+            public string description = "";
+            public float rate = 0.0f;
+
+            public List<ComplexFileData> Reactants = new List<ComplexFileData>();
+            public List<ComplexFileData> Products = new List<ComplexFileData>();
+            public bool isBidirectional = false;
+
+            public List<string> keywords = new List<string>();
+        }
+
+        #endregion
+
+        #region BNGL -> Unity object construction
+        private void ConstructEngineObjects(BNGLFileData fdata)
+        {
+            //@TODO
+            // This is where a 1-1 mapping of BNGL data to unity objects would happen
+            // e.g. constructing complex snapshots from ComplexFileData objects
+            Debug.LogWarning("Converting BNGL objects to Unity Engine Objects is currently unimplemented");
+        }
         #endregion
     }
 }
