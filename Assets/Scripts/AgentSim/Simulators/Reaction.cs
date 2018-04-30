@@ -60,7 +60,7 @@ namespace AICS.AgentSim
         public virtual bool TryReactOnCollision (MoleculeComponent component1, MoleculeComponent component2)
         {
             if (definition.ReactantsEqual( component1.molecules, component2.molecules ) 
-                && definition.ReactionCenterIsComponents( component1, component2 ) && ShouldHappen())
+                && definition.BimolecularReactionCenterIsComponents( component1, component2 ) && ShouldHappen())
             {
                 definition.React( reactor, component1, component2 );
                 return true;

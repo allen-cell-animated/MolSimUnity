@@ -11,27 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: Q
   m_EditorClassIdentifier: 
-  _species: Q
+  _moleculeName: Q
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
-  siteDefs:
-  - id: x
-    states:
-    - 0
-    - '!+'
-    transformOnMolecule:
-      position: {x: 0.375, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    radius: 1
-  - id: y
-    states:
-    - 0
-    - '!+'
-    transformOnMolecule:
-      position: {x: -0.375, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    radius: 1
+  componentDefsTemp: []
   colors: []
   _visualizationPrefab: {fileID: 1910556595932608, guid: 8d6bb97589eab4cc7a1d065c82f24f4a,
     type: 2}

@@ -9,35 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
-  m_Name: X(p~0)Y = X(p~0) + Y
+  m_Name: X(P~0)Y = X(P~0) + Y
   m_EditorClassIdentifier: 
   description: X(y!1,p~0).Y(x!1) -> X(y,p~0) + Y(x)
   rate: 700000
-  reactantSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
-      siteStates:
-      - id: y
-        state: '!1'
-      - id: p
-        state: 0
-    - _moleculeDef: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
-      siteStates:
-      - id: x
-        state: '!1'
-  productSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
-      siteStates:
-      - id: y
-        state: 0
-      - id: p
-        state: 0
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: 5649a4bf698034c7ca1d5397fe91c572, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
-    bindingSiteID: y
+  reactantPatterns: []
+  productPatterns: []
+  reactionCenter: []

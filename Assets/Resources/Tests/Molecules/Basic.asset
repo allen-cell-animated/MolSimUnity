@@ -11,9 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: Basic
   m_EditorClassIdentifier: 
-  _species: Basic
+  _moleculeName: Basic
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
-  sites: []
+  componentDefsTemp: []
+  colors: []
   _visualizationPrefab: {fileID: 0}

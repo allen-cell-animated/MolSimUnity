@@ -9,11 +9,12 @@ namespace AICS.AgentSim
         public string description;
         [Tooltip( "per second" )] 
         public float rate;
-        public ComplexPattern[] reactantPatterns;
+        [SerializeField] protected ComplexPattern[] reactantPatterns;
         [Tooltip( "for now, molecules should be in same order in products" )]
-        public ComplexPattern[] productPatterns;
+        [SerializeField] protected ComplexPattern[] productPatterns;
         //public BindingSiteReference[] relevantSiteReferences;
-        public ComponentReference[] reactionCenter;
+        [SerializeField] protected ComponentReference[] reactionCenterReferences;
+        protected ComponentPattern[] reactionCenter;
 
         public bool isBimolecular
         {
@@ -29,7 +30,7 @@ namespace AICS.AgentSim
             {
                 Debug.LogWarning( this + " doesn't have the correct amount of reactant and product species for a " + GetType() );
             }
-            if (reactionCenter.Length > 2 || reactionCenter.Length < 1)
+            if (reactionCenterReferences.Length > 2 || reactionCenterReferences.Length < 1)
             {
                 Debug.Log( this + " doesn't have the correct number of components in reaction center" );
             }
@@ -43,10 +44,32 @@ namespace AICS.AgentSim
             {
                 productPattern.Init();
             }
+            reactionCenter = new ComponentPattern[reactionCenterReferences.Length];
+            for (int i = 0; i < reactionCenter.Length; i++)
+            {
+                reactionCenter[i] = GetReactantComponentFromReference( reactionCenterReferences[i] );
+            }
             #endregion
         }
 
         protected abstract bool ReactantAndProductAmountsAreCorrect ();
+
+        ComponentPattern GetReactantComponentFromReference (ComponentReference reference)
+        {
+            if (reactantPatterns.Length > reference.complexIndex)
+            {
+                ComplexPattern complex = reactantPatterns[reference.complexIndex];
+                if (complex.moleculePatterns.Length > reference.moleculeIndex)
+                {
+                    MoleculePattern molecule = complex.moleculePatterns[reference.moleculeIndex];
+                    if (molecule.components.ContainsKey( reference.componentName ) && molecule.components[reference.componentName].Count > reference.componentIndex)
+                    {
+                        return molecule.components[reference.componentName][reference.componentIndex];
+                    }
+                }
+            }
+            return null;
+        }
 
         public bool ReactantsEqual (Molecule[] molecules1, Molecule[] molecules2)
         {
@@ -79,17 +102,17 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool ReactionCenterIsComponents (MoleculeComponent component1, MoleculeComponent component2 = null)
+        public bool BimolecularReactionCenterIsComponents (MoleculeComponent component1, MoleculeComponent component2 = null)
         {
-            
-            return false;
+            return (ComponentMatchesReactionCenter( component1, 0 ) && ComponentMatchesReactionCenter( component2, 1 ))
+                || (ComponentMatchesReactionCenter( component1, 1 ) && ComponentMatchesReactionCenter( component2, 0 ));
         }
 
         public bool ComponentIsInReactionCenter (MoleculeComponent component)
         {
-            foreach (ComponentReference reactingComponent in reactionCenter)
+            for (int i = 0; i < reactionCenter.Length; i++)
             {
-                if (GetReactantComponentFromReference( reactingComponent ).Matches( component ))
+                if (ComponentMatchesReactionCenter( component, i ))
                 {
                     return true;
                 }
@@ -99,24 +122,7 @@ namespace AICS.AgentSim
 
         bool ComponentMatchesReactionCenter (MoleculeComponent component, int reactionCenterIndex)
         {
-            return false;
-        }
-
-        ComponentState GetReactantComponentFromReference (ComponentReference reference)
-        {
-            if (reactantPatterns.Length > reference.complexIndex)
-            {
-                ComplexPattern complex = reactantPatterns[reference.complexIndex];
-                if (complex.moleculePatterns.Length > reference.moleculeIndex)
-                {
-                    MoleculePattern molecule = complex.moleculePatterns[reference.moleculeIndex];
-                    if (molecule.components.ContainsKey( reference.componentName ) && molecule.components[reference.componentName].Count > reference.componentIndex)
-                    {
-                        return molecule.components[reference.componentName][reference.componentIndex];
-                    }
-                }
-            }
-            return null;
+            return reactionCenter[reactionCenterIndex].MatchesState( component );
         }
 
         public abstract void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null);

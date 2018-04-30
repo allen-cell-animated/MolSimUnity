@@ -157,7 +157,7 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "Component " + name;
+            return "Component " + name + " (state=" + state + ")";
         }
     }
 }

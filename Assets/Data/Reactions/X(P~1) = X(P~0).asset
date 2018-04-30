@@ -9,22 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65922519dfcfa47d680fba9f67aeafe5, type: 3}
-  m_Name: X(p~1) = X(p~0)
+  m_Name: X(P~1) = X(P~0)
   m_EditorClassIdentifier: 
   description: X(p~1) -> X(p~0)
   rate: 50000
-  reactantSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
-      siteStates:
-      - id: p
-        state: 1
-  productSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
-      siteStates:
-      - id: p
-        state: 0
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: a57b59deb768d4778a4d0a86a287bc1d, type: 2}
-    bindingSiteID: p
+  reactantPatterns: []
+  productPatterns: []
+  reactionCenter: []

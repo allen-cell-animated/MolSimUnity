@@ -13,29 +13,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: A(b) + B(a) -> A(b!1).B(a!1)
   rate: 100000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
+  reactantPatterns:
+  - _moleculePatterns:
     - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-      siteStates:
-      - id: b
-        state: 0
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: b
+        _state: 0
+  - _moleculePatterns:
     - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-      siteStates:
-      - id: a
-        state: 0
-  productSnapshots:
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: a
+        _state: 0
+  productPatterns:
+  - _moleculePatterns:
     - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-      siteStates:
-      - id: b
-        state: '!1'
+      _components:
+      - _componentName: b
+        _state: '!1'
     - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-      siteStates:
-      - id: a
-        state: '!1'
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-    bindingSiteID: b
-  - moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-    bindingSiteID: a
+      _components:
+      - _componentName: a
+        _state: '!1'
+  reactionCenterReferences:
+  - complexIndex: 0
+    moleculeIndex: 0
+    componentName: b
+    componentIndex: 0
+  - complexIndex: 1
+    moleculeIndex: 0
+    componentName: a
+    componentIndex: 0

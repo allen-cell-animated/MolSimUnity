@@ -16,8 +16,8 @@ namespace AICS.AgentSim
             }
         }
 
-        [SerializeField] ComponentState[] _components;
-        public Dictionary<string,List<ComponentState>> components;
+        [SerializeField] ComponentPattern[] _components;
+        public Dictionary<string,List<ComponentPattern>> components;
 
 
         #region for prototyping in inspector without writing custom property drawer etc
@@ -29,19 +29,19 @@ namespace AICS.AgentSim
 
         public void InitSiteStates ()
         {
-            components = new Dictionary<string,List<ComponentState>>();
-            foreach (ComponentState componentState in _components)
+            components = new Dictionary<string,List<ComponentPattern>>();
+            foreach (ComponentPattern componentState in _components)
             {
                 if (!components.ContainsKey( componentState.componentName ))
                 {
-                    components.Add( componentState.componentName, new List<ComponentState>() );
+                    components.Add( componentState.componentName, new List<ComponentPattern>() );
                 }
                 components[componentState.componentName].Add( componentState );
             }
         }
         #endregion
 
-        public MoleculePattern (MoleculeDef theMoleculeDef, ComponentState[] _theComponents)
+        public MoleculePattern (MoleculeDef theMoleculeDef, ComponentPattern[] _theComponents)
         {
             _moleculeDef = theMoleculeDef;
             moleculeDef.Init();
@@ -52,32 +52,25 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfMolecule (Molecule molecule)
         {
-            Dictionary<ComponentState,MoleculeComponent> componentMatches = MatchComponents( molecule );
-            foreach (KeyValuePair<ComponentState,MoleculeComponent> match in componentMatches)
-            {
-                match.Value.state = match.Key.state;
-            }
-        }
-
-        Dictionary<ComponentState,MoleculeComponent> MatchComponents (Molecule molecule)
-        {
-            Dictionary<ComponentState,MoleculeComponent> matches = new Dictionary<ComponentState,MoleculeComponent>();
+            List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
             foreach (string componentName in components.Keys)
             {
                 if (molecule.components.ContainsKey( componentName ))
                 {
-                    foreach (ComponentState componentState in components[componentName])
+                    foreach (ComponentPattern thisComponent in components[componentName])
                     {
-                        foreach (MoleculeComponent component in molecule.components[componentName])
+                        foreach (MoleculeComponent moleculeComponent in molecule.components[componentName])
                         {
-
+                            if (!matchedComponents.Contains( moleculeComponent ) && thisComponent.MatchesID( moleculeComponent ))
+                            {
+                                moleculeComponent.state = thisComponent.state;
+                                matchedComponents.Add( moleculeComponent );
+                                break;
+                            }
                         }
                     }
                 }
             }
-
-
-            return matches;
         }
 
         public bool Matches (MoleculePattern other)
@@ -99,7 +92,7 @@ namespace AICS.AgentSim
                     return false;
                 }
 
-                foreach (ComponentState component in components[componentName]) //how many of our components are in each state?
+                foreach (ComponentPattern component in components[componentName]) //how many of our components are in each state?
                 {
                     state = component.state.Contains( "!" ) ? "!" : component.state;
                     if (!componentsInStateThis.ContainsKey( state ))
@@ -111,7 +104,7 @@ namespace AICS.AgentSim
                         componentsInStateThis[state]++;
                     }
                 }
-                foreach (ComponentState otherComponent in other.components[componentName]) //how many of the other's components are in each state?
+                foreach (ComponentPattern otherComponent in other.components[componentName]) //how many of the other's components are in each state?
                 {
                     state = otherComponent.state.Contains( "!" ) ? "!" : otherComponent.state;
                     if (!componentsInStateOther.ContainsKey( state ))
@@ -163,7 +156,7 @@ namespace AICS.AgentSim
                     return false;
                 }
 
-                foreach (ComponentState component in components[componentName]) //how many of our components are in each state?
+                foreach (ComponentPattern component in components[componentName]) //how many of our components are in each state?
                 {
                     state = component.state.Contains( "!" ) ? "!" : component.state;
                     if (!componentsInStateThis.ContainsKey( state ))
@@ -236,9 +229,9 @@ namespace AICS.AgentSim
             string s = moleculeDef.moleculeName + ":";
             int i = 0;
             int n = GetNumberOfComponents();
-            foreach (List<ComponentState> aTypeOfComponent in components.Values)
+            foreach (List<ComponentPattern> aTypeOfComponent in components.Values)
             {
-                foreach (ComponentState component in aTypeOfComponent)
+                foreach (ComponentPattern component in aTypeOfComponent)
                 {
                     s += component;
                     if (i < n - 1)
@@ -254,9 +247,9 @@ namespace AICS.AgentSim
         int GetNumberOfComponents ()
         {
             int n = 0;
-            foreach (List<ComponentState> aTypeOfComponent in components.Values)
+            foreach (List<ComponentPattern> aTypeOfComponent in components.Values)
             {
-                foreach (ComponentState component in aTypeOfComponent)
+                foreach (ComponentPattern component in aTypeOfComponent)
                 {
                     n++;
                 }
@@ -267,7 +260,7 @@ namespace AICS.AgentSim
 
     //for prototyping in inspector without writing custom property drawer etc
     [System.Serializable]
-    public class ComponentState : IComponent
+    public class ComponentPattern : IComponent
     {
         [SerializeField] string _componentName;
         public string componentName
@@ -291,13 +284,18 @@ namespace AICS.AgentSim
             }
         }
 
-        public ComponentState (string _theComponentName, string _theState)
+        public ComponentPattern (string _theComponentName, string _theState)
         {
             _componentName = _theComponentName;
             state = _theState;
         }
 
-        public bool Matches (IComponent other)
+        public bool MatchesID (IComponent other)
+        {
+            return other.componentName == componentName;
+        }
+
+        public bool MatchesState (IComponent other)
         {
             return other.componentName == componentName && other.state == state;
         }

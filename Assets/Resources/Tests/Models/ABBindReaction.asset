@@ -15,18 +15,18 @@ MonoBehaviour:
   containerVolume: 0.000000125
   complexes:
   - concentration: 6.5e-16
-    complexSnapshot:
-      _moleculeSnapshots:
+    complexPattern:
+      _moleculePatterns:
       - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
-        siteStates:
-        - id: b
-          state: 0
+        _components:
+        - _componentName: b
+          _state: 0
   - concentration: 6.5e-16
-    complexSnapshot:
-      _moleculeSnapshots:
+    complexPattern:
+      _moleculePatterns:
       - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
-        siteStates:
-        - id: a
-          state: 0
+        _components:
+        - _componentName: a
+          _state: 0
   reactionDefs:
   - {fileID: 11400000, guid: debabe2728b434e12a1c514b9b7df676, type: 2}

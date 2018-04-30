@@ -11,19 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: Y
   m_EditorClassIdentifier: 
-  _species: Y
+  _moleculeName: Y
   radius: 2.5
   scale: 0.000000001
   diffusionCoefficient: 100000
-  siteDefs:
-  - id: x
-    states:
-    - 0
-    - '!+'
-    transformOnMolecule:
-      position: {x: 0.15, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    radius: 1
+  componentDefsTemp: []
   colors: []
   _visualizationPrefab: {fileID: 1443296897763614, guid: 843b77990b26641f88a9f48e1fb5cb2e,
     type: 2}

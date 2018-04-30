@@ -11,19 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: F test
   m_EditorClassIdentifier: 
-  _species: F
+  _moleculeName: F
   radius: 2.5
   scale: 0.000000001
   diffusionCoefficient: 100000
-  siteDefs:
-  - id: z
-    states:
-    - 0
-    - '!+'
-    transformOnMolecule:
-      position: {x: 0.45, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    radius: 1
+  componentDefsTemp: []
   colors: []
   _visualizationPrefab: {fileID: 1297089520443062, guid: a03a1bb07f3f64976aff17695997193e,
     type: 2}
