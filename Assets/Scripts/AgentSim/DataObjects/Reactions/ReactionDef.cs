@@ -13,8 +13,8 @@ namespace AICS.AgentSim
         [Tooltip( "for now, molecules should be in same order in products" )]
         [SerializeField] protected ComplexPattern[] productPatterns;
         //public BindingSiteReference[] relevantSiteReferences;
-        [SerializeField] protected ComponentReference[] reactionCenterReferences;
-        protected ComponentPattern[] reactionCenter;
+        [SerializeField] protected ReactionCenterReference[] reactionCenterReferences;
+        protected ReactionCenter[] reactionCenters;
 
         public bool isBimolecular
         {
@@ -44,21 +44,23 @@ namespace AICS.AgentSim
             {
                 productPattern.Init();
             }
-            reactionCenter = new ComponentPattern[reactionCenterReferences.Length];
-            for (int i = 0; i < reactionCenter.Length; i++)
+            reactionCenters = new ReactionCenter[reactionCenterReferences.Length];
+            for (int i = 0; i < reactionCenters.Length; i++)
             {
-                reactionCenter[i] = GetReactantComponentFromReference( reactionCenterReferences[i] );
+                reactionCenters[i] = new ReactionCenter( GetComponentFromReference( reactionCenterReferences[i].reactantReference, true ),
+                                                         GetComponentFromReference( reactionCenterReferences[i].productReference, false ) );
             }
             #endregion
         }
 
         protected abstract bool ReactantAndProductAmountsAreCorrect ();
 
-        ComponentPattern GetReactantComponentFromReference (ComponentReference reference)
+        ComponentPattern GetComponentFromReference (ComponentReference reference, bool reactant)
         {
-            if (reactantPatterns.Length > reference.complexIndex)
+            ComplexPattern[] patterns = reactant ? reactantPatterns : productPatterns;
+            if (patterns.Length > reference.complexIndex)
             {
-                ComplexPattern complex = reactantPatterns[reference.complexIndex];
+                ComplexPattern complex = patterns[reference.complexIndex];
                 if (complex.moleculePatterns.Length > reference.moleculeIndex)
                 {
                     MoleculePattern molecule = complex.moleculePatterns[reference.moleculeIndex];
@@ -102,17 +104,17 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool BimolecularReactionCenterIsComponents (MoleculeComponent component1, MoleculeComponent component2 = null)
+        public bool BimolecularReactionCenterReactantsAreComponents (MoleculeComponent component1, MoleculeComponent component2 = null)
         {
-            return (ComponentMatchesReactionCenter( component1, 0 ) && ComponentMatchesReactionCenter( component2, 1 ))
-                || (ComponentMatchesReactionCenter( component1, 1 ) && ComponentMatchesReactionCenter( component2, 0 ));
+            return (ComponentMatchesReactantInReactionCenter( component1, 0 ) && ComponentMatchesReactantInReactionCenter( component2, 1 ))
+                || (ComponentMatchesReactantInReactionCenter( component1, 1 ) && ComponentMatchesReactantInReactionCenter( component2, 0 ));
         }
 
-        public bool ComponentIsInReactionCenter (MoleculeComponent component)
+        public bool ComponentIsReactantInReactionCenter (MoleculeComponent component)
         {
-            for (int i = 0; i < reactionCenter.Length; i++)
+            for (int i = 0; i < reactionCenters.Length; i++)
             {
-                if (ComponentMatchesReactionCenter( component, i ))
+                if (ComponentMatchesReactantInReactionCenter( component, i ))
                 {
                     return true;
                 }
@@ -120,9 +122,9 @@ namespace AICS.AgentSim
             return false;
         }
 
-        bool ComponentMatchesReactionCenter (MoleculeComponent component, int reactionCenterIndex)
+        protected bool ComponentMatchesReactantInReactionCenter (MoleculeComponent component, int reactionCenterIndex)
         {
-            return reactionCenter[reactionCenterIndex].MatchesState( component );
+            return reactionCenters[reactionCenterIndex].reactant.MatchesState( component );
         }
 
         public abstract void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null);
@@ -150,6 +152,19 @@ namespace AICS.AgentSim
 	}
 
     [System.Serializable]
+    public class ReactionCenterReference
+    {
+        public ComponentReference reactantReference;
+        public ComponentReference productReference;
+
+        public ReactionCenterReference (ComponentReference _reactantReference, ComponentReference _productReference)
+        {
+            reactantReference = _reactantReference;
+            productReference = _productReference;
+        }
+    }
+
+    [System.Serializable]
     public class ComponentReference
     {
         public int complexIndex;
@@ -163,6 +178,19 @@ namespace AICS.AgentSim
             moleculeIndex = _moleculeIndex;
             componentName = _componentName;
             componentIndex = _componentIndex;
+        }
+    }
+
+    [System.Serializable]
+    public class ReactionCenter
+    {
+        public ComponentPattern reactant;
+        public ComponentPattern product;
+
+        public ReactionCenter (ComponentPattern _reactant, ComponentPattern _product)
+        {
+            reactant = _reactant;
+            product = _product;
         }
     }
 }

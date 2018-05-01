@@ -15,7 +15,7 @@ namespace AICS.AgentSim
         {
             if (!components.Contains( component ))
             {
-                if (definition.ComponentIsInReactionCenter( component ))
+                if (definition.ComponentIsReactantInReactionCenter( component ))
                 {
                     components.Add( component );
                     return true;
@@ -60,7 +60,7 @@ namespace AICS.AgentSim
         public virtual bool TryReactOnCollision (MoleculeComponent component1, MoleculeComponent component2)
         {
             if (definition.ReactantsEqual( component1.molecules, component2.molecules ) 
-                && definition.BimolecularReactionCenterIsComponents( component1, component2 ) && ShouldHappen())
+                && definition.BimolecularReactionCenterReactantsAreComponents( component1, component2 ) && ShouldHappen())
             {
                 definition.React( reactor, component1, component2 );
                 return true;

@@ -95,7 +95,7 @@ namespace AICS.AgentSim
             List<BimolecularReaction> bimolecularReactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in relevantBimolecularReactions)
             {
-                if (reaction.definition.ComponentIsInReactionCenter( this ))
+                if (reaction.definition.ComponentIsReactantInReactionCenter( this ))
                 {
                     bimolecularReactionsList.Add( reaction );
                 }

@@ -35,7 +35,13 @@ MonoBehaviour:
       - _componentName: a
         _state: 0
   reactionCenterReferences:
-  - complexIndex: 0
-    moleculeIndex: 0
-    componentName: b
-    componentIndex: 0
+  - reactantReference:
+      complexIndex: 0
+      moleculeIndex: 0
+      componentName: b
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeIndex: 0
+      componentName: b
+      componentIndex: 0

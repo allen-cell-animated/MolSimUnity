@@ -15,7 +15,6 @@ namespace AICS.AgentSim
         {
             if (component1 != null)
             {
-                Debug.Log( "Reaction happened: " + description );
                 productPatterns[0].SetStateOfComplex( component1.molecules );
                 component1.complex.UpdateReactions();
 

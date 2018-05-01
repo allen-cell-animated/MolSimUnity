@@ -13,9 +13,8 @@ namespace AICS.AgentSim
 
         public override void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
         {
-            if (component1 != null)
+            if (component1 != null && component1.boundComponent != null)
             {
-                Debug.Log( "Reaction happened: " + description );
                 component2 = component1.boundComponent;
 
                 component1.boundComponent = null;

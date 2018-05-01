@@ -15,7 +15,6 @@ namespace AICS.AgentSim
         {
             if (component1 != null && component2 != null)
             {
-                Debug.Log( "Reaction happened: " + description );
                 component1.boundComponent = component2;
                 component2.boundComponent = component1;
 
