@@ -45,8 +45,7 @@ namespace AICS.AgentSim
             if (components.Count > 0 && ShouldHappen())
             {
                 components.Shuffle();
-                definition.React( reactor, components[0] );
-                return true;
+                return definition.React( reactor, components[0] );
             }
             return false;
         }
@@ -62,8 +61,7 @@ namespace AICS.AgentSim
             if (definition.ReactantsEqual( component1.molecules, component2.molecules ) 
                 && definition.BimolecularReactionCenterReactantsAreComponents( component1, component2 ) && ShouldHappen())
             {
-                definition.React( reactor, component1, component2 );
-                return true;
+                return definition.React( reactor, component1, component2 );
             }
             return false;
         }

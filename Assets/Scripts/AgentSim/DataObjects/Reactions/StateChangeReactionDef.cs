@@ -11,7 +11,7 @@ namespace AICS.AgentSim
             return reactantPatterns.Length == 1 && productPatterns.Length == 1;
         }
 
-        public override void React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
+        public override bool React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
         {
             if (component1 != null)
             {
@@ -21,7 +21,10 @@ namespace AICS.AgentSim
                 SetProductColor( component1.molecules );
                 AnimateReaction( component1.molecules );
                 World.ShowFlash( component1.theTransform );
+
+                return true;
             }
+            return false;
         }
     }
 }
