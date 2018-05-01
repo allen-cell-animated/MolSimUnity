@@ -80,14 +80,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (ComponentDef componentDef, BimolecularReaction[] relevantBimolecularReactions, 
-                                  CollisionFreeReaction[] relevantCollisionFreeReactions, Molecule _molecule)
+        public virtual void Init (ComponentDef componentDef, Molecule _molecule)
         {
             definition = componentDef;
             molecule = _molecule;
             state = (definition.states == null || definition.states.Length < 1) ? "" : definition.states[0];
-            SetBimolecularReactions( relevantBimolecularReactions );
-            RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
         }
 
         protected void SetBimolecularReactions (BimolecularReaction[] relevantBimolecularReactions)
@@ -119,9 +116,12 @@ namespace AICS.AgentSim
 
         protected void UnregisterWithCollisionFreeReactions ()
         {
-            foreach (CollisionFreeReaction reaction in collisionFreeReactions)
+            if (collisionFreeReactions != null)
             {
-                reaction.UnregisterComponent( this );
+                foreach (CollisionFreeReaction reaction in collisionFreeReactions)
+                {
+                    reaction.UnregisterComponent( this );
+                }
             }
         }
 

@@ -60,14 +60,22 @@ namespace AICS.AgentSim
             {
                 foreach (ComponentDef componentDef in aTypeOfComponent)
                 {
-                    CreateComponent( componentDef, relevantBimolecularReactions, relevantCollisionFreeReactions );
+                    CreateComponent( componentDef );
                 }
             }
-            moleculePattern.SetStateOfMolecule( this );
+
+            moleculePattern.SetStateOfMoleculeComponents( this );
+
+            foreach (List<MoleculeComponent> aTypeOfComponent in components.Values)
+            {
+                foreach (MoleculeComponent component in aTypeOfComponent)
+                {
+                    component.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
+                }
+            }
         }
 
-        protected virtual void CreateComponent (ComponentDef componentDef, BimolecularReaction[] relevantBimolecularReactions, 
-                                                CollisionFreeReaction[] relevantCollisionFreeReactions)
+        protected virtual void CreateComponent (ComponentDef componentDef)
         {
             GameObject componentObject = new GameObject();
             componentObject.transform.SetParent( theTransform );
@@ -75,7 +83,7 @@ namespace AICS.AgentSim
             componentObject.name = name + "_" + componentDef.componentName;
 
             MoleculeComponent component = componentObject.AddComponent<MoleculeComponent>();
-            component.Init( componentDef, relevantBimolecularReactions, relevantCollisionFreeReactions, this );
+            component.Init( componentDef, this );
 
             if (!components.ContainsKey( componentDef.componentName ))
             {

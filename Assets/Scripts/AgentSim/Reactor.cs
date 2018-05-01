@@ -121,60 +121,65 @@ namespace AICS.AgentSim
             transforms[0] = new RelativeTransform( Vector3.zero, Vector3.zero );
             Vector3 averagePosition = Vector3.zero;
 
+            //temp transforms for calculation
             Transform molecule1 = new GameObject( "molecule1" ).transform;
             Transform molecule2 = new GameObject( "molecule2" ).transform;
-            Transform site1 = new GameObject( "site1" ).transform;
-            site1.SetParent( molecule1 );
-            Transform site2 = new GameObject( "site2" ).transform;
-            site2.SetParent( molecule2 );
-            //BindingSiteDef bindingSite;
+            Transform component1 = new GameObject( "component1" ).transform;
+            Transform component2 = new GameObject( "component2" ).transform;
+            component1.SetParent( molecule1 );
+            component2.SetParent( molecule2 );
 
-            ////TODO
-            //for (int i = 0; i < complexPattern.moleculePatterns.Length - 1; i++)
-            //{
-            //    foreach (List<SiteState> aTypeOfSiteState1 in complexPattern.moleculePatterns[i].bindingSiteStates.Values)
-            //    {
-            //        foreach (SiteState siteState1 in aTypeOfSiteState1)
-            //        {
-            //            if (siteState1.state.Contains( "!" ))
-            //            {
-            //                for (int j = i + 1; j < complexPattern.moleculePatterns.Length; j++)
-            //                {
-            //                    foreach (List<SiteState> aTypeOfSiteState2 in complexPattern.moleculePatterns[j].bindingSiteStates.Values)
-            //                    {
-            //                        foreach (SiteState siteState2 in aTypeOfSiteState1)
-            //                        {
-            //                            if (siteState1.state == siteState2.state)
-            //                            {
-            //                                molecule1.position = transforms[i].position;
-            //                                molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
-            //                                bindingSite = complexPattern.moleculePatterns[i].moleculeDef.bindingSiteDefs[siteState1.id][0];
-            //                                bindingSite.transformOnMolecule.Apply( molecule1, site1 );
+            ComponentDef component;
+            int componentIndex1, componentIndex2;
+            for (int i = 0; i < complexPattern.moleculePatterns.Length - 1; i++)
+            {
+                foreach (List<ComponentPattern> aTypeOfComponent1 in complexPattern.moleculePatterns[i].components.Values)
+                {
+                    componentIndex1 = 0;
+                    foreach (ComponentPattern componentPattern1 in aTypeOfComponent1)
+                    {
+                        if (componentPattern1.state.Contains( "!" ))
+                        {
+                            for (int j = i + 1; j < complexPattern.moleculePatterns.Length; j++)
+                            {
+                                foreach (List<ComponentPattern> aTypeOfComponent2 in complexPattern.moleculePatterns[j].components.Values)
+                                {
+                                    componentIndex2 = 0;
+                                    foreach (ComponentPattern componentPattern2 in aTypeOfComponent2)
+                                    {
+                                        if (componentPattern1.state == componentPattern2.state)
+                                        {
+                                            molecule1.position = transforms[i].position;
+                                            molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
+                                            component = complexPattern.moleculePatterns[i].moleculeDef.componentDefs[componentPattern1.componentName][componentIndex1];
+                                            component.transformOnMolecule.Apply( molecule1, component1 );
 
-            //                                molecule2.position = Vector3.zero;
-            //                                molecule2.rotation = Quaternion.identity;
-            //                                bindingSite = complexPattern.moleculePatterns[j].moleculeDef.bindingSiteDefs[siteState2.id][0];
-            //                                bindingSite.transformOnMolecule.Apply( molecule2, site2 );
+                                            molecule2.position = Vector3.zero;
+                                            molecule2.rotation = Quaternion.identity;
+                                            component = complexPattern.moleculePatterns[j].moleculeDef.componentDefs[componentPattern2.componentName][componentIndex2];
+                                            component.transformOnMolecule.Apply( molecule2, component2 );
 
-            //                                molecule2.position = site1.TransformPoint( site2.InverseTransformPoint( molecule2.position ) );
-            //                                molecule2.rotation = molecule2.rotation * Quaternion.Inverse( site2.rotation ) * site1.rotation;
+                                            molecule2.position = component1.TransformPoint( component2.InverseTransformPoint( molecule2.position ) );
+                                            molecule2.rotation = molecule2.rotation * Quaternion.Inverse( component2.rotation ) * component1.rotation;
 
-            //                                transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
-            //                                averagePosition += transforms[j].position;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+                                            transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
+                                            averagePosition += transforms[j].position;
+                                        }
+                                        componentIndex2++;
+                                    }
+                                }
+                            }
+                        }
+                        componentIndex1++;
+                    }
+                }
+            }
 
-            //averagePosition /= transforms.Length;
-            //for (int i = 0; i < transforms.Length; i++)
-            //{
-            //    transforms[i].position -= averagePosition;
-            //}
+            averagePosition /= transforms.Length;
+            for (int i = 0; i < transforms.Length; i++)
+            {
+                transforms[i].position -= averagePosition;
+            }
 
             Destroy( molecule1.gameObject );
             Destroy( molecule2.gameObject );

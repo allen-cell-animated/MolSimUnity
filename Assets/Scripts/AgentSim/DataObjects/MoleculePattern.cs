@@ -50,7 +50,7 @@ namespace AICS.AgentSim
             InitSiteStates();
         }
 
-        public virtual void SetStateOfMolecule (Molecule molecule)
+        public virtual void SetStateOfMoleculeComponents (Molecule molecule)
         {
             List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
             foreach (string componentName in components.Keys)

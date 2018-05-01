@@ -39,7 +39,7 @@ namespace AICS.AgentSim
                 {
                     if (molecule.definition.Equals( moleculePattern.moleculeDef ))
                     {
-                        moleculePattern.SetStateOfMolecule( molecule );
+                        moleculePattern.SetStateOfMoleculeComponents( molecule );
                     }
                 }
             }
