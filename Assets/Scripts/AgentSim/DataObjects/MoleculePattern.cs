@@ -24,10 +24,10 @@ namespace AICS.AgentSim
         public void Init ()
         {
             moleculeDef.Init();
-            InitSiteStates();
+            InitComponents();
         }
 
-        public void InitSiteStates ()
+        public void InitComponents ()
         {
             components = new Dictionary<string,List<ComponentPattern>>();
             foreach (ComponentPattern componentState in _components)
@@ -47,7 +47,7 @@ namespace AICS.AgentSim
             moleculeDef.Init();
 
             _components = _theComponents;
-            InitSiteStates();
+            InitComponents();
         }
 
         public virtual void SetStateOfMoleculeComponents (Molecule molecule)

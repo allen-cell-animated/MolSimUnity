@@ -24,13 +24,13 @@ namespace AICS.AgentSim
         public Dictionary<string,List<ComponentDef>> componentDefs;
 
         #region for prototyping in inspector without writing custom property drawer etc
-        [SerializeField] ComponentDef[] componentDefsTemp = new ComponentDef[0];
+        [SerializeField] ComponentDef[] _componentDefs = new ComponentDef[0];
         public MoleculePatternColor[] colors;
 
         public void Init ()
         {
             componentDefs = new Dictionary<string, List<ComponentDef>>();
-            foreach (ComponentDef componentDef in componentDefsTemp)
+            foreach (ComponentDef componentDef in _componentDefs)
             {
                 if (!componentDefs.ContainsKey( componentDef.componentName ))
                 {
@@ -42,7 +42,7 @@ namespace AICS.AgentSim
             {
                 foreach (MoleculePatternColor color in colors)
                 {
-                    color.pattern.InitSiteStates();
+                    color.pattern.InitComponents();
                 }
             }
         }

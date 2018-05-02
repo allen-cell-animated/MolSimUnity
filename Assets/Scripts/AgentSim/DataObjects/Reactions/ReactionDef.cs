@@ -11,9 +11,8 @@ namespace AICS.AgentSim
         public float rate;
         public ComplexPattern[] reactantPatterns;
         public ComplexPattern[] productPatterns;
-
+        public ReactionCenter[] reactionCenters;
         [SerializeField] protected ReactionCenterReference[] reactionCenterReferences;
-        [SerializeField] protected ReactionCenter[] reactionCenters;
 
         public bool isBimolecular
         {
@@ -53,69 +52,16 @@ namespace AICS.AgentSim
 
         protected abstract bool ReactantAndProductAmountsAreCorrect ();
 
-        public bool ReactantsEqual (Molecule[] molecules1, Molecule[] molecules2)
-        {
-            return ((reactantPatterns[0].Matches( molecules1 ) && reactantPatterns[1].Matches( molecules2 )))
-                 || (reactantPatterns[0].Matches( molecules2 ) && reactantPatterns[1].Matches( molecules1 ));
-        }
-
-        public bool ComplexIsReactant (ComplexPattern complexPattern)
-        {
-            foreach (ComplexPattern reactantPattern in reactantPatterns)
-            {
-                if (reactantPattern.Matches( complexPattern ))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool ComplexIsReactant (Molecule[] molecules)
-        {
-            foreach (ComplexPattern reactantPattern in reactantPatterns)
-            {
-                if (reactantPattern.Matches( molecules ))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool BimolecularReactionCenterReactantsAreComponents (MoleculeComponent component1, MoleculeComponent component2 = null)
-        {
-            return (ComponentMatchesReactantInReactionCenter( component1, 0 ) && ComponentMatchesReactantInReactionCenter( component2, 1 ))
-                || (ComponentMatchesReactantInReactionCenter( component1, 1 ) && ComponentMatchesReactantInReactionCenter( component2, 0 ));
-        }
-
-        public bool ComponentIsReactantInReactionCenter (MoleculeComponent component)
-        {
-            for (int i = 0; i < reactionCenters.Length; i++)
-            {
-                if (ComponentMatchesReactantInReactionCenter( component, i ))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         protected ComplexPattern GetProductPatternForComponent (MoleculeComponent component)
         {
             for (int i = 0; i < reactionCenters.Length; i++)
             {
-                if (ComponentMatchesReactantInReactionCenter( component, i ))
+                if (reactionCenters[i].reactantComponent.MatchesState( component ))
                 {
                     return reactionCenters[i].productComplex;
                 }
             }
             return null;
-        }
-
-        protected bool ComponentMatchesReactantInReactionCenter (MoleculeComponent component, int reactionCenterIndex)
-        {
-            return reactionCenters[reactionCenterIndex].reactantComponent.MatchesState( component );
         }
 
         public abstract bool React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null);

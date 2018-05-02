@@ -155,7 +155,7 @@ public class MolSimTests
     {
         foreach (BimolecularReaction reaction in complex.reactor.bimolecularReactions)
         {
-            if (reaction.definition.ComplexIsReactant( complex.molecules ))
+            if (reaction.ComplexIsReactant( complex.molecules ))
             {
                 return true;
             }

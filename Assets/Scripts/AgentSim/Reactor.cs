@@ -192,7 +192,7 @@ namespace AICS.AgentSim
             List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in bimolecularReactions)
             {
-                if (reaction.definition.ComplexIsReactant( complexPattern ))
+                if (reaction.ComplexIsReactant( complexPattern ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -205,7 +205,7 @@ namespace AICS.AgentSim
             List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
             foreach (BimolecularReaction reaction in bimolecularReactions)
             {
-                if (reaction.definition.ComplexIsReactant( molecules ))
+                if (reaction.ComplexIsReactant( molecules ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -218,7 +218,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                if (reaction.definition.ComplexIsReactant( complexPattern ))
+                if (reaction.ComplexIsReactant( complexPattern ))
                 {
                     reactionsList.Add( reaction );
                 }
@@ -231,7 +231,7 @@ namespace AICS.AgentSim
             List<CollisionFreeReaction> reactionsList = new List<CollisionFreeReaction>();
             foreach (CollisionFreeReaction reaction in collisionFreeReactions)
             {
-                if (reaction.definition.ComplexIsReactant( molecules ))
+                if (reaction.ComplexIsReactant( molecules ))
                 {
                     reactionsList.Add( reaction );
                 }

@@ -15,7 +15,7 @@ namespace AICS.AgentSim
         {
             if (!components.Contains( component ))
             {
-                if (definition.ComponentIsReactantInReactionCenter( component ))
+                if (ComponentIsInReactionCenter( component ))
                 {
                     components.Add( component );
                     return true;
@@ -58,12 +58,18 @@ namespace AICS.AgentSim
 
         public virtual bool TryReactOnCollision (MoleculeComponent component1, MoleculeComponent component2)
         {
-            if (definition.ReactantsEqual( component1.molecules, component2.molecules ) 
-                && definition.BimolecularReactionCenterReactantsAreComponents( component1, component2 ) && ShouldHappen())
+            if (ReactantsEqual( component1.molecules, component2.molecules ) 
+                && BimolecularReactionCenterEquals( component1, component2 ) && ShouldHappen())
             {
                 return definition.React( reactor, component1, component2 );
             }
             return false;
+        }
+
+        public bool BimolecularReactionCenterEquals (MoleculeComponent component1, MoleculeComponent component2 = null)
+        {
+            return (ComponentMatchesReactantInReactionCenter( component1, 0 ) && ComponentMatchesReactantInReactionCenter( component2, 1 ))
+                || (ComponentMatchesReactantInReactionCenter( component1, 1 ) && ComponentMatchesReactantInReactionCenter( component2, 0 ));
         }
 	}
 
@@ -103,6 +109,53 @@ namespace AICS.AgentSim
             {
                 return observedRate < 0.8f * definition.rate;
             }
+        }
+
+        protected bool ReactantsEqual (Molecule[] molecules1, Molecule[] molecules2)
+        {
+            return ((definition.reactantPatterns[0].Matches( molecules1 ) && definition.reactantPatterns[1].Matches( molecules2 )))
+                || (definition.reactantPatterns[0].Matches( molecules2 ) && definition.reactantPatterns[1].Matches( molecules1 ));
+        }
+
+        public bool ComplexIsReactant (ComplexPattern complexPattern)
+        {
+            foreach (ComplexPattern reactantPattern in definition.reactantPatterns)
+            {
+                if (reactantPattern.Matches( complexPattern ))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ComplexIsReactant (Molecule[] molecules)
+        {
+            foreach (ComplexPattern reactantPattern in definition.reactantPatterns)
+            {
+                if (reactantPattern.Matches( molecules ))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ComponentIsInReactionCenter (MoleculeComponent component)
+        {
+            for (int i = 0; i < definition.reactionCenters.Length; i++)
+            {
+                if (ComponentMatchesReactantInReactionCenter( component, i ))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        protected bool ComponentMatchesReactantInReactionCenter (MoleculeComponent component, int reactionCenterIndex)
+        {
+            return definition.reactionCenters[reactionCenterIndex].reactantComponent.MatchesState( component );
         }
 
         protected bool ShouldHappen ()
