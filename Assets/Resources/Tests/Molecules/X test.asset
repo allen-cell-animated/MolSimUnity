@@ -15,15 +15,35 @@ MonoBehaviour:
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 500000
-  componentDefsTemp: []
+  _componentDefs:
+  - componentName: y
+    states:
+    - 0
+    - '!+'
+    transformOnMolecule:
+      position: {x: -0.375, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 1
+  - componentName: p
+    states:
+    - 0
+    - 1
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 0
   colors:
   - pattern:
-      _moleculeDef: {fileID: 0}
-      _components: []
+      _moleculeDef: {fileID: 11400000}
+      _components:
+      - _componentName: p
+        _state: 0
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
   - pattern:
-      _moleculeDef: {fileID: 0}
-      _components: []
+      _moleculeDef: {fileID: 11400000}
+      _components:
+      - _componentName: p
+        _state: 1
     color: {r: 1, g: 0.68275857, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1743744978614082, guid: 098c4d6fcf1184cadacb41dd40a9fddc,
     type: 2}

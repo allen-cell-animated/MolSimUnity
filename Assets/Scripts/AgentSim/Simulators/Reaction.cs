@@ -143,7 +143,8 @@ namespace AICS.AgentSim
 
         public bool ComponentIsInReactionCenter (MoleculeComponent component)
         {
-            for (int i = 0; i < definition.reactionCenters.Length; i++)
+            int max = Mathf.Clamp( definition.reactionCenters.Length, 0, definition.reactantPatterns.Length );
+            for (int i = 0; i < max; i++)
             {
                 if (ComponentMatchesReactantInReactionCenter( component, i ))
                 {
