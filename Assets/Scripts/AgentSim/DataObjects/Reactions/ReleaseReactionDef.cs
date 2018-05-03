@@ -19,7 +19,7 @@ namespace AICS.AgentSim
 
                 MoleculeComponent[] components = {component1, component2};
                 ComplexPattern productPattern;
-                Molecule[] molecules;
+                Dictionary<string,List<Molecule>> molecules;
                 foreach (MoleculeComponent component in components)
                 {
                     productPattern = GetProductPatternForComponent( component );

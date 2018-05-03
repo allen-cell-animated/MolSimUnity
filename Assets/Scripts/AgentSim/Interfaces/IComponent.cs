@@ -7,4 +7,6 @@ public interface IComponent
     string componentName { get; }
 
     string state { get; set; }
+
+    bool Matches (IComponent other);
 }

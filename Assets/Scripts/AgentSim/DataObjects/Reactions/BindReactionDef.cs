@@ -20,9 +20,7 @@ namespace AICS.AgentSim
 
                 RelativelyPosition( component1.theTransform, component2.theTransform );
 
-                Molecule[] molecules = new Molecule[component1.molecules.Length + component2.molecules.Length];
-                component1.molecules.CopyTo( molecules, 0 );
-                component2.molecules.CopyTo( molecules, component1.molecules.Length );
+                Dictionary<string,List<Molecule>> molecules = MergeMolecules( component1.molecules, component2.molecules );
 
                 productPatterns[0].SetStateOfComplex( molecules );
                 reactor.MoveMoleculesToNewComplex( molecules, component1.theTransform );
@@ -40,6 +38,25 @@ namespace AICS.AgentSim
         {
             childComponent.parent.position = parentComponent.TransformPoint( childComponent.InverseTransformPoint( childComponent.parent.position ) );
             childComponent.parent.rotation = childComponent.parent.rotation * Quaternion.Inverse( childComponent.rotation ) * parentComponent.rotation;
+        }
+
+        protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)
+        {
+            Dictionary<string,List<Molecule>> newMolecules = new Dictionary<string,List<Molecule>>();
+            foreach (string moleculeName in molecules1.Keys)
+            {
+                newMolecules.Add( moleculeName, new List<Molecule>() );
+                newMolecules[moleculeName].AddRange( molecules1[moleculeName] );
+            }
+            foreach (string moleculeName in molecules2.Keys)
+            {
+                if (!newMolecules.ContainsKey( moleculeName ))
+                {
+                    newMolecules.Add( moleculeName, new List<Molecule>() );
+                }
+                newMolecules[moleculeName].AddRange( molecules2[moleculeName] );
+            }
+            return newMolecules;
         }
     }
 }

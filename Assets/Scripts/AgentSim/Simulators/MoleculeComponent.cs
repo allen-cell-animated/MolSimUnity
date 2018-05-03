@@ -32,6 +32,11 @@ namespace AICS.AgentSim
             }
         }
 
+        public bool Matches (IComponent other)
+        {
+            return other.componentName == componentName && (other.state.Contains( "!" ) ? state.Contains( "!" ) : other.state == state);
+        }
+
         [SerializeField] protected BimolecularReaction[] bimolecularReactions;
         [SerializeField] protected CollisionFreeReaction[] collisionFreeReactions;
 
@@ -56,7 +61,7 @@ namespace AICS.AgentSim
             }
         }
 
-        public Molecule[] molecules
+        public Dictionary<string,List<Molecule>> molecules
         {
             get
             {

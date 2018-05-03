@@ -17,53 +17,83 @@ namespace AICS.AgentSim
         }
 
         [SerializeField] ComponentPattern[] _components;
-        public Dictionary<string,List<ComponentPattern>> components;
-
+        Dictionary<string,List<ComponentPattern>> _componentPatterns;
+        public Dictionary<string,List<ComponentPattern>> componentPatterns
+        {
+            get
+            {
+                return _componentPatterns;
+            }
+        }
 
         #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
             moleculeDef.Init();
-            InitComponents();
+            InitComponentPatterns();
         }
 
-        public void InitComponents ()
+        public void InitComponentPatterns ()
         {
-            components = new Dictionary<string,List<ComponentPattern>>();
-            foreach (ComponentPattern componentState in _components)
+            _componentPatterns = new Dictionary<string,List<ComponentPattern>>();
+            foreach (ComponentPattern componentPattern in _components)
             {
-                if (!components.ContainsKey( componentState.componentName ))
+                if (!componentPatterns.ContainsKey( componentPattern.componentName ))
                 {
-                    components.Add( componentState.componentName, new List<ComponentPattern>() );
+                    componentPatterns.Add( componentPattern.componentName, new List<ComponentPattern>() );
                 }
-                components[componentState.componentName].Add( componentState );
+                componentPatterns[componentPattern.componentName].Add( componentPattern );
             }
         }
         #endregion
 
-        public MoleculePattern (MoleculeDef theMoleculeDef, ComponentPattern[] _theComponents)
+        public MoleculePattern (MoleculeDef theMoleculeDef, ComponentPattern[] components)
         {
             _moleculeDef = theMoleculeDef;
             moleculeDef.Init();
 
-            _components = _theComponents;
-            InitComponents();
+            _components = components;
+            InitComponentPatterns();
+        }
+
+        public MoleculePattern (Molecule molecule)
+        {
+            _moleculeDef = molecule.definition;
+            if (molecule.definition.componentDefs == null)
+            {
+                //since this will mostly be used at runtime, the moleculeDef is probably already initialized
+                //and this step will go away anyway once BNGL files are parsed to unity objects correctly
+                moleculeDef.Init();
+            }
+
+            _componentPatterns = new Dictionary<string,List<ComponentPattern>>();
+            foreach (string componentName in molecule.components.Keys)
+            {
+                if (!componentPatterns.ContainsKey( componentName ))
+                {
+                    componentPatterns.Add( componentName, new List<ComponentPattern>() );
+                }
+                foreach (MoleculeComponent component in molecule.components[componentName])
+                {
+                    componentPatterns[componentName].Add( new ComponentPattern( component ) );
+                }
+            }
         }
 
         public virtual void SetStateOfMoleculeComponents (Molecule molecule)
         {
             List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
-            foreach (string componentName in components.Keys)
+            foreach (string componentName in componentPatterns.Keys)
             {
                 if (molecule.components.ContainsKey( componentName ))
                 {
-                    foreach (ComponentPattern thisComponent in components[componentName])
+                    foreach (ComponentPattern componentPattern in componentPatterns[componentName])
                     {
                         foreach (MoleculeComponent moleculeComponent in molecule.components[componentName])
                         {
-                            if (!matchedComponents.Contains( moleculeComponent ) && thisComponent.MatchesID( moleculeComponent ))
+                            if (!matchedComponents.Contains( moleculeComponent ) && componentPattern.Equals( moleculeComponent ))
                             {
-                                moleculeComponent.state = thisComponent.state;
+                                moleculeComponent.state = componentPattern.state;
                                 matchedComponents.Add( moleculeComponent );
                                 break;
                             }
@@ -71,6 +101,31 @@ namespace AICS.AgentSim
                     }
                 }
             }
+        }
+
+        public virtual bool ContainsComponent (string componentName)
+        {
+            return componentPatterns.ContainsKey( componentName );
+        }
+
+        public bool MatchesID (MoleculePattern other)
+        {
+            return other.moleculeDef.Equals( moleculeDef );
+        }
+
+        public override bool Equals (object obj)
+        {
+            MoleculePattern other = obj as MoleculePattern;
+            if (other != null)
+            {
+                return Matches( other );
+            }
+            Molecule molecule = obj as Molecule;
+            if (molecule != null)
+            {
+                return Matches( molecule );
+            }
+            return false;
         }
 
         public bool Matches (MoleculePattern other)
@@ -81,58 +136,56 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            string state;
-            Dictionary<string,int> componentsInStateThis = new Dictionary<string,int>();
-            Dictionary<string,int> componentsInStateOther = new Dictionary<string,int>();
-            foreach (string componentName in components.Keys)
+            Dictionary<ComponentPattern,int> thisComponentsInState = new Dictionary<ComponentPattern,int>();
+            Dictionary<ComponentPattern,int> otherComponentsInState = new Dictionary<ComponentPattern,int>();
+            foreach (string componentName in componentPatterns.Keys)
             {
-                if (!other.components.ContainsKey( componentName )) //does this type of component exist in the other?
+                if (!other.componentPatterns.ContainsKey( componentName )) //does this type of component exist in the other?
                 {
                     //Debug.Log( "component " + componentName + " doesn't exist in other" );
                     return false;
                 }
 
-                foreach (ComponentPattern component in components[componentName]) //how many of our components are in each state?
+                foreach (ComponentPattern thisComponentPattern in componentPatterns[componentName]) //how many of our components are in each state?
                 {
-                    state = component.state.Contains( "!" ) ? "!" : component.state;
-                    if (!componentsInStateThis.ContainsKey( state ))
+                    if (!thisComponentsInState.ContainsKey( thisComponentPattern ))
                     {
-                        componentsInStateThis[state] = 1;
+                        thisComponentsInState[thisComponentPattern] = 1;
                     }
                     else
                     {
-                        componentsInStateThis[state]++;
+                        thisComponentsInState[thisComponentPattern]++;
                     }
                 }
-                foreach (ComponentPattern otherComponent in other.components[componentName]) //how many of the other's components are in each state?
+                foreach (ComponentPattern otherComponentPattern in other.componentPatterns[componentName]) //how many of the other's components are in each state?
                 {
-                    state = otherComponent.state.Contains( "!" ) ? "!" : otherComponent.state;
-                    if (!componentsInStateOther.ContainsKey( state ))
+                    if (!otherComponentsInState.ContainsKey( otherComponentPattern ))
                     {
-                        componentsInStateOther[state] = 1;
+                        otherComponentsInState[otherComponentPattern] = 1;
                     }
                     else
                     {
-                        componentsInStateOther[state]++;
+                        otherComponentsInState[otherComponentPattern]++;
                     }
                 }
 
-                foreach (string s in componentsInStateThis.Keys) //does the other at least have as many components in each state as we do?
+                foreach (ComponentPattern thisComponentPattern in thisComponentsInState.Keys) //does the other at least have as many components in each state as we do?
                 {
-                    if (!componentsInStateOther.ContainsKey( s ))
+                    if (!otherComponentsInState.ContainsKey( thisComponentPattern ))
                     {
-                        //Debug.Log( "there are no " + componentName + " components in state " + s );
+                        //Debug.Log( "there are no " + componentName + " components that match pattern " + thisComponentPattern );
                         return false;
                     }
-                    if (componentsInStateOther[s] < componentsInStateThis[s])
+                    if (otherComponentsInState[thisComponentPattern] < thisComponentsInState[thisComponentPattern])
                     {
-                        //Debug.Log( "number of " + componentName + " components in state " + s + " is " + componentsInStateOther[s] + " when it should be at least " + componentsInStateThis[s] );
+                        //Debug.Log( "number of " + componentName + " components that match pattern " + thisComponentPattern + " is " 
+                        //+ otherComponentsInState[thisComponentPattern] + " when it should be at least " + thisComponentsInState[thisComponentPattern] );
                         return false;
                     }
                 }
 
-                componentsInStateThis.Clear();
-                componentsInStateOther.Clear();
+                thisComponentsInState.Clear();
+                otherComponentsInState.Clear();
             }
             return true;
         }
@@ -145,10 +198,10 @@ namespace AICS.AgentSim
                 return false;
             }
 
-            string state;
-            Dictionary<string,int> componentsInStateThis = new Dictionary<string,int>();
-            Dictionary<string,int> componentsInStateOther = new Dictionary<string,int>();
-            foreach (string componentName in components.Keys)
+            ComponentPattern otherComponentPattern;
+            Dictionary<ComponentPattern,int> thisComponentsInState = new Dictionary<ComponentPattern,int>();
+            Dictionary<ComponentPattern,int> otherComponentsInState = new Dictionary<ComponentPattern,int>();
+            foreach (string componentName in componentPatterns.Keys)
             {
                 if (!_molecule.components.ContainsKey( componentName )) //does this type of component exist in the molecule?
                 {
@@ -156,71 +209,64 @@ namespace AICS.AgentSim
                     return false;
                 }
 
-                foreach (ComponentPattern component in components[componentName]) //how many of our components are in each state?
+                foreach (ComponentPattern thisComponentPattern in componentPatterns[componentName]) //how many of our components are in each state?
                 {
-                    state = component.state.Contains( "!" ) ? "!" : component.state;
-                    if (!componentsInStateThis.ContainsKey( state ))
+                    if (!thisComponentsInState.ContainsKey( thisComponentPattern ))
                     {
-                        componentsInStateThis[state] = 1;
+                        thisComponentsInState[thisComponentPattern] = 1;
                     }
                     else
                     {
-                        componentsInStateThis[state]++;
+                        thisComponentsInState[thisComponentPattern]++;
                     }
                 }
                 foreach (MoleculeComponent otherComponent in _molecule.components[componentName]) //how many of the molecule's components are in each state?
                 {
-                    state = otherComponent.state.Contains( "!" ) ? "!" : otherComponent.state;
-                    if (!componentsInStateOther.ContainsKey( state ))
+                    otherComponentPattern = new ComponentPattern( otherComponent );
+                    if (!otherComponentsInState.ContainsKey( otherComponentPattern ))
                     {
-                        componentsInStateOther[state] = 1;
+                        otherComponentsInState[otherComponentPattern] = 1;
                     }
                     else
                     {
-                        componentsInStateOther[state]++;
+                        otherComponentsInState[otherComponentPattern]++;
                     }
                 }
 
-                foreach (string s in componentsInStateThis.Keys) //does the molecule at least have as many components in each state as we do?
+                foreach (ComponentPattern thisComponentPattern in thisComponentsInState.Keys) //does the molecule at least have as many components in each state as we do?
                 {
-                    if (!componentsInStateOther.ContainsKey( s ))
+                    if (!otherComponentsInState.ContainsKey( thisComponentPattern ))
                     {
-                        //Debug.Log( "there are no " + componentName + " components in state " + s );
+                        //Debug.Log( "there are no " + componentName + " components that match pattern " + thisComponentPattern );
                         return false;
                     }
-                    if (componentsInStateOther[s] < componentsInStateThis[s])
+                    if (otherComponentsInState[thisComponentPattern] < thisComponentsInState[thisComponentPattern])
                     {
-                        //Debug.Log( "number of " + componentName + " components in state " + s + " is " + componentsInStateOther[s] + " when it should be at least " + componentsInStateThis[s] );
+                        //Debug.Log( "number of " + componentName + " components that match pattern " + thisComponentPattern + " is " 
+                        //+ otherComponentsInState[thisComponentPattern] + " when it should be at least " + thisComponentsInState[thisComponentPattern] );
                         return false;
                     }
                 }
 
-                componentsInStateThis.Clear();
-                componentsInStateOther.Clear();
+                thisComponentsInState.Clear();
+                otherComponentsInState.Clear();
             }
             return true;
-        }
-
-        public virtual bool ContainsComponent (string componentName)
-        {
-            return components.ContainsKey( componentName );
-        }
-
-        public override bool Equals (object obj)
-        {
-            MoleculePattern other = obj as MoleculePattern;
-            if (other != null)
-            {
-                return other.moleculeDef.Equals( moleculeDef );
-            }
-            return false;
         }
 
         public override int GetHashCode ()
         {
             unchecked
             {
-                return 16777619 * ((moleculeDef == null) ? 1 : moleculeDef.GetHashCode());
+                int hash = 16777619 * ((moleculeDef == null) ? 1 : moleculeDef.GetHashCode());
+                foreach (List<ComponentPattern> aTypeOfComponentPattern in componentPatterns.Values)
+                {
+                    foreach (ComponentPattern componentPattern in aTypeOfComponentPattern)
+                    {
+                        hash += 1381 * (componentPattern == null ? 1 : componentPattern.GetHashCode());
+                    }
+                }
+                return hash;
             }
         }
 
@@ -229,11 +275,11 @@ namespace AICS.AgentSim
             string s = moleculeDef.moleculeName + ":";
             int i = 0;
             int n = GetNumberOfComponents();
-            foreach (List<ComponentPattern> aTypeOfComponent in components.Values)
+            foreach (List<ComponentPattern> aTypeOfComponentPattern in componentPatterns.Values)
             {
-                foreach (ComponentPattern component in aTypeOfComponent)
+                foreach (ComponentPattern componentPattern in aTypeOfComponentPattern)
                 {
-                    s += component;
+                    s += componentPattern;
                     if (i < n - 1)
                     {
                         s += ",";
@@ -247,62 +293,11 @@ namespace AICS.AgentSim
         int GetNumberOfComponents ()
         {
             int n = 0;
-            foreach (List<ComponentPattern> aTypeOfComponent in components.Values)
+            foreach (List<ComponentPattern> aTypeOfComponentPattern in componentPatterns.Values)
             {
-                foreach (ComponentPattern component in aTypeOfComponent)
-                {
-                    n++;
-                }
+                n += aTypeOfComponentPattern.Count;
             }
             return n;
         }
     }
-
-    //for prototyping in inspector without writing custom property drawer etc
-    [System.Serializable]
-    public class ComponentPattern : IComponent
-    {
-        [SerializeField] string _componentName;
-        public string componentName
-        {
-            get
-            {
-                return _componentName;
-            }
-        }
-
-        [SerializeField] string _state;
-        public string state
-        {
-            get
-            {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-            }
-        }
-
-        public ComponentPattern (string _theComponentName, string _theState)
-        {
-            _componentName = _theComponentName;
-            state = _theState;
-        }
-
-        public bool MatchesID (IComponent other)
-        {
-            return other.componentName == componentName;
-        }
-
-        public bool MatchesState (IComponent other)
-        {
-            return other.componentName == componentName && other.state == state;
-        }
-
-		public override string ToString()
-		{
-            return "(" + componentName + " state = " + state + ")";
-		}
-	}
 }

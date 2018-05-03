@@ -56,7 +56,7 @@ namespace AICS.AgentSim
         {
             for (int i = 0; i < reactionCenters.Length; i++)
             {
-                if (reactionCenters[i].reactantComponent.MatchesState( component ))
+                if (reactionCenters[i].reactantComponent.Matches( component ))
                 {
                     return reactionCenters[i].productComplex;
                 }
@@ -66,19 +66,25 @@ namespace AICS.AgentSim
 
         public abstract bool React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null);
 
-        protected void SetProductColor (Molecule[] molecules)
+        protected void SetProductColor (Dictionary<string,List<Molecule>> molecules)
         {
-            foreach (Molecule molecule in molecules)
+            foreach (string moleculeName in molecules.Keys)
             {
-                molecule.SetColorForCurrentState();
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    molecule.SetColorForCurrentState();
+                }
             }
         }
 
-        protected void AnimateReaction (Molecule[] molecules)
+        protected void AnimateReaction (Dictionary<string,List<Molecule>> molecules)
         {
-            foreach (Molecule molecule in molecules)
+            foreach (string moleculeName in molecules.Keys)
             {
-                molecule.AnimateReaction();
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    molecule.AnimateReaction();
+                }
             }
         }
 
@@ -105,13 +111,15 @@ namespace AICS.AgentSim
     public class ComponentReference
     {
         public int complexIndex;
+        public string moleculeName;
         public int moleculeIndex;
         public string componentName;
         public int componentIndex;
 
-        public ComponentReference (int _complexIndex, int _moleculeIndex, string _componentName, int _componentIndex)
+        public ComponentReference (int _complexIndex, string _moleculeName, int _moleculeIndex, string _componentName, int _componentIndex)
         {
             complexIndex = _complexIndex;
+            moleculeName = _moleculeName;
             moleculeIndex = _moleculeIndex;
             componentName = _componentName;
             componentIndex = _componentIndex;
@@ -133,26 +141,32 @@ namespace AICS.AgentSim
             if (reactionDef.reactantPatterns.Length > reference.reactantReference.complexIndex)
             {
                 reactantComplex = reactionDef.reactantPatterns[reference.reactantReference.complexIndex];
-                if (reactantComplex.moleculePatterns.Length > reference.reactantReference.moleculeIndex)
+
+                if (reactantComplex.moleculePatterns.ContainsKey( reference.reactantReference.moleculeName )
+                    && reactantComplex.moleculePatterns[reference.reactantReference.moleculeName].Count > reference.reactantReference.moleculeIndex)
                 {
-                    reactantMolecule = reactantComplex.moleculePatterns[reference.reactantReference.moleculeIndex];
-                    if (reactantMolecule.components.ContainsKey( reference.reactantReference.componentName ) 
-                        && reactantMolecule.components[reference.reactantReference.componentName].Count > reference.reactantReference.componentIndex)
+                    reactantMolecule = reactantComplex.moleculePatterns[reference.reactantReference.moleculeName][reference.reactantReference.moleculeIndex];
+
+                    if (reactantMolecule.componentPatterns.ContainsKey( reference.reactantReference.componentName ) 
+                        && reactantMolecule.componentPatterns[reference.reactantReference.componentName].Count > reference.reactantReference.componentIndex)
                     {
-                        reactantComponent = reactantMolecule.components[reference.reactantReference.componentName][reference.reactantReference.componentIndex];
+                        reactantComponent = reactantMolecule.componentPatterns[reference.reactantReference.componentName][reference.reactantReference.componentIndex];
                     }
                 }
             }
             if (reactionDef.productPatterns.Length > reference.productReference.complexIndex)
             {
                 productComplex = reactionDef.productPatterns[reference.productReference.complexIndex];
-                if (productComplex.moleculePatterns.Length > reference.productReference.moleculeIndex)
+
+                if (productComplex.moleculePatterns.ContainsKey( reference.productReference.moleculeName )
+                    && productComplex.moleculePatterns[reference.productReference.moleculeName].Count > reference.productReference.moleculeIndex)
                 {
-                    productMolecule = productComplex.moleculePatterns[reference.productReference.moleculeIndex];
-                    if (productMolecule.components.ContainsKey( reference.productReference.componentName ) 
-                        && productMolecule.components[reference.productReference.componentName].Count > reference.productReference.componentIndex)
+                    productMolecule = productComplex.moleculePatterns[reference.productReference.moleculeName][reference.productReference.moleculeIndex];
+
+                    if (productMolecule.componentPatterns.ContainsKey( reference.productReference.componentName ) 
+                        && productMolecule.componentPatterns[reference.productReference.componentName].Count > reference.productReference.componentIndex)
                     {
-                        productComponent = productMolecule.components[reference.productReference.componentName][reference.productReference.componentIndex];
+                        productComponent = productMolecule.componentPatterns[reference.productReference.componentName][reference.productReference.componentIndex];
                     }
                 }
             }

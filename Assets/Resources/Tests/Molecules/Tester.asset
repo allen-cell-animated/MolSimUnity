@@ -15,15 +15,15 @@ MonoBehaviour:
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
-  componentDefsTemp:
+  _componentDefs:
   - componentName: active
     states:
     - 0
     - 1
     transformOnMolecule:
-      position: {x: 0, y: 0, z: 0}
+      position: {x: 0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
-    radius: 0
+    radius: 1
   - componentName: inhibit
     states:
     - 0

@@ -42,7 +42,7 @@ namespace AICS.AgentSim
             {
                 foreach (MoleculePatternColor color in colors)
                 {
-                    color.pattern.InitComponents();
+                    color.pattern.InitComponentPatterns();
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace AICS.AgentSim
         public override bool Equals (object obj)
         {
             MoleculeDef other = obj as MoleculeDef;
-            if (other != null)
+            if (other != null && other.moleculeName != null)
             {
                 return other.moleculeName == moleculeName;
             }

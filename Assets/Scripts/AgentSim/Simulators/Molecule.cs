@@ -8,7 +8,7 @@ namespace AICS.AgentSim
     {
         public Complex complex;
         public MoleculeDef definition;
-        public Dictionary<string,List<MoleculeComponent>> components = new Dictionary<string, List<MoleculeComponent>>();
+        public Dictionary<string,List<MoleculeComponent>> components = new Dictionary<string,List<MoleculeComponent>>();
         public float collisionRadius;
         public float interactionRadius;
         public bool couldReactOnCollision;

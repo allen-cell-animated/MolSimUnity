@@ -40,7 +40,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return complexPattern.moleculePatterns.Length;
+                return complexPattern.GetNumberOfMolecules();
             }
         }
 

@@ -111,7 +111,7 @@ namespace AICS.AgentSim
             }
         }
 
-        protected bool ReactantsEqual (Molecule[] molecules1, Molecule[] molecules2)
+        protected bool ReactantsEqual (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)
         {
             return ((definition.reactantPatterns[0].Matches( molecules1 ) && definition.reactantPatterns[1].Matches( molecules2 )))
                 || (definition.reactantPatterns[0].Matches( molecules2 ) && definition.reactantPatterns[1].Matches( molecules1 ));
@@ -129,7 +129,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool ComplexIsReactant (Molecule[] molecules)
+        public bool ComplexIsReactant (Dictionary<string,List<Molecule>> molecules)
         {
             foreach (ComplexPattern reactantPattern in definition.reactantPatterns)
             {
@@ -156,7 +156,7 @@ namespace AICS.AgentSim
 
         protected bool ComponentMatchesReactantInReactionCenter (MoleculeComponent component, int reactionCenterIndex)
         {
-            return definition.reactionCenters[reactionCenterIndex].reactantComponent.MatchesState( component );
+            return definition.reactionCenters[reactionCenterIndex].reactantComponent.Matches( component );
         }
 
         protected bool ShouldHappen ()
