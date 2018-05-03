@@ -292,6 +292,27 @@ public class MolSimTests
                         return false;
                     }
                 }
+                if (component.boundComponent != null)
+                {
+                    if (!component.state.Contains( "!" ))
+                    {
+                        if (debug) { Debug.Log( component + " state isn't a bound state even though component is bound" ); }
+                        return false;
+                    }
+                    if (component.boundComponent.state != component.state)
+                    {
+                        if (debug) { Debug.Log( component + " state doesn't match bound component state " + molecule + " isn't" ); }
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (component.state.Contains( "!" ))
+                    {
+                        if (debug) { Debug.Log( component + " state is a bound state even though component isn't bound" ); }
+                        return false;
+                    }
+                }
             }
         }
         if (molecule.couldReactOnCollision && !bimolecularReactant)

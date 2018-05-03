@@ -14,7 +14,7 @@ MonoBehaviour:
   description: A(b!1).B(a!1) -> A(b) + B(a)
   rate: 10000000
   reactantPatterns:
-  - _moleculePatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
       _components:
       - _componentName: b
@@ -24,99 +24,103 @@ MonoBehaviour:
       - _componentName: a
         _state: '!1'
   productPatterns:
-  - _moleculePatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
       _components:
       - _componentName: b
         _state: 0
-  - _moleculePatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
       _components:
       - _componentName: a
         _state: 0
+  reactionCenters:
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+        _components:
+        - _componentName: b
+          _state: '!1'
+      - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+        _components:
+        - _componentName: a
+          _state: '!1'
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+      _components:
+      - _componentName: b
+        _state: '!1'
+    reactantComponent:
+      _componentName: b
+      _state: '!1'
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+        _components:
+        - _componentName: b
+          _state: 0
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+      _components:
+      - _componentName: b
+        _state: 0
+    productComponent:
+      _componentName: b
+      _state: 0
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+        _components:
+        - _componentName: b
+          _state: '!1'
+      - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+        _components:
+        - _componentName: a
+          _state: '!1'
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+      _components:
+      - _componentName: a
+        _state: '!1'
+    reactantComponent:
+      _componentName: a
+      _state: '!1'
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+        _components:
+        - _componentName: a
+          _state: 0
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+      _components:
+      - _componentName: a
+        _state: 0
+    productComponent:
+      _componentName: a
+      _state: 0
   reactionCenterReferences:
   - reactantReference:
       complexIndex: 0
+      moleculeName: A
       moleculeIndex: 0
       componentName: b
       componentIndex: 0
     productReference:
       complexIndex: 0
+      moleculeName: A
       moleculeIndex: 0
       componentName: b
       componentIndex: 0
   - reactantReference:
       complexIndex: 0
-      moleculeIndex: 1
+      moleculeName: B
+      moleculeIndex: 0
       componentName: a
       componentIndex: 0
     productReference:
       complexIndex: 1
+      moleculeName: B
       moleculeIndex: 0
       componentName: a
       componentIndex: 0
-  reactionCenters:
-  - reactantComplex:
-      _moleculePatterns:
-      - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-        _components:
-        - _componentName: b
-          _state: '!1'
-      - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-        _components:
-        - _componentName: a
-          _state: '!1'
-    reactantMolecule:
-      _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-      _components:
-      - _componentName: b
-        _state: '!1'
-    reactantComponent:
-      _componentName: b
-      _state: '!1'
-    productComplex:
-      _moleculePatterns:
-      - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-        _components:
-        - _componentName: b
-          _state: 0
-    productMolecule:
-      _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-      _components:
-      - _componentName: b
-        _state: 0
-    productComponent:
-      _componentName: b
-      _state: 0
-  - reactantComplex:
-      _moleculePatterns:
-      - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
-        _components:
-        - _componentName: b
-          _state: '!1'
-      - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-        _components:
-        - _componentName: a
-          _state: '!1'
-    reactantMolecule:
-      _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-      _components:
-      - _componentName: a
-        _state: '!1'
-    reactantComponent:
-      _componentName: a
-      _state: '!1'
-    productComplex:
-      _moleculePatterns:
-      - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-        _components:
-        - _componentName: a
-          _state: 0
-    productMolecule:
-      _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
-      _components:
-      - _componentName: a
-        _state: 0
-    productComponent:
-      _componentName: a
-      _state: 0

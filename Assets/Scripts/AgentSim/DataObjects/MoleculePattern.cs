@@ -113,6 +113,11 @@ namespace AICS.AgentSim
             return other.moleculeDef.Equals( moleculeDef );
         }
 
+        public bool MatchesID (Molecule molecule)
+        {
+            return molecule.definition.Equals( moleculeDef );
+        }
+
         public override bool Equals (object obj)
         {
             MoleculePattern other = obj as MoleculePattern;

@@ -38,6 +38,22 @@ namespace AICS.AgentSim
         }
         #endregion
 
+        public ComplexPattern (Dictionary<string,List<Molecule>> molecules)
+        {
+            _moleculePatterns = new Dictionary<string,List<MoleculePattern>>();
+            foreach (string moleculeName in molecules.Keys)
+            {
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    if (!moleculePatterns.ContainsKey( molecule.definition.moleculeName ))
+                    {
+                        moleculePatterns.Add( molecule.definition.moleculeName, new List<MoleculePattern>() );
+                    }
+                    moleculePatterns[molecule.definition.moleculeName].Add( new MoleculePattern( molecule ) );
+                }
+            }
+        }
+
         public ComplexPattern (MoleculePattern[] molecules)
         {
             _molecules = molecules;
@@ -55,7 +71,7 @@ namespace AICS.AgentSim
                     {
                         foreach (Molecule molecule in molecules[moleculeName])
                         {
-                            if (!matchedMolecules.Contains( molecule ) && moleculePattern.Equals( molecule ))
+                            if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
                             {
                                 moleculePattern.SetStateOfMoleculeComponents( molecule );
                                 matchedMolecules.Add( molecule );

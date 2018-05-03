@@ -13,45 +13,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Q(x,y) + Q(x,y!+) -> Q(x,y!1).Q(x!1,y!+)
   rate: 100000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
+  reactantPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-      - id: y
-        state: 0
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: x
+        _state: 0
+      - _componentName: y
+        _state: 0
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-      - id: y
-        state: '!+'
-  productSnapshots:
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: x
+        _state: 0
+      - _componentName: y
+        _state: '!+'
+  productPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-      - id: y
-        state: '!1'
+      _components:
+      - _componentName: x
+        _state: 0
+      - _componentName: y
+        _state: '!1'
     - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: '!1'
-      - id: y
-        state: '!+'
-  relevantSiteReferences:
-  - complexIndex: 0
-    moleculeIndex: 0
-    siteID: y
-  - complexIndex: 0
-    moleculeIndex: 1
-    siteID: x
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-    bindingSiteID: x
-  - moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-    bindingSiteID: y
-  productmoleculeColors: []
+      _components:
+      - _componentName: x
+        _state: '!1'
+      - _componentName: y
+        _state: '!+'
+  reactionCenters: []
+  reactionCenterReferences:
+  - reactantReference:
+      complexIndex: 0
+      moleculeName: Q
+      moleculeIndex: 0
+      componentName: y
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeName: Q
+      moleculeIndex: 0
+      componentName: y
+      componentIndex: 0
+  - reactantReference:
+      complexIndex: 1
+      moleculeName: Q
+      moleculeIndex: 0
+      componentName: x
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeName: Q
+      moleculeIndex: 1
+      componentName: x
+      componentIndex: 0
