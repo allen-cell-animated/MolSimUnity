@@ -111,7 +111,12 @@ namespace AICS.AgentSim
             child.position = parent.TransformPoint( position );
             child.rotation = parent.rotation * Quaternion.Euler( rotation );
         }
-    }
+
+		public override string ToString()
+		{
+            return "[(" + position + "),(" + rotation + ")]";
+		}
+	}
 
     [System.Serializable]
     public class MoleculePatternColor

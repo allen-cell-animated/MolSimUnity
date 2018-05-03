@@ -120,7 +120,7 @@ namespace AICS.AgentSim
             return 0;
         }
 
-        int GetNumberOfMolecules ()
+        public int GetNumberOfMolecules ()
         {
             int n = 0;
             foreach (List<Molecule> aTypeOfMolecule in molecules.Values)

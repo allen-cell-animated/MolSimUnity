@@ -128,65 +128,92 @@ namespace AICS.AgentSim
             component1.SetParent( molecule1 );
             component2.SetParent( molecule2 );
 
-            //TODO
-            //List<ComponentPattern> foundComponents = new List<ComponentPattern>();
-            //foreach (string moleculeName1 in complexPattern.moleculePatterns.Keys)
-            //{
-            //    foreach (MoleculePattern moleculePattern1 in complexPattern.moleculePatterns[moleculeName1])
-            //    {
-            //        foreach (List<ComponentPattern> aTypeOfComponent1 in moleculePattern1.componentPatterns.Values)
-            //        {
-            //            for (int i = 0; i < aTypeOfComponent1.Count; i++)
-            //            {
-            //                if (aTypeOfComponent1[i].state.Contains( "!" ))
-            //                {
-            //                    foreach (string moleculeName2 in complexPattern.moleculePatterns.Keys)
-            //                    {
-            //                        foreach (MoleculePattern moleculePattern2 in complexPattern.moleculePatterns[moleculeName2])
-            //                        {
-            //                            foreach (List<ComponentPattern> aTypeOfComponent2 in moleculePattern2.componentPatterns.Values)
-            //                            {
-            //                                for (int j = 0; j < aTypeOfComponent2.Count; j++)
-            //                                {
-            //                                    if (aTypeOfComponent1[i].state == aTypeOfComponent2[j].state 
-            //                                        && !foundComponents.Contains( aTypeOfComponent1[i] ) && !foundComponents.Contains( aTypeOfComponent2[j] ))
-            //                                    {
-            //                                        foundComponents.Add( aTypeOfComponent1[i] );
-            //                                        foundComponents.Add( aTypeOfComponent2[j] );
+            List<ComponentPattern> foundComponents = new List<ComponentPattern>();
+            ComponentPattern componentPattern1, componentPattern2;
+            ComponentDef componentDef;
+            int n = 0;
+            foreach (string moleculeName1 in complexPattern.moleculePatterns.Keys)
+            {
+                if (!transforms.ContainsKey( moleculeName1 ))
+                {
+                    transforms.Add( moleculeName1, new List<RelativeTransform>() );
+                }
+                if (transforms.Keys.Count == 1)
+                {
+                    transforms[moleculeName1].Add( new RelativeTransform( Vector3.zero, Vector3.zero ) );
+                    n++;
+                }
+                for (int m1 = 0; m1 < complexPattern.moleculePatterns[moleculeName1].Count; m1++)
+                {
+                    foreach (string componentName1 in complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns.Keys)
+                    {
+                        for (int c1 = 0; c1 < complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1].Count; c1++)
+                        {
+                            componentPattern1 = complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1];
+                            if (!foundComponents.Contains( componentPattern1 ))
+                            {
+                                if (complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1].state.Contains( "!" ))
+                                {
+                                    foreach (string moleculeName2 in complexPattern.moleculePatterns.Keys)
+                                    {
+                                        for (int m2 = 0; m2 < complexPattern.moleculePatterns[moleculeName2].Count; m2++)
+                                        {
+                                            if (!(moleculeName2 == moleculeName1 && m2 == m1))
+                                            {
+                                                foreach (string componentName2 in complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns.Keys)
+                                                {
+                                                    for (int c2 = 0; c2 < complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2].Count; c2++)
+                                                    {
+                                                        componentPattern2 = complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2][c2];
+                                                        if (!foundComponents.Contains( componentPattern2 ))
+                                                        {
+                                                            if (componentPattern1.state == componentPattern2.state)
+                                                            {
+                                                                foundComponents.Add( componentPattern1 );
+                                                                foundComponents.Add( componentPattern2 );
 
-            //                                        molecule1.position = transforms[i].position;
-            //                                        molecule1.rotation = Quaternion.Euler( transforms[i].rotation );
-            //                                        component = complexPattern.moleculePatterns[i].moleculeDef.componentDefs[componentPattern1.componentName][componentIndex1];
-            //                                        component.transformOnMolecule.Apply( molecule1, component1 );
+                                                                molecule1.position = transforms[moleculeName1][m1].position;
+                                                                molecule1.rotation = Quaternion.Euler( transforms[moleculeName1][m1].rotation );
+                                                                componentDef = complexPattern.moleculePatterns[moleculeName1][m1].moleculeDef.componentDefs[componentName1][c1];
+                                                                componentDef.transformOnMolecule.Apply( molecule1, component1 );
 
-            //                                        molecule2.position = Vector3.zero;
-            //                                        molecule2.rotation = Quaternion.identity;
-            //                                        component = complexPattern.moleculePatterns[j].moleculeDef.componentDefs[componentPattern2.componentName][componentIndex2];
-            //                                        component.transformOnMolecule.Apply( molecule2, component2 );
+                                                                molecule2.position = Vector3.zero;
+                                                                molecule2.rotation = Quaternion.identity;
+                                                                componentDef = complexPattern.moleculePatterns[moleculeName2][m2].moleculeDef.componentDefs[componentName2][c2];
+                                                                componentDef.transformOnMolecule.Apply( molecule2, component2 );
 
-            //                                        molecule2.position = component1.TransformPoint( component2.InverseTransformPoint( molecule2.position ) );
-            //                                        molecule2.rotation = molecule2.rotation * Quaternion.Inverse( component2.rotation ) * component1.rotation;
+                                                                molecule2.position = component1.TransformPoint( component2.InverseTransformPoint( molecule2.position ) );
+                                                                molecule2.rotation = molecule2.rotation * Quaternion.Inverse( component2.rotation ) * component1.rotation;
 
-            //                                        transforms[j] = new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles );
-            //                                        averagePosition += transforms[j].position;
-            //                                    }
-            //                                    componentIndex2++;
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //                componentIndex1++;
-            //            }
-            //        }
-            //    }
-            //}
+                                                                if (!transforms.ContainsKey( moleculeName2 ))
+                                                                {
+                                                                    transforms.Add( moleculeName2, new List<RelativeTransform>() );
+                                                                    n++;
+                                                                }
+                                                                transforms[moleculeName2].Add( new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles ) );
+                                                                averagePosition += transforms[moleculeName2][m2].position;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-            //averagePosition /= transforms.Length;
-            //for (int i = 0; i < transforms.Length; i++)
-            //{
-            //    transforms[i].position -= averagePosition;
-            //}
+            averagePosition /= n;
+            foreach (string moleculeName in transforms.Keys)
+            {
+                foreach (RelativeTransform t in transforms[moleculeName])
+                {
+                    t.position -= averagePosition;
+                }
+            }
 
             Destroy( molecule1.gameObject );
             Destroy( molecule2.gameObject );

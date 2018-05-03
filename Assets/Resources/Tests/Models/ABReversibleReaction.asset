@@ -16,14 +16,14 @@ MonoBehaviour:
   complexes:
   - concentration: 6.5e-16
     complexPattern:
-      _moleculePatterns:
+      _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
         _components:
         - _componentName: b
           _state: 0
   - concentration: 6.5e-16
     complexPattern:
-      _moleculePatterns:
+      _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
         _components:
         - _componentName: a

@@ -166,41 +166,47 @@ public class MolSimTests
     static bool StateOfComplexSimulatorIsCorrect (Complex complex)
     {
         bool bimolecularReactant = false;
-        foreach (Molecule molecule in complex.molecules)
+        foreach (List<Molecule> aTypeOfMolecule in complex.molecules.Values)
         {
-            if (molecule == null)
+            foreach (Molecule molecule in aTypeOfMolecule)
             {
-                if (debug) { Debug.Log( complex + " has a null Molecule" ); }
-                return false;
-            }
-            if (molecule.complex != complex)
-            {
-                if (debug) { Debug.Log( molecule + " doesn't reference " + complex ); }
-                return false;
-            }
-            int count = 0;
-            foreach (Molecule otherMolecule in complex.molecules)
-            {
-                if (molecule == otherMolecule)
+                if (molecule == null)
                 {
-                    count++;
-                }
-            }
-            if (count > 1)
-            {
-                if (debug) { Debug.Log( molecule + " is registered to " + complex + " " + count + " times" ); }
-                return false;
-            }
-            if (molecule.couldReactOnCollision)
-            {
-                bimolecularReactant = true;
-                if (!complex.couldReactOnCollision)
-                {
-                    if (debug) { Debug.Log( molecule + " is bimolecular reactant but " + complex + " isn't" ); }
+                    if (debug) { Debug.Log( complex + " has a null Molecule" ); }
                     return false;
                 }
+                if (molecule.complex != complex)
+                {
+                    if (debug) { Debug.Log( molecule + " doesn't reference " + complex ); }
+                    return false;
+                }
+                int count = 0;
+                foreach (List<Molecule> anotherTypeOfMolecule in complex.molecules.Values)
+                {
+                    foreach (Molecule otherMolecule in anotherTypeOfMolecule)
+                    {
+                        if (molecule == otherMolecule)
+                        {
+                            count++;
+                        }
+                    }
+                }
+                if (count > 1)
+                {
+                    if (debug) { Debug.Log( molecule + " is registered to " + complex + " " + count + " times" ); }
+                    return false;
+                }
+                if (molecule.couldReactOnCollision)
+                {
+                    bimolecularReactant = true;
+                    if (!complex.couldReactOnCollision)
+                    {
+                        if (debug) { Debug.Log( molecule + " is bimolecular reactant but " + complex + " isn't" ); }
+                        return false;
+                    }
+                }
+                AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( molecule ) );
             }
-            AssertIsTrue( StateOfMoleculeSimulatorIsCorrect( molecule ) );
         }
         if (complex.couldReactOnCollision && !bimolecularReactant)
         {
@@ -217,14 +223,17 @@ public class MolSimTests
         }
 
         //parenting
-        if (complex.molecules.Length > 0)
+        if (complex.GetNumberOfMolecules() > 0)
         {
-            foreach (Molecule molecule in complex.molecules)
+            foreach (List<Molecule> aTypeOfMolecule in complex.molecules.Values)
             {
-                if (molecule.theTransform.parent != complex.theTransform)
+                foreach (Molecule molecule in aTypeOfMolecule)
                 {
-                    if (debug) { Debug.Log( molecule + " is not parented to " + complex ); }
-                    return false;
+                    if (molecule.theTransform.parent != complex.theTransform)
+                    {
+                        if (debug) { Debug.Log( molecule + " is not parented to " + complex ); }
+                        return false;
+                    }
                 }
             }
         }

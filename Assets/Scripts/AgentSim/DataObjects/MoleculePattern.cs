@@ -91,7 +91,7 @@ namespace AICS.AgentSim
                     {
                         foreach (MoleculeComponent moleculeComponent in molecule.components[componentName])
                         {
-                            if (!matchedComponents.Contains( moleculeComponent ) && componentPattern.Equals( moleculeComponent ))
+                            if (!matchedComponents.Contains( moleculeComponent ) && componentPattern.MatchesID( moleculeComponent ))
                             {
                                 moleculeComponent.state = componentPattern.state;
                                 matchedComponents.Add( moleculeComponent );

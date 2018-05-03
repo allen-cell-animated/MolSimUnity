@@ -16,7 +16,7 @@ MonoBehaviour:
   complexes:
   - concentration: 2.6e-15
     complexPattern:
-      _moleculePatterns:
+      _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 99eec79f4177b4f97bf9a0970fcea559, type: 2}
         _components: []
   reactionDefs: []
