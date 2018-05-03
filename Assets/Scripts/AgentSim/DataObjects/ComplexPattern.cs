@@ -135,15 +135,24 @@ namespace AICS.AgentSim
 
                 foreach (MoleculePattern thisMoleculePattern in thisComponentsInState.Keys) //does the other at least have as many molecules in each state as we do?
                 {
-                    if (!otherComponentsInState.ContainsKey( thisMoleculePattern ))
+                    MoleculePattern matchingMoleculePattern = null;
+                    foreach (MoleculePattern otherMoleculePattern in otherComponentsInState.Keys)
                     {
-                        //Debug.Log( "there are no " + moleculeName + " molecuels that match pattern " + thisMoleculePattern );
+                        if (thisMoleculePattern.Matches( otherMoleculePattern ))
+                        {
+                            matchingMoleculePattern = otherMoleculePattern;
+                            break;
+                        }
+                    }
+                    if (matchingMoleculePattern == null)
+                    {
+                        //Debug.Log( "there are no " + moleculeName + " molecules that match pattern " + thisMoleculePattern );
                         return false;
                     }
-                    if (otherComponentsInState[thisMoleculePattern] < thisComponentsInState[thisMoleculePattern])
+                    if (otherComponentsInState[matchingMoleculePattern] < thisComponentsInState[thisMoleculePattern])
                     {
                         //Debug.Log( "number of " + moleculeName + " molecules that match pattern " + thisMoleculePattern + " is " 
-                        //+ otherComponentsInState[thisMoleculePattern] + " when it should be at least " + thisComponentsInState[thisMoleculePattern] );
+                                  //+ otherComponentsInState[matchingMoleculePattern] + " when it should be at least " + thisComponentsInState[thisMoleculePattern] );
                         return false;
                     }
                 }
@@ -156,7 +165,6 @@ namespace AICS.AgentSim
 
         public bool Matches (Dictionary<string,List<Molecule>> molecules)
         {
-            MoleculePattern otherMoleculePattern;
             Dictionary<MoleculePattern,int> thisComponentsInState = new Dictionary<MoleculePattern,int>();
             Dictionary<MoleculePattern,int> otherComponentsInState = new Dictionary<MoleculePattern,int>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -180,7 +188,7 @@ namespace AICS.AgentSim
                 }
                 foreach (Molecule otherMolecule in molecules[moleculeName]) //how many of the other's molecules are in each state?
                 {
-                    otherMoleculePattern = new MoleculePattern( otherMolecule );
+                    MoleculePattern otherMoleculePattern = new MoleculePattern( otherMolecule );
                     if (!otherComponentsInState.ContainsKey( otherMoleculePattern ))
                     {
                         otherComponentsInState[otherMoleculePattern] = 1;
@@ -193,15 +201,24 @@ namespace AICS.AgentSim
 
                 foreach (MoleculePattern thisMoleculePattern in thisComponentsInState.Keys) //does the other at least have as many molecules in each state as we do?
                 {
-                    if (!otherComponentsInState.ContainsKey( thisMoleculePattern ))
+                    MoleculePattern matchingMoleculePattern = null;
+                    foreach (MoleculePattern otherMoleculePattern in otherComponentsInState.Keys)
                     {
-                        //Debug.Log( "there are no " + moleculeName + " molecuels that match pattern " + thisMoleculePattern );
+                        if (thisMoleculePattern.Matches( otherMoleculePattern ))
+                        {
+                            matchingMoleculePattern = otherMoleculePattern;
+                            break;
+                        }
+                    }
+                    if (matchingMoleculePattern == null)
+                    {
+                        //Debug.Log( "there are no " + moleculeName + " molecules that match pattern " + thisMoleculePattern );
                         return false;
                     }
-                    if (otherComponentsInState[thisMoleculePattern] < thisComponentsInState[thisMoleculePattern])
+                    if (otherComponentsInState[matchingMoleculePattern] < thisComponentsInState[thisMoleculePattern])
                     {
                         //Debug.Log( "number of " + moleculeName + " molecules that match pattern " + thisMoleculePattern + " is " 
-                        //+ otherComponentsInState[thisMoleculePattern] + " when it should be at least " + thisComponentsInState[thisMoleculePattern] );
+                        //+ otherComponentsInState[matchingMoleculePattern] + " when it should be at least " + thisComponentsInState[thisMoleculePattern] );
                         return false;
                     }
                 }

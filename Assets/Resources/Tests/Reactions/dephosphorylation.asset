@@ -14,13 +14,13 @@ MonoBehaviour:
   description: X(p~1) -> X(p~0)
   rate: 30000000
   reactantPatterns:
-  - _moleculePatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       _components:
       - _componentName: p
         _state: 1
   productPatterns:
-  - _moleculePatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       _components:
       - _componentName: p
@@ -29,11 +29,13 @@ MonoBehaviour:
   reactionCenterReferences:
   - reactantReference:
       complexIndex: 0
+      moleculeName: X
       moleculeIndex: 0
       componentName: p
       componentIndex: 0
     productReference:
       complexIndex: 0
+      moleculeName: X
       moleculeIndex: 0
       componentName: p
       componentIndex: 0

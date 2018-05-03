@@ -13,18 +13,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: X(p~1) -> X(p~0)
   rate: 10000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
+  reactantPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
-      siteStates:
-      - id: p
-        state: 1
-  productSnapshots:
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: p
+        _state: 1
+  productPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
-      siteStates:
-      - id: p
-        state: 0
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
-    bindingSiteID: p
+      _components:
+      - _componentName: p
+        _state: 0
+  reactionCenters: []
+  reactionCenterReferences:
+  - reactantReference:
+      complexIndex: 0
+      moleculeName: X
+      moleculeIndex: 0
+      componentName: p
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeName: X
+      moleculeIndex: 0
+      componentName: p
+      componentIndex: 0

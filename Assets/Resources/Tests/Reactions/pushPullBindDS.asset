@@ -13,33 +13,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: D(s) + S(active,p~P) -> D(s!1).S(active!1,p~P)
   rate: 800000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
+  reactantPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
-      siteStates:
-      - id: s
-        state: 0
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: s
+        _state: 0
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
-      siteStates:
-      - id: active
-        state: 0
-      - id: p
-        state: P
-  productSnapshots:
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: active
+        _state: 0
+      - _componentName: p
+        _state: P
+  productPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
-      siteStates:
-      - id: s
-        state: '!1'
+      _components:
+      - _componentName: s
+        _state: '!1'
     - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
-      siteStates:
-      - id: active
-        state: '!1'
-      - id: p
-        state: P
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
-    bindingSiteID: s
-  - moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
-    bindingSiteID: active
+      _components:
+      - _componentName: active
+        _state: '!1'
+      - _componentName: p
+        _state: P
+  reactionCenters: []
+  reactionCenterReferences:
+  - reactantReference:
+      complexIndex: 0
+      moleculeName: D
+      moleculeIndex: 0
+      componentName: s
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeName: D
+      moleculeIndex: 0
+      componentName: s
+      componentIndex: 0
+  - reactantReference:
+      complexIndex: 1
+      moleculeName: S
+      moleculeIndex: 0
+      componentName: active
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeName: S
+      moleculeIndex: 0
+      componentName: active
+      componentIndex: 0

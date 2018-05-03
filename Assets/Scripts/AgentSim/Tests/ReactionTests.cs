@@ -81,7 +81,7 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        ComponentDef componentP = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["S"][0].moleculeDef.componentDefs["p"][0];
+        ComponentDef componentP = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["S"][0].moleculeDef.componentDefs["p"][0];
         Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
@@ -122,10 +122,10 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        ComponentDef componentP1 = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p1"][0];
-        ComponentDef componentP2 = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p2"][0];
-        ComponentDef componentP3 = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p3"][0];
-        ComponentDef componentP4 = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p4"][0];
+        ComponentDef componentP1 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p1"][0];
+        ComponentDef componentP2 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p2"][0];
+        ComponentDef componentP3 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p3"][0];
+        ComponentDef componentP4 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p4"][0];
 
         Reaction e1Reaction = null, f1Reaction = null, e2Reaction = null, f2Reaction = null,
                  e3Reaction = null, f3Reaction = null, e4Reaction = null, f4Reaction = null;

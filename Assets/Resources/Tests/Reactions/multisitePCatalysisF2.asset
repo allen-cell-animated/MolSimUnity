@@ -13,31 +13,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: F(z!1).Z(active!1,p2~P) -> F(z) + Z(active,p2~U)
   rate: 1.2e+9
-  reactantSnapshots:
-  - _moleculeSnapshots:
+  reactantPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: ddc238eb2a0144a0ba41a194eadecc2b, type: 2}
-      siteStates:
-      - id: z
-        state: '!1'
+      _components:
+      - _componentName: z
+        _state: '!1'
     - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
-      siteStates:
-      - id: active
-        state: '!1'
-      - id: p2
-        state: P
-  productSnapshots:
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: active
+        _state: '!1'
+      - _componentName: p2
+        _state: P
+  productPatterns:
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: ddc238eb2a0144a0ba41a194eadecc2b, type: 2}
-      siteStates:
-      - id: z
-        state: 0
-  - _moleculeSnapshots:
+      _components:
+      - _componentName: z
+        _state: 0
+  - _molecules:
     - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
-      siteStates:
-      - id: active
-        state: 0
-      - id: p2
-        state: U
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: ddc238eb2a0144a0ba41a194eadecc2b, type: 2}
-    bindingSiteID: z
+      _components:
+      - _componentName: active
+        _state: 0
+      - _componentName: p2
+        _state: U
+  reactionCenters: []
+  reactionCenterReferences:
+  - reactantReference:
+      complexIndex: 0
+      moleculeName: F
+      moleculeIndex: 0
+      componentName: z
+      componentIndex: 0
+    productReference:
+      complexIndex: 0
+      moleculeName: F
+      moleculeIndex: 0
+      componentName: z
+      componentIndex: 0
+  - reactantReference:
+      complexIndex: 0
+      moleculeName: Z
+      moleculeIndex: 0
+      componentName: active
+      componentIndex: 0
+    productReference:
+      complexIndex: 1
+      moleculeName: Z
+      moleculeIndex: 0
+      componentName: active
+      componentIndex: 0
