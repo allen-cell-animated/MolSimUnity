@@ -60,7 +60,7 @@ namespace AICS.AgentSim
             InitMoleculePatterns();
         }
 
-        public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
+        public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules, MoleculeComponent[] reactionCenter = null)
         {
             List<Molecule> matchedMolecules = new List<Molecule>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -73,7 +73,7 @@ namespace AICS.AgentSim
                         {
                             if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
                             {
-                                moleculePattern.SetStateOfMoleculeComponents( molecule );
+                                moleculePattern.SetStateOfMoleculeComponents( molecule, reactionCenter );
                                 matchedMolecules.Add( molecule );
                                 break;
                             }
@@ -100,6 +100,7 @@ namespace AICS.AgentSim
 
         public bool Matches (ComplexPattern other)
         {
+            UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
             Dictionary<MoleculePattern,int> thisComponentsInState = new Dictionary<MoleculePattern,int>();
             Dictionary<MoleculePattern,int> otherComponentsInState = new Dictionary<MoleculePattern,int>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -160,11 +161,13 @@ namespace AICS.AgentSim
                 thisComponentsInState.Clear();
                 otherComponentsInState.Clear();
             }
+            UnityEngine.Profiling.Profiler.EndSample();
             return true;
         }
 
         public bool Matches (Dictionary<string,List<Molecule>> molecules)
         {
+            UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
             Dictionary<MoleculePattern,int> thisComponentsInState = new Dictionary<MoleculePattern,int>();
             Dictionary<MoleculePattern,int> otherComponentsInState = new Dictionary<MoleculePattern,int>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -226,6 +229,7 @@ namespace AICS.AgentSim
                 thisComponentsInState.Clear();
                 otherComponentsInState.Clear();
             }
+            UnityEngine.Profiling.Profiler.EndSample();
             return true;
         }
 

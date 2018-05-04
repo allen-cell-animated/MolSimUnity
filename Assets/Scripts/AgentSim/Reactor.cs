@@ -8,7 +8,7 @@ namespace AICS.AgentSim
     {
         [HideInInspector] public Container container;
         public ModelDef modelDef;
-        public List<BimolecularReaction> bimolecularReactions = new List<BimolecularReaction>();
+        public List<BindReaction> bindReactions = new List<BindReaction>();
         public List<CollisionFreeReaction> collisionFreeReactions = new List<CollisionFreeReaction>();
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
@@ -53,25 +53,39 @@ namespace AICS.AgentSim
 
         void Start ()
         {
-            CreateReactionSimulators();
+            CreateReactions();
             CreateContainer();
             SpawnComplexes();
             //percentOccupiedVolume = GetPercentOccupiedVolume();
         }
 
-        protected virtual void CreateReactionSimulators ()
+        protected virtual void CreateReactions ()
         {
             modelDef.Init(); //for prototyping in inspector without writing custom property drawer etc
 
             foreach (ReactionDef reactionDef in modelDef.reactionDefs)
             {
-                if (reactionDef.isBimolecular)
+                switch (reactionDef.type)
                 {
-                    bimolecularReactions.Add( new BimolecularReaction( reactionDef, this ) );
-                }
-                else
-                {
-                    collisionFreeReactions.Add( new CollisionFreeReaction( reactionDef, this ) );
+                    case ReactionType.Bind:
+                        bindReactions.Add( new BindReaction( reactionDef, this ) );
+                        break;
+
+                    case ReactionType.Release:
+                        collisionFreeReactions.Add( new ReleaseReaction( reactionDef, this ) );
+                        break;
+
+                    case ReactionType.StateChange:
+                        collisionFreeReactions.Add( new StateChangeReaction( reactionDef, this ) );
+                        break;
+
+                    case ReactionType.Create:
+                        collisionFreeReactions.Add( new CreateReaction( reactionDef, this ) );
+                        break;
+
+                    case ReactionType.Destroy:
+                        collisionFreeReactions.Add( new DestroyReaction( reactionDef, this ) );
+                        break;
                 }
             }
         }
@@ -99,7 +113,7 @@ namespace AICS.AgentSim
             }
 
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
-                                                              GetRelevantBimolecularReactions( complexConcentration.complexPattern ),
+                                                              GetRelevantBindReactions( complexConcentration.complexPattern ),
                                                               GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );
 
             Complex complex;
@@ -221,10 +235,10 @@ namespace AICS.AgentSim
             return transforms;
         }
 
-        protected BimolecularReaction[] GetRelevantBimolecularReactions (ComplexPattern complexPattern)
+        protected BindReaction[] GetRelevantBindReactions (ComplexPattern complexPattern)
         {
-            List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
-            foreach (BimolecularReaction reaction in bimolecularReactions)
+            List<BindReaction> reactionsList = new List<BindReaction>();
+            foreach (BindReaction reaction in bindReactions)
             {
                 if (reaction.ComplexIsReactant( complexPattern ))
                 {
@@ -234,10 +248,10 @@ namespace AICS.AgentSim
             return reactionsList.ToArray();
         }
 
-        public BimolecularReaction[] GetRelevantBimolecularReactions (Dictionary<string,List<Molecule>> molecules)
+        public BindReaction[] GetRelevantBindReactions (Dictionary<string,List<Molecule>> molecules)
         {
-            List<BimolecularReaction> reactionsList = new List<BimolecularReaction>();
-            foreach (BimolecularReaction reaction in bimolecularReactions)
+            List<BindReaction> reactionsList = new List<BindReaction>();
+            foreach (BindReaction reaction in bindReactions)
             {
                 if (reaction.ComplexIsReactant( molecules ))
                 {
@@ -323,7 +337,7 @@ namespace AICS.AgentSim
             //UnityEngine.Profiling.Profiler.EndSample();
 
             //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
-            DoBimolecularReactions();
+            DoBindReactions();
             //UnityEngine.Profiling.Profiler.EndSample();
 
             DestroyOldComplexes();
@@ -365,9 +379,9 @@ namespace AICS.AgentSim
             }
         }
 
-        protected virtual void DoBimolecularReactions ()
+        protected virtual void DoBindReactions ()
         {
-            foreach (Reaction reaction in bimolecularReactions)
+            foreach (Reaction reaction in bindReactions)
             {
                 reaction.CalculateObservedRate();
             }
@@ -400,14 +414,14 @@ namespace AICS.AgentSim
             complex.gameObject.transform.rotation = centerTransform.rotation;
 
             //move molecules
-            BimolecularReaction[] relevantBimolecularReactions = GetRelevantBimolecularReactions( molecules );
+            BindReaction[] relevantBindReactions = GetRelevantBindReactions( molecules );
             CollisionFreeReaction[] relevantCollisionFreeReactions = GetRelevantCollisionFreeReactions( molecules );
             complex.molecules = molecules;
             foreach (string moleculeName in molecules.Keys)
             {
                 foreach (Molecule molecule in molecules[moleculeName])
                 {
-                    molecule.MoveToComplex( complex, relevantBimolecularReactions, relevantCollisionFreeReactions );
+                    molecule.MoveToComplex( complex, relevantBindReactions, relevantCollisionFreeReactions );
                 }
             }
 
@@ -433,16 +447,16 @@ namespace AICS.AgentSim
     {
         public ComplexPattern complexPattern;
         public Dictionary<string,List<RelativeTransform>> moleculeTransforms;
-        public BimolecularReaction[] relevantBimolecularReactions;
+        public BindReaction[] relevantBindReactions;
         public CollisionFreeReaction[] relevantCollisionFreeReactions;
 
         public MoleculeInitData (ComplexPattern _complexPattern, Dictionary<string,List<RelativeTransform>> _moleculeTransforms,
-                                 BimolecularReaction[] _relevantBimolecularReactions, 
+                                 BindReaction[] _relevantBindReactions, 
                                  CollisionFreeReaction[] _relevantCollisionFreeReactions)
         {
             complexPattern = _complexPattern;
             moleculeTransforms = _moleculeTransforms;
-            relevantBimolecularReactions = _relevantBimolecularReactions;
+            relevantBindReactions = _relevantBindReactions;
             relevantCollisionFreeReactions = _relevantCollisionFreeReactions;
         }
     }

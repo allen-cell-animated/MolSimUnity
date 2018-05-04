@@ -4,26 +4,24 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class BindReactionDef : ReactionDef 
+    [System.Serializable]
+    public class BindReaction : Reaction
     {
-        protected override bool ReactantAndProductAmountsAreCorrect ()
-        {
-            return reactantPatterns.Length == 2 && productPatterns.Length == 1;
-        }
+        public BindReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public override bool React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
+        public override bool React (MoleculeComponent component1, MoleculeComponent component2 = null)
         {
             if (component1 != null && component2 != null)
             {
                 component1.boundComponent = component2;
                 component2.boundComponent = component1;
-
-                RelativelyPosition( component1.theTransform, component2.theTransform );
+                MoleculeComponent[] reactionCenterComponents = {component1, component2};
+                SetReactantsToProductState( reactionCenterComponents );
 
                 Dictionary<string,List<Molecule>> molecules = MergeMolecules( component1.molecules, component2.molecules );
-
-                productPatterns[0].SetStateOfComplex( molecules );
                 reactor.MoveMoleculesToNewComplex( molecules, component1.theTransform );
+
+                RelativelyPosition( component1.theTransform, component2.theTransform );
 
                 SetProductColor( molecules );
                 AnimateReaction( molecules );

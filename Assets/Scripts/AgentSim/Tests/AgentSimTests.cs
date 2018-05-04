@@ -153,7 +153,7 @@ public class MolSimTests
 
     static bool ComplexReallyIsBimolecularReactant (Complex complex)
     {
-        foreach (BimolecularReaction reaction in complex.reactor.bimolecularReactions)
+        foreach (BindReaction reaction in complex.reactor.bindReactions)
         {
             if (reaction.ComplexIsReactant( complex.molecules ))
             {

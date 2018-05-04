@@ -135,7 +135,7 @@ namespace AICS.AgentSim
         {
             reactor = _reactor;
 
-            name = GetSpecies() + name;
+            name = GetSpecies() + "_" + name;
             interactionRadius = GetInteractionRadius();
             couldReactOnCollision = GetCouldReactOnCollision();
 
@@ -179,7 +179,7 @@ namespace AICS.AgentSim
             moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( initData.moleculeTransforms[moleculeName][i].rotation );
 
             Molecule molecule = moleculeObject.AddComponent<Molecule>();
-            molecule.Init( initData.complexPattern.moleculePatterns[moleculeName][i], this, initData.relevantBimolecularReactions, initData.relevantCollisionFreeReactions );
+            molecule.Init( initData.complexPattern.moleculePatterns[moleculeName][i], this, initData.relevantBindReactions, initData.relevantCollisionFreeReactions );
 
             return molecule;
         }
@@ -262,13 +262,13 @@ namespace AICS.AgentSim
 
         public virtual void UpdateReactions ()
         {
-            BimolecularReaction[] relevantBimolecularReactions = reactor.GetRelevantBimolecularReactions( molecules );
+            BindReaction[] relevantBindReactions = reactor.GetRelevantBindReactions( molecules );
             CollisionFreeReaction[] relevantCollisionFreeReactions = reactor.GetRelevantCollisionFreeReactions( molecules );
             foreach (string moleculeName in molecules.Keys)
             {
                 foreach (Molecule molecule in molecules[moleculeName])
                 {
-                    molecule.UpdateReactions( relevantBimolecularReactions, relevantCollisionFreeReactions );
+                    molecule.UpdateReactions( relevantBindReactions, relevantCollisionFreeReactions );
                 }
             }
             UpdateCouldReactOnCollision();

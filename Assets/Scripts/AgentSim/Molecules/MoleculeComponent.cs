@@ -37,7 +37,7 @@ namespace AICS.AgentSim
             return other.componentName == componentName && (other.state.Contains( "!" ) ? state.Contains( "!" ) : other.state == state);
         }
 
-        [SerializeField] protected BimolecularReaction[] bimolecularReactions;
+        [SerializeField] protected ReactionCenter[] bimolecularReactionCenters;
         [SerializeField] protected CollisionFreeReaction[] collisionFreeReactions;
 
         Transform _theTransform;
@@ -92,18 +92,53 @@ namespace AICS.AgentSim
             state = (definition.states == null || definition.states.Length < 1) ? "" : definition.states[0];
         }
 
-        protected void SetBimolecularReactions (BimolecularReaction[] relevantBimolecularReactions)
+        public virtual bool ReactWith (MoleculeComponent other)
         {
-            List<BimolecularReaction> bimolecularReactionsList = new List<BimolecularReaction>();
-            foreach (BimolecularReaction reaction in relevantBimolecularReactions)
+            if (IsNear( other ))
             {
-                if (reaction.ComponentIsInReactionCenter( this ))
+                bimolecularReactionCenters.Shuffle();
+                other.bimolecularReactionCenters.Shuffle();
+                foreach (ReactionCenter reactionCenter in bimolecularReactionCenters)
                 {
-                    bimolecularReactionsList.Add( reaction );
+                    foreach (ReactionCenter otherReactionCenter in other.bimolecularReactionCenters)
+                    {
+                        if (reactionCenter.reaction == otherReactionCenter.reaction)
+                        {
+                            reactionCenter.reaction.React( this, other );
+                        }
+                    }
                 }
             }
-            bimolecularReactions = bimolecularReactionsList.ToArray();
-            couldReactOnCollision = bimolecularReactions.Length > 0;
+            return false;
+        }
+
+        bool IsNear (MoleculeComponent other)
+        {
+            return other != this 
+                && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
+        }
+
+        public virtual void UpdateReactions (BindReaction[] relevantBindReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
+        {
+            SetBindReactionCenters( relevantBindReactions );
+            UnregisterWithCollisionFreeReactions();
+            RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
+            name = molecule.name + "_" + componentName;
+        }
+
+        protected void SetBindReactionCenters (BindReaction[] relevantBindReactions)
+        {
+            List<ReactionCenter> reactionCentersList = new List<ReactionCenter>();
+            foreach (BindReaction reaction in relevantBindReactions)
+            {
+                ReactionCenter reactionCenter = reaction.GetReactionCenterForComponent( this );
+                if (reactionCenter != null)
+                {
+                    reactionCentersList.Add( reactionCenter );
+                }
+            }
+            bimolecularReactionCenters = reactionCentersList.ToArray();
+            couldReactOnCollision = bimolecularReactionCenters.Length > 0;
         }
 
         protected void RegisterWithCollisionFreeReactions (CollisionFreeReaction[] relevantCollisionFreeReactions)
@@ -128,36 +163,6 @@ namespace AICS.AgentSim
                     reaction.UnregisterComponent( this );
                 }
             }
-        }
-
-        public virtual bool ReactWith (MoleculeComponent other)
-        {
-            if (IsNear( other ))
-            {
-                bimolecularReactions.Shuffle();
-                foreach (BimolecularReaction bimolecularReaction in bimolecularReactions)
-                {
-                    if (bimolecularReaction.TryReactOnCollision( this, other ))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        bool IsNear (MoleculeComponent other)
-        {
-            return other != this 
-                && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
-        }
-
-        public virtual void UpdateReactions (BimolecularReaction[] relevantBimolecularReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
-        {
-            SetBimolecularReactions( relevantBimolecularReactions );
-            UnregisterWithCollisionFreeReactions();
-            RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
-            name = molecule.name + "_" + componentName;
         }
 
         public override string ToString ()

@@ -4,30 +4,25 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class ReleaseReactionDef : ReactionDef 
+    [System.Serializable]
+    public class ReleaseReaction : CollisionFreeReaction
     {
-        protected override bool ReactantAndProductAmountsAreCorrect ()
-        {
-            return reactantPatterns.Length == 1 && productPatterns.Length == 2;
-        }
+        public ReleaseReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public override bool React (Reactor reactor, MoleculeComponent component1, MoleculeComponent component2 = null)
+        public override bool React (MoleculeComponent component1, MoleculeComponent component2 = null)
         {
             if (component1 != null && component1.boundComponent != null)
             {
                 component2 = component1.boundComponent;
 
                 MoleculeComponent[] components = {component1, component2};
-                ComplexPattern productPattern;
                 Dictionary<string,List<Molecule>> molecules;
                 foreach (MoleculeComponent component in components)
                 {
-                    productPattern = GetProductPatternForComponent( component );
-                    if (productPattern == null) { Debug.Log( component ); }
-                    molecules = component.complex.GetMoleculesAtEndOfBond( component );
-
                     component.boundComponent = null;
-                    productPattern.SetStateOfComplex( molecules );
+                    SetReactantsToProductState( new MoleculeComponent[]{component} );
+
+                    molecules = component.complex.GetMoleculesAtEndOfBond( component );
                     reactor.MoveMoleculesToNewComplex( molecules, component.molecule.theTransform );
 
                     SetProductColor( molecules );
