@@ -29,10 +29,20 @@ namespace AICS.AgentSim
             }
         }
 
-        public ComponentPattern (string _theComponentName, string _theState)
+        [SerializeField] bool _bound;
+        public bool bound
+        {
+            get
+            {
+                return _bound;
+            }
+        }
+
+        public ComponentPattern (string _theComponentName, string _theState, bool _isBound)
         {
             _componentName = _theComponentName;
             state = _theState;
+            _bound = _isBound;
         }
 
         public ComponentPattern (MoleculeComponent moleculeComponent)
@@ -58,20 +68,20 @@ namespace AICS.AgentSim
 
         public bool Matches (IComponent other)
         {
-            return other.componentName == componentName && (other.state.Contains( "!" ) ? state.Contains( "!" ) : other.state == state);
+            return other.componentName == componentName && other.state == state && other.bound == bound;
         }
 
         public override int GetHashCode ()
         {
             unchecked
             {
-                return 16777619 * ((componentName == null) ? 1 : componentName.GetHashCode()) + 7237 * ((state == null) ? 1 : (state.Contains( "!" ) ? "!".GetHashCode() : state.GetHashCode()));
+                return 16777619 * ((componentName == null) ? 1 : componentName.GetHashCode()) + 7237 * ((state == null) ? 1 : state.GetHashCode()) + 7237 * bound.GetHashCode();
             }
         }
 
         public override string ToString()
         {
-            return "(" + componentName + " state = " + state + ")";
+            return "(" + componentName + "~" + state + (bound ? "!+" : "") + ")";
         }
     }
 }

@@ -13,9 +13,9 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         ComponentPattern[] components = new ComponentPattern[3];
-        components[0] = new ComponentPattern( "a", "0" );
-        components[1] = new ComponentPattern( "b", "0" );
-        components[2] = new ComponentPattern( "c", "0" );
+        components[0] = new ComponentPattern( "a", "0", false );
+        components[1] = new ComponentPattern( "b", "0", false );
+        components[2] = new ComponentPattern( "c", "0", false );
 
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components );
@@ -31,14 +31,14 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
 
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "a", "P" );
-        components2[1] = new ComponentPattern( "b", "P" );
-        components2[2] = new ComponentPattern( "c", "P" );
+        components2[0] = new ComponentPattern( "a", "P", false );
+        components2[1] = new ComponentPattern( "b", "P", false );
+        components2[2] = new ComponentPattern( "c", "P", false );
 
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components1 );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components2 );
@@ -55,13 +55,13 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
 
         ComponentPattern[] components2 = new ComponentPattern[2];
-        components2[0] = new ComponentPattern( "a", "0" );
-        components2[1] = new ComponentPattern( "c", "0" );
+        components2[0] = new ComponentPattern( "a", "0", false );
+        components2[1] = new ComponentPattern( "c", "0", false );
 
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components1 );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components2 );
@@ -78,16 +78,16 @@ public class TestHashCodes
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/Basic" ) as MoleculeDef;
 
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "a", "0" );
-        components2[1] = new ComponentPattern( "b", "0" );
-        components2[2] = new ComponentPattern( "c", "0" );
+        components2[0] = new ComponentPattern( "a", "0", false );
+        components2[1] = new ComponentPattern( "b", "0", false );
+        components2[2] = new ComponentPattern( "c", "0", false );
 
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
@@ -104,14 +104,14 @@ public class TestHashCodes
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
 
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
 
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "c", "0" );
-        components2[1] = new ComponentPattern( "a", "0" );
-        components2[2] = new ComponentPattern( "b", "0" );
+        components2[0] = new ComponentPattern( "c", "0", false );
+        components2[1] = new ComponentPattern( "a", "0", false );
+        components2[2] = new ComponentPattern( "b", "0", false );
 
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef, components1 );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef, components2 );
@@ -127,16 +127,16 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "a", "0" );
-        components2[1] = new ComponentPattern( "b", "0" );
-        components2[2] = new ComponentPattern( "c", "0" );
+        components2[0] = new ComponentPattern( "a", "0", false );
+        components2[1] = new ComponentPattern( "b", "0", false );
+        components2[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
         ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
@@ -153,23 +153,23 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "a", "0" );
-        components2[1] = new ComponentPattern( "b", "0" );
-        components2[2] = new ComponentPattern( "c", "0" );
+        components2[0] = new ComponentPattern( "a", "0", false );
+        components2[1] = new ComponentPattern( "b", "0", false );
+        components2[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
         MoleculeDef moleculeDef3 = Resources.Load( "Tests/Molecules/Basic" ) as MoleculeDef;
         ComponentPattern[] components3 = new ComponentPattern[3];
-        components3[0] = new ComponentPattern( "a", "0" );
-        components3[1] = new ComponentPattern( "b", "0" );
-        components3[2] = new ComponentPattern( "c", "0" );
+        components3[0] = new ComponentPattern( "a", "0", false );
+        components3[1] = new ComponentPattern( "b", "0", false );
+        components3[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern3 = new MoleculePattern( moleculeDef3, components3 );
 
         ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
@@ -186,22 +186,22 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "a", "0" );
-        components2[1] = new ComponentPattern( "b", "0" );
-        components2[2] = new ComponentPattern( "c", "0" );
+        components2[0] = new ComponentPattern( "a", "0", false );
+        components2[1] = new ComponentPattern( "b", "0", false );
+        components2[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
         ComponentPattern[] components3 = new ComponentPattern[3];
-        components3[0] = new ComponentPattern( "a", "P" );
-        components3[1] = new ComponentPattern( "b", "0" );
-        components3[2] = new ComponentPattern( "c", "0" );
+        components3[0] = new ComponentPattern( "a", "P", false );
+        components3[1] = new ComponentPattern( "b", "0", false );
+        components3[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern3 = new MoleculePattern( moleculeDef2, components3 );
 
         ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );
@@ -218,16 +218,16 @@ public class TestHashCodes
     {
         MoleculeDef moleculeDef1 = Resources.Load( "Tests/Molecules/A test" ) as MoleculeDef;
         ComponentPattern[] components1 = new ComponentPattern[3];
-        components1[0] = new ComponentPattern( "a", "0" );
-        components1[1] = new ComponentPattern( "b", "0" );
-        components1[2] = new ComponentPattern( "c", "0" );
+        components1[0] = new ComponentPattern( "a", "0", false );
+        components1[1] = new ComponentPattern( "b", "0", false );
+        components1[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern1 = new MoleculePattern( moleculeDef1, components1 );
 
         MoleculeDef moleculeDef2 = Resources.Load( "Tests/Molecules/B test" ) as MoleculeDef;
         ComponentPattern[] components2 = new ComponentPattern[3];
-        components2[0] = new ComponentPattern( "a", "0" );
-        components2[1] = new ComponentPattern( "b", "0" );
-        components2[2] = new ComponentPattern( "c", "0" );
+        components2[0] = new ComponentPattern( "a", "0", false );
+        components2[1] = new ComponentPattern( "b", "0", false );
+        components2[2] = new ComponentPattern( "c", "0", false );
         MoleculePattern pattern2 = new MoleculePattern( moleculeDef2, components2 );
 
         ComplexPattern complexPattern1 = new ComplexPattern( new MoleculePattern[] {pattern1, pattern2} );

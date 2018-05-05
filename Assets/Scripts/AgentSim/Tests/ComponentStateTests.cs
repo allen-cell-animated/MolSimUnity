@@ -16,12 +16,12 @@ public class ComponentStateTests : MolSimTests
 
         MoleculeDef moleculeDef = Resources.Load( "Tests/Molecules/Tester" ) as MoleculeDef;
         ComponentPattern[] components = new ComponentPattern[6];
-        components[0] = new ComponentPattern( "p", "1" );
-        components[1] = new ComponentPattern( "p", "1" );
-        components[2] = new ComponentPattern( "p", "0" );
-        components[3] = new ComponentPattern( "p", "0" );
-        components[4] = new ComponentPattern( "active", "1" );
-        components[5] = new ComponentPattern( "inhibit", "0" );
+        components[0] = new ComponentPattern( "p", "1", false );
+        components[1] = new ComponentPattern( "p", "1", false );
+        components[2] = new ComponentPattern( "p", "0", false );
+        components[3] = new ComponentPattern( "p", "0", false );
+        components[4] = new ComponentPattern( "active", "1", false );
+        components[5] = new ComponentPattern( "inhibit", "0", false );
         MoleculePattern pattern = new MoleculePattern( moleculeDef, components );
 
         yield return new WaitForSeconds( 0.1f );

@@ -13,7 +13,7 @@ namespace AICS.AgentSim
         Create
     }
 
-    public abstract class ReactionDef : ScriptableObject
+    public class ReactionDef : ScriptableObject
     {
         public string description;
         [Tooltip( "per second" )] 

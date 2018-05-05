@@ -34,7 +34,7 @@ namespace AICS.AgentSim
         {
             ReactionDef asset = ScriptableObject.CreateInstance<ReactionDef>();
 
-            AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newStateChangeReaction.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Data/Reactions/newReaction.asset");
             AssetDatabase.SaveAssets();
 
             Selection.activeObject = asset;

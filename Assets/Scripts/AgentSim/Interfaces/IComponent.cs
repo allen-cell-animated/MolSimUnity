@@ -8,5 +8,7 @@ public interface IComponent
 
     string state { get; set; }
 
+    bool bound { get; }
+
     bool Matches (IComponent other);
 }

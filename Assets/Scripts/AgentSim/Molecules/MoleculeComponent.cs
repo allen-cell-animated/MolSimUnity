@@ -11,6 +11,14 @@ namespace AICS.AgentSim
         public MoleculeComponent boundComponent;
         public bool couldReactOnCollision;
 
+        public string componentName
+        {
+            get
+            {
+                return definition.componentName;
+            }
+        }
+
         [SerializeField] string _state;
         public string state
         {
@@ -24,11 +32,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public string componentName
+        public bool bound
         {
             get
             {
-                return definition.componentName;
+                return boundComponent != null;
             }
         }
 
@@ -37,7 +45,7 @@ namespace AICS.AgentSim
             return other.componentName == componentName && (other.state.Contains( "!" ) ? state.Contains( "!" ) : other.state == state);
         }
 
-        [SerializeField] protected ReactionCenter[] bimolecularReactionCenters;
+        [SerializeField] protected ReactionCenter[] bindReactionCenters;
         [SerializeField] protected CollisionFreeReaction[] collisionFreeReactions;
 
         Transform _theTransform;
@@ -96,11 +104,11 @@ namespace AICS.AgentSim
         {
             if (IsNear( other ))
             {
-                bimolecularReactionCenters.Shuffle();
-                other.bimolecularReactionCenters.Shuffle();
-                foreach (ReactionCenter reactionCenter in bimolecularReactionCenters)
+                bindReactionCenters.Shuffle();
+                other.bindReactionCenters.Shuffle();
+                foreach (ReactionCenter reactionCenter in bindReactionCenters)
                 {
-                    foreach (ReactionCenter otherReactionCenter in other.bimolecularReactionCenters)
+                    foreach (ReactionCenter otherReactionCenter in other.bindReactionCenters)
                     {
                         if (reactionCenter.reaction == otherReactionCenter.reaction)
                         {
@@ -137,8 +145,8 @@ namespace AICS.AgentSim
                     reactionCentersList.Add( reactionCenter );
                 }
             }
-            bimolecularReactionCenters = reactionCentersList.ToArray();
-            couldReactOnCollision = bimolecularReactionCenters.Length > 0;
+            bindReactionCenters = reactionCentersList.ToArray();
+            couldReactOnCollision = bindReactionCenters.Length > 0;
         }
 
         protected void RegisterWithCollisionFreeReactions (CollisionFreeReaction[] relevantCollisionFreeReactions)
