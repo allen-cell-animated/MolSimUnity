@@ -22,16 +22,19 @@ MonoBehaviour:
         - _componentName: b
           _state: 
           _bound: 0
+          bondName: 
     reactantMolecule:
       _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
       _components:
       - _componentName: b
         _state: 
         _bound: 0
+        bondName: 
     reactantComponent:
       _componentName: b
       _state: 
       _bound: 0
+      bondName: 
     productComplex:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
@@ -39,21 +42,25 @@ MonoBehaviour:
         - _componentName: b
           _state: 
           _bound: 1
+          bondName: 
       - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
         _components:
         - _componentName: a
           _state: 
           _bound: 1
+          bondName: 1
     productMolecule:
       _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
       _components:
       - _componentName: b
         _state: 
         _bound: 1
+        bondName: 1
     productComponent:
       _componentName: b
       _state: 
       _bound: 1
+      bondName: 1
   - reactantComplex:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
@@ -61,16 +68,19 @@ MonoBehaviour:
         - _componentName: a
           _state: 
           _bound: 0
+          bondName: 
     reactantMolecule:
       _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
       _components:
       - _componentName: a
         _state: 
         _bound: 0
+        bondName: 
     reactantComponent:
       _componentName: a
       _state: 
       _bound: 0
+      bondName: 
     productComplex:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 22c1a7c1eb64241f9ab4890a173a2b04, type: 2}
@@ -78,18 +88,22 @@ MonoBehaviour:
         - _componentName: b
           _state: 
           _bound: 1
+          bondName: 1
       - _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
         _components:
         - _componentName: a
           _state: 
           _bound: 1
+          bondName: 1
     productMolecule:
       _moleculeDef: {fileID: 11400000, guid: 13acfe2a863e249febf62db3259e53cd, type: 2}
       _components:
       - _componentName: a
         _state: 
         _bound: 1
+        bondName: 1
     productComponent:
       _componentName: a
       _state: 
       _bound: 1
+      bondName: 1

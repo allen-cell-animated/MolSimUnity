@@ -9,16 +9,17 @@ namespace AICS.AgentSim
     {
         public StateChangeReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public override bool React (MoleculeComponent component1, MoleculeComponent component2 = null)
+        public override bool React (MoleculeComponent[] components, ReactionCenter[] matchingReactionCenters)
         {
-            if (component1 != null)
+            if (components.Length > 0 && components[0] != null &&
+                matchingReactionCenters.Length > 0 && matchingReactionCenters[0] != null)
             {
-                SetReactantsToProductState( new MoleculeComponent[]{component1} );
-                component1.complex.UpdateReactions();
+                components[0].SetToProductState( matchingReactionCenters[0] );
+                components[0].complex.UpdateReactions();
 
-                SetProductColor( component1.molecules );
-                AnimateReaction( component1.molecules );
-                World.ShowFlash( component1.theTransform );
+                SetProductColor( components[0].molecules );
+                AnimateReaction( components[0].molecules );
+                World.ShowFlash( components[0].theTransform );
 
                 return true;
             }

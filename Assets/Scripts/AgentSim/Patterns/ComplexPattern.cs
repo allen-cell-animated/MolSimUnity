@@ -60,7 +60,7 @@ namespace AICS.AgentSim
             InitMoleculePatterns();
         }
 
-        public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules, MoleculeComponent[] reactionCenter = null)
+        public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
         {
             List<Molecule> matchedMolecules = new List<Molecule>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -71,11 +71,19 @@ namespace AICS.AgentSim
                     {
                         foreach (Molecule molecule in molecules[moleculeName])
                         {
-                            if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
+                            if (!molecule.stateWasUpdated)
                             {
-                                moleculePattern.SetStateOfMoleculeComponents( molecule, reactionCenter );
+                                if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
+                                {
+                                    moleculePattern.SetStateOfMolecule( molecule );
+                                    matchedMolecules.Add( molecule );
+                                    break;
+                                }
+                            }
+                            else
+                            {
                                 matchedMolecules.Add( molecule );
-                                break;
+                                molecule.stateWasUpdated = false;
                             }
                         }
                     }

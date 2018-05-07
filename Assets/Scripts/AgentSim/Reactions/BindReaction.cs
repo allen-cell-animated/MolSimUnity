@@ -9,23 +9,26 @@ namespace AICS.AgentSim
     {
         public BindReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public override bool React (MoleculeComponent component1, MoleculeComponent component2 = null)
+        public override bool React (MoleculeComponent[] components, ReactionCenter[] matchingReactionCenters)
         {
-            if (component1 != null && component2 != null)
+            if (components.Length > 1 && components[0] != null && components[1] != null &&
+                matchingReactionCenters.Length > 1 && matchingReactionCenters[0] != null && matchingReactionCenters[1] != null)
             {
-                component1.boundComponent = component2;
-                component2.boundComponent = component1;
-                MoleculeComponent[] reactionCenterComponents = {component1, component2};
-                SetReactantsToProductState( reactionCenterComponents );
+                Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].molecules, components[1].molecules );
+                Complex newComplex = reactor.MoveMoleculesToNewComplex( molecules, components[0].theTransform );
 
-                Dictionary<string,List<Molecule>> molecules = MergeMolecules( component1.molecules, component2.molecules );
-                reactor.MoveMoleculesToNewComplex( molecules, component1.theTransform );
+                for (int i = 0; i < components.Length; i++)
+                {
+                    components[i].SetToProductState( matchingReactionCenters[i] );
+                    components[i].boundComponent = components[1 - i];
+                }
+                newComplex.UpdateReactions();
 
-                RelativelyPosition( component1.theTransform, component2.theTransform );
+                RelativelyPosition( components[0].theTransform, components[1].theTransform );
 
                 SetProductColor( molecules );
                 AnimateReaction( molecules );
-                World.ShowFlash( component1.theTransform );
+                World.ShowFlash( components[0].theTransform );
 
                 return true;
             }

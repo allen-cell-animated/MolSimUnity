@@ -20,14 +20,18 @@ MonoBehaviour:
       - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
         _components:
         - _componentName: b
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
   - concentration: 6.5e-16
     complexPattern:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
         _components:
         - _componentName: a
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
   reactionDefs:
-  - {fileID: 11400000, guid: debabe2728b434e12a1c514b9b7df676, type: 2}
-  - {fileID: 11400000, guid: 0effac8f9ae0741d6bde2eff6e7f3150, type: 2}
+  - {fileID: 11400000, guid: 461e1da4924b54a729ff694454419e20, type: 2}
+  - {fileID: 11400000, guid: 8f956e775d03d496b8120828f6d917c1, type: 2}

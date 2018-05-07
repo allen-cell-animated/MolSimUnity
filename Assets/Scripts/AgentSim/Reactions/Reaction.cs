@@ -7,7 +7,7 @@ namespace AICS.AgentSim
     [System.Serializable]
     public abstract class Reaction
     {
-        public Reactor reactor;
+        [HideInInspector] public Reactor reactor;
         public ReactionDef definition;
 
         [SerializeField] int attempts;
@@ -63,22 +63,7 @@ namespace AICS.AgentSim
             return null;
         }
 
-        public abstract bool React (MoleculeComponent component1, MoleculeComponent component2 = null);
-
-        protected void SetReactantsToProductState (MoleculeComponent[] reactionCenterComponents)
-        {
-            // TODO set state of products
-            foreach (MoleculeComponent component in reactionCenterComponents)
-            {
-                ReactionCenter reactionCenter = GetReactionCenterForComponent( component );
-                if (reactionCenter != null)
-                {
-                    component.state = reactionCenter.productComponent.state;
-
-                }
-            }
-            //productPatterns[0].SetStateOfComplex( molecules, reactionCenterComponents );
-        }
+        public abstract bool React (MoleculeComponent[] components, ReactionCenter[] matchingReactionCenters);
 
         protected void SetProductColor (Dictionary<string,List<Molecule>> molecules)
         {
@@ -123,7 +108,7 @@ namespace AICS.AgentSim
             }
         }
 
-        protected bool ShouldHappen ()
+        public bool ShouldHappen ()
         {
             attempts++;
 

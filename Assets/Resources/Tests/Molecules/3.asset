@@ -17,25 +17,19 @@ MonoBehaviour:
   diffusionCoefficient: 300000
   _componentDefs:
   - componentName: a
-    states:
-    - 0
-    - '!+'
+    states: []
     transformOnMolecule:
       position: {x: 0, y: 1, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
   - componentName: e
-    states:
-    - 0
-    - '!+'
+    states: []
     transformOnMolecule:
       position: {x: -1, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
   - componentName: f
-    states:
-    - 0
-    - '!+'
+    states: []
     transformOnMolecule:
       position: {x: 0, y: -1, z: 0}
       rotation: {x: 0, y: 0, z: 0}

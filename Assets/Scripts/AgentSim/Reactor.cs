@@ -100,11 +100,11 @@ namespace AICS.AgentSim
         {
             foreach (ComplexConcentration complex in modelDef.complexes)
             {
-                SpawnComplexInstances( complex );
+                SpawnSpecies( complex );
             }
         }
 
-        protected virtual void SpawnComplexInstances (ComplexConcentration complexConcentration)
+        protected virtual void SpawnSpecies (ComplexConcentration complexConcentration)
         {
             int amount = Mathf.RoundToInt( complexConcentration.concentration * container.volume * 6.022141e23f );
             if (amount < 1 || complexConcentration.moleculeCount < 1)
@@ -115,7 +115,7 @@ namespace AICS.AgentSim
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
                                                               GetRelevantBindReactions( complexConcentration.complexPattern ),
                                                               GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );
-
+            
             Complex complex;
             for (int i = 0; i < amount; i++)
             {
@@ -123,6 +123,7 @@ namespace AICS.AgentSim
                 complex.gameObject.transform.SetParent( transform );
                 complex.gameObject.transform.position = container.GetRandomPointInBounds( 0.1f );
                 complex.gameObject.transform.rotation = Random.rotation;
+                complex.reactor = this;
 
                 complex.SpawnMolecules( initData );
                 complex.Init( this );
@@ -166,7 +167,7 @@ namespace AICS.AgentSim
                             componentPattern1 = complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1];
                             if (!foundComponents.Contains( componentPattern1 ))
                             {
-                                if (complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1].state.Contains( "!" ))
+                                if (complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1].bound)
                                 {
                                     foreach (string moleculeName2 in complexPattern.moleculePatterns.Keys)
                                     {
@@ -179,9 +180,9 @@ namespace AICS.AgentSim
                                                     for (int c2 = 0; c2 < complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2].Count; c2++)
                                                     {
                                                         componentPattern2 = complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2][c2];
-                                                        if (!foundComponents.Contains( componentPattern2 ))
+                                                        if (componentPattern2.bound && !foundComponents.Contains( componentPattern2 ))
                                                         {
-                                                            if (componentPattern1.state == componentPattern2.state)
+                                                            if (componentPattern1.bondName == componentPattern2.bondName)
                                                             {
                                                                 foundComponents.Add( componentPattern1 );
                                                                 foundComponents.Add( componentPattern2 );
@@ -405,27 +406,26 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void MoveMoleculesToNewComplex (Dictionary<string,List<Molecule>> molecules, Transform centerTransform)
+        public virtual Complex MoveMoleculesToNewComplex (Dictionary<string,List<Molecule>> molecules, Transform centerTransform)
         {
             //create complex
             Complex complex = new GameObject( nextID ).AddComponent<Complex>();
             complex.gameObject.transform.SetParent( transform );
             complex.gameObject.transform.position = centerTransform.position;
             complex.gameObject.transform.rotation = centerTransform.rotation;
+            complex.reactor = this;
 
             //move molecules
-            BindReaction[] relevantBindReactions = GetRelevantBindReactions( molecules );
-            CollisionFreeReaction[] relevantCollisionFreeReactions = GetRelevantCollisionFreeReactions( molecules );
             complex.molecules = molecules;
             foreach (string moleculeName in molecules.Keys)
             {
                 foreach (Molecule molecule in molecules[moleculeName])
                 {
-                    molecule.MoveToComplex( complex, relevantBindReactions, relevantCollisionFreeReactions );
+                    molecule.MoveToComplex( complex );
                 }
             }
-
             complex.Init( this );
+            return complex;
         }
 
         protected void DestroyOldComplexes ()

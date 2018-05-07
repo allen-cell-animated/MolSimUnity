@@ -9,7 +9,7 @@ namespace AICS.AgentSim
     {
         public DestroyReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
-        public override bool React (MoleculeComponent component1, MoleculeComponent component2 = null)
+        public override bool React (MoleculeComponent[] components, ReactionCenter[] matchingReactionCenters)
         {
             // TODO implement destroy reaction
             return false;

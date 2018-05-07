@@ -7,7 +7,7 @@ namespace AICS.AgentSim
     [System.Serializable]
     public abstract class CollisionFreeReaction : Reaction
     {
-        [SerializeField] List<MoleculeComponent> components = new List<MoleculeComponent>();
+        public List<MoleculeComponent> components = new List<MoleculeComponent>();
 
         public CollisionFreeReaction (ReactionDef _reactionDef, Reactor _reactor) : base (_reactionDef, _reactor) { }
 
@@ -43,7 +43,7 @@ namespace AICS.AgentSim
             if (components.Count > 0 && ShouldHappen())
             {
                 components.Shuffle();
-                return React( components[0] );
+                return React( new MoleculeComponent[]{components[0]}, new ReactionCenter[]{definition.reactionCenters[0]} );
             }
             return false;
         }

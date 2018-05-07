@@ -50,7 +50,9 @@ namespace AICS.AgentSim
         public void Init ()
         {
             reactantComplex.Init();
+            reactantMolecule.Init();
             productComplex.Init();
+            productMolecule.Init();
         }
     }
 }

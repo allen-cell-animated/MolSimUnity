@@ -20,23 +20,39 @@ MonoBehaviour:
       - _moleculeDef: {fileID: 11400000, guid: 76df77b7b23194409a3a8dc3341eb897, type: 2}
         _components:
         - _componentName: a
-          _state: '!1'
+          _state: 
+          _bound: 1
+          bondName: 1
         - _componentName: b
-          _state: '!2'
+          _state: 
+          _bound: 1
+          bondName: 2
         - _componentName: c
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
       - _moleculeDef: {fileID: 11400000, guid: 16a60391589d54247bc15f9d5739c448, type: 2}
         _components:
         - _componentName: b
-          _state: '!2'
+          _state: 
+          _bound: 1
+          bondName: 2
         - _componentName: d
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
       - _moleculeDef: {fileID: 11400000, guid: c8c77442a620d4e41937484977d86c46, type: 2}
         _components:
         - _componentName: a
-          _state: '!1'
+          _state: 
+          _bound: 1
+          bondName: 1
         - _componentName: e
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
         - _componentName: f
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
   reactionDefs: []

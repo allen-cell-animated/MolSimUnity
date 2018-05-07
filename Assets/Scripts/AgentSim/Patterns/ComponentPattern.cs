@@ -38,6 +38,8 @@ namespace AICS.AgentSim
             }
         }
 
+        public string bondName;
+
         public ComponentPattern (string _theComponentName, string _theState, bool _isBound)
         {
             _componentName = _theComponentName;
@@ -49,6 +51,13 @@ namespace AICS.AgentSim
         {
             _componentName = moleculeComponent.componentName;
             state = moleculeComponent.state;
+            _bound = moleculeComponent.bound;
+        }
+
+        public virtual void SetStateOfComponent (MoleculeComponent component)
+        {
+            component.state = state;
+            component.lastBondName = bound ? bondName : string.Empty;
         }
 
         public bool MatchesID (IComponent other)

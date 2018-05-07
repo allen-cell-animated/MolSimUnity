@@ -12,6 +12,7 @@ namespace AICS.AgentSim
         public float collisionRadius;
         public float interactionRadius;
         public bool couldReactOnCollision;
+        public bool stateWasUpdated;
 
         Transform _theTransform;
         public Transform theTransform
@@ -41,19 +42,17 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual void Init (MoleculePattern moleculePattern, Complex _complex, 
-                                  BindReaction[] relevantBindReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
+        public virtual void Init (MoleculePattern moleculePattern, Complex _complex)
         {
             complex = _complex;
             definition = moleculePattern.moleculeDef;
             collisionRadius = interactionRadius = definition.radius;
             interactionRadius += 1f;
-            CreateComponents( moleculePattern, relevantBindReactions, relevantCollisionFreeReactions );
+            CreateComponents( moleculePattern );
             SetColorForCurrentState();
         }
 
-        protected virtual void CreateComponents (MoleculePattern moleculePattern, BindReaction[] relevantBindReactions, 
-                                                 CollisionFreeReaction[] relevantCollisionFreeReactions)
+        protected virtual void CreateComponents (MoleculePattern moleculePattern)
         {
             foreach (List<ComponentDef> aTypeOfComponent in definition.componentDefs.Values)
             {
@@ -62,8 +61,7 @@ namespace AICS.AgentSim
                     CreateComponent( componentDef );
                 }
             }
-            moleculePattern.SetStateOfMoleculeComponents( this );
-            UpdateReactions( relevantBindReactions, relevantCollisionFreeReactions );
+            moleculePattern.SetStateOfMolecule( this );
         }
 
         protected virtual void CreateComponent (ComponentDef componentDef)
@@ -107,15 +105,20 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public virtual void MoveToComplex (Complex _complex, BindReaction[] relevantBindReactions, 
-                                           CollisionFreeReaction[] relevantCollisionFreeReactions)
+        public virtual void MoveToComplex (Complex _complex)
         {
             complex.RemoveMolecule( this );
             complex = _complex;
             name = complex.name + "_" + definition.moleculeName;
             theTransform.SetParent( complex.theTransform );
+        }
 
-            UpdateReactions( relevantBindReactions, relevantCollisionFreeReactions );
+        public void SetToProductState (ReactionCenter reactionCenter)
+        {
+            reactionCenter.productMolecule.SetStateOfMolecule( this );
+            stateWasUpdated = true;
+
+            complex.SetToProductState( reactionCenter );
         }
 
         public virtual void UpdateReactions (BindReaction[] relevantBindReactions, 
@@ -182,7 +185,32 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "Molecule " + name;
+            string s = "Molecule " + name + " [" + definition.moleculeName + ":";
+            int i = 0;
+            int n = GetNumberOfComponents();
+            foreach (List<MoleculeComponent> aTypeOfComponent in components.Values)
+            {
+                foreach (MoleculeComponent component in aTypeOfComponent)
+                {
+                    s += component;
+                    if (i < n - 1)
+                    {
+                        s += ",";
+                    }
+                    i++;
+                }
+            }
+            return s + "]";
+        }
+
+        int GetNumberOfComponents ()
+        {
+            int n = 0;
+            foreach (List<MoleculeComponent> aTypeOfComponent in components.Values)
+            {
+                n += aTypeOfComponent.Count;
+            }
+            return n;
         }
 	}
 }

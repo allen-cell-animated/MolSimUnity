@@ -137,11 +137,11 @@ namespace AICS.AgentSim
 
             name = GetSpecies() + "_" + name;
             interactionRadius = GetInteractionRadius();
-            couldReactOnCollision = GetCouldReactOnCollision();
 
             mover = gameObject.AddComponent<Mover>();
             mover.Init( reactor, GetDiffusionCoefficient(), GetCollisionRadius() );
 
+            couldReactOnCollision = GetCouldReactOnCollision();
             reactor.RegisterComplex( this );
         }
 
@@ -156,30 +156,43 @@ namespace AICS.AgentSim
                 }
                 for (int i = 0; i < initData.complexPattern.moleculePatterns[moleculeName].Count; i++)
                 {
-                    molecules[moleculeName].Add( SpawnMolecule( moleculeName, i, initData ) );
+                    molecules[moleculeName].Add( SpawnMolecule( initData.complexPattern.moleculePatterns[moleculeName][i], initData.moleculeTransforms[moleculeName][i] ) );
                 }
             }
             ConnectBoundComponents();
+            InitReactions( initData.relevantBindReactions, initData.relevantCollisionFreeReactions );
         }
 
-        protected virtual Molecule SpawnMolecule (string moleculeName, int i, MoleculeInitData initData)
+        protected void InitReactions (BindReaction[] relevantBindReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
         {
-            GameObject visualizationPrefab = initData.complexPattern.moleculePatterns[moleculeName][i].moleculeDef.visualizationPrefab;
+            foreach (string moleculeName in molecules.Keys)
+            {
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    molecule.UpdateReactions( relevantBindReactions, relevantCollisionFreeReactions );
+                }
+            }
+            UpdateCouldReactOnCollision();
+        }
+
+        protected virtual Molecule SpawnMolecule (MoleculePattern moleculePattern, RelativeTransform relativeTransform)
+        {
+            GameObject visualizationPrefab = moleculePattern.moleculeDef.visualizationPrefab;
             if (visualizationPrefab == null)
             {
-                Debug.LogWarning( initData.complexPattern.moleculePatterns[moleculeName][i].moleculeDef.moleculeName + "'s molecule prefab is null!" );
+                Debug.LogWarning( moleculePattern.moleculeDef.moleculeName + "'s molecule prefab is null!" );
                 visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
             }
 
             GameObject moleculeObject = Instantiate( visualizationPrefab );
 
-            moleculeObject.name = name + "_" + initData.complexPattern.moleculePatterns[moleculeName][i].moleculeDef.moleculeName;
+            moleculeObject.name = name + "_" + moleculePattern.moleculeDef.moleculeName;
             moleculeObject.transform.SetParent( theTransform );
-            moleculeObject.transform.position = theTransform.TransformPoint( initData.moleculeTransforms[moleculeName][i].position );
-            moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( initData.moleculeTransforms[moleculeName][i].rotation );
+            moleculeObject.transform.position = theTransform.TransformPoint( relativeTransform.position );
+            moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( relativeTransform.rotation );
 
             Molecule molecule = moleculeObject.AddComponent<Molecule>();
-            molecule.Init( initData.complexPattern.moleculePatterns[moleculeName][i], this, initData.relevantBindReactions, initData.relevantCollisionFreeReactions );
+            molecule.Init( moleculePattern, this );
 
             return molecule;
         }
@@ -187,7 +200,6 @@ namespace AICS.AgentSim
         protected virtual void ConnectBoundComponents ()
         {
             Dictionary<string,MoleculeComponent> boundComponents = new Dictionary<string,MoleculeComponent>();
-            string boundState;
             foreach (List<Molecule> aTypeOfMolecule in molecules.Values)
             {
                 foreach (Molecule molecule in aTypeOfMolecule)
@@ -196,17 +208,16 @@ namespace AICS.AgentSim
                     {
                         foreach (MoleculeComponent component in aTypeOfComponent)
                         {
-                            boundState = component.state;
-                            if (boundState.Contains( "!" ))
+                            if (!string.IsNullOrEmpty( component.lastBondName ))
                             {
-                                if (!boundComponents.ContainsKey( boundState ))
+                                if (!boundComponents.ContainsKey( component.lastBondName ))
                                 {
-                                    boundComponents.Add( boundState, component );
+                                    boundComponents.Add( component.lastBondName, component );
                                 }
                                 else
                                 {
-                                    boundComponents[boundState].boundComponent = component;
-                                    component.boundComponent = boundComponents[boundState];
+                                    boundComponents[component.lastBondName].boundComponent = component;
+                                    component.boundComponent = boundComponents[component.lastBondName];
                                 }
                             }
                         }
@@ -258,6 +269,11 @@ namespace AICS.AgentSim
             Dictionary<string,List<Molecule>> tracedMolecules = new Dictionary<string, List<Molecule>>();
             tracedMolecules.Add( component.molecule.definition.moleculeName, new List<Molecule>( new Molecule[]{component.molecule} ) );
             return tracedMolecules;
+        }
+
+        public void SetToProductState (ReactionCenter reactionCenter)
+        {
+            reactionCenter.productComplex.SetStateOfComplex( molecules );
         }
 
         public virtual void UpdateReactions ()

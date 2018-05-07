@@ -26,7 +26,7 @@ public class ComponentStateTests : MolSimTests
 
         yield return new WaitForSeconds( 0.1f );
 
-        pattern.SetStateOfMoleculeComponents( molecule );
+        pattern.SetStateOfMolecule( molecule );
         AssertIsTrue( pattern.Matches( molecule ) );
 
         DestroyReactor( reactor );

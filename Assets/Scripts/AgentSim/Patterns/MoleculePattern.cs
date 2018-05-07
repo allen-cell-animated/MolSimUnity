@@ -80,16 +80,9 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void SetStateOfMoleculeComponents (Molecule molecule, MoleculeComponent[] reactionCenter = null)
+        public virtual void SetStateOfMolecule (Molecule molecule)
         {
             List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
-            if (reactionCenter != null)
-            {
-                foreach (MoleculeComponent component in reactionCenter)
-                {
-                    matchedComponents.Add( component );
-                }
-            }
             foreach (string componentName in componentPatterns.Keys)
             {
                 if (molecule.components.ContainsKey( componentName ))
@@ -98,11 +91,19 @@ namespace AICS.AgentSim
                     {
                         foreach (MoleculeComponent moleculeComponent in molecule.components[componentName])
                         {
-                            if (!matchedComponents.Contains( moleculeComponent ) && componentPattern.MatchesID( moleculeComponent ))
+                            if (!moleculeComponent.stateWasUpdated)
                             {
-                                moleculeComponent.state = componentPattern.state;
+                                if (!matchedComponents.Contains( moleculeComponent ) && componentPattern.MatchesID( moleculeComponent ))
+                                {
+                                    componentPattern.SetStateOfComponent( moleculeComponent );
+                                    matchedComponents.Add( moleculeComponent );
+                                    break;
+                                }
+                            }
+                            else
+                            {
                                 matchedComponents.Add( moleculeComponent );
-                                break;
+                                moleculeComponent.stateWasUpdated = false;
                             }
                         }
                     }

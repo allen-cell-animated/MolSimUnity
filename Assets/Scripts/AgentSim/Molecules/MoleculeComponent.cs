@@ -10,6 +10,7 @@ namespace AICS.AgentSim
         public Molecule molecule;
         public MoleculeComponent boundComponent;
         public bool couldReactOnCollision;
+        public bool stateWasUpdated;
 
         public string componentName
         {
@@ -40,9 +41,11 @@ namespace AICS.AgentSim
             }
         }
 
+        public string lastBondName;
+
         public bool Matches (IComponent other)
         {
-            return other.componentName == componentName && (other.state.Contains( "!" ) ? state.Contains( "!" ) : other.state == state);
+            return other.componentName == componentName && other.state == state && other.bound == bound;
         }
 
         [SerializeField] protected ReactionCenter[] bindReactionCenters;
@@ -110,9 +113,12 @@ namespace AICS.AgentSim
                 {
                     foreach (ReactionCenter otherReactionCenter in other.bindReactionCenters)
                     {
-                        if (reactionCenter.reaction == otherReactionCenter.reaction)
+                        if (reactionCenter.reaction == otherReactionCenter.reaction && reactionCenter.reaction.ShouldHappen())
                         {
-                            reactionCenter.reaction.React( this, other );
+                            if (reactionCenter.reaction.React( new MoleculeComponent[]{ this, other }, new ReactionCenter[]{ reactionCenter, otherReactionCenter } ))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -124,6 +130,13 @@ namespace AICS.AgentSim
         {
             return other != this 
                 && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
+        }
+
+        public void SetToProductState (ReactionCenter reactionCenter)
+        {
+            reactionCenter.productComponent.SetStateOfComponent( this );
+            stateWasUpdated = true;
+            molecule.SetToProductState( reactionCenter );
         }
 
         public virtual void UpdateReactions (BindReaction[] relevantBindReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)
@@ -175,7 +188,7 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "Component " + name + " (state=" + state + ")";
+            return "Component " + name + " (" + componentName + "~" + state + (bound ? "!+" : "") + ")";
         }
     }
 }
