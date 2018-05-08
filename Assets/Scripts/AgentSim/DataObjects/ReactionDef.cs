@@ -39,7 +39,8 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class ReactionCenter
     {
-        [HideInInspector] public Reaction reaction;
+        public Reaction reaction;
+        public string description; //for debugging in editor
         public ComplexPattern reactantComplex;
         public MoleculePattern reactantMolecule;
         public ComponentPattern reactantComponent;

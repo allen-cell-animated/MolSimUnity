@@ -113,7 +113,7 @@ namespace AICS.AgentSim
                 {
                     foreach (ReactionCenter otherReactionCenter in other.bindReactionCenters)
                     {
-                        if (reactionCenter.reaction == otherReactionCenter.reaction && reactionCenter.reaction.ShouldHappen())
+                        if (reactionCenter != otherReactionCenter && reactionCenter.reaction == otherReactionCenter.reaction && reactionCenter.reaction.ShouldHappen())
                         {
                             if (reactionCenter.reaction.React( new MoleculeComponent[]{ this, other }, new ReactionCenter[]{ reactionCenter, otherReactionCenter } ))
                             {

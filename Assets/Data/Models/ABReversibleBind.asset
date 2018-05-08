@@ -22,6 +22,7 @@ MonoBehaviour:
         - _componentName: b
           _state: 
           _bound: 0
+          bondName: 
   - concentration: 6.5e-16
     complexPattern:
       _molecules:
@@ -30,5 +31,7 @@ MonoBehaviour:
         - _componentName: a
           _state: 
           _bound: 0
+          bondName: 
   reactionDefs:
   - {fileID: 11400000, guid: 89d4f1d8b9e344237b23540dc0ac7baa, type: 2}
+  - {fileID: 11400000, guid: 629597b294c2f43b897376c706e9cbf8, type: 2}

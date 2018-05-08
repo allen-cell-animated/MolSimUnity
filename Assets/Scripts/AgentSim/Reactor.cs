@@ -10,6 +10,13 @@ namespace AICS.AgentSim
         public ModelDef modelDef;
         public List<BindReaction> bindReactions = new List<BindReaction>();
         public List<CollisionFreeReaction> collisionFreeReactions = new List<CollisionFreeReaction>();
+
+        //for debugging in editor (since CollisionFreeReaction is abstract and isn't serialized)
+        public List<ReleaseReaction> releaseReactions = new List<ReleaseReaction>();
+        public List<StateChangeReaction> stateChangeReactions = new List<StateChangeReaction>();
+        public List<CreateReaction> createReactions = new List<CreateReaction>();
+        public List<DestroyReaction> destroyReactions = new List<DestroyReaction>();
+
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
         [Tooltip( "Reflect particle to other side of container when it runs into a wall?" )]
@@ -72,19 +79,27 @@ namespace AICS.AgentSim
                         break;
 
                     case ReactionType.Release:
-                        collisionFreeReactions.Add( new ReleaseReaction( reactionDef, this ) );
+                        ReleaseReaction rr = new ReleaseReaction( reactionDef, this );
+                        collisionFreeReactions.Add( rr );
+                        releaseReactions.Add( rr );
                         break;
 
                     case ReactionType.StateChange:
-                        collisionFreeReactions.Add( new StateChangeReaction( reactionDef, this ) );
+                        StateChangeReaction scr = new StateChangeReaction( reactionDef, this );
+                        collisionFreeReactions.Add( scr );
+                        stateChangeReactions.Add( scr );
                         break;
 
                     case ReactionType.Create:
-                        collisionFreeReactions.Add( new CreateReaction( reactionDef, this ) );
+                        CreateReaction cr = new CreateReaction( reactionDef, this );
+                        collisionFreeReactions.Add( cr );
+                        createReactions.Add( cr );
                         break;
 
                     case ReactionType.Destroy:
-                        collisionFreeReactions.Add( new DestroyReaction( reactionDef, this ) );
+                        DestroyReaction dr = new DestroyReaction( reactionDef, this );
+                        collisionFreeReactions.Add( dr );
+                        destroyReactions.Add( dr );
                         break;
                 }
             }

@@ -14,4 +14,116 @@ MonoBehaviour:
   description: D(s!1).S(active!1,p~P) -> D(s) + S(active,p~P)
   rate: 30000000
   type: 1
-  reactionCenters: []
+  reactionCenters:
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
+        _components:
+        - _componentName: s
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
+        _components:
+        - _componentName: active
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: p
+          _state: P
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
+      _components:
+      - _componentName: s
+        _state: 
+        _bound: 1
+        bondName: 1
+    reactantComponent:
+      _componentName: s
+      _state: 
+      _bound: 1
+      bondName: 1
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
+        _components:
+        - _componentName: s
+          _state: 
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
+      _components:
+      - _componentName: s
+        _state: 
+        _bound: 0
+        bondName: 
+    productComponent:
+      _componentName: s
+      _state: 
+      _bound: 0
+      bondName: 
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
+        _components:
+        - _componentName: s
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
+        _components:
+        - _componentName: active
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: p
+          _state: P
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
+      _components:
+      - _componentName: active
+        _state: 
+        _bound: 1
+        bondName: 1
+      - _componentName: p
+        _state: P
+        _bound: 0
+        bondName: 
+    reactantComponent:
+      _componentName: active
+      _state: 
+      _bound: 1
+      bondName: 1
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
+        _components:
+        - _componentName: active
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: p
+          _state: P
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
+      _components:
+      - _componentName: active
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: p
+        _state: P
+        _bound: 0
+        bondName: 
+    productComponent:
+      _componentName: active
+      _state: 
+      _bound: 0
+      bondName: 

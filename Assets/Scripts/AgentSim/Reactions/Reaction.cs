@@ -22,6 +22,7 @@ namespace AICS.AgentSim
             foreach (ReactionCenter reactionCenter in definition.reactionCenters)
             {
                 reactionCenter.reaction = this;
+                reactionCenter.description = definition.description; //for debugging in editor
             }
         }
 

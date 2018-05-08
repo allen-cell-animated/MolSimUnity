@@ -16,238 +16,358 @@ MonoBehaviour:
   scale: 0.000000001
   diffusionCoefficient: 500000
   _componentDefs:
-  - componentName: active
-    states:
-    - 0
-    - '!+'
-    transformOnMolecule:
-      position: {x: -0.375, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    radius: 1
   - componentName: p1
     states:
     - U
     - P
     transformOnMolecule:
-      position: {x: 0, y: 0, z: 0}
+      position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
-    radius: 0
+    radius: 1
   - componentName: p2
     states:
     - U
     - P
     transformOnMolecule:
-      position: {x: 0, y: 0, z: 0}
+      position: {x: 0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
-    radius: 0
+    radius: 1
   - componentName: p3
     states:
     - U
     - P
     transformOnMolecule:
-      position: {x: 0, y: 0, z: 0}
+      position: {x: 0, y: -0.375, z: 0}
       rotation: {x: 0, y: 0, z: 0}
-    radius: 0
+    radius: 1
   - componentName: p4
     states:
     - U
     - P
     transformOnMolecule:
-      position: {x: 0, y: 0, z: 0}
+      position: {x: 0, y: 0.375, z: 0}
       rotation: {x: 0, y: 0, z: 0}
-    radius: 0
+    radius: 1
   colors:
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 0, g: 0.3298893, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 0.4896555, g: 0, b: 1, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: U
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0, b: 0.39310312, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p1
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p2
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p3
         _state: P
+        _bound: 0
+        bondName: 
       - _componentName: p4
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0.80689657, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1386266482134252, guid: 165d64b07f8b643598a4af508250d30e,
     type: 2}

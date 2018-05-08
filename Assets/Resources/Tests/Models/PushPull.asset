@@ -46,9 +46,9 @@ MonoBehaviour:
           _bound: 0
           bondName: 
   reactionDefs:
-  - {fileID: 11400000, guid: 33e7d9b7b9f924f8797f1ce6db7cfe95, type: 2}
-  - {fileID: 11400000, guid: 48a258d5aed1b4585bcc9f470e70c66d, type: 2}
-  - {fileID: 11400000, guid: bf41234c255624b92acf9960765b5b79, type: 2}
-  - {fileID: 11400000, guid: 19cbb4e00c8644b7186afe76600b7a04, type: 2}
-  - {fileID: 11400000, guid: 84e4b6211183041a193027723af335bc, type: 2}
-  - {fileID: 11400000, guid: 8584996dbee6544f6a9cd42421138aa8, type: 2}
+  - {fileID: 11400000, guid: fcc2a7d05177e4556ac4bd2fe53544ad, type: 2}
+  - {fileID: 11400000, guid: ad35a2bf487704daf8098930ccb477c6, type: 2}
+  - {fileID: 11400000, guid: cdec3af1cc65b4608b9c37f3ecc944f6, type: 2}
+  - {fileID: 11400000, guid: 7a1931cc108954beeb98fc3927b8bf5d, type: 2}
+  - {fileID: 11400000, guid: c862702d71887460bb2a185e12e657ba, type: 2}
+  - {fileID: 11400000, guid: ce9db6e0e4a0749a9bde5425951c5ec3, type: 2}
