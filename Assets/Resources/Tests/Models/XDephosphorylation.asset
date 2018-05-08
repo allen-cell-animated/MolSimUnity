@@ -20,8 +20,12 @@ MonoBehaviour:
       - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
         _components:
         - _componentName: y
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
         - _componentName: p
           _state: 1
+          _bound: 0
+          bondName: 
   reactionDefs:
-  - {fileID: 11400000, guid: f7d774bec80db4077a26f499b2b91394, type: 2}
+  - {fileID: 11400000, guid: e7f6b58502cfa4a50aa253a841574cd9, type: 2}

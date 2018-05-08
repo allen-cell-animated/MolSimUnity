@@ -20,23 +20,31 @@ MonoBehaviour:
       - _moleculeDef: {fileID: 11400000, guid: 2294ccab4067d4abfbf6b926ac5fa49d, type: 2}
         _components:
         - _componentName: s
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
   - concentration: 5e-17
     complexPattern:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
         _components:
         - _componentName: s
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
   - concentration: 2.5e-15
     complexPattern:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
         _components:
         - _componentName: active
-          _state: 0
+          _state: 
+          _bound: 0
+          bondName: 
         - _componentName: p
           _state: U
+          _bound: 0
+          bondName: 
   reactionDefs:
   - {fileID: 11400000, guid: 33e7d9b7b9f924f8797f1ce6db7cfe95, type: 2}
   - {fileID: 11400000, guid: 48a258d5aed1b4585bcc9f470e70c66d, type: 2}

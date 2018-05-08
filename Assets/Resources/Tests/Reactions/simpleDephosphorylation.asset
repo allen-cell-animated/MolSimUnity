@@ -8,34 +8,50 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65922519dfcfa47d680fba9f67aeafe5, type: 3}
+  m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: simpleDephosphorylation
   m_EditorClassIdentifier: 
   description: X(p~1) -> X(p~0)
-  rate: 10000000
-  reactantPatterns:
-  - _molecules:
-    - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
+  rate: 5000000
+  type: 2
+  reactionCenters:
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
+        _components:
+        - _componentName: p
+          _state: 1
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       _components:
       - _componentName: p
         _state: 1
-  productPatterns:
-  - _molecules:
-    - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
+        _bound: 0
+        bondName: 
+    reactantComponent:
+      _componentName: p
+      _state: 1
+      _bound: 0
+      bondName: 
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
+        _components:
+        - _componentName: p
+          _state: 0
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: a863e27b9edbb4d54828877e393409c7, type: 2}
       _components:
       - _componentName: p
         _state: 0
-  reactionCenters: []
-  reactionCenterReferences:
-  - reactantReference:
-      complexIndex: 0
-      moleculeName: X
-      moleculeIndex: 0
-      componentName: p
-      componentIndex: 0
-    productReference:
-      complexIndex: 0
-      moleculeName: X
-      moleculeIndex: 0
-      componentName: p
-      componentIndex: 0
+        _bound: 0
+        bondName: 
+    productComponent:
+      _componentName: p
+      _state: 0
+      _bound: 0
+      bondName: 

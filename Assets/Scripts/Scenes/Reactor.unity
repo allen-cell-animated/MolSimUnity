@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 0}
-  modelDef: {fileID: 11400000, guid: 75efa4897fda244b0bbe283014df0ab1, type: 2}
+  modelDef: {fileID: 11400000, guid: d5df9f0f0889e406999327bd094731d8, type: 2}
   bindReactions: []
   maxMoveAttempts: 20
   periodicBoundary: 1

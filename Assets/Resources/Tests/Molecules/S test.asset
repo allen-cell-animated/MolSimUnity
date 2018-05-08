@@ -17,9 +17,7 @@ MonoBehaviour:
   diffusionCoefficient: 500000
   _componentDefs:
   - componentName: active
-    states:
-    - 0
-    - '!+'
+    states: []
     transformOnMolecule:
       position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
@@ -38,12 +36,16 @@ MonoBehaviour:
       _components:
       - _componentName: p
         _state: U
+        _bound: 0
+        bondName: 
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
   - pattern:
       _moleculeDef: {fileID: 11400000}
       _components:
       - _componentName: p
         _state: P
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0.68275857, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1386266482134252, guid: 69287cda75c2448509b20a1cb1cb44ca,
     type: 2}

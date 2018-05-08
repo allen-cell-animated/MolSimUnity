@@ -8,59 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
+  m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: pushPullCatalysisD
   m_EditorClassIdentifier: 
   description: D(s!1).S(active!1,p~P) -> D(s) + S(active,p~U)
-  rate: 80000000
-  reactantPatterns:
-  - _molecules:
-    - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
-      _components:
-      - _componentName: s
-        _state: '!1'
-    - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
-      _components:
-      - _componentName: active
-        _state: '!1'
-      - _componentName: p
-        _state: P
-  productPatterns:
-  - _molecules:
-    - _moleculeDef: {fileID: 11400000, guid: 95dae6b36f62641f0b4a1fc091a56534, type: 2}
-      _components:
-      - _componentName: s
-        _state: 0
-  - _molecules:
-    - _moleculeDef: {fileID: 11400000, guid: 95d4e0335a7874951a75ff524c6a963d, type: 2}
-      _components:
-      - _componentName: active
-        _state: 0
-      - _componentName: p
-        _state: U
+  rate: 8000000
+  type: 1
   reactionCenters: []
-  reactionCenterReferences:
-  - reactantReference:
-      complexIndex: 0
-      moleculeName: D
-      moleculeIndex: 0
-      componentName: s
-      componentIndex: 0
-    productReference:
-      complexIndex: 0
-      moleculeName: D
-      moleculeIndex: 0
-      componentName: s
-      componentIndex: 0
-  - reactantReference:
-      complexIndex: 0
-      moleculeName: S
-      moleculeIndex: 0
-      componentName: active
-      componentIndex: 0
-    productReference:
-      complexIndex: 1
-      moleculeName: S
-      moleculeIndex: 0
-      componentName: active
-      componentIndex: 0
