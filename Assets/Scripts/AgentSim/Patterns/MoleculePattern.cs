@@ -82,6 +82,7 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfMolecule (Molecule molecule)
         {
+            UnityEngine.Profiling.Profiler.BeginSample("Set State");
             List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
             foreach (string componentName in componentPatterns.Keys)
             {
@@ -109,16 +110,7 @@ namespace AICS.AgentSim
                     }
                 }
             }
-        }
-
-        public virtual bool ContainsComponent (string componentName)
-        {
-            return componentPatterns.ContainsKey( componentName );
-        }
-
-        public bool MatchesID (MoleculePattern other)
-        {
-            return other.moleculeDef.Equals( moleculeDef );
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public bool MatchesID (Molecule molecule)

@@ -24,7 +24,7 @@ namespace AICS.AgentSim
             return false;
         }
 
-        public bool ComponentIsInReactionCenter (MoleculeComponent component)
+        protected bool ComponentIsInReactionCenter (MoleculeComponent component)
         {
             return definition.reactionCenters[0].reactantMolecule.Matches( component.molecule ) && 
                    definition.reactionCenters[0].reactantComponent.Matches( component );

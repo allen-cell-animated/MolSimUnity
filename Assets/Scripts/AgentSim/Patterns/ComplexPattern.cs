@@ -23,7 +23,7 @@ namespace AICS.AgentSim
             InitMoleculePatterns();
         }
 
-        protected void InitMoleculePatterns ()
+        public void InitMoleculePatterns ()
         {
             _moleculePatterns = new Dictionary<string,List<MoleculePattern>>();
             foreach (MoleculePattern moleculePattern in _molecules)
@@ -62,6 +62,7 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
         {
+            UnityEngine.Profiling.Profiler.BeginSample("Set State");
             List<Molecule> matchedMolecules = new List<Molecule>();
             foreach (string moleculeName in moleculePatterns.Keys)
             {
@@ -89,21 +90,7 @@ namespace AICS.AgentSim
                     }
                 }
             }
-        }
-
-        public override bool Equals (object obj)
-        {
-            ComplexPattern other = obj as ComplexPattern;
-            if (other != null)
-            {
-                return Matches( other );
-            }
-            Dictionary<string,List<Molecule>> molecules = obj as Dictionary<string,List<Molecule>>;
-            if (molecules != null)
-            {
-                return Matches( molecules );
-            }
-            return false;
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public bool Matches (ComplexPattern other)
@@ -239,25 +226,6 @@ namespace AICS.AgentSim
             }
             UnityEngine.Profiling.Profiler.EndSample();
             return true;
-        }
-
-        public override int GetHashCode ()
-        {
-            unchecked
-            {
-                int hash = 0;
-                if (moleculePatterns != null)
-                {
-                    foreach (List<MoleculePattern> aTypeOfMoleculePattern in moleculePatterns.Values)
-                    {
-                        foreach (MoleculePattern moleculePattern in aTypeOfMoleculePattern)
-                        {
-                            hash += 7919 * (moleculePattern == null ? 1 : moleculePattern.GetHashCode());
-                        }
-                    }
-                }
-                return hash;
-            }
         }
 
         public override string ToString ()

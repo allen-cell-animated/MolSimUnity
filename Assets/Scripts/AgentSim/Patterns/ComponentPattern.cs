@@ -7,6 +7,7 @@ namespace AICS.AgentSim
     [System.Serializable]
     public class ComponentPattern : IComponent
     {
+        #region IComponent
         [SerializeField] string _componentName;
         public string componentName
         {
@@ -38,6 +39,12 @@ namespace AICS.AgentSim
             }
         }
 
+        public bool Matches (IComponent other)
+        {
+            return other.componentName == componentName && other.state == state && other.bound == bound;
+        }
+        #endregion
+
         public string bondName;
 
         public ComponentPattern (string _theComponentName, string _theState, bool _isBound)
@@ -56,8 +63,10 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfComponent (MoleculeComponent component)
         {
+            UnityEngine.Profiling.Profiler.BeginSample("Set State");
             component.state = state;
             component.lastBondName = bound ? bondName : string.Empty;
+            UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public bool MatchesID (IComponent other)
@@ -73,11 +82,6 @@ namespace AICS.AgentSim
                 return other.Matches( this );
             }
             return false;
-        }
-
-        public bool Matches (IComponent other)
-        {
-            return other.componentName == componentName && other.state == state && other.bound == bound;
         }
 
         public override int GetHashCode ()

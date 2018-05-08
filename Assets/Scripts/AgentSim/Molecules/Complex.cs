@@ -120,16 +120,6 @@ namespace AICS.AgentSim
             return 0;
         }
 
-        public int GetNumberOfMolecules ()
-        {
-            int n = 0;
-            foreach (List<Molecule> aTypeOfMolecule in molecules.Values)
-            {
-                n += aTypeOfMolecule.Count;
-            }
-            return n;
-        }
-
         // complex of MoleculeSimulators is set before Init is called so reactions can be set up correctly
         public virtual void Init (Reactor _reactor)
         {
@@ -327,6 +317,16 @@ namespace AICS.AgentSim
         public override string ToString ()
         {
             return "Complex " + name;
+        }
+
+        public int GetNumberOfMolecules ()
+        {
+            int n = 0;
+            foreach (List<Molecule> aTypeOfMolecule in molecules.Values)
+            {
+                n += aTypeOfMolecule.Count;
+            }
+            return n;
         }
     }
 }

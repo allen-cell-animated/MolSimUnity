@@ -14,7 +14,7 @@ namespace AICS.AgentSim
             if (components.Length > 1 && components[0] != null && components[1] != null &&
                 matchingReactionCenters.Length > 1 && matchingReactionCenters[0] != null && matchingReactionCenters[1] != null)
             {
-                Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].molecules, components[1].molecules );
+                Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].complex.molecules, components[1].complex.molecules );
                 Complex newComplex = reactor.MoveMoleculesToNewComplex( molecules, components[0].theTransform );
 
                 for (int i = 0; i < components.Length; i++)

@@ -11,7 +11,9 @@ namespace AICS.AgentSim
         public MoleculeComponent boundComponent;
         public bool couldReactOnCollision;
         public bool stateWasUpdated;
+        public string lastBondName;
 
+        #region IComponent
         public string componentName
         {
             get
@@ -41,12 +43,11 @@ namespace AICS.AgentSim
             }
         }
 
-        public string lastBondName;
-
         public bool Matches (IComponent other)
         {
             return other.componentName == componentName && other.state == state && other.bound == bound;
         }
+        #endregion
 
         [SerializeField] protected ReactionCenter[] bindReactionCenters;
         [SerializeField] protected CollisionFreeReaction[] collisionFreeReactions;
@@ -69,22 +70,6 @@ namespace AICS.AgentSim
             get
             {
                 return molecule.complex;
-            }
-        }
-
-        public Dictionary<string,List<Molecule>> molecules
-        {
-            get
-            {
-                return complex.molecules;
-            }
-        }
-
-        public MoleculeDef moleculeDef
-        {
-            get
-            {
-                return molecule.definition;
             }
         }
 

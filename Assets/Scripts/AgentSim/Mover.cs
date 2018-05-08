@@ -99,10 +99,5 @@ namespace AICS.AgentSim
             reactor.UnregisterMover( this );
             Destroy( gameObject );
 		}
-
-		public override string ToString ()
-		{
-            return "Mover " + name;
-		}
 	}
 }

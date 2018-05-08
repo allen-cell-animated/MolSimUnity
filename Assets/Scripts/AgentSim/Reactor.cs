@@ -12,10 +12,10 @@ namespace AICS.AgentSim
         public List<CollisionFreeReaction> collisionFreeReactions = new List<CollisionFreeReaction>();
 
         //for debugging in editor (since CollisionFreeReaction is abstract and isn't serialized)
-        public List<ReleaseReaction> releaseReactions = new List<ReleaseReaction>();
-        public List<StateChangeReaction> stateChangeReactions = new List<StateChangeReaction>();
-        public List<CreateReaction> createReactions = new List<CreateReaction>();
-        public List<DestroyReaction> destroyReactions = new List<DestroyReaction>();
+        [SerializeField] List<ReleaseReaction> releaseReactions = new List<ReleaseReaction>();
+        [SerializeField] List<StateChangeReaction> stateChangeReactions = new List<StateChangeReaction>();
+        [SerializeField] List<CreateReaction> createReactions = new List<CreateReaction>();
+        [SerializeField] List<DestroyReaction> destroyReactions = new List<DestroyReaction>();
 
         [Tooltip( "How many attempts to move particles each frame? collisions and boundaries can cause move to fail" )]
         public int maxMoveAttempts = 20;
@@ -344,17 +344,17 @@ namespace AICS.AgentSim
 
             Cleanup();
 
-            //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+            UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             MoveParticles();
-            //UnityEngine.Profiling.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
 
-            //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+            UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
             DoCollisionFreeReactions();
-            //UnityEngine.Profiling.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
 
-            //UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
+            UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
             DoBindReactions();
-            //UnityEngine.Profiling.Profiler.EndSample();
+            UnityEngine.Profiling.Profiler.EndSample();
 
             DestroyOldComplexes();
 

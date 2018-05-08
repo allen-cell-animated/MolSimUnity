@@ -22,6 +22,7 @@ namespace AICS.AgentSim
         [Tooltip( "There must be one or two reaction centers" )] 
         public ReactionCenter[] reactionCenters;
 
+        #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
             foreach (ReactionCenter reactionCenter in reactionCenters)
@@ -29,6 +30,7 @@ namespace AICS.AgentSim
                 reactionCenter.Init();
             }
         }
+        #endregion
 
 		public override string ToString()
 		{
@@ -48,6 +50,7 @@ namespace AICS.AgentSim
         public MoleculePattern productMolecule;
         public ComponentPattern productComponent;
 
+        #region for prototyping in inspector without writing custom property drawer etc
         public void Init ()
         {
             reactantComplex.Init();
@@ -55,5 +58,6 @@ namespace AICS.AgentSim
             productComplex.Init();
             productMolecule.Init();
         }
+        #endregion
     }
 }
