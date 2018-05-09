@@ -39,6 +39,7 @@ namespace AICS.AgentSim
         {
             childComponent.parent.position = parentComponent.TransformPoint( childComponent.InverseTransformPoint( childComponent.parent.position ) );
             childComponent.parent.rotation = childComponent.parent.rotation * Quaternion.Inverse( childComponent.rotation ) * parentComponent.rotation;
+            //Debug.Log( parentComponent.parent.InverseTransformPoint( childComponent.parent.position ) );
         }
 
         protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)

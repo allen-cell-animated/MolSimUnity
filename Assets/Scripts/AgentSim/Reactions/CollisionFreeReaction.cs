@@ -40,10 +40,14 @@ namespace AICS.AgentSim
 
         public virtual bool TryReact ()
         {
+            
             if (components.Count > 0 && ShouldHappen())
             {
+                //UnityEngine.Profiling.Profiler.BeginSample("ReactCollisionFree");
                 components.Shuffle();
-                return React( new MoleculeComponent[]{components[0]}, new ReactionCenter[]{definition.reactionCenters[0]} );
+                bool b = React( new MoleculeComponent[]{components[0]}, new ReactionCenter[]{definition.reactionCenters[0]} );
+                //UnityEngine.Profiling.Profiler.EndSample();
+                return b;
             }
             return false;
         }

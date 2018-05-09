@@ -62,7 +62,7 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("Set State");
+            //UnityEngine.Profiling.Profiler.BeginSample("Set State");
             List<Molecule> matchedMolecules = new List<Molecule>();
             foreach (string moleculeName in moleculePatterns.Keys)
             {
@@ -90,12 +90,12 @@ namespace AICS.AgentSim
                     }
                 }
             }
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public bool Matches (ComplexPattern other)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
+            //UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
             Dictionary<MoleculePattern,int> thisComponentsInState = new Dictionary<MoleculePattern,int>();
             Dictionary<MoleculePattern,int> otherComponentsInState = new Dictionary<MoleculePattern,int>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -156,13 +156,13 @@ namespace AICS.AgentSim
                 thisComponentsInState.Clear();
                 otherComponentsInState.Clear();
             }
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
             return true;
         }
 
         public bool Matches (Dictionary<string,List<Molecule>> molecules)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
+            //UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
             Dictionary<MoleculePattern,int> thisComponentsInState = new Dictionary<MoleculePattern,int>();
             Dictionary<MoleculePattern,int> otherComponentsInState = new Dictionary<MoleculePattern,int>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -224,7 +224,7 @@ namespace AICS.AgentSim
                 thisComponentsInState.Clear();
                 otherComponentsInState.Clear();
             }
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
             return true;
         }
 

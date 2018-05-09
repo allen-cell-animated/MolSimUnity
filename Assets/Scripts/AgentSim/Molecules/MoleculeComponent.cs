@@ -100,7 +100,10 @@ namespace AICS.AgentSim
                     {
                         if (reactionCenter != otherReactionCenter && reactionCenter.reaction == otherReactionCenter.reaction && reactionCenter.reaction.ShouldHappen())
                         {
-                            if (reactionCenter.reaction.React( new MoleculeComponent[]{ this, other }, new ReactionCenter[]{ reactionCenter, otherReactionCenter } ))
+                            //UnityEngine.Profiling.Profiler.BeginSample("ReactBind");
+                            bool b = reactionCenter.reaction.React( new MoleculeComponent[]{ this, other }, new ReactionCenter[]{ reactionCenter, otherReactionCenter } );
+                            //UnityEngine.Profiling.Profiler.EndSample();
+                            if (b)
                             {
                                 return true;
                             }

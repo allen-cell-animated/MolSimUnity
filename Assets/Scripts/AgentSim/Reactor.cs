@@ -344,17 +344,17 @@ namespace AICS.AgentSim
 
             Cleanup();
 
-            UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+            //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
             MoveParticles();
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
 
-            UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+            //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
             DoCollisionFreeReactions();
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
 
-            UnityEngine.Profiling.Profiler.BeginSample("BimolecularReactions");
+            //UnityEngine.Profiling.Profiler.BeginSample("BindReactions");
             DoBindReactions();
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
 
             DestroyOldComplexes();
 

@@ -63,10 +63,10 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfComponent (MoleculeComponent component)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("Set State");
+            //UnityEngine.Profiling.Profiler.BeginSample("Set State");
             component.state = state;
             component.lastBondName = bound ? bondName : string.Empty;
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public bool MatchesID (IComponent other)

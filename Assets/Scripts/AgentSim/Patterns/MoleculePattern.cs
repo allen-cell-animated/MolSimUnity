@@ -82,7 +82,7 @@ namespace AICS.AgentSim
 
         public virtual void SetStateOfMolecule (Molecule molecule)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("Set State");
+            //UnityEngine.Profiling.Profiler.BeginSample("Set State");
             List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
             foreach (string componentName in componentPatterns.Keys)
             {
@@ -110,7 +110,7 @@ namespace AICS.AgentSim
                     }
                 }
             }
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         public bool MatchesID (Molecule molecule)
@@ -120,7 +120,7 @@ namespace AICS.AgentSim
 
         public override bool Equals (object obj)
         {
-            UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
+            //UnityEngine.Profiling.Profiler.BeginSample("Comparisons");
             MoleculePattern other = obj as MoleculePattern;
             if (other != null)
             {
@@ -131,7 +131,7 @@ namespace AICS.AgentSim
             {
                 return Matches( molecule );
             }
-            UnityEngine.Profiling.Profiler.EndSample();
+            //UnityEngine.Profiling.Profiler.EndSample();
             return false;
         }
 

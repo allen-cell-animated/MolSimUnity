@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Q + Q = QQ
   m_EditorClassIdentifier: 
   description: Q(x,y) + Q(x,y) -> Q(x,y!1).Q(x!1,y)
-  rate: 10000000
+  rate: 1000000
   type: 0
   reactionCenters:
   - description: Q(x,y) + Q(x,y) -> Q(x,y!1).Q(x!1,y)
