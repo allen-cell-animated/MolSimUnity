@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.TestTools;
 using AICS.AgentSim;
 
@@ -24,15 +22,7 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p")
-            {
-                bindingSiteP = site.Value;
-                break;
-            }
-        }
+        ComponentDef componentP = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["X"][0].moleculeDef.componentDefs["p"][0];
         Reaction reaction = reactor.collisionFreeReactions[0];
 
         for (int i = 0; i < numberOfTimesToCheck; i++)
@@ -41,7 +31,7 @@ public class ReactionTests : MolSimTests
             yield return new WaitForEndOfFrame();
 
             AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "0" ) == reaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP, "0" ) == reaction.events );
         }
 
         DestroyReactor( reactor );
@@ -56,23 +46,15 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[0].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p")
-            {
-                bindingSiteP = site.Value;
-                break;
-            }
-        }
+        ComponentDef componentP = reactor.modelDef.complexes[0].complexPattern.moleculePatterns["X"][0].moleculeDef.componentDefs["p"][0];
         Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
-            if (reaction.reactionDef == phosphorylationReactionDef)
+            if (reaction.definition == phosphorylationReactionDef)
             {
                 phosphorylationReaction = reaction;
             }
-            else if (reaction.reactionDef == dephosphorylationReactionDef)
+            else if (reaction.definition == dephosphorylationReactionDef)
             {
                 dephosphorylationReaction = reaction;
             }
@@ -84,7 +66,7 @@ public class ReactionTests : MolSimTests
             yield return new WaitForEndOfFrame();
 
             AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "1" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP, "1" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
         }
 
         DestroyReactor( reactor );
@@ -99,23 +81,15 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p")
-            {
-                bindingSiteP = site.Value;
-                break;
-            }
-        }
+        ComponentDef componentP = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["S"][0].moleculeDef.componentDefs["p"][0];
         Reaction phosphorylationReaction = null, dephosphorylationReaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
-            if (reaction.reactionDef == phosphorylationReactionDef)
+            if (reaction.definition == phosphorylationReactionDef)
             {
                 phosphorylationReaction = reaction;
             }
-            else if (reaction.reactionDef == dephosphorylationReactionDef)
+            else if (reaction.definition == dephosphorylationReactionDef)
             {
                 dephosphorylationReaction = reaction;
             }
@@ -127,7 +101,7 @@ public class ReactionTests : MolSimTests
             yield return new WaitForEndOfFrame();
 
             AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP, "P" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP, "P" ) == phosphorylationReaction.events - dephosphorylationReaction.events );
         }
 
         DestroyReactor( reactor );
@@ -148,59 +122,44 @@ public class ReactionTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        BindingSiteDef bindingSiteP1 = null, bindingSiteP2 = null, bindingSiteP3 = null, bindingSiteP4 = null;
-        foreach (KeyValuePair<BindingSiteRef,BindingSiteDef> site in reactor.modelDef.complexes[2].complexSnapshot.moleculeSnapshots[0].moleculeDef.bindingSiteDefs)
-        {
-            if (site.Key.id == "p1")
-            {
-                bindingSiteP1 = site.Value;
-            }
-            else if (site.Key.id == "p2")
-            {
-                bindingSiteP2 = site.Value;
-            }
-            else if (site.Key.id == "p3")
-            {
-                bindingSiteP3 = site.Value;
-            }
-            else if (site.Key.id == "p4")
-            {
-                bindingSiteP4 = site.Value;
-            }
-        }
+        ComponentDef componentP1 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p1"][0];
+        ComponentDef componentP2 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p2"][0];
+        ComponentDef componentP3 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p3"][0];
+        ComponentDef componentP4 = reactor.modelDef.complexes[2].complexPattern.moleculePatterns["Z"][0].moleculeDef.componentDefs["p4"][0];
+
         Reaction e1Reaction = null, f1Reaction = null, e2Reaction = null, f2Reaction = null,
                  e3Reaction = null, f3Reaction = null, e4Reaction = null, f4Reaction = null;
         foreach (CollisionFreeReaction reaction in reactor.collisionFreeReactions)
         {
-            if (reaction.reactionDef == e1)
+            if (reaction.definition == e1)
             {
                 e1Reaction = reaction;
             }
-            else if (reaction.reactionDef == f1)
+            else if (reaction.definition == f1)
             {
                 f1Reaction = reaction;
             }
-            else if (reaction.reactionDef == e2)
+            else if (reaction.definition == e2)
             {
                 e2Reaction = reaction;
             }
-            else if (reaction.reactionDef == f2)
+            else if (reaction.definition == f2)
             {
                 f2Reaction = reaction;
             }
-            else if (reaction.reactionDef == e3)
+            else if (reaction.definition == e3)
             {
                 e3Reaction = reaction;
             }
-            else if (reaction.reactionDef == f3)
+            else if (reaction.definition == f3)
             {
                 f3Reaction = reaction;
             }
-            else if (reaction.reactionDef == e4)
+            else if (reaction.definition == e4)
             {
                 e4Reaction = reaction;
             }
-            else if (reaction.reactionDef == f4)
+            else if (reaction.definition == f4)
             {
                 f4Reaction = reaction;
             }
@@ -212,22 +171,22 @@ public class ReactionTests : MolSimTests
             yield return new WaitForEndOfFrame();
 
             AssertIsTrue( StateOfReactorIsCorrect( reactor ) );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP1, "P" ) == e1Reaction.events - f1Reaction.events );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP2, "P" ) == e2Reaction.events - f2Reaction.events );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP3, "P" ) == e3Reaction.events - f3Reaction.events );
-            AssertIsTrue( GetNumberOfBindingSiteSimulatorsInState( bindingSiteP4, "P" ) == e4Reaction.events - f4Reaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP1, "P" ) == e1Reaction.events - f1Reaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP2, "P" ) == e2Reaction.events - f2Reaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP3, "P" ) == e3Reaction.events - f3Reaction.events );
+            AssertIsTrue( GetNumberOfComponentsInState( componentP4, "P" ) == e4Reaction.events - f4Reaction.events );
         }
 
         DestroyReactor( reactor );
     }
 
-    int GetNumberOfBindingSiteSimulatorsInState (BindingSiteDef bindingSiteDef, string state)
+    int GetNumberOfComponentsInState (ComponentDef componentDef, string state)
     {
         int n = 0;
-        BindingSite[] bindingSites = GameObject.FindObjectsOfType<BindingSite>();
-        foreach (BindingSite bindingSite in bindingSites)
+        MoleculeComponent[] components = GameObject.FindObjectsOfType<MoleculeComponent>();
+        foreach (MoleculeComponent component in components)
         {
-            if (bindingSite.definition == bindingSiteDef && bindingSite.state == state)
+            if (component.definition == componentDef && component.state == state)
             {
                 n++;
             }

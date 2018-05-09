@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
+  m_Name: HomoPolymerizationQ
+  m_EditorClassIdentifier: 
+  scale: 0.000001
+  containerVolume: 0.000000125
+  complexes:
+  - concentration: 3e-15
+    complexPattern:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: y
+          _state: 
+          _bound: 0
+          bondName: 
+  reactionDefs:
+  - {fileID: 11400000, guid: 7b10ee14916c54eb5a7dc20489ea3d21, type: 2}
+  - {fileID: 11400000, guid: cd085f1ec299b4d7b96d36bff78dd430, type: 2}

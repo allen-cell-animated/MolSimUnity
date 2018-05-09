@@ -11,17 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: B test
   m_EditorClassIdentifier: 
-  _species: B
+  _moleculeName: B
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 300000
-  siteDefs:
-  - bindingSiteRef:
-      _id: a
-      _index: 0
-    states:
-    - 0
-    - '!+'
+  _componentDefs:
+  - componentName: a
+    states: []
     transformOnMolecule:
       position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}

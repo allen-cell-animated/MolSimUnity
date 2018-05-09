@@ -4,13 +4,13 @@ begin parameters
    Ftot 300
    Ztot 3000
 
-   kOnE   0.7
-   kOffE  3
-   kCatE  5.0
+   kOnE   0.7  0.14e8
+   kOffE  3    0.6e8
+   kCatE  5.0  1e8
 
    kOnF   0.7
    kOffF  3
-   kCatF  5.1
+   kCatF  5.1  1.2e8
 
 end parameters
 

@@ -15,44 +15,44 @@ MonoBehaviour:
   containerVolume: 0.000000125
   complexes:
   - concentration: 6.5e-16
-    complexSnapshot:
-      _moleculeSnapshots:
+    complexPattern:
+      _molecules:
       - _moleculeDef: {fileID: 11400000, guid: 76df77b7b23194409a3a8dc3341eb897, type: 2}
-        siteStates:
-        - siteRef:
-            _id: a
-            _index: 0
-          state: '!1'
-        - siteRef:
-            _id: b
-            _index: 0
-          state: '!2'
-        - siteRef:
-            _id: c
-            _index: 0
-          state: 0
+        _components:
+        - _componentName: a
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: b
+          _state: 
+          _bound: 1
+          bondName: 2
+        - _componentName: c
+          _state: 
+          _bound: 0
+          bondName: 
       - _moleculeDef: {fileID: 11400000, guid: 16a60391589d54247bc15f9d5739c448, type: 2}
-        siteStates:
-        - siteRef:
-            _id: b
-            _index: 0
-          state: '!2'
-        - siteRef:
-            _id: d
-            _index: 0
-          state: 0
+        _components:
+        - _componentName: b
+          _state: 
+          _bound: 1
+          bondName: 2
+        - _componentName: d
+          _state: 
+          _bound: 0
+          bondName: 
       - _moleculeDef: {fileID: 11400000, guid: c8c77442a620d4e41937484977d86c46, type: 2}
-        siteStates:
-        - siteRef:
-            _id: a
-            _index: 0
-          state: '!1'
-        - siteRef:
-            _id: e
-            _index: 0
-          state: 0
-        - siteRef:
-            _id: fa
-            _index: 0
-          state: 0
+        _components:
+        - _componentName: a
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: e
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: f
+          _state: 
+          _bound: 0
+          bondName: 
   reactionDefs: []

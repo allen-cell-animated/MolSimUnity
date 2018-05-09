@@ -6,12 +6,12 @@ namespace AICS.AgentSim
 {
     public class MoleculeDef : ScriptableObject
     {
-        [SerializeField] string _species = "";
-        public string species
+        [SerializeField] string _moleculeName = "";
+        public string moleculeName
         {
             get
             {
-                return _species;
+                return _moleculeName;
             }
         }
 
@@ -21,18 +21,29 @@ namespace AICS.AgentSim
         public float scale;
         [Tooltip( "([scale] meters)^2 / s" )]
         public float diffusionCoefficient = 3e5f;
-        public Dictionary<BindingSiteRef,BindingSiteDef> bindingSiteDefs;
+        public Dictionary<string,List<ComponentDef>> componentDefs;
 
         #region for prototyping in inspector without writing custom property drawer etc
-        [SerializeField] BindingSiteDef[] siteDefs = new BindingSiteDef[0];
-        public MoleculeSnapshotColor[] colors;
+        [SerializeField] ComponentDef[] _componentDefs = new ComponentDef[0];
+        public MoleculePatternColor[] colors;
 
         public void Init ()
         {
-            bindingSiteDefs = new Dictionary<BindingSiteRef,BindingSiteDef>();
-            foreach (BindingSiteDef siteDef in siteDefs)
+            componentDefs = new Dictionary<string, List<ComponentDef>>();
+            foreach (ComponentDef componentDef in _componentDefs)
             {
-                bindingSiteDefs.Add( siteDef.bindingSiteRef, siteDef );
+                if (!componentDefs.ContainsKey( componentDef.componentName ))
+                {
+                    componentDefs.Add( componentDef.componentName, new List<ComponentDef>() );
+                }
+                componentDefs[componentDef.componentName].Add( componentDef );
+            }
+            if (colors != null)
+            {
+                foreach (MoleculePatternColor color in colors)
+                {
+                    color.pattern.InitComponentPatterns();
+                }
             }
         }
         #endregion
@@ -53,9 +64,9 @@ namespace AICS.AgentSim
         public override bool Equals (object obj)
         {
             MoleculeDef other = obj as MoleculeDef;
-            if (other != null)
+            if (other != null && other.moleculeName != null)
             {
-                return other.species == species;
+                return other.moleculeName == moleculeName;
             }
             return false;
         }
@@ -64,15 +75,20 @@ namespace AICS.AgentSim
         {
             unchecked
             {
-                return 16777619 * (species == null ? 0 : species.GetHashCode());
+                return 16777619 * (moleculeName == null ? 0 : moleculeName.GetHashCode());
             }
         }
-    }
+
+		public override string ToString()
+		{
+            return "molecule " + moleculeName;
+		}
+	}
 
     [System.Serializable]
-    public class BindingSiteDef
+    public class ComponentDef
     {
-        public BindingSiteRef bindingSiteRef;
+        public string componentName;
         public string[] states;
         public RelativeTransform transformOnMolecule;
         public float radius;
@@ -95,68 +111,17 @@ namespace AICS.AgentSim
             child.position = parent.TransformPoint( position );
             child.rotation = parent.rotation * Quaternion.Euler( rotation );
         }
-    }
-
-    [System.Serializable]
-    public class MoleculeSnapshotColor
-    {
-        public MoleculeSnapshot snapshot;
-        public Color color;
-    }
-
-    [System.Serializable]
-    public class BindingSiteRef
-    {
-        [SerializeField] string _id = "";
-        public string id
-        {
-            get
-            {
-                return _id;
-            }
-        }
-
-        [SerializeField] int _index;
-        public int index
-        {
-            get
-            {
-                return _index;
-            }
-        }
-
-        public BindingSiteRef (string siteID, int siteIndex)
-        {
-            _id = siteID;
-            _index = siteIndex;
-        }
-
-        public bool matchesID (BindingSiteRef other)
-        {
-            return other.id == id;
-        }
-
-        public override bool Equals (object obj)
-        {
-            BindingSiteRef other = obj as BindingSiteRef;
-            if (other != null)
-            {
-                return other.id == id && other.index == index;
-            }
-            return false;
-        }
-
-        public override int GetHashCode ()
-        {
-            unchecked
-            {
-                return 16777619 * (id == null ? 0 : id.GetHashCode()) + index;
-            }
-        }
 
 		public override string ToString()
 		{
-            return id + ":" + index;
+            return "[(" + position + "),(" + rotation + ")]";
 		}
 	}
+
+    [System.Serializable]
+    public class MoleculePatternColor
+    {
+        public MoleculePattern pattern;
+        public Color color;
+    }
 }

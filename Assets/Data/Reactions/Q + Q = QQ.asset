@@ -8,44 +8,144 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be946a43eeb0a483ebac7a3352e538de, type: 3}
+  m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: Q + Q = QQ
   m_EditorClassIdentifier: 
   description: Q(x,y) + Q(x,y) -> Q(x,y!1).Q(x!1,y)
-  rate: 100000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-      - id: y
-        state: 0
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-      - id: y
-        state: 0
-  productSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: 0
-      - id: y
-        state: '!1'
-    - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-      siteStates:
-      - id: x
-        state: '!1'
-      - id: y
-        state: 0
-  relevantSiteReferences: []
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-    bindingSiteID: x
-  - moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
-    bindingSiteID: y
-  productmoleculeColors: []
+  rate: 1000000
+  type: 0
+  reactionCenters:
+  - description: Q(x,y) + Q(x,y) -> Q(x,y!1).Q(x!1,y)
+    reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: y
+          _state: 
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+      _components:
+      - _componentName: x
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: y
+        _state: 
+        _bound: 0
+        bondName: 
+    reactantComponent:
+      _componentName: y
+      _state: 
+      _bound: 0
+      bondName: 
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: y
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: y
+          _state: 
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+      _components:
+      - _componentName: x
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: y
+        _state: 
+        _bound: 1
+        bondName: 1
+    productComponent:
+      _componentName: y
+      _state: 
+      _bound: 1
+      bondName: 1
+  - description: Q(x,y) + Q(x,y) -> Q(x,y!1).Q(x!1,y)
+    reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: y
+          _state: 
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+      _components:
+      - _componentName: x
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: y
+        _state: 
+        _bound: 0
+        bondName: 
+    reactantComponent:
+      _componentName: x
+      _state: 
+      _bound: 0
+      bondName: 
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: y
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+        _components:
+        - _componentName: x
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: y
+          _state: 
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: d0a82b17d5cfc4bca8d48fa4ffafc767, type: 2}
+      _components:
+      - _componentName: x
+        _state: 
+        _bound: 1
+        bondName: 1
+      - _componentName: y
+        _state: 
+        _bound: 0
+        bondName: 
+    productComponent:
+      _componentName: x
+      _state: 
+      _bound: 1
+      bondName: 1

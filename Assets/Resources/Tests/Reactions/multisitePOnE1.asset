@@ -8,54 +8,104 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be946a43eeb0a483ebac7a3352e538de, type: 3}
+  m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: multisitePOnE1
   m_EditorClassIdentifier: 
-  description: E(z) + Z(active,p1~U) -> E(z!1).Z(active!1,p1~U)
-  rate: 140000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
-      siteStates:
-      - siteRef:
-          _id: z
-          _index: 0
-        state: 0
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
-      siteStates:
-      - siteRef:
-          _id: active
-          _index: 0
-        state: 0
-      - siteRef:
-          _id: p1
-          _index: 0
-        state: U
-  productSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
-      siteStates:
-      - siteRef:
-          _id: z
-          _index: 0
-        state: '!1'
-    - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
-      siteStates:
-      - siteRef:
-          _id: active
-          _index: 0
-        state: '!1'
-      - siteRef:
-          _id: p1
-          _index: 0
-        state: U
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
-    bindingSiteRef:
-      _id: z
-      _index: 0
-  - moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
-    bindingSiteRef:
-      _id: active
-      _index: 0
+  description: E(z) + Z(p1~U) -> E(z!1).Z(p1~U!1)
+  rate: 14000000
+  type: 0
+  reactionCenters:
+  - description: 
+    reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
+        _components:
+        - _componentName: z
+          _state: 
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
+      _components:
+      - _componentName: z
+        _state: 
+        _bound: 0
+        bondName: 
+    reactantComponent:
+      _componentName: z
+      _state: 
+      _bound: 0
+      bondName: 
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
+        _components:
+        - _componentName: z
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
+        _components:
+        - _componentName: p1
+          _state: U
+          _bound: 1
+          bondName: 1
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
+      _components:
+      - _componentName: z
+        _state: 
+        _bound: 1
+        bondName: 1
+    productComponent:
+      _componentName: z
+      _state: 
+      _bound: 1
+      bondName: 1
+  - description: 
+    reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
+        _components:
+        - _componentName: p1
+          _state: U
+          _bound: 0
+          bondName: 
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
+      _components:
+      - _componentName: p1
+        _state: U
+        _bound: 0
+        bondName: 
+    reactantComponent:
+      _componentName: p1
+      _state: U
+      _bound: 0
+      bondName: 
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: ddbfc0455ba444b3e9ca723569bc3318, type: 2}
+        _components:
+        - _componentName: z
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
+        _components:
+        - _componentName: p1
+          _state: U
+          _bound: 1
+          bondName: 1
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: d9f35484b9be949d0bc2ae9142a39e1e, type: 2}
+      _components:
+      - _componentName: p1
+        _state: U
+        _bound: 1
+        bondName: 1
+    productComponent:
+      _componentName: p1
+      _state: U
+      _bound: 1
+      bondName: 1

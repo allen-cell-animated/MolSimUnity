@@ -11,24 +11,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3978151c17fcf473e87b0abe41c17915, type: 3}
   m_Name: X test
   m_EditorClassIdentifier: 
-  _species: X
+  _moleculeName: X
   radius: 0.5
   scale: 0.000000001
   diffusionCoefficient: 500000
-  siteDefs:
-  - bindingSiteRef:
-      _id: y
-      _index: 0
-    states:
-    - 0
-    - '!+'
+  _componentDefs:
+  - componentName: y
+    states: []
     transformOnMolecule:
       position: {x: -0.375, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     radius: 1
-  - bindingSiteRef:
-      _id: p
-      _index: 0
+  - componentName: p
     states:
     - 0
     - 1
@@ -37,21 +31,21 @@ MonoBehaviour:
       rotation: {x: 0, y: 0, z: 0}
     radius: 0
   colors:
-  - snapshot:
+  - pattern:
       _moleculeDef: {fileID: 11400000}
-      siteStates:
-      - siteRef:
-          _id: p
-          _index: 0
-        state: 0
+      _components:
+      - _componentName: p
+        _state: 0
+        _bound: 0
+        bondName: 
     color: {r: 0.102941155, g: 0.102941155, b: 0.102941155, a: 1}
-  - snapshot:
+  - pattern:
       _moleculeDef: {fileID: 11400000}
-      siteStates:
-      - siteRef:
-          _id: p
-          _index: 0
-        state: 1
+      _components:
+      - _componentName: p
+        _state: 1
+        _bound: 0
+        bondName: 
     color: {r: 1, g: 0.68275857, b: 0, a: 1}
   _visualizationPrefab: {fileID: 1743744978614082, guid: 098c4d6fcf1184cadacb41dd40a9fddc,
     type: 2}

@@ -8,42 +8,102 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05c8117c506ae4e5b9774ee8b663c799, type: 3}
+  m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: ABrelease
   m_EditorClassIdentifier: 
   description: A(b!1).B(a!1) -> A(b) + B(a)
-  rate: 100000000
-  reactantSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
-      siteStates:
-      - siteRef:
-          _id: b
-          _index: 0
-        state: '!1'
-    - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
-      siteStates:
-      - siteRef:
-          _id: a
-          _index: 0
-        state: '!1'
-  productSnapshots:
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
-      siteStates:
-      - siteRef:
-          _id: b
-          _index: 0
-        state: 0
-  - _moleculeSnapshots:
-    - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
-      siteStates:
-      - siteRef:
-          _id: a
-          _index: 0
-        state: 0
-  relevantSites:
-  - moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
-    bindingSiteRef:
-      _id: b
-      _index: 0
+  rate: 10000000
+  type: 1
+  reactionCenters:
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+        _components:
+        - _componentName: b
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+        _components:
+        - _componentName: a
+          _state: 
+          _bound: 1
+          bondName: 1
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+      _components:
+      - _componentName: b
+        _state: 
+        _bound: 1
+        bondName: 1
+    reactantComponent:
+      _componentName: b
+      _state: 
+      _bound: 1
+      bondName: 1
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+        _components:
+        - _componentName: b
+          _state: 
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+      _components:
+      - _componentName: b
+        _state: 
+        _bound: 0
+        bondName: 
+    productComponent:
+      _componentName: b
+      _state: 
+      _bound: 0
+      bondName: 
+  - reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 72b4cd3a7328748a69d9bd7f7e76cb30, type: 2}
+        _components:
+        - _componentName: b
+          _state: 
+          _bound: 1
+          bondName: 1
+      - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+        _components:
+        - _componentName: a
+          _state: 
+          _bound: 1
+          bondName: 1
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+      _components:
+      - _componentName: a
+        _state: 
+        _bound: 1
+        bondName: 1
+    reactantComponent:
+      _componentName: a
+      _state: 
+      _bound: 1
+      bondName: 1
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+        _components:
+        - _componentName: a
+          _state: 
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: 0e5b1c77ba9014a0589b8945cd03d267, type: 2}
+      _components:
+      - _componentName: a
+        _state: 
+        _bound: 0
+        bondName: 
+    productComponent:
+      _componentName: a
+      _state: 
+      _bound: 0
+      bondName: 
