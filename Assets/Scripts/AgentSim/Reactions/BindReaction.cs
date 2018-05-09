@@ -14,6 +14,8 @@ namespace AICS.AgentSim
             if (components.Length > 1 && components[0] != null && components[1] != null &&
                 matchingReactionCenters.Length > 1 && matchingReactionCenters[0] != null && matchingReactionCenters[1] != null)
             {
+                RelativelyPosition( components[0], components[1] );
+
                 Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].complex.molecules, components[1].complex.molecules );
                 Complex newComplex = reactor.MoveMoleculesToNewComplex( molecules, components[0].theTransform );
 
@@ -24,8 +26,6 @@ namespace AICS.AgentSim
                 }
                 newComplex.UpdateReactions();
 
-                RelativelyPosition( components[0].theTransform, components[1].theTransform );
-
                 SetProductColor( molecules );
                 AnimateReaction( molecules );
                 World.ShowFlash( components[0].theTransform );
@@ -35,11 +35,24 @@ namespace AICS.AgentSim
             return false;
         }
 
-        protected void RelativelyPosition (Transform parentComponent, Transform childComponent)
+        protected void RelativelyPosition (MoleculeComponent parentComponent, MoleculeComponent childComponent)
         {
-            childComponent.parent.position = parentComponent.TransformPoint( childComponent.InverseTransformPoint( childComponent.parent.position ) );
-            childComponent.parent.rotation = childComponent.parent.rotation * Quaternion.Inverse( childComponent.rotation ) * parentComponent.rotation;
-            //Debug.Log( parentComponent.parent.InverseTransformPoint( childComponent.parent.position ) );
+            // move the complex with the fewest molecules
+            int childMoleculeCount = childComponent.complex.GetNumberOfMolecules();
+            int parentMoleculeCount = parentComponent.complex.GetNumberOfMolecules();
+            if (parentMoleculeCount < childMoleculeCount)
+            {
+                MoleculeComponent tempComponent = childComponent;
+                childComponent = parentComponent;
+                parentComponent = tempComponent;
+
+                int tempCount = childMoleculeCount;
+                childMoleculeCount = parentMoleculeCount;
+                parentMoleculeCount = tempCount;
+            }
+
+            childComponent.theTransform.parent.position = parentComponent.theTransform.TransformPoint( childComponent.theTransform.InverseTransformPoint( childComponent.theTransform.parent.position ) );
+            childComponent.theTransform.parent.rotation = childComponent.theTransform.parent.rotation * Quaternion.Inverse( childComponent.theTransform.rotation ) * parentComponent.theTransform.rotation;
         }
 
         protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)

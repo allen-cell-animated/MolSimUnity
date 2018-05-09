@@ -21,7 +21,7 @@ namespace AICS.AgentSim
             }
         }
 
-        float diffusionCoefficient;
+        [SerializeField] float diffusionCoefficient;
         float collisionRadius;
 
         public virtual void Init (Reactor _reactor, float _diffusionCoefficient, float _collisionRadius)
