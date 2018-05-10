@@ -128,6 +128,7 @@ namespace AICS.AgentSim
             }
 
             events = react ? events + 1 : events;
+            observedRate = events / World.Instance.time;
 
             return react;
         }
