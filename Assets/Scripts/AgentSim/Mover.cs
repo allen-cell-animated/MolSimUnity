@@ -22,7 +22,7 @@ namespace AICS.AgentSim
         }
 
         [SerializeField] float diffusionCoefficient;
-        float collisionRadius;
+        [SerializeField] float collisionRadius;
 
         public virtual void Init (Reactor _reactor, float _diffusionCoefficient, float _collisionRadius)
         {
@@ -48,7 +48,7 @@ namespace AICS.AgentSim
 
         protected virtual bool MoveRandomStep (float dTime)
         {
-            Vector3 moveStep = 2E3f * GetDisplacement( dTime ) * Random.onUnitSphere;
+            Vector3 moveStep = GetDisplacement( dTime ) * Random.onUnitSphere;
 
             if (!reactor.container.IsInBounds( theTransform.position + moveStep ))
             {
@@ -80,7 +80,7 @@ namespace AICS.AgentSim
 
         protected virtual void RotateRandomly (float dTime)
         {
-            theTransform.rotation *= Quaternion.Euler( 4E4f * GetDisplacement( dTime ) * Random.onUnitSphere );
+            theTransform.rotation *= Quaternion.Euler( 20f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
         protected float GetDisplacement (float dTime)

@@ -421,13 +421,22 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual Complex MoveMoleculesToNewComplex (Dictionary<string,List<Molecule>> molecules, Transform centerTransform)
+        public virtual Complex MoveMoleculesToNewComplex (Dictionary<string,List<Molecule>> molecules)
         {
             //create complex
             Complex complex = new GameObject( nextID ).AddComponent<Complex>();
             complex.gameObject.transform.SetParent( transform );
-            complex.gameObject.transform.position = centerTransform.position;
-            complex.gameObject.transform.rotation = centerTransform.rotation;
+            Vector3 center = Vector3.zero;
+            int n = 0;
+            foreach (string moleculeName in molecules.Keys)
+            {
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    center += molecule.theTransform.position;
+                    n++;
+                }
+            }
+            complex.gameObject.transform.position = center / n;
             complex.reactor = this;
 
             //move molecules

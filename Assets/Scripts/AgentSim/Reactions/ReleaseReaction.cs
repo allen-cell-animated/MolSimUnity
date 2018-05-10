@@ -20,7 +20,7 @@ namespace AICS.AgentSim
                 for (int i = 0; i < components.Length; i++)
                 {
                     molecules = components[i].complex.GetMoleculesAtEndOfBond( components[i] );
-                    newComplex = reactor.MoveMoleculesToNewComplex( molecules, components[i].molecule.theTransform );
+                    newComplex = reactor.MoveMoleculesToNewComplex( molecules );
 
                     components[i].SetToProductState( definition.reactionCenters[i] );
                     components[i].boundComponent = null;

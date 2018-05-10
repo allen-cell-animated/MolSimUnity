@@ -162,7 +162,7 @@ MonoBehaviour:
   tiltLimits: {x: -45, y: 75}
   zoomSpeedScroll: 1
   zoomSpeedArrows: 0.1
-  zoomLimits: {x: -5, y: -50}
+  zoomLimits: {x: -5, y: -80}
 --- !u!114 &114636416869853636
 MonoBehaviour:
   m_ObjectHideFlags: 1

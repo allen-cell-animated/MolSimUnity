@@ -17,7 +17,7 @@ namespace AICS.AgentSim
                 RelativelyPosition( components[0], components[1] );
 
                 Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].complex.molecules, components[1].complex.molecules );
-                Complex newComplex = reactor.MoveMoleculesToNewComplex( molecules, components[0].theTransform );
+                Complex newComplex = reactor.MoveMoleculesToNewComplex( molecules );
 
                 for (int i = 0; i < components.Length; i++)
                 {
