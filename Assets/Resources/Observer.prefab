@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  followSpeed: 1
+  followSpeed: 3
   lookSpeed: 5
   timeToLookAtTarget: 1
   tiltLimits: {x: -45, y: 75}
