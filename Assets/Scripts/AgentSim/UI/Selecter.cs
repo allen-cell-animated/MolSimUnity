@@ -40,19 +40,23 @@ namespace AICS.AgentSim
 
 		void OnMouseUp()
 		{
-            InputManager.Instance.SelectObject( gameObject );
+            InputManager.Instance.SelectObject( this );
 		}
 
         public void OnSelect (BaseEventData eventData)
         {
-            outline.enabled = true;
-            outline.color = 1;
+            SetSelected( true );
         }
 
         public void OnDeselect (BaseEventData eventData)
         {
-            outline.enabled = false;
-            outline.color = 0;
+            SetSelected( false );
+        }
+
+        public void SetSelected (bool selected)
+        {
+            outline.enabled = selected;
+            outline.color = selected ? 1 : 0;
         }
 	}
 }

@@ -5,8 +5,10 @@ using UnityEngine.EventSystems;
 
 namespace AICS.AgentSim
 {
-    public class InputManager : MonoBehaviour 
+    public class InputManager : MonoBehaviour
     {
+        [SerializeField] Selecter lastSelectedObject;
+
         static InputManager _Instance;
         public static InputManager Instance
         {
@@ -20,10 +22,27 @@ namespace AICS.AgentSim
             }
         }
 
-        public void SelectObject (GameObject obj)
+        public void SelectObject (Selecter selectedObj)
         {
-            EventSystem.current.SetSelectedGameObject( obj );
-            World.Instance.observer.FocusOn( obj.transform );
+            lastSelectedObject = selectedObj;
+            EventSystem.current.SetSelectedGameObject( lastSelectedObject.gameObject );
+            World.Instance.observer.FocusOn( lastSelectedObject.transform );
+        }
+
+        void Update ()
+        {
+            if (Input.GetMouseButton( 0 ))
+            {
+                KeepObjectSelected();
+            }
+        }
+
+        void KeepObjectSelected ()
+        {
+            if (lastSelectedObject != null)
+            {
+                lastSelectedObject.SetSelected( true );
+            }
         }
     }
 }
