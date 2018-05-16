@@ -158,6 +158,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &619199696
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 1050
+  m_Height: 591
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 0
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &824428959
 Prefab:
   m_ObjectHideFlags: 0
@@ -197,6 +224,26 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114353185841726568, guid: 43be4eef988ea478eb72bd7cef6fe72e,
+        type: 2}
+      propertyPath: outlineShaderMaterial
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114353185841726568, guid: 43be4eef988ea478eb72bd7cef6fe72e,
+        type: 2}
+      propertyPath: renderTexture
+      value: 
+      objectReference: {fileID: 619199696}
+    - target: {fileID: 114353185841726568, guid: 43be4eef988ea478eb72bd7cef6fe72e,
+        type: 2}
+      propertyPath: extraRenderTexture
+      value: 
+      objectReference: {fileID: 2112804643}
+    - target: {fileID: 20039027780142558, guid: 43be4eef988ea478eb72bd7cef6fe72e,
+        type: 2}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 619199696}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 43be4eef988ea478eb72bd7cef6fe72e, type: 2}
   m_IsPrefabParent: 0
@@ -344,3 +391,30 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 824428959}
   m_Script: {fileID: 11500000, guid: 9c8acd0c4697a4911a859b95ca8ba98b, type: 3}
+--- !u!84 &2112804643
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 1050
+  m_Height: 591
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
