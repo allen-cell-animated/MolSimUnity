@@ -11,13 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
   m_Name: ActinNucleation
   m_EditorClassIdentifier: 
-  description: Actin(pointed,side1,side2,barbed) + Actin(pointed,side1,side2,barbed)
-    -> Actin(pointed!1,side1,side2,barbed).Actin(pointed,side1,side2,barbed!1)
+  description: ActinNucleation
   rate: 10000000
   type: 0
   reactionCenters:
-  - description: Actin(pointed,side1,side2,barbed) + Actin(pointed,side1,side2,barbed)
-      -> Actin(pointed!1,side1,side2,barbed).Actin(pointed,side1,side2,barbed!1)
+  - description: ActinNucleation
     reactantComplex:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
@@ -124,8 +122,7 @@ MonoBehaviour:
       _state: 
       _bound: 1
       bondName: 1
-  - description: Actin(pointed,side1,side2,barbed) + Actin(pointed,side1,side2,barbed)
-      -> Actin(pointed!1,side1,side2,barbed).Actin(pointed,side1,side2,barbed!1)
+  - description: ActinNucleation
     reactantComplex:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
