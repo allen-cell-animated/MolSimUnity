@@ -7,7 +7,7 @@ using cakeslice;
 namespace AICS.AgentSim
 {
     [RequireComponent( typeof(Collider), typeof(Outline) )]
-    public class Selecter : MonoBehaviour, ISelectHandler, IDeselectHandler
+    public class Selecter : MonoBehaviour
     {
         Outline _outline;
         Outline outline
@@ -22,36 +22,33 @@ namespace AICS.AgentSim
             }
         }
 
+        bool mouseIsOver;
+
         void OnMouseEnter ()
         {
-            if (EventSystem.current.currentSelectedGameObject != gameObject)
+            if (InputManager.Instance.lastSelectedObject != this)
             {
                 outline.enabled = true;
+                mouseIsOver = true;
             }
         }
 
         void OnMouseExit ()
         {
-            if (EventSystem.current.currentSelectedGameObject != gameObject)
+            if (InputManager.Instance.lastSelectedObject != this)
             {
                 outline.enabled = false;
+                mouseIsOver = false;
             }
         }
 
 		void OnMouseUp()
 		{
-            InputManager.Instance.SelectObject( this );
+            if (mouseIsOver)
+            {
+                InputManager.Instance.SelectObject( this );
+            }
 		}
-
-        public void OnSelect (BaseEventData eventData)
-        {
-            SetSelected( true );
-        }
-
-        public void OnDeselect (BaseEventData eventData)
-        {
-            SetSelected( false );
-        }
 
         public void SetSelected (bool selected)
         {
