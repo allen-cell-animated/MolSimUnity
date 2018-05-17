@@ -94,7 +94,7 @@ namespace AICS.AgentSim
 
         public override string ToString()
         {
-            return "(" + componentName + "~" + state + (bound ? "!+" : "") + ")";
+            return "(" + componentName + "~" + state + (bound ? "!" + (string.IsNullOrEmpty( bondName ) ? "+" : bondName ) : "") + ")";
         }
     }
 }

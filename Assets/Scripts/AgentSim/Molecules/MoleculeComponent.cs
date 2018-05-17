@@ -176,7 +176,7 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "Component " + name + " (" + componentName + "~" + state + (bound ? "!+" : "") + ")";
+            return "Component " + name + " (" + componentName + "~" + state + (bound ? "!" + (string.IsNullOrEmpty( lastBondName ) ? "+" : lastBondName ) : "") + ")";
         }
     }
 }

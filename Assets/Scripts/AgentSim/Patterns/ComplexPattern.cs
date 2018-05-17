@@ -60,37 +60,79 @@ namespace AICS.AgentSim
             InitMoleculePatterns();
         }
 
+        //this is a HACKY MESS!!
         public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
         {
             //UnityEngine.Profiling.Profiler.BeginSample("Set State");
-            List<Molecule> matchedMolecules = new List<Molecule>();
+            Dictionary<string,List<MoleculePattern>> unusedMoleculePatterns = new Dictionary<string,List<MoleculePattern>>();
             foreach (string moleculeName in moleculePatterns.Keys)
             {
-                if (molecules.ContainsKey( moleculeName ))
+                if (!molecules.ContainsKey( moleculeName ))
                 {
-                    foreach (MoleculePattern moleculePattern in moleculePatterns[moleculeName])
+                    continue;
+                }
+                foreach (MoleculePattern moleculePattern in moleculePatterns[moleculeName])
+                {
+                    if (!MoleculePatternWasUsed( moleculePattern, molecules[moleculeName] ))
                     {
-                        foreach (Molecule molecule in molecules[moleculeName])
+                        if (!unusedMoleculePatterns.ContainsKey( moleculeName ))
                         {
-                            if (!molecule.stateWasUpdated)
+                            unusedMoleculePatterns.Add( moleculeName, new List<MoleculePattern>() );
+                        }
+                        unusedMoleculePatterns[moleculeName].Add( moleculePattern );
+                    }
+                }
+            }
+
+            List<Molecule> matchedMolecules = new List<Molecule>();
+            foreach (string moleculeName in unusedMoleculePatterns.Keys)
+            {
+                if (!molecules.ContainsKey( moleculeName ))
+                {
+                    continue;
+                }
+                foreach (MoleculePattern moleculePattern in unusedMoleculePatterns[moleculeName])
+                {
+                    foreach (Molecule molecule in molecules[moleculeName])
+                    {
+                        if (!molecule.stateWasUpdated)
+                        {
+                            if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
                             {
-                                if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
-                                {
-                                    moleculePattern.SetStateOfMolecule( molecule );
-                                    matchedMolecules.Add( molecule );
-                                    break;
-                                }
-                            }
-                            else
-                            {
+                                moleculePattern.SetStateOfMolecule( molecule );
                                 matchedMolecules.Add( molecule );
-                                molecule.stateWasUpdated = false;
+                                break;
                             }
+                        }
+                        else
+                        {
+                            matchedMolecules.Add( molecule );
+                            molecule.stateWasUpdated = false;
                         }
                     }
                 }
             }
+
+            foreach (string moleculeName in molecules.Keys)
+            {
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    molecule.stateWasUpdated = false;
+                }
+            }
             //UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        bool MoleculePatternWasUsed (MoleculePattern moleculePattern, List<Molecule> molecules)
+        {
+            foreach (Molecule molecule in molecules)
+            {
+                if (molecule.stateWasUpdated && moleculePattern.Matches( molecule ))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool Matches (ComplexPattern other)

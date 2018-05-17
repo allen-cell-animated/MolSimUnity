@@ -117,8 +117,6 @@ namespace AICS.AgentSim
         {
             reactionCenter.productMolecule.SetStateOfMolecule( this );
             stateWasUpdated = true;
-
-            complex.SetToProductState( reactionCenter );
         }
 
         public virtual void UpdateReactions (BindReaction[] relevantBindReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)

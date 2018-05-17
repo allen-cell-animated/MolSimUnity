@@ -180,51 +180,50 @@ namespace AICS.AgentSim
                         for (int c1 = 0; c1 < complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1].Count; c1++)
                         {
                             componentPattern1 = complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1];
-                            if (!foundComponents.Contains( componentPattern1 ))
+                            if (foundComponents.Contains( componentPattern1 ))
                             {
-                                if (complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1].bound)
+                                continue;
+                            }
+                            if (complexPattern.moleculePatterns[moleculeName1][m1].componentPatterns[componentName1][c1].bound)
+                            {
+                                foreach (string moleculeName2 in complexPattern.moleculePatterns.Keys)
                                 {
-                                    foreach (string moleculeName2 in complexPattern.moleculePatterns.Keys)
+                                    for (int m2 = 0; m2 < complexPattern.moleculePatterns[moleculeName2].Count; m2++)
                                     {
-                                        for (int m2 = 0; m2 < complexPattern.moleculePatterns[moleculeName2].Count; m2++)
+                                        if (moleculeName2 == moleculeName1 && m2 == m1)
                                         {
-                                            if (!(moleculeName2 == moleculeName1 && m2 == m1))
+                                            continue;
+                                        }
+                                        foreach (string componentName2 in complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns.Keys)
+                                        {
+                                            for (int c2 = 0; c2 < complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2].Count; c2++)
                                             {
-                                                foreach (string componentName2 in complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns.Keys)
+                                                componentPattern2 = complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2][c2];
+                                                if (componentPattern2.bound && !foundComponents.Contains( componentPattern2 ) && componentPattern1.bondName == componentPattern2.bondName)
                                                 {
-                                                    for (int c2 = 0; c2 < complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2].Count; c2++)
+                                                    foundComponents.Add( componentPattern1 );
+                                                    foundComponents.Add( componentPattern2 );
+
+                                                    molecule1.position = transforms[moleculeName1][m1].position;
+                                                    molecule1.rotation = Quaternion.Euler( transforms[moleculeName1][m1].rotation );
+                                                    componentDef = complexPattern.moleculePatterns[moleculeName1][m1].moleculeDef.componentDefs[componentName1][c1];
+                                                    componentDef.transformOnMolecule.Apply( molecule1, component1 );
+
+                                                    molecule2.position = Vector3.zero;
+                                                    molecule2.rotation = Quaternion.identity;
+                                                    componentDef = complexPattern.moleculePatterns[moleculeName2][m2].moleculeDef.componentDefs[componentName2][c2];
+                                                    componentDef.transformOnMolecule.Apply( molecule2, component2 );
+
+                                                    molecule2.position = component1.TransformPoint( component2.InverseTransformPoint( molecule2.position ) );
+                                                    molecule2.rotation = molecule2.rotation * Quaternion.Inverse( component2.rotation ) * component1.rotation;
+
+                                                    if (!transforms.ContainsKey( moleculeName2 ))
                                                     {
-                                                        componentPattern2 = complexPattern.moleculePatterns[moleculeName2][m2].componentPatterns[componentName2][c2];
-                                                        if (componentPattern2.bound && !foundComponents.Contains( componentPattern2 ))
-                                                        {
-                                                            if (componentPattern1.bondName == componentPattern2.bondName)
-                                                            {
-                                                                foundComponents.Add( componentPattern1 );
-                                                                foundComponents.Add( componentPattern2 );
-
-                                                                molecule1.position = transforms[moleculeName1][m1].position;
-                                                                molecule1.rotation = Quaternion.Euler( transforms[moleculeName1][m1].rotation );
-                                                                componentDef = complexPattern.moleculePatterns[moleculeName1][m1].moleculeDef.componentDefs[componentName1][c1];
-                                                                componentDef.transformOnMolecule.Apply( molecule1, component1 );
-
-                                                                molecule2.position = Vector3.zero;
-                                                                molecule2.rotation = Quaternion.identity;
-                                                                componentDef = complexPattern.moleculePatterns[moleculeName2][m2].moleculeDef.componentDefs[componentName2][c2];
-                                                                componentDef.transformOnMolecule.Apply( molecule2, component2 );
-
-                                                                molecule2.position = component1.TransformPoint( component2.InverseTransformPoint( molecule2.position ) );
-                                                                molecule2.rotation = molecule2.rotation * Quaternion.Inverse( component2.rotation ) * component1.rotation;
-
-                                                                if (!transforms.ContainsKey( moleculeName2 ))
-                                                                {
-                                                                    transforms.Add( moleculeName2, new List<RelativeTransform>() );
-                                                                    n++;
-                                                                }
-                                                                transforms[moleculeName2].Add( new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles ) );
-                                                                averagePosition += transforms[moleculeName2][m2].position;
-                                                            }
-                                                        }
+                                                        transforms.Add( moleculeName2, new List<RelativeTransform>() );
+                                                        n++;
                                                     }
+                                                    transforms[moleculeName2].Add( new RelativeTransform( molecule2.position, molecule2.rotation.eulerAngles ) );
+                                                    averagePosition += transforms[moleculeName2][m2].position;
                                                 }
                                             }
                                         }
