@@ -1123,7 +1123,7 @@ GameObject:
   - component: {fileID: 114494993296360166}
   - component: {fileID: 114538847708765066}
   m_Layer: 5
-  m_Name: ParameterCanvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1451,7 +1451,7 @@ GameObject:
   - component: {fileID: 114804881574040644}
   - component: {fileID: 95578185733428200}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: ParameterPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9832,7 +9832,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1468877996971462}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -930, y: 25, z: 0}
+  m_LocalPosition: {x: -1220, y: 25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224078622561361526}
@@ -9849,7 +9849,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -930, y: 25}
+  m_AnchoredPosition: {x: -1220, y: 25}
   m_SizeDelta: {x: 300, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224468858144071906
