@@ -7,6 +7,11 @@ namespace AICS.AgentSim
 {
     public class InputManager : MonoBehaviour
     {
+        public Reactor reactor;
+
+        public GameObject pauseButton;
+        public GameObject playButton;
+
         public Selecter lastSelectedObject;
         bool justSelected;
 
@@ -95,6 +100,19 @@ namespace AICS.AgentSim
             SetLastSelectedObjectSelected( false );
             lastSelectedObject = null;
             World.Instance.observer.FocusOn( World.Instance.transform );
+        }
+
+        public void TogglePaused (bool paused)
+        {
+            World.Instance.paused = paused;
+
+            pauseButton.SetActive( !paused );
+            playButton.SetActive( paused );
+        }
+
+        public void Restart ()
+        {
+            reactor.Restart();
         }
     }
 }
