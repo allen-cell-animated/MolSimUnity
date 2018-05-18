@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AICS.AgentSim
@@ -80,36 +81,90 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void SetStateOfMolecule (Molecule molecule)
+        public virtual void SetStateOfMolecule(Molecule molecule)
         {
-            //UnityEngine.Profiling.Profiler.BeginSample("Set State");
-            List<MoleculeComponent> matchedComponents = new List<MoleculeComponent>();
-            foreach (string componentName in componentPatterns.Keys)
+            //UnityEngine.Profiling.Profiler.BeginSample("Set Component State");
+
+            foreach (var entry in componentPatterns)
             {
-                if (molecule.components.ContainsKey( componentName ))
+                if (!molecule.components.ContainsKey(entry.Key)) return;
+            }
+
+            // matches each sub-entity to a list sub-entity patterns
+            // after matching, changes are applied to the sub-entity
+            // with the fewest matches, until all sub-entity patterns are used
+            //
+            // this prevent a sub-entity with many pattern matches from 'taking'
+            // a sub-entity pattern from a sub-entity with fewer matches
+
+            foreach (var entry in componentPatterns)
+            {
+                var candidates = molecule.components[entry.Key];
+                var patterns = entry.Value;
+                var matches = new Dictionary<MoleculeComponent, List<ComponentPattern>>();
+
+                foreach (var candidate in candidates)
                 {
-                    foreach (ComponentPattern componentPattern in componentPatterns[componentName])
+                    foreach (var patternToMatch in patterns)
                     {
-                        foreach (MoleculeComponent moleculeComponent in molecule.components[componentName])
+                        if (patternToMatch.Matches(candidate))
                         {
-                            if (!moleculeComponent.stateWasUpdated)
+                            if (!matches.ContainsKey(candidate))
                             {
-                                if (!matchedComponents.Contains( moleculeComponent ) && componentPattern.MatchesID( moleculeComponent ))
-                                {
-                                    componentPattern.SetStateOfComponent( moleculeComponent );
-                                    matchedComponents.Add( moleculeComponent );
-                                    break;
-                                }
+                                matches[candidate] = new List<ComponentPattern>();
                             }
-                            else
-                            {
-                                matchedComponents.Add( moleculeComponent );
-                                moleculeComponent.stateWasUpdated = false;
-                            }
+
+                            matches[candidate].Add(patternToMatch);
                         }
                     }
                 }
+
+                List<ComponentPattern> usedPatterns = new List<ComponentPattern>();
+                List<KeyValuePair<MoleculeComponent, List<ComponentPattern>>> matchList = matches.ToList();
+
+                while (true)
+                {
+                    // find the component with the least number of component pattern matches
+                    int minIndex = -1;
+                    int minCount = int.MaxValue;
+                    for (int i = 0; i < matchList.Count; ++i)
+                    {
+                        if (matchList[i].Value.Count == 0) continue;
+
+                        if (matchList[i].Value.Count < minCount)
+                        {
+                            minIndex = i;
+                            minCount = matchList[i].Value.Count;
+                        }
+
+                        if (matchList[i].Value.Count == 1)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (minIndex == -1)
+                    {
+                        break;
+                    }
+
+                    // apply the change to the component with the fewest options
+                    ComponentPattern finalMatchPattern = matchList[minIndex].Value[0];
+                    MoleculeComponent finalMatchComponent = matchList[minIndex].Key;
+                    finalMatchPattern.SetStateOfComponent(finalMatchComponent);
+
+                    // remove the matched component
+                    matchList.RemoveAt(minIndex);
+                    matchList.TrimExcess();
+
+                    // remove the 'used' pattern
+                    for (int i = 0; i < matchList.Count; ++i)
+                    {
+                        matchList[i].Value.Remove(finalMatchPattern);
+                    }
+                }
             }
+
             //UnityEngine.Profiling.Profiler.EndSample();
         }
 

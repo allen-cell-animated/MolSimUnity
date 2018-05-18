@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AICS.AgentSim
@@ -63,30 +64,82 @@ namespace AICS.AgentSim
         public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
         {
             //UnityEngine.Profiling.Profiler.BeginSample("Set State");
-            List<Molecule> matchedMolecules = new List<Molecule>();
-            foreach (string moleculeName in moleculePatterns.Keys)
+            foreach (KeyValuePair<string,List<MoleculePattern>> entry in moleculePatterns)
             {
-                if (molecules.ContainsKey( moleculeName ))
+                if (!molecules.ContainsKey(entry.Key)) return;
+            }
+
+            // matches each molecule to a list molecule patterns
+            // after matching, changes are applied to the molecules
+            // with the fewest matches, until all molecule patterns are used
+            //
+            // this prevent a molecule with many pattern matches from 'taking'
+            // a molecule pattern from a molecule with fewer matches
+
+            foreach (KeyValuePair<string, List<MoleculePattern>> entry in moleculePatterns)
+            {
+                List<Molecule> candidates = molecules[entry.Key];
+                List < MoleculePattern > patterns = entry.Value;
+                Dictionary<Molecule, List<MoleculePattern>> matches = new Dictionary<Molecule, List<MoleculePattern>>();
+
+                foreach(Molecule candidateMolecule in candidates)
                 {
-                    foreach (MoleculePattern moleculePattern in moleculePatterns[moleculeName])
+                    foreach(MoleculePattern patternToMatch in patterns)
                     {
-                        foreach (Molecule molecule in molecules[moleculeName])
+                        if (patternToMatch.Matches(candidateMolecule))
                         {
-                            if (!molecule.stateWasUpdated)
+                            if(!matches.ContainsKey(candidateMolecule))
                             {
-                                if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
-                                {
-                                    moleculePattern.SetStateOfMolecule( molecule );
-                                    matchedMolecules.Add( molecule );
-                                    break;
-                                }
+                                matches[candidateMolecule] = new List<MoleculePattern>();
                             }
-                            else
-                            {
-                                matchedMolecules.Add( molecule );
-                                molecule.stateWasUpdated = false;
-                            }
+
+                            matches[candidateMolecule].Add(patternToMatch);
                         }
+                    }
+                }
+
+                List<MoleculePattern> usedPatterns = new List<MoleculePattern>();
+                List<KeyValuePair<Molecule, List<MoleculePattern>>> matchList = matches.ToList();
+
+                while (true)
+                {
+                    // find the molecule with the least number of molecule pattern matches
+                    int minIndex = -1;
+                    int minCount = int.MaxValue;
+                    for (int i = 0; i < matchList.Count; ++i)
+                    {
+                        if (matchList[i].Value.Count == 0) continue;
+
+                        if (matchList[i].Value.Count < minCount)
+                        {
+                            minIndex = i;
+                            minCount = matchList[i].Value.Count;
+                        }
+
+                        if (matchList[i].Value.Count == 1)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (minIndex == -1)
+                    {
+                        break;
+                    }
+
+                    // apply the change to the molecule with the fewest options
+                    MoleculePattern finalMatchPattern = matchList[minIndex].Value[0];
+                    Molecule finalMatchMolecule = matchList[minIndex].Key;
+                    finalMatchPattern.SetStateOfMolecule(finalMatchMolecule);
+
+                    // remove the matched molecule
+                    matchList.RemoveAt(minIndex);
+                    matchList.TrimExcess();
+
+                    // remove the 'used' pattern
+                    for (int i = 0; i < matchList.Count; ++i)
+                    {
+                        matchList[i].Value.Remove(finalMatchPattern);
                     }
                 }
             }
