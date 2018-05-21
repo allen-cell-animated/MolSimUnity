@@ -24,6 +24,7 @@ namespace AICS.AgentSim
 
                     components[i].SetToProductState( definition.reactionCenters[i] );
                     components[i].boundComponent = null;
+                    newComplex.SetToProductState( matchingReactionCenters[i] );
                     newComplex.UpdateReactions();
 
                     SetProductColor( molecules );

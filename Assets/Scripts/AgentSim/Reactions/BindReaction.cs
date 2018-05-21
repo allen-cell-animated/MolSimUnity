@@ -21,9 +21,11 @@ namespace AICS.AgentSim
 
                 for (int i = 0; i < components.Length; i++)
                 {
+                    //Debug.Log( components[i] + " " + matchingReactionCenters[i].description );
                     components[i].SetToProductState( matchingReactionCenters[i] );
                     components[i].boundComponent = components[1 - i];
                 }
+                newComplex.SetToProductState( matchingReactionCenters[0] );
                 newComplex.UpdateReactions();
 
                 SetProductColor( molecules );
@@ -53,6 +55,8 @@ namespace AICS.AgentSim
 
             childComponent.theTransform.parent.position = parentComponent.theTransform.TransformPoint( childComponent.theTransform.InverseTransformPoint( childComponent.theTransform.parent.position ) );
             childComponent.theTransform.parent.rotation = childComponent.theTransform.parent.rotation * Quaternion.Inverse( childComponent.theTransform.rotation ) * parentComponent.theTransform.rotation;
+
+            //Debug.Log( "parent " + childComponent + " to " + parentComponent + " : " + parentComponent.theTransform.InverseTransformPoint( childComponent.theTransform.position ) );
         }
 
         protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)

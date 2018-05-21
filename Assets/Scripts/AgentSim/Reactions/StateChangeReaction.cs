@@ -15,6 +15,7 @@ namespace AICS.AgentSim
                 matchingReactionCenters.Length > 0 && matchingReactionCenters[0] != null)
             {
                 components[0].SetToProductState( matchingReactionCenters[0] );
+                components[0].complex.SetToProductState( matchingReactionCenters[0] );
                 components[0].complex.UpdateReactions();
 
                 SetProductColor( components[0].complex.molecules );

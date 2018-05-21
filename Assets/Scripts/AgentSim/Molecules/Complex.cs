@@ -198,7 +198,7 @@ namespace AICS.AgentSim
                     {
                         foreach (MoleculeComponent component in aTypeOfComponent)
                         {
-                            if (!string.IsNullOrEmpty( component.lastBondName ))
+                            if (!string.IsNullOrEmpty( component.lastBondName ) && !component.lastBondName.Contains( "+" ))
                             {
                                 if (!boundComponents.ContainsKey( component.lastBondName ))
                                 {
@@ -208,6 +208,7 @@ namespace AICS.AgentSim
                                 {
                                     boundComponents[component.lastBondName].boundComponent = component;
                                     component.boundComponent = boundComponents[component.lastBondName];
+                                    component.lastBondName = component.boundComponent.lastBondName = "+";
                                 }
                             }
                         }
@@ -264,6 +265,7 @@ namespace AICS.AgentSim
         public void SetToProductState (ReactionCenter reactionCenter)
         {
             reactionCenter.productComplex.SetStateOfComplex( molecules );
+            ConnectBoundComponents();
         }
 
         public virtual void UpdateReactions ()
