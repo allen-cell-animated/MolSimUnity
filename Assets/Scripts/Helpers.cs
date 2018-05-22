@@ -87,19 +87,11 @@ namespace AICS
         {
             //round to significant figures
             float logValue = Mathf.Log10( timeSeconds );
-            float multiplier = Mathf.Pow( 10f, Mathf.Floor( logValue ) - significantFigures + 1 );
-            float number = 0;
-            if (logValue < 0)
-            {
-                number = Mathf.Round( timeSeconds / multiplier ) / Mathf.Round(1f / multiplier);
-            }
-            else 
-            {
-                number = Mathf.Round( timeSeconds / multiplier ) * multiplier;
-            }
+            float multiplier = Mathf.Pow( 10f, Mathf.Floor( logValue ) - significantFigures - 1f );
+            float number = Mathf.Round( timeSeconds / multiplier ) * multiplier;
 
             //convert to correct units
-            int exp = GetSIExponent( number );
+            int exp = number > 0 ? GetSIExponent( number ) : 1;
             number *= Mathf.Pow( 10f, -exp );
 
             if (Mathf.Log10( number ) >= 3f)
@@ -108,27 +100,25 @@ namespace AICS
                 exp += 3;
             }
 
-            //string result = number.ToString();
-            //string[] splitResult = result.Split( '.' );
-            //if (splitResult.Length > 1)
-            //{
-            //    while (splitResult[1].Length < decimalPlaces)
-            //    {
-            //        splitResult[1] += "0";
-            //    }
-            //    result = splitResult[0] + "." + splitResult[1];
-            //}
-            //else if (decimalPlaces > 0)
-            //{
-            //    result += ".";
-            //    for (int i = 0; i < decimalPlaces; i++)
-            //    {
-            //        result += "0";
-            //    }
-            //}
+            //add extra zeros
+            string result = number.ToString();
+            string[] splitResult = result.Split( '.' );
+            int digits = splitResult[0].Length + (splitResult.Length > 1 ? splitResult[1].Length : 0);
+            if (digits < significantFigures)
+            {
+                if (splitResult.Length < 2)
+                {
+                    result += ".";
+                }
+                while (digits < significantFigures)
+                {
+                    result += "0";
+                    digits++;
+                }
+            }
 
-            Debug.Log( timeSeconds + " -> " + number  + " " + GetSIPrefixSymbol( exp ) + "s" );
-            return number + " " + GetSIPrefixSymbol( exp ) + "s";
+            //Debug.Log( timeSeconds + " -> " + result + " " + GetSIPrefixSymbol( exp ) + "s" );
+            return result + " " + GetSIPrefixSymbol( exp ) + "s";
         }
 
         public static int GetSIExponent (float _valueInBaseUnits)
@@ -184,7 +174,7 @@ namespace AICS
                 case -24 :
                     return "y"; //yocto
                 default:
-                    Debug.Log( "unrecognized SI exponent" );
+                    Debug.Log( "unrecognized SI exponent " + exponent );
                     return "";
             }
         }
