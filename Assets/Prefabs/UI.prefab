@@ -6418,6 +6418,7 @@ MonoBehaviour:
   reactor: {fileID: 0}
   pauseButton: {fileID: 1587586062405568}
   playButton: {fileID: 1946960561155848}
+  totalTime: {fileID: 114330394970259296}
   lastSelectedObject: {fileID: 0}
 --- !u!114 &114751643035984910
 MonoBehaviour:

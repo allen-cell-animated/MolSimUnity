@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace AICS.AgentSim
 {
@@ -11,6 +11,7 @@ namespace AICS.AgentSim
 
         public GameObject pauseButton;
         public GameObject playButton;
+        public Text totalTime;
 
         public Selecter lastSelectedObject;
         bool justSelected;
@@ -70,6 +71,11 @@ namespace AICS.AgentSim
                 }
             }
             justSelected = false;
+
+            if (!World.Instance.paused)
+            {
+                UpdateTime();
+            }
         }
 
         void OnDrag ()
@@ -108,6 +114,11 @@ namespace AICS.AgentSim
 
             pauseButton.SetActive( !paused );
             playButton.SetActive( paused );
+        }
+
+        void UpdateTime ()
+        {
+            totalTime.text = Helpers.FormatTime( World.Instance.time, 0 );
         }
 
         public void Restart ()
