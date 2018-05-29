@@ -341,23 +341,26 @@ namespace AICS.AgentSim
             }
             #endif
 
-            Cleanup();
+            if (!World.Instance.paused)
+            {
+                Cleanup();
 
-            //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
-            MoveParticles();
-            //UnityEngine.Profiling.Profiler.EndSample();
+                //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+                MoveParticles();
+                //UnityEngine.Profiling.Profiler.EndSample();
 
-            //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
-            DoCollisionFreeReactions();
-            //UnityEngine.Profiling.Profiler.EndSample();
+                //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+                DoCollisionFreeReactions();
+                //UnityEngine.Profiling.Profiler.EndSample();
 
-            //UnityEngine.Profiling.Profiler.BeginSample("BindReactions");
-            DoBindReactions();
-            //UnityEngine.Profiling.Profiler.EndSample();
+                //UnityEngine.Profiling.Profiler.BeginSample("BindReactions");
+                DoBindReactions();
+                //UnityEngine.Profiling.Profiler.EndSample();
 
-            DestroyOldComplexes();
+                DestroyOldComplexes();
 
-            //stepsPerMoveFail = World.Instance.steps / (float)moveFails;
+                //stepsPerMoveFail = World.Instance.steps / (float)moveFails;
+            }
         }
 
         protected virtual void MoveParticles ()
@@ -463,6 +466,12 @@ namespace AICS.AgentSim
         public void Cleanup ()
         {
             complexes.RemoveAll( c => c == null || !c.couldReactOnCollision );
+        }
+
+        public void Restart ()
+        {
+            World.Instance.Restart();
+            // TODO actually restart
         }
     }
 

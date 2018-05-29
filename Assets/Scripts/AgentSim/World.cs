@@ -33,9 +33,11 @@ namespace AICS.AgentSim
 			}
         }
 
+        public bool paused;
+
 		void Update ()
 		{
-            if (observer != null)
+            if (observer != null && !paused)
             {
     			time += dT;
                 steps++;
@@ -61,6 +63,12 @@ namespace AICS.AgentSim
             {
                 Instantiate( flashPrefab, parent.position, Quaternion.identity, parent );
             }
+        }
+
+        public void Restart ()
+        {
+            time = 0;
+            steps = 0;
         }
 	}
 }
