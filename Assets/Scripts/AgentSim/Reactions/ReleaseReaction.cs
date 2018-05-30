@@ -15,6 +15,7 @@ namespace AICS.AgentSim
                 matchingReactionCenters.Length > 0 && matchingReactionCenters[0] != null)
             {
                 components = new MoleculeComponent[]{components[0], components[0].boundComponent};
+                matchingReactionCenters = new ReactionCenter[]{matchingReactionCenters[0], GetOtherReactionCenter( matchingReactionCenters[0] )};
                 Dictionary<string,List<Molecule>> molecules;
                 Complex newComplex;
                 for (int i = 0; i < components.Length; i++)
@@ -35,6 +36,18 @@ namespace AICS.AgentSim
                 return true;
             }
             return false;
+        }
+
+        ReactionCenter GetOtherReactionCenter (ReactionCenter reactionCenter)
+        {
+            foreach (ReactionCenter rc in definition.reactionCenters)
+            {
+                if (rc != reactionCenter)
+                {
+                    return rc;
+                }
+            }
+            return null;
         }
     }
 }

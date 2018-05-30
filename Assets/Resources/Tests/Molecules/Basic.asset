@@ -14,7 +14,7 @@ MonoBehaviour:
   _moleculeName: Basic
   radius: 0.5
   scale: 0.000000001
-  diffusionCoefficient: 300000
-  componentDefsTemp: []
+  diffusionCoefficient: 3e+11
+  _componentDefs: []
   colors: []
   _visualizationPrefab: {fileID: 0}
