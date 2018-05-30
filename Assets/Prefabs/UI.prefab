@@ -1081,6 +1081,7 @@ MonoBehaviour:
   pauseButton: {fileID: 1587586062405568}
   playButton: {fileID: 1946960561155848}
   totalTime: {fileID: 114330394970259296}
+  fps: {fileID: 114608203822781212}
   lastSelectedObject: {fileID: 0}
 --- !u!114 &114780089225918010
 MonoBehaviour:

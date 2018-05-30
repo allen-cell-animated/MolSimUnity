@@ -12,9 +12,11 @@ namespace AICS.AgentSim
         public GameObject pauseButton;
         public GameObject playButton;
         public Text totalTime;
+        public Text fps;
 
         public Selecter lastSelectedObject;
         bool justSelected;
+        float lastFPSTime = -1f;
 
         Vector2 mouseDelta = Vector2.zero;
         float mouseMoveThreshold = 0.1f;
@@ -76,6 +78,7 @@ namespace AICS.AgentSim
             {
                 UpdateTime();
             }
+            UpdateFPS();
         }
 
         void OnDrag ()
@@ -119,6 +122,15 @@ namespace AICS.AgentSim
         void UpdateTime ()
         {
             totalTime.text = Helpers.FormatTime( World.Instance.time, 0 );
+        }
+
+        void UpdateFPS ()
+        {
+            if (Time.time - lastFPSTime >= 0.5f)
+            {
+                fps.text = Mathf.Round( 1f / Time.deltaTime ).ToString() + " fps";
+                lastFPSTime = Time.time;
+            }
         }
 
         public void Restart ()
