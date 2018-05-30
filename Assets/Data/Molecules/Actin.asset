@@ -21,7 +21,7 @@ MonoBehaviour:
     transformOnMolecule:
       position: {x: -0.046, y: 0.016, z: -0.413}
       rotation: {x: 0, y: 0, z: 0}
-    radius: 1
+    radius: 5
   - componentName: side1
     states: []
     transformOnMolecule:

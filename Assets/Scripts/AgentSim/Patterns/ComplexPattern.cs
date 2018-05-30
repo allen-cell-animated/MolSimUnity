@@ -83,15 +83,6 @@ namespace AICS.AgentSim
             //set states of attached molecules
             SetProductStatesOfAttachedMolecules( molecule1, productMoleculeRef1 );
             SetProductStatesOfAttachedMolecules( molecule2, productMoleculeRef2 );
-
-            //reset stateWasUpdated flag
-            foreach (string moleculeName in molecule1.complex.molecules.Keys)
-            {
-                foreach (Molecule molecule in molecule1.complex.molecules[moleculeName])
-                {
-                    molecule.stateWasUpdated = false;
-                }
-            }
         }
 
         void SetProductStatesOfAttachedMolecules (Molecule molecule, MoleculePattern productMoleculeRef)
@@ -204,17 +195,8 @@ namespace AICS.AgentSim
                         else
                         {
                             matchedMolecules.Add( molecule );
-                            molecule.stateWasUpdated = false;
                         }
                     }
-                }
-            }
-
-            foreach (string moleculeName in molecules.Keys)
-            {
-                foreach (Molecule molecule in molecules[moleculeName])
-                {
-                    molecule.stateWasUpdated = false;
                 }
             }
             //UnityEngine.Profiling.Profiler.EndSample();

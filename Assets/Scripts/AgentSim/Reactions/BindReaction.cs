@@ -29,13 +29,12 @@ namespace AICS.AgentSim
                 {
                     newComplex.SetToProductState( matchingReactionCenters[0].productComplex, components[0].molecule, matchingReactionCenters[0].productMolecule,
                                                   components[1].molecule, matchingReactionCenters[1].productMolecule);
-                    newComplex.UpdateReactions();
                 }
                 else
                 {
                     newComplex.SetToProductState( matchingReactionCenters[0] );
-                    newComplex.UpdateReactions();
                 }
+                newComplex.UpdateReactions();
 
                 SetProductColor( molecules );
                 AnimateReaction( molecules );
