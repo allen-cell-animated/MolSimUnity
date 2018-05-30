@@ -113,9 +113,9 @@ namespace AICS.AgentSim
             theTransform.SetParent( complex.theTransform );
         }
 
-        public void SetToProductState (ReactionCenter reactionCenter)
+        public void SetToProductState (MoleculePattern productMoleculePattern)
         {
-            reactionCenter.productMolecule.SetStateOfMolecule( this );
+            productMoleculePattern.SetStateOfMolecule( this );
             stateWasUpdated = true;
         }
 

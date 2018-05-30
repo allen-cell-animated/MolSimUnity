@@ -61,40 +61,105 @@ namespace AICS.AgentSim
             InitMoleculePatterns();
         }
 
-        //this is a HACKY MESS!!
-        public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
+        public virtual void SetStateOfComplex (Molecule molecule1, MoleculePattern productMolecule1, Molecule molecule2, MoleculePattern productMolecule2)
         {
-            //get molecules at the reaction center
-            List<Molecule> reactedMolecules = new List<Molecule>();
-            foreach (string moleculeName in molecules.Keys)
+            //get references to the reaction center molecules in this complex pattern
+            MoleculePattern productMoleculeRef1 = null, productMoleculeRef2 = null;
+            foreach (string moleculeName in moleculePatterns.Keys)
             {
-                foreach (Molecule molecule in molecules[moleculeName])
+                foreach (MoleculePattern moleculePattern in moleculePatterns[moleculeName])
                 {
-                    if (molecule.stateWasUpdated)
+                    if (productMolecule1.Matches( moleculePattern ))
                     {
-                        reactedMolecules.Add( molecule );
+                        productMoleculeRef1 = moleculePattern;
+                    }
+                    else if (productMolecule2.Matches( moleculePattern ))
+                    {
+                        productMoleculeRef2 = moleculePattern;
                     }
                 }
             }
 
-            //trace their bonds to find candidate molecules
+            //set states of attached molecules
+            SetProductStatesOfAttachedMolecules( molecule1, productMoleculeRef1 );
+            SetProductStatesOfAttachedMolecules( molecule2, productMoleculeRef2 );
 
+            //reset stateWasUpdated flag
+            foreach (string moleculeName in molecule1.complex.molecules.Keys)
+            {
+                foreach (Molecule molecule in molecule1.complex.molecules[moleculeName])
+                {
+                    molecule.stateWasUpdated = false;
+                }
+            }
+        }
 
-            //match the candidates to the product states
+        void SetProductStatesOfAttachedMolecules (Molecule molecule, MoleculePattern productMoleculeRef)
+        {
+            Dictionary<string,Bond> bonds = GetBonds( productMoleculeRef );
+            foreach (string componentName in molecule.components.Keys)
+            {
+                foreach (MoleculeComponent component in molecule.components[componentName])
+                {
+                    if (component.boundComponent != null && !component.boundComponent.molecule.stateWasUpdated && bonds.ContainsKey( component.lastBondName ))
+                    {
+                        component.boundComponent.SetToProductState( bonds[component.lastBondName].moleculePattern2, bonds[component.lastBondName].componentPattern2 );
+                    }
+                }
+            }
+        }
 
+        Dictionary<string,Bond> GetBonds (MoleculePattern moleculePattern)
+        {
+            Bond bond;
+            Dictionary<string,Bond> bonds = new Dictionary<string,Bond>();
+            foreach (string componentName in moleculePattern.componentPatterns.Keys)
+            {
+                foreach (ComponentPattern componentPattern in moleculePattern.componentPatterns[componentName])
+                {
+                    if (!componentPattern.bound || componentPattern.bondName.Contains( "+" ) || bonds.ContainsKey( componentPattern.bondName ))
+                    {
+                        continue;
+                    }
 
+                    bond = GetBondForComponent( moleculePattern, componentPattern );
+                    if (bond != null)
+                    {
+                        bonds.Add( componentPattern.bondName, bond );
+                    }
+                }
+            }
+            return bonds;
+        }
 
+        Bond GetBondForComponent (MoleculePattern moleculePattern, ComponentPattern componentPattern)
+        {
+            foreach (string moleculeName in moleculePatterns.Keys)
+            {
+                foreach (MoleculePattern otherMoleculePattern in moleculePatterns[moleculeName])
+                {
+                    if (otherMoleculePattern == moleculePattern)
+                    {
+                        continue;
+                    }
+                    foreach (string otherComponentName in otherMoleculePattern.componentPatterns.Keys)
+                    {
+                        foreach (ComponentPattern otherComponentPattern in otherMoleculePattern.componentPatterns[otherComponentName])
+                        {
+                            if (otherComponentPattern.bound && otherComponentPattern.bondName == componentPattern.bondName)
+                            {
+                                return new Bond( moleculePattern, componentPattern, otherMoleculePattern, otherComponentPattern );
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
 
-
-
-
-
-
-
-
-
-
-
+        //this is a HACKY MESS!!
+        public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
+        {
             //UnityEngine.Profiling.Profiler.BeginSample("Set State");
             Dictionary<string,List<MoleculePattern>> unusedMoleculePatterns = new Dictionary<string,List<MoleculePattern>>();
             foreach (string moleculeName in moleculePatterns.Keys)
@@ -330,6 +395,22 @@ namespace AICS.AgentSim
                 n += aTypeOfMoleculePattern.Count;
             }
             return n;
+        }
+    }
+
+    public class Bond
+    {
+        public MoleculePattern moleculePattern1;
+        public ComponentPattern componentPattern1;
+        public MoleculePattern moleculePattern2;
+        public ComponentPattern componentPattern2;
+
+        public Bond (MoleculePattern _moleculePattern1, ComponentPattern _componentPattern1, MoleculePattern _moleculePattern2, ComponentPattern _componentPattern2)
+        {
+            moleculePattern1 = _moleculePattern1;
+            componentPattern1 = _componentPattern1;
+            moleculePattern2 = _moleculePattern2;
+            componentPattern2 = _componentPattern2;
         }
     }
 }

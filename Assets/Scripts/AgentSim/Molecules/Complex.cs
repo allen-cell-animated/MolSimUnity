@@ -268,6 +268,12 @@ namespace AICS.AgentSim
             ConnectBoundComponents();
         }
 
+        public void SetToProductState (ComplexPattern productComplex, Molecule molecule1, MoleculePattern productMolecule1, Molecule molecule2, MoleculePattern productMolecule2)
+        {
+            productComplex.SetStateOfComplex( molecule1, productMolecule1, molecule2, productMolecule2 );
+            ConnectBoundComponents();
+        }
+
         public virtual void UpdateReactions ()
         {
             BindReaction[] relevantBindReactions = reactor.GetRelevantBindReactions( molecules );

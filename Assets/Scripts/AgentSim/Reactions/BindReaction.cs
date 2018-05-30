@@ -25,8 +25,19 @@ namespace AICS.AgentSim
                     components[i].SetToProductState( matchingReactionCenters[i] );
                     components[i].boundComponent = components[1 - i];
                 }
-                newComplex.SetToProductState( matchingReactionCenters[0] );
-                newComplex.UpdateReactions();
+
+                if (newComplex.GetNumberOfMolecules() > 2)
+                {
+                    newComplex.SetToProductState( matchingReactionCenters[0].productComplex, components[0].molecule, matchingReactionCenters[0].productMolecule,
+                                                  components[1].molecule, matchingReactionCenters[1].productMolecule);
+                    newComplex.UpdateReactions();
+                    UnityEditor.EditorApplication.isPaused = true;
+                }
+                else
+                {
+                    newComplex.SetToProductState( matchingReactionCenters[0] );
+                    newComplex.UpdateReactions();
+                }
 
                 SetProductColor( molecules );
                 AnimateReaction( molecules );
