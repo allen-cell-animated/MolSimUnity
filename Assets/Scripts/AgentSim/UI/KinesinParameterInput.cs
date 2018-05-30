@@ -171,7 +171,7 @@ namespace AICS.MotorProteins.Kinesin
 
 		public Text fpsDisplay;
 		public Text spfDisplay;
-		float lastTime = -1f;
+		//float lastTime = -1f;
 
 		void Update ()
 		{
@@ -198,8 +198,8 @@ namespace AICS.MotorProteins.Kinesin
 			}
 		}
 
-		float minTimeMultiplier = 1f;
-		float maxTimeMultiplier = 9000f;
+		//float minTimeMultiplier = 1f;
+		//float maxTimeMultiplier = 9000f;
 		void ChangeTime (float delta)
 		{
 			//float timeMultiplier = Mathf.Clamp( MolecularEnvironment.Instance.timeMultiplier * delta, minTimeMultiplier, maxTimeMultiplier );
