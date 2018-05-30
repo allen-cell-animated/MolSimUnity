@@ -475,6 +475,7 @@ namespace AICS.AgentSim
 
         public IEnumerator Restart ()
         {
+            bool wasPaused = World.Instance.paused;
             World.Instance.paused = true;
 
             yield return new WaitForEndOfFrame();
@@ -496,7 +497,7 @@ namespace AICS.AgentSim
 
             StartReactor();
 
-            World.Instance.paused = false;
+            World.Instance.paused = wasPaused;
         }
     }
 

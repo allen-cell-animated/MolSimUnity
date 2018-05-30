@@ -52,7 +52,7 @@ namespace AICS.AgentSim
 
             if (!reactor.container.IsInBounds( theTransform.position + moveStep ))
             {
-                if (reactor.periodicBoundary)
+                if (reactor.periodicBoundary && collisionRadius < 3f)
                 {
                     ReflectPeriodically( reactor.container.theTransform.position - (theTransform.position + moveStep) );
                     return true;
