@@ -14,7 +14,7 @@ MonoBehaviour:
   _moleculeName: S
   radius: 0.5
   scale: 0.000000001
-  diffusionCoefficient: 500000
+  diffusionCoefficient: 5e+11
   _componentDefs:
   - componentName: active
     states: []

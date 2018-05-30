@@ -120,11 +120,18 @@ namespace AICS.AgentSim
                 && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
         }
 
+        public void SetToProductState (MoleculePattern productMolecule, ComponentPattern productComponent)
+        {
+            productComponent.SetStateOfComponent( this );
+            stateWasUpdated = true;
+            molecule.SetToProductState( productMolecule );
+        }
+
         public void SetToProductState (ReactionCenter reactionCenter)
         {
             reactionCenter.productComponent.SetStateOfComponent( this );
             stateWasUpdated = true;
-            molecule.SetToProductState( reactionCenter );
+            molecule.SetToProductState( reactionCenter.productMolecule );
         }
 
         public virtual void UpdateReactions (BindReaction[] relevantBindReactions, CollisionFreeReaction[] relevantCollisionFreeReactions)

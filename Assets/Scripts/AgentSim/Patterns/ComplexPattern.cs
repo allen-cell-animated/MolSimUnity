@@ -61,89 +61,175 @@ namespace AICS.AgentSim
             InitMoleculePatterns();
         }
 
+        public virtual void SetStateOfComplex (Molecule molecule1, MoleculePattern productMolecule1, Molecule molecule2, MoleculePattern productMolecule2)
+        {
+            //get references to the reaction center molecules in this complex pattern
+            MoleculePattern productMoleculeRef1 = null, productMoleculeRef2 = null;
+            foreach (string moleculeName in moleculePatterns.Keys)
+            {
+                foreach (MoleculePattern moleculePattern in moleculePatterns[moleculeName])
+                {
+                    if (productMolecule1.Matches( moleculePattern ))
+                    {
+                        productMoleculeRef1 = moleculePattern;
+                    }
+                    else if (productMolecule2.Matches( moleculePattern ))
+                    {
+                        productMoleculeRef2 = moleculePattern;
+                    }
+                }
+            }
+
+            //set states of attached molecules
+            SetProductStatesOfAttachedMolecules( molecule1, productMoleculeRef1 );
+            SetProductStatesOfAttachedMolecules( molecule2, productMoleculeRef2 );
+
+            //reset stateWasUpdated flag
+            foreach (string moleculeName in molecule1.complex.molecules.Keys)
+            {
+                foreach (Molecule molecule in molecule1.complex.molecules[moleculeName])
+                {
+                    molecule.stateWasUpdated = false;
+                }
+            }
+        }
+
+        void SetProductStatesOfAttachedMolecules (Molecule molecule, MoleculePattern productMoleculeRef)
+        {
+            Dictionary<string,Bond> bonds = GetBonds( productMoleculeRef );
+            foreach (string componentName in molecule.components.Keys)
+            {
+                foreach (MoleculeComponent component in molecule.components[componentName])
+                {
+                    if (component.boundComponent != null && !component.boundComponent.molecule.stateWasUpdated && bonds.ContainsKey( component.lastBondName ))
+                    {
+                        component.boundComponent.SetToProductState( bonds[component.lastBondName].moleculePattern2, bonds[component.lastBondName].componentPattern2 );
+                    }
+                }
+            }
+        }
+
+        Dictionary<string,Bond> GetBonds (MoleculePattern moleculePattern)
+        {
+            Bond bond;
+            Dictionary<string,Bond> bonds = new Dictionary<string,Bond>();
+            foreach (string componentName in moleculePattern.componentPatterns.Keys)
+            {
+                foreach (ComponentPattern componentPattern in moleculePattern.componentPatterns[componentName])
+                {
+                    if (!componentPattern.bound || componentPattern.bondName.Contains( "+" ) || bonds.ContainsKey( componentPattern.bondName ))
+                    {
+                        continue;
+                    }
+
+                    bond = GetBondForComponent( moleculePattern, componentPattern );
+                    if (bond != null)
+                    {
+                        bonds.Add( componentPattern.bondName, bond );
+                    }
+                }
+            }
+            return bonds;
+        }
+
+        Bond GetBondForComponent (MoleculePattern moleculePattern, ComponentPattern componentPattern)
+        {
+            foreach (string moleculeName in moleculePatterns.Keys)
+            {
+                foreach (MoleculePattern otherMoleculePattern in moleculePatterns[moleculeName])
+                {
+                    if (otherMoleculePattern == moleculePattern)
+                    {
+                        continue;
+                    }
+                    foreach (string otherComponentName in otherMoleculePattern.componentPatterns.Keys)
+                    {
+                        foreach (ComponentPattern otherComponentPattern in otherMoleculePattern.componentPatterns[otherComponentName])
+                        {
+                            if (otherComponentPattern.bound && otherComponentPattern.bondName == componentPattern.bondName)
+                            {
+                                return new Bond( moleculePattern, componentPattern, otherMoleculePattern, otherComponentPattern );
+                            }
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        //this is a HACKY MESS!!
         public virtual void SetStateOfComplex (Dictionary<string,List<Molecule>> molecules)
         {
             //UnityEngine.Profiling.Profiler.BeginSample("Set State");
-            foreach (KeyValuePair<string,List<MoleculePattern>> entry in moleculePatterns)
+            Dictionary<string,List<MoleculePattern>> unusedMoleculePatterns = new Dictionary<string,List<MoleculePattern>>();
+            foreach (string moleculeName in moleculePatterns.Keys)
             {
-                if (!molecules.ContainsKey(entry.Key)) return;
+                if (!molecules.ContainsKey( moleculeName ))
+                {
+                    continue;
+                }
+                foreach (MoleculePattern moleculePattern in moleculePatterns[moleculeName])
+                {
+                    if (!MoleculePatternWasUsed( moleculePattern, molecules[moleculeName] ))
+                    {
+                        if (!unusedMoleculePatterns.ContainsKey( moleculeName ))
+                        {
+                            unusedMoleculePatterns.Add( moleculeName, new List<MoleculePattern>() );
+                        }
+                        unusedMoleculePatterns[moleculeName].Add( moleculePattern );
+                    }
+                }
             }
 
-            // matches each molecule to a list molecule patterns
-            // after matching, changes are applied to the molecules
-            // with the fewest matches, until all molecule patterns are used
-            //
-            // this prevent a molecule with many pattern matches from 'taking'
-            // a molecule pattern from a molecule with fewer matches
-
-            foreach (KeyValuePair<string, List<MoleculePattern>> entry in moleculePatterns)
+            List<Molecule> matchedMolecules = new List<Molecule>();
+            foreach (string moleculeName in unusedMoleculePatterns.Keys)
             {
-                List<Molecule> candidates = molecules[entry.Key];
-                List < MoleculePattern > patterns = entry.Value;
-                Dictionary<Molecule, List<MoleculePattern>> matches = new Dictionary<Molecule, List<MoleculePattern>>();
-
-                foreach(Molecule candidateMolecule in candidates)
+                if (!molecules.ContainsKey( moleculeName ))
                 {
-                    foreach(MoleculePattern patternToMatch in patterns)
+                    continue;
+                }
+                foreach (MoleculePattern moleculePattern in unusedMoleculePatterns[moleculeName])
+                {
+                    foreach (Molecule molecule in molecules[moleculeName])
                     {
-                        if (patternToMatch.Matches(candidateMolecule))
+                        if (!molecule.stateWasUpdated)
                         {
-                            if(!matches.ContainsKey(candidateMolecule))
+                            if (!matchedMolecules.Contains( molecule ) && moleculePattern.MatchesID( molecule ))
                             {
-                                matches[candidateMolecule] = new List<MoleculePattern>();
+                                moleculePattern.SetStateOfMolecule( molecule );
+                                matchedMolecules.Add( molecule );
+                                break;
                             }
-
-                            matches[candidateMolecule].Add(patternToMatch);
+                        }
+                        else
+                        {
+                            matchedMolecules.Add( molecule );
+                            molecule.stateWasUpdated = false;
                         }
                     }
                 }
+            }
 
-                List<MoleculePattern> usedPatterns = new List<MoleculePattern>();
-                List<KeyValuePair<Molecule, List<MoleculePattern>>> matchList = matches.ToList();
-
-                while (true)
+            foreach (string moleculeName in molecules.Keys)
+            {
+                foreach (Molecule molecule in molecules[moleculeName])
                 {
-                    // find the molecule with the least number of molecule pattern matches
-                    int minIndex = -1;
-                    int minCount = int.MaxValue;
-                    for (int i = 0; i < matchList.Count; ++i)
-                    {
-                        if (matchList[i].Value.Count == 0) continue;
-
-                        if (matchList[i].Value.Count < minCount)
-                        {
-                            minIndex = i;
-                            minCount = matchList[i].Value.Count;
-                        }
-
-                        if (matchList[i].Value.Count == 1)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (minIndex == -1)
-                    {
-                        break;
-                    }
-
-                    // apply the change to the molecule with the fewest options
-                    MoleculePattern finalMatchPattern = matchList[minIndex].Value[0];
-                    Molecule finalMatchMolecule = matchList[minIndex].Key;
-                    finalMatchPattern.SetStateOfMolecule(finalMatchMolecule);
-
-                    // remove the matched molecule
-                    matchList.RemoveAt(minIndex);
-                    matchList.TrimExcess();
-
-                    // remove the 'used' pattern
-                    for (int i = 0; i < matchList.Count; ++i)
-                    {
-                        matchList[i].Value.Remove(finalMatchPattern);
-                    }
+                    molecule.stateWasUpdated = false;
                 }
             }
             //UnityEngine.Profiling.Profiler.EndSample();
+        }
+
+        bool MoleculePatternWasUsed (MoleculePattern moleculePattern, List<Molecule> molecules)
+        {
+            foreach (Molecule molecule in molecules)
+            {
+                if (molecule.stateWasUpdated && moleculePattern.Matches( molecule ))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool Matches (ComplexPattern other)
@@ -309,6 +395,22 @@ namespace AICS.AgentSim
                 n += aTypeOfMoleculePattern.Count;
             }
             return n;
+        }
+    }
+
+    public class Bond
+    {
+        public MoleculePattern moleculePattern1;
+        public ComponentPattern componentPattern1;
+        public MoleculePattern moleculePattern2;
+        public ComponentPattern componentPattern2;
+
+        public Bond (MoleculePattern _moleculePattern1, ComponentPattern _componentPattern1, MoleculePattern _moleculePattern2, ComponentPattern _componentPattern2)
+        {
+            moleculePattern1 = _moleculePattern1;
+            componentPattern1 = _componentPattern1;
+            moleculePattern2 = _moleculePattern2;
+            componentPattern2 = _componentPattern2;
         }
     }
 }

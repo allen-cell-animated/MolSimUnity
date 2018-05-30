@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
-  m_Name: ActinBarbedGrowth
+  m_Name: ActinBarbedPolymerization
   m_EditorClassIdentifier: 
-  description: ActinBarbedGrowth
+  description: ActinBarbedPolymerization
   rate: 1e+9
   type: 0
   reactionCenters:
@@ -67,11 +67,11 @@ MonoBehaviour:
         - _componentName: pointed
           _state: 
           _bound: 1
-          bondName: 1
+          bondName: 2
         - _componentName: side1
           _state: 
           _bound: 1
-          bondName: 2
+          bondName: 3
         - _componentName: side2
           _state: 
           _bound: 0
@@ -89,11 +89,11 @@ MonoBehaviour:
         - _componentName: side1
           _state: 
           _bound: 1
-          bondName: +
+          bondName: 1
         - _componentName: side2
           _state: 
           _bound: 1
-          bondName: 2
+          bondName: 3
         - _componentName: barbed
           _state: 
           _bound: 0
@@ -107,22 +107,22 @@ MonoBehaviour:
         - _componentName: side2
           _state: 
           _bound: 1
-          bondName: +
+          bondName: 1
         - _componentName: barbed
           _state: 
           _bound: 1
-          bondName: 1
+          bondName: 2
     productMolecule:
       _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
       _components:
       - _componentName: pointed
         _state: 
         _bound: 1
-        bondName: 1
+        bondName: 2
       - _componentName: side1
         _state: 
         _bound: 1
-        bondName: 2
+        bondName: 3
       - _componentName: side2
         _state: 
         _bound: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
       _componentName: pointed
       _state: 
       _bound: 1
-      bondName: 1
+      bondName: 2
   - description: ActinBarbedGrowth
     reactantComplex:
       _molecules:
@@ -148,7 +148,7 @@ MonoBehaviour:
         - _componentName: side1
           _state: 
           _bound: 1
-          bondName: +
+          bondName: 1
         - _componentName: side2
           _state: 
           _bound: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
         - _componentName: side2
           _state: 
           _bound: 1
-          bondName: +
+          bondName: 1
         - _componentName: barbed
           _state: 
           _bound: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
       - _componentName: side2
         _state: 
         _bound: 1
-        bondName: +
+        bondName: 1
       - _componentName: barbed
         _state: 
         _bound: 0
@@ -198,11 +198,11 @@ MonoBehaviour:
         - _componentName: pointed
           _state: 
           _bound: 1
-          bondName: 1
+          bondName: 2
         - _componentName: side1
           _state: 
           _bound: 1
-          bondName: 2
+          bondName: 3
         - _componentName: side2
           _state: 
           _bound: 0
@@ -220,11 +220,11 @@ MonoBehaviour:
         - _componentName: side1
           _state: 
           _bound: 1
-          bondName: +
+          bondName: 1
         - _componentName: side2
           _state: 
           _bound: 1
-          bondName: 2
+          bondName: 3
         - _componentName: barbed
           _state: 
           _bound: 0
@@ -238,11 +238,11 @@ MonoBehaviour:
         - _componentName: side2
           _state: 
           _bound: 1
-          bondName: +
+          bondName: 1
         - _componentName: barbed
           _state: 
           _bound: 1
-          bondName: 1
+          bondName: 2
     productMolecule:
       _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
       _components:
@@ -253,13 +253,13 @@ MonoBehaviour:
       - _componentName: side2
         _state: 
         _bound: 1
-        bondName: +
+        bondName: 1
       - _componentName: barbed
         _state: 
         _bound: 1
-        bondName: 1
+        bondName: 2
     productComponent:
       _componentName: barbed
       _state: 
       _bound: 1
-      bondName: 1
+      bondName: 2

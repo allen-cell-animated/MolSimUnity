@@ -32,7 +32,7 @@ begin reaction rules
     # form trimer (start secondary filament)
     Actin(pointed!1,side1,side2).Actin(side1,side2,barbed!1) + Actin(pointed,side1,side2,barbed) -> Actin(pointed!1,side1!2,side2).Actin(side1,side2!3,barbed!1).Actin(pointed,side1!3,side2!2,barbed)   kTrimer
 
-    # barbed end growth
-    Actin(pointed,side1,side2,barbed) + Actin(pointed!+,side1!+,side2,barbed).Actin(side1!+,side2!+,barbed) -> Actin(pointed!1,side1!2,side2,barbed).Actin(pointed!+,side1!+,side2!2,barbed).Actin(side1!+,side2!+,barbed!1)   kBarbed
+    # barbed end polymerization
+    Actin(pointed,side1,side2,barbed) + Actin(pointed!+,side1!1,side2,barbed).Actin(side1!+,side2!1,barbed) -> Actin(pointed!2,side1!3,side2,barbed).Actin(pointed!+,side1!1,side2!3,barbed).Actin(side1!+,side2!1,barbed!2)   kBarbed
 
 end reaction rules
