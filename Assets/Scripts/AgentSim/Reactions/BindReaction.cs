@@ -21,7 +21,6 @@ namespace AICS.AgentSim
 
                 for (int i = 0; i < components.Length; i++)
                 {
-                    //Debug.Log( components[i] + " " + matchingReactionCenters[i].description );
                     components[i].SetToProductState( matchingReactionCenters[i] );
                     components[i].boundComponent = components[1 - i];
                 }
@@ -31,7 +30,6 @@ namespace AICS.AgentSim
                     newComplex.SetToProductState( matchingReactionCenters[0].productComplex, components[0].molecule, matchingReactionCenters[0].productMolecule,
                                                   components[1].molecule, matchingReactionCenters[1].productMolecule);
                     newComplex.UpdateReactions();
-                    UnityEditor.EditorApplication.isPaused = true;
                 }
                 else
                 {
