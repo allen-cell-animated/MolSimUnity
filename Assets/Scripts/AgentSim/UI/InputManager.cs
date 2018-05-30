@@ -16,7 +16,7 @@ namespace AICS.AgentSim
 
         public Selecter lastSelectedObject;
         bool justSelected;
-        float lastFPSTime = -1f;
+        float deltaTime;
 
         Vector2 mouseDelta = Vector2.zero;
         float mouseMoveThreshold = 0.1f;
@@ -126,11 +126,8 @@ namespace AICS.AgentSim
 
         void UpdateFPS ()
         {
-            if (Time.time - lastFPSTime >= 0.5f)
-            {
-                fps.text = Mathf.Round( 1f / Time.deltaTime ).ToString() + " fps";
-                lastFPSTime = Time.time;
-            }
+            deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+            fps.text = Mathf.Round( 1f / deltaTime ).ToString() + " fps";
         }
 
         public void Restart ()

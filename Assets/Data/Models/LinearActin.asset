@@ -14,7 +14,7 @@ MonoBehaviour:
   scale: 0.000001
   containerVolume: 0.0000001
   complexes:
-  - concentration: 5e-15
+  - concentration: 4e-15
     complexPattern:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
