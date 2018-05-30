@@ -132,7 +132,7 @@ namespace AICS.AgentSim
 
         public void Restart ()
         {
-            reactor.Restart();
+            reactor.StartCoroutine( "Restart" );
         }
     }
 }
