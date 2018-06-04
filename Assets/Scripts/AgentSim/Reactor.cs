@@ -60,6 +60,11 @@ namespace AICS.AgentSim
 
         void Start ()
         {
+            StartReactor();
+        }
+
+        void StartReactor ()
+        {
             CreateReactions();
             CreateContainer();
             SpawnComplexes();
@@ -493,10 +498,31 @@ namespace AICS.AgentSim
             complexes.RemoveAll( c => c == null || !c.couldReactOnCollision );
         }
 
-        public void Restart ()
+        public IEnumerator Restart ()
         {
+            bool wasPaused = World.Instance.paused;
+            World.Instance.paused = true;
+
+            yield return new WaitForEndOfFrame();
+
             World.Instance.Restart();
-            // TODO actually restart
+            foreach (Transform child in transform)
+            {
+                Destroy( child.gameObject );
+            }
+            bindReactions.Clear();
+            collisionFreeReactions.Clear();
+            releaseReactions.Clear();
+            stateChangeReactions.Clear();
+            createReactions.Clear();
+            destroyReactions.Clear();
+            movers.Clear();
+            complexes.Clear();
+            id = -1;
+
+            StartReactor();
+
+            World.Instance.paused = wasPaused;
         }
     }
 

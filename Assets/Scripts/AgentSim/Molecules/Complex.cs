@@ -282,10 +282,25 @@ namespace AICS.AgentSim
             {
                 foreach (Molecule molecule in molecules[moleculeName])
                 {
-                    molecule.UpdateReactions( relevantBindReactions, relevantCollisionFreeReactions );
+                    if (molecule.stateWasUpdated)
+                    {
+                        molecule.UpdateReactions( relevantBindReactions, relevantCollisionFreeReactions );
+                    }
                 }
             }
             UpdateCouldReactOnCollision();
+            ResetMoleculesStateWasUpdated();
+        }
+
+        void ResetMoleculesStateWasUpdated ()
+        {
+            foreach (string moleculeName in molecules.Keys)
+            {
+                foreach (Molecule molecule in molecules[moleculeName])
+                {
+                    molecule.stateWasUpdated = false;
+                }
+            }
         }
 
         protected void UpdateCouldReactOnCollision ()

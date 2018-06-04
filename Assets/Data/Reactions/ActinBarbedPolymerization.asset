@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: ActinBarbedPolymerization
   m_EditorClassIdentifier: 
   description: ActinBarbedPolymerization
-  rate: 1e+9
+  rate: 100000000
   type: 0
   reactionCenters:
   - description: ActinBarbedGrowth
