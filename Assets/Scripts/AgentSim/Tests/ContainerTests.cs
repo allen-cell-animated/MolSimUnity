@@ -20,7 +20,7 @@ public class ContainerTests : MolSimTests
 
             foreach (Mover mover in movers)
             {
-                AssertIsTrue( reactor.container.IsInBounds( mover.theTransform.position ) );
+                AssertIsTrue( reactor.container.IsInBounds( mover.transform.position ) );
             }
         }
 

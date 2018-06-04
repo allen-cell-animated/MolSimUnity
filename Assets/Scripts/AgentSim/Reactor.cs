@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Reactor : MonoBehaviour 
+    public class Reactor : MonoBehaviour
     {
         [HideInInspector] public Container container;
         public ModelDef modelDef;
@@ -135,7 +135,7 @@ namespace AICS.AgentSim
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
                                                               GetRelevantBindReactions( complexConcentration.complexPattern ),
                                                               GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );
-            
+
             Complex complex;
             for (int i = 0; i < amount; i++)
             {
@@ -350,17 +350,17 @@ namespace AICS.AgentSim
             {
                 Cleanup();
 
-                //UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
+                UnityEngine.Profiling.Profiler.BeginSample("MoveParticles");
                 MoveParticles();
-                //UnityEngine.Profiling.Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
 
-                //UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
+                UnityEngine.Profiling.Profiler.BeginSample("CollisionFreeReactions");
                 DoCollisionFreeReactions();
-                //UnityEngine.Profiling.Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
 
-                //UnityEngine.Profiling.Profiler.BeginSample("BindReactions");
+                UnityEngine.Profiling.Profiler.BeginSample("BindReactions");
                 DoBindReactions();
-                //UnityEngine.Profiling.Profiler.EndSample();
+                UnityEngine.Profiling.Profiler.EndSample();
 
                 DestroyOldComplexes();
 
@@ -370,22 +370,47 @@ namespace AICS.AgentSim
 
         protected virtual void MoveParticles ()
         {
-            foreach (Mover mover in movers)
+            for(int i = 0; i < movers.Count; ++i)
             {
-                mover.Move( dT );
-            }
-        }
-
-        public virtual bool WillCollide (Mover mover, Vector3 newPosition)
-        {
-            foreach (Mover otherMover in movers)
-            {
-                if (mover.IsCollidingWith( otherMover, newPosition ))
+                Mover currentMover = movers[i];
+                for(int numAttempts = 0; numAttempts < maxMoveAttempts; ++numAttempts)
                 {
-                    return true;
+                    Vector3 moveStep = currentMover.GetRandomDisplacement(dT);
+                    Vector3 newPosition_AfterMoveStep = currentMover.transform.position + moveStep;
+
+                    bool isInbounds = container.IsInBounds( newPosition_AfterMoveStep );
+
+                    if (!isInbounds && ! container.periodicBoundary)
+                    {
+                        continue;
+                    }
+                    else if(!isInbounds && container.periodicBoundary)
+                    {
+                        currentMover.ReflectPeriodically( container.transform.position - (newPosition_AfterMoveStep) );
+                        break;
+                    }
+
+                    bool willCollide = false;
+                    for(int j = 0; j < i; ++j)
+                    {
+                        Mover alreadyPlacedMover = movers[j];
+                        if (currentMover.WillCollideWith( alreadyPlacedMover, newPosition_AfterMoveStep ))
+                        {
+                            willCollide = true;
+                        }
+                    }
+
+                    if(willCollide)
+                    {
+                        continue;
+                    }
+
+                    currentMover.transform.position = newPosition_AfterMoveStep;
+                    break;
                 }
+
+                currentMover.RotateRandomly(dT);
             }
-            return false;
         }
 
         protected virtual void DoCollisionFreeReactions ()
@@ -509,7 +534,7 @@ namespace AICS.AgentSim
         public CollisionFreeReaction[] relevantCollisionFreeReactions;
 
         public MoleculeInitData (ComplexPattern _complexPattern, Dictionary<string,List<RelativeTransform>> _moleculeTransforms,
-                                 BindReaction[] _relevantBindReactions, 
+                                 BindReaction[] _relevantBindReactions,
                                  CollisionFreeReaction[] _relevantCollisionFreeReactions)
         {
             complexPattern = _complexPattern;
