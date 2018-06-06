@@ -76,17 +76,6 @@ namespace AICS.AgentSim
             }
         }
 
-        protected void AnimateReaction (Dictionary<string,List<Molecule>> molecules)
-        {
-            foreach (string moleculeName in molecules.Keys)
-            {
-                foreach (Molecule molecule in molecules[moleculeName])
-                {
-                    molecule.AnimateReaction();
-                }
-            }
-        }
-
         public void CalculateObservedRate ()
         {
             observedRate = events / World.Instance.time;

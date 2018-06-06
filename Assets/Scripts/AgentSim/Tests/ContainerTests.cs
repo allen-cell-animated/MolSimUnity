@@ -12,15 +12,13 @@ public class ContainerTests : MolSimTests
 
         yield return new WaitForEndOfFrame();
 
-        Mover[] movers = GameObject.FindObjectsOfType<Mover>();
-
         for (int i = 0; i < 500; i++)
         {
             yield return new WaitForEndOfFrame();
 
-            foreach (Mover mover in movers)
+            foreach (Mover mover in reactor.movers)
             {
-                AssertIsTrue( reactor.container.IsInBounds( mover.transform.position ) );
+                AssertIsTrue( reactor.container.IsInBounds( mover.position ) );
             }
         }
 

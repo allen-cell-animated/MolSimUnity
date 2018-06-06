@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class MoleculeComponent : MonoBehaviour, IComponent
+    public class MoleculeComponent : IComponent
     {
         public ComponentDef definition;
         public Molecule molecule;
@@ -12,6 +12,31 @@ namespace AICS.AgentSim
         public bool couldReactOnCollision;
         public bool stateWasUpdated;
         public string lastBondName;
+        public RelativeTransform localTransform;
+
+        public RelativeTransform worldTransform
+        {
+            get
+            {
+                return complex.reactor.GetWorldTransform( molecule.worldTransform, localTransform );
+            }
+        }
+
+        public Vector3 position
+        {
+            get
+            {
+                return worldTransform.position;
+            }
+        }
+
+        public Vector3 rotation
+        {
+            get
+            {
+                return worldTransform.rotation;
+            }
+        }
 
         #region IComponent
         public string componentName
@@ -52,19 +77,6 @@ namespace AICS.AgentSim
         [SerializeField] protected ReactionCenter[] bindReactionCenters;
         [SerializeField] protected CollisionFreeReaction[] collisionFreeReactions;
 
-        Transform _theTransform;
-        public Transform theTransform
-        {
-            get
-            {
-                if (_theTransform == null)
-                {
-                    _theTransform = transform;
-                }
-                return _theTransform;
-            }
-        }
-
         public Complex complex
         {
             get
@@ -81,11 +93,12 @@ namespace AICS.AgentSim
             }
         }
 
-        public virtual void Init (ComponentDef componentDef, Molecule _molecule)
+        public MoleculeComponent (ComponentDef componentDef, Molecule _molecule)
         {
             definition = componentDef;
             molecule = _molecule;
             state = (definition.states == null || definition.states.Length < 1) ? "" : definition.states[0];
+            localTransform = new RelativeTransform( componentDef.transformOnMolecule );
         }
 
         public virtual bool ReactWith (MoleculeComponent other)
@@ -100,10 +113,7 @@ namespace AICS.AgentSim
                     {
                         if (reactionCenter != otherReactionCenter && reactionCenter.reaction == otherReactionCenter.reaction && reactionCenter.reaction.ShouldHappen())
                         {
-                            //UnityEngine.Profiling.Profiler.BeginSample("ReactBind");
-                            bool b = reactionCenter.reaction.React( new MoleculeComponent[]{ this, other }, new ReactionCenter[]{ reactionCenter, otherReactionCenter } );
-                            //UnityEngine.Profiling.Profiler.EndSample();
-                            if (b)
+                            if (reactionCenter.reaction.React( new MoleculeComponent[]{ this, other }, new ReactionCenter[]{ reactionCenter, otherReactionCenter } ))
                             {
                                 return true;
                             }
@@ -117,7 +127,7 @@ namespace AICS.AgentSim
         bool IsNear (MoleculeComponent other)
         {
             return other != this 
-                && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
+                && Vector3.Distance( position, other.position ) < interactionRadius + other.interactionRadius;
         }
 
         public void SetToProductState (MoleculePattern productMolecule, ComponentPattern productComponent)
@@ -139,7 +149,6 @@ namespace AICS.AgentSim
             SetBindReactionCenters( relevantBindReactions );
             UnregisterWithCollisionFreeReactions();
             RegisterWithCollisionFreeReactions( relevantCollisionFreeReactions );
-            name = molecule.name + "_" + componentName;
         }
 
         protected void SetBindReactionCenters (BindReaction[] relevantBindReactions)
@@ -183,7 +192,7 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "Component " + name + " (" + componentName + "~" + state + (bound ? "!" + (string.IsNullOrEmpty( lastBondName ) ? "+" : lastBondName ) : "") + ")";
+            return componentName + "~" + state + (bound ? "!" + (string.IsNullOrEmpty( lastBondName ) ? "+" : lastBondName ) : "");
         }
     }
 }

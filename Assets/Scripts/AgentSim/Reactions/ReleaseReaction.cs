@@ -29,9 +29,7 @@ namespace AICS.AgentSim
                     newComplex.UpdateReactions();
 
                     SetProductColor( molecules );
-                    AnimateReaction( molecules );
                 }
-                World.ShowFlash( components[0].theTransform );
 
                 return true;
             }

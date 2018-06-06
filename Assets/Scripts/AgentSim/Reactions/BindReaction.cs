@@ -37,8 +37,6 @@ namespace AICS.AgentSim
                 newComplex.UpdateReactions();
 
                 SetProductColor( molecules );
-                AnimateReaction( molecules );
-                World.ShowFlash( components[0].theTransform );
 
                 return true;
             }
@@ -61,10 +59,7 @@ namespace AICS.AgentSim
                 parentMoleculeCount = tempCount;
             }
 
-            childComponent.theTransform.parent.position = parentComponent.theTransform.TransformPoint( childComponent.theTransform.InverseTransformPoint( childComponent.theTransform.parent.position ) );
-            childComponent.theTransform.parent.rotation = childComponent.theTransform.parent.rotation * Quaternion.Inverse( childComponent.theTransform.rotation ) * parentComponent.theTransform.rotation;
-
-            //Debug.Log( "parent " + childComponent + " to " + parentComponent + " : " + parentComponent.theTransform.InverseTransformPoint( childComponent.theTransform.position ) );
+            childComponent.molecule.SetWorldTransform( reactor.GetWorldTransformForBindingMolecule( childComponent.molecule, childComponent, parentComponent) );
         }
 
         protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)

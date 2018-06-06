@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.5369666, g: 0.57182276, b: 0.6032513, a: 1}
+  m_IndirectSpecularColor: {r: 0.53687346, g: 0.5717174, b: 0.6032434, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -112,33 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!84 &268295941
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_Width: 1050
-  m_Height: 591
-  m_AntiAliasing: 1
-  m_DepthFormat: 1
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 0
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &531461674
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,7 +244,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 268295941}
+      objectReference: {fileID: 2107700535}
     - target: {fileID: 20093539558797632, guid: 43be4eef988ea478eb72bd7cef6fe72e,
         type: 2}
       propertyPath: m_ClearFlags
@@ -289,9 +262,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 902787514}
+  - component: {fileID: 902787515}
   - component: {fileID: 902787513}
   m_Layer: 0
-  m_Name: Reactor
+  m_Name: SimulationManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -300,26 +274,17 @@ GameObject:
 --- !u!114 &902787513
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114868016156227298, guid: dcb35f8163ff74e51b7fddb8ded9b212,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 902787512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a783a31d6df4615983d9903a2403a8, type: 3}
+  m_Script: {fileID: 11500000, guid: 56c7280a4e9534ce7a1ea6b927abed8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 0}
-  modelDef: {fileID: 11400000, guid: c40475d4e25a44d5981445dc226b6783, type: 2}
-  bindReactions: []
-  releaseReactions: []
-  stateChangeReactions: []
-  createReactions: []
-  destroyReactions: []
-  maxMoveAttempts: 20
-  periodicBoundary: 1
-  movers: []
-  complexes: []
+  agentPrefabs:
+  - agentName: Actin
+    prefab: {fileID: 1128255808781620, guid: 234cf3d4b9433451bacf3a7a4ec123ea, type: 2}
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0
@@ -334,6 +299,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &902787515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 902787512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6255f0d68aa894ed9b9df7a99213aa12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simulationType: 0
+  modelDef: {fileID: 11400000, guid: c40475d4e25a44d5981445dc226b6783, type: 2}
 --- !u!1001 &1113661159
 Prefab:
   m_ObjectHideFlags: 0
@@ -541,7 +519,7 @@ Prefab:
         type: 2}
       propertyPath: reactor
       value: 
-      objectReference: {fileID: 902787513}
+      objectReference: {fileID: 0}
     - target: {fileID: 224460431495669152, guid: 5b00e899123084c4da0052c3259409d4,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -565,7 +543,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b00e899123084c4da0052c3259409d4, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &2021337148
+--- !u!84 &1990927814
 RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -586,6 +564,33 @@ RenderTexture:
     serializedVersion: 2
     m_FilterMode: 1
     m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+--- !u!84 &2107700535
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_Width: 1050
+  m_Height: 591
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 0
     m_MipBias: 0
     m_WrapU: 1
     m_WrapV: 1
