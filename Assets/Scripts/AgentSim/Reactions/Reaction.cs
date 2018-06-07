@@ -53,7 +53,7 @@ namespace AICS.AgentSim
         {
             foreach (ReactionCenter reactionCenter in definition.reactionCenters)
             {
-                if (reactionCenter.reactantComplex.Matches( component.complex.molecules ) && 
+                if (//reactionCenter.reactantComplex.Matches( component.complex.molecules ) && 
                     reactionCenter.reactantMolecule.Matches( component.molecule ) && 
                     reactionCenter.reactantComponent.Matches( component ))
                 {
