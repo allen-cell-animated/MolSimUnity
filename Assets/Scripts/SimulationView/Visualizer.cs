@@ -19,7 +19,7 @@ namespace AICS.SimulationView
 
                 foreach (string agentID in initialAgents.Keys)
                 {
-                    agents.Add( agentID, CreateAgentVisualization( initialAgents[agentID] ) );
+                    agents.Add( agentID, CreateAgentVisualization( agentID, initialAgents[agentID] ) );
                 }
             }
         }
@@ -36,7 +36,7 @@ namespace AICS.SimulationView
             }
         }
 
-        GameObject CreateAgentVisualization (AgentData agentData)
+        GameObject CreateAgentVisualization (string agentID, AgentData agentData)
         {
             GameObject obj = null;
             if (!prefabs.ContainsKey( agentData.agentName ) || prefabs[agentData.agentName] == null)
@@ -48,20 +48,21 @@ namespace AICS.SimulationView
             {
                 obj = Instantiate( prefabs[agentData.agentName] );
             }
+            obj.name = agentData.agentName + "_" + agentID;
             obj.transform.SetParent( transform );
             obj.transform.position = agentData.position;
             obj.transform.rotation = Quaternion.Euler( agentData.rotation );
             return obj;
         }
 
-        public void UpdateAgents (Dictionary<string,Transform> newTransforms)
+        public void UpdateAgents (Dictionary<string,AgentData> updatedAgents)
         {
-            foreach (string id in newTransforms.Keys)
+            foreach (string id in agents.Keys)
             {
                 if (agents.ContainsKey( id ))
                 {
-                    agents[id].transform.position = newTransforms[id].position;
-                    agents[id].transform.rotation = newTransforms[id].rotation;
+                    agents[id].transform.position = updatedAgents[id].position;
+                    agents[id].transform.rotation = Quaternion.Euler( updatedAgents[id].rotation );
                 }
             }
         }

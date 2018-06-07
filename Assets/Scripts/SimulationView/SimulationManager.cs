@@ -53,7 +53,7 @@ namespace AICS.SimulationView
 
         void Update ()
         {
-            //visualizer.UpdateAgents(  );
+            visualizer.UpdateAgents( UpdateSimulation() );
         }
 
         public Dictionary<string,AgentData> UpdateSimulation ()
@@ -61,7 +61,7 @@ namespace AICS.SimulationView
             switch (simulationType)
             {
                 case SimulationType.AgentSim :
-                    return reactor.Init( modelDef );
+                    return reactor.GetAgentTransforms();
 
                 case SimulationType.ExternalSimulator:
                     return new Dictionary<string,AgentData>();

@@ -58,8 +58,10 @@ namespace AICS.AgentSim
                 childMoleculeCount = parentMoleculeCount;
                 parentMoleculeCount = tempCount;
             }
+            Debug.Log( "Bind " + childComponent.molecule.agentID + " to " + parentComponent.molecule.agentID );
 
-            childComponent.molecule.SetWorldTransform( reactor.GetWorldTransformForBindingMolecule( childComponent.molecule, childComponent, parentComponent) );
+            childComponent.molecule.SetWorldTransform( reactor.GetWorldTransformForBindingMolecule( childComponent.molecule.position, childComponent.molecule.rotation, childComponent.position,
+                                                                                                    childComponent.rotation, parentComponent.position, parentComponent.rotation) );
         }
 
         protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)

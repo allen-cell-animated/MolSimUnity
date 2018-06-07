@@ -26,6 +26,9 @@ namespace AICS.AgentSim
         public List<Mover> movers = new List<Mover>();
         public List<Complex> complexes = new List<Complex>();
 
+        Dictionary<string,AgentData> agents = new Dictionary<string,AgentData>();
+        Dictionary<string,Molecule> molecules = new Dictionary<string,Molecule>();
+
         //[HideInInspector] public int moveFails;
         //[SerializeField] float stepsPerMoveFail;
         //[SerializeField] float percentOccupiedVolume;
@@ -115,15 +118,14 @@ namespace AICS.AgentSim
 
         protected virtual Dictionary<string,AgentData> SpawnComplexes ()
         {
-            Dictionary<string,AgentData> agents = new Dictionary<string,AgentData>();
             foreach (ComplexConcentration complex in modelDef.complexes)
             {
-                SpawnSpecies( complex, agents );
+                SpawnSpecies( complex );
             }
             return agents;
         }
 
-        protected virtual void SpawnSpecies (ComplexConcentration complexConcentration, Dictionary<string,AgentData> agents)
+        protected virtual void SpawnSpecies (ComplexConcentration complexConcentration)
         {
             int amount = Mathf.RoundToInt( complexConcentration.concentration * container.volume * 6.022141e23f );
             if (amount < 1 || complexConcentration.moleculeCount < 1)
@@ -147,6 +149,7 @@ namespace AICS.AgentSim
                     {
                         molecule.agentID = nextID;
                         agents.Add( molecule.agentID, new AgentData( moleculeName, molecule.position, molecule.rotation ) );
+                        molecules.Add( molecule.agentID, molecule );
                     }
                 }
             }
@@ -285,16 +288,6 @@ namespace AICS.AgentSim
             }
         }
 
-        public RelativeTransform GetWorldTransform (RelativeTransform parentWorldTransform, RelativeTransform localTransform)
-        {
-            parentTransform.position = parentWorldTransform.position;
-            parentTransform.rotation = Quaternion.Euler( parentWorldTransform.rotation );
-
-            childTransform.position = parentTransform.TransformPoint( localTransform.position );
-            childTransform.rotation = parentTransform.rotation * Quaternion.Euler( localTransform.rotation );
-            return new RelativeTransform( childTransform.position, childTransform.rotation.eulerAngles );
-        }
-
         public RelativeTransform GetWorldTransform (Vector3 parentWorldPosition, Quaternion parentWorldRotation, RelativeTransform localTransform)
         {
             parentTransform.position = parentWorldPosition;
@@ -305,18 +298,19 @@ namespace AICS.AgentSim
             return new RelativeTransform( childTransform.position, childTransform.rotation.eulerAngles );
         }
 
-        public RelativeTransform GetWorldTransformForBindingMolecule (Molecule molecule, MoleculeComponent moleculesComponent, MoleculeComponent otherComponent)
+        public RelativeTransform GetWorldTransformForBindingMolecule (Vector3 moleculePosition, Vector3 moleculeRotation, Vector3 moleculesComponentPosition, 
+                                                                      Vector3 moleculesComponentRotation, Vector3 otherComponentPosition, Vector3 otherComponentRotation)
         {
-            parentTransform.position = otherComponent.position;
-            parentTransform.rotation = Quaternion.Euler( otherComponent.rotation );
+            parentTransform.position = otherComponentPosition;
+            parentTransform.rotation = Quaternion.Euler( otherComponentRotation );
 
-            childTransform.position = moleculesComponent.position;
-            childTransform.rotation = Quaternion.Euler( moleculesComponent.rotation );
+            childTransform.position = moleculesComponentPosition;
+            childTransform.rotation = Quaternion.Euler( moleculesComponentRotation );
 
-            Vector3 moleculePosition = parentTransform.TransformPoint( childTransform.InverseTransformPoint( molecule.position ) );
-            Quaternion moleculeRotation = Quaternion.Euler( molecule.rotation ) * Quaternion.Inverse( childTransform.rotation ) * parentTransform.rotation;
+            Vector3 pos = parentTransform.TransformPoint( childTransform.InverseTransformPoint( moleculePosition ) );
+            Quaternion rot = Quaternion.Euler( moleculeRotation ) * Quaternion.Inverse( childTransform.rotation ) * parentTransform.rotation;
 
-            return new RelativeTransform( moleculePosition, moleculeRotation.eulerAngles );
+            return new RelativeTransform( pos, rot.eulerAngles );
         }
 
         public RelativeTransform GetParentWorldTransform (RelativeTransform childWorldTransform, RelativeTransform childLocalTransform)
@@ -332,6 +326,22 @@ namespace AICS.AgentSim
 
             parentTransform.SetParent( transform );
             return new RelativeTransform( parentTransform.position, parentTransform.rotation.eulerAngles );
+        }
+
+        public RelativeTransform GetLocalTransform (Vector3 parentWorldPosition, Quaternion parentWorldRotation, RelativeTransform childWorldTransform)
+        {
+            parentTransform.position = parentWorldPosition;
+            parentTransform.rotation = parentWorldRotation;
+
+            childTransform.position = childWorldTransform.position;
+            childTransform.rotation = Quaternion.Euler( childWorldTransform.rotation );
+
+            childTransform.SetParent( parentTransform );
+            Vector3 childLocalPosition = childTransform.localPosition;
+            Vector3 childLocalRotation = childTransform.localRotation.eulerAngles;
+            childTransform.SetParent( transform );
+
+            return new RelativeTransform( childLocalPosition, childLocalRotation );
         }
 
         protected BindReaction[] GetRelevantBindReactions (ComplexPattern complexPattern)
@@ -445,9 +455,14 @@ namespace AICS.AgentSim
             }
         }
 
-        public Dictionary<string,RelativeTransform> GetAgentTransforms ()
+        public Dictionary<string,AgentData> GetAgentTransforms ()
         {
-            //TODO
+            foreach (string agentID in agents.Keys)
+            {
+                agents[agentID].position = molecules[agentID].position;
+                agents[agentID].rotation = molecules[agentID].rotation;
+            }
+            return agents;
         }
 
         protected virtual void MoveParticles ()
@@ -549,6 +564,7 @@ namespace AICS.AgentSim
                 }
             }
 
+            //create complex and move molecules to it
             Complex complex = new Complex( molecules, center / n, this );
             foreach (string moleculeName in molecules.Keys)
             {
@@ -559,6 +575,8 @@ namespace AICS.AgentSim
             }
             return complex;
         }
+
+
 
         public void ChangeColor (string agentID, Color newColor)
         {

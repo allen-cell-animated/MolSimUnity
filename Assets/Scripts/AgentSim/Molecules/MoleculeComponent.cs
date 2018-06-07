@@ -18,7 +18,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return complex.reactor.GetWorldTransform( molecule.worldTransform, localTransform );
+                return complex.reactor.GetWorldTransform( molecule.worldTransform.position, Quaternion.Euler( molecule.worldTransform.rotation ), localTransform );
             }
         }
 

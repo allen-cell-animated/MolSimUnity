@@ -118,8 +118,12 @@ namespace AICS.AgentSim
 
         public virtual void MoveToComplex (Complex _complex)
         {
+            RelativeTransform _worldTransform = new RelativeTransform( worldTransform );
+
             complex.RemoveMolecule( this );
             complex = _complex;
+
+            localTransform = complex.reactor.GetLocalTransform( complex.position, complex.rotation, _worldTransform );
         }
 
         public void SetToProductState (MoleculePattern productMoleculePattern)
