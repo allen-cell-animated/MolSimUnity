@@ -41,7 +41,7 @@ namespace AICS.AgentSim
 
         protected virtual void CalculateSize ()
         {
-            float side = Mathf.Pow( volume * 1E-6f, 1f / 3f ) / scale;
+            float side = Mathf.Pow( volume * 1e-3f, 1f / 3f ) / scale;
             size = side * Vector3.one;
         }
 

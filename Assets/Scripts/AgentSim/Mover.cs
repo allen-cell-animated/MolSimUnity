@@ -46,12 +46,13 @@ namespace AICS.AgentSim
 
         public void RotateRandomly (float dTime)
         {
-            rotation *= Quaternion.Euler( 20f * GetDisplacement( dTime ) * Random.onUnitSphere );
+            rotation *= Quaternion.Euler( 2.5f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
         private float GetDisplacement (float dTime)
         {
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime ) );
+            //mean squared displacement = 6 * diffusion coefficient * dT
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( 6f * diffusionCoefficient * dTime ) );
         }
 
         public bool WillCollideWith (Mover other, Vector3 newPosition)
