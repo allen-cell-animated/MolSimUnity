@@ -40,6 +40,39 @@ MonoBehaviour:
       position: {x: 0.213, y: -0.247, z: 2.753}
       rotation: {x: 0, y: 0, z: -30}
     radius: 6
-  colors: []
+  - componentName: nuc
+    states:
+    - ATP
+    - ADP/Pi
+    - ADP
+    transformOnMolecule:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    radius: 0
+  colors:
+  - pattern:
+      _moleculeDef: {fileID: 11400000}
+      _components:
+      - _componentName: nuc
+        _state: ATP
+        _bound: 0
+        bondName: 
+    color: {r: 0.093101226, g: 0.09661733, b: 0.60294116, a: 1}
+  - pattern:
+      _moleculeDef: {fileID: 11400000}
+      _components:
+      - _componentName: nuc
+        _state: ADP/Pi
+        _bound: 0
+        bondName: 
+    color: {r: 0.59590894, g: 0.09310119, b: 0.60294116, a: 1}
+  - pattern:
+      _moleculeDef: {fileID: 11400000}
+      _components:
+      - _componentName: nuc
+        _state: ADP
+        _bound: 0
+        bondName: 
+    color: {r: 1, g: 0.36764705, b: 0.61622727, a: 1}
   _visualizationPrefab: {fileID: 1128255808781620, guid: 234cf3d4b9433451bacf3a7a4ec123ea,
     type: 2}
