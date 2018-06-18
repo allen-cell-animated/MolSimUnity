@@ -9,132 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 257c990f2b58c4b09bd578522bde8a97, type: 3}
-  m_Name: ActinTrimerization
+  m_Name: ActinPointedShrink
   m_EditorClassIdentifier: 
-  description: ActinTrimerization
-  rate: 100000000
-  type: 0
+  description: ActinPointedGrow
+  rate: 0.19
+  type: 1
   reactionCenters:
-  - description: ActinTrimerization
-    reactantComplex:
-      _molecules:
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: pointed
-          _state: 
-          _bound: 1
-          bondName: 1
-        - _componentName: side1
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: side2
-          _state: 
-          _bound: 0
-          bondName: 
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: side1
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: side2
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: barbed
-          _state: 
-          _bound: 1
-          bondName: 1
-    reactantMolecule:
-      _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-      _components:
-      - _componentName: pointed
-        _state: 
-        _bound: 1
-        bondName: 1
-      - _componentName: side1
-        _state: 
-        _bound: 0
-        bondName: 
-      - _componentName: side2
-        _state: 
-        _bound: 0
-        bondName: 
-    reactantComponent:
-      _componentName: side1
-      _state: 
-      _bound: 0
-      bondName: 
-    productComplex:
-      _molecules:
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: pointed
-          _state: 
-          _bound: 1
-          bondName: 1
-        - _componentName: side1
-          _state: 
-          _bound: 1
-          bondName: 2
-        - _componentName: side2
-          _state: 
-          _bound: 0
-          bondName: 
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: side1
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: side2
-          _state: 
-          _bound: 1
-          bondName: 3
-        - _componentName: barbed
-          _state: 
-          _bound: 1
-          bondName: 1
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: pointed
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: side1
-          _state: 
-          _bound: 1
-          bondName: 3
-        - _componentName: side2
-          _state: 
-          _bound: 1
-          bondName: 2
-        - _componentName: barbed
-          _state: 
-          _bound: 0
-          bondName: 
-    productMolecule:
-      _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-      _components:
-      - _componentName: pointed
-        _state: 
-        _bound: 1
-        bondName: 1
-      - _componentName: side1
-        _state: 
-        _bound: 1
-        bondName: 2
-      - _componentName: side2
-        _state: 
-        _bound: 0
-        bondName: 
-    productComponent:
-      _componentName: side1
-      _state: 
-      _bound: 1
-      bondName: 2
-  - description: ActinTrimerization
+  - description: ActinPointedGrowMonomer
     reactantComplex:
       _molecules:
       - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
@@ -149,12 +30,44 @@ MonoBehaviour:
           bondName: 
         - _componentName: side2
           _state: 
-          _bound: 0
-          bondName: 
+          _bound: 1
+          bondName: 3
         - _componentName: barbed
+          _state: 
+          _bound: 1
+          bondName: 2
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
           _state: 
           _bound: 0
           bondName: 
+        - _componentName: side1
+          _state: 
+          _bound: 1
+          bondName: 3
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: barbed
+          _state: 
+          _bound: 1
+          bondName: +
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 1
+          bondName: 2
+        - _componentName: side1
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: +
     reactantMolecule:
       _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
       _components:
@@ -167,87 +80,194 @@ MonoBehaviour:
         _bound: 0
         bondName: 
       - _componentName: side2
-        _state: 
-        _bound: 0
-        bondName: 
-      - _componentName: barbed
-        _state: 
-        _bound: 0
-        bondName: 
-    reactantComponent:
-      _componentName: side2
-      _state: 
-      _bound: 0
-      bondName: 
-    productComplex:
-      _molecules:
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: pointed
-          _state: 
-          _bound: 1
-          bondName: 1
-        - _componentName: side1
-          _state: 
-          _bound: 1
-          bondName: 2
-        - _componentName: side2
-          _state: 
-          _bound: 0
-          bondName: 
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: side1
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: side2
-          _state: 
-          _bound: 1
-          bondName: 3
-        - _componentName: barbed
-          _state: 
-          _bound: 1
-          bondName: 1
-      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-        _components:
-        - _componentName: pointed
-          _state: 
-          _bound: 0
-          bondName: 
-        - _componentName: side1
-          _state: 
-          _bound: 1
-          bondName: 3
-        - _componentName: side2
-          _state: 
-          _bound: 1
-          bondName: 2
-        - _componentName: barbed
-          _state: 
-          _bound: 0
-          bondName: 
-    productMolecule:
-      _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
-      _components:
-      - _componentName: pointed
-        _state: 
-        _bound: 0
-        bondName: 
-      - _componentName: side1
         _state: 
         _bound: 1
         bondName: 3
-      - _componentName: side2
+      - _componentName: barbed
         _state: 
         _bound: 1
         bondName: 2
+    reactantComponent:
+      _componentName: barbed
+      _state: 
+      _bound: 1
+      bondName: 2
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side1
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side2
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: barbed
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: nuc
+          _state: ATP
+          _bound: 0
+          bondName: 
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+      _components:
+      - _componentName: pointed
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: side1
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: side2
+        _state: 
+        _bound: 0
+        bondName: 
       - _componentName: barbed
         _state: 
         _bound: 0
         bondName: 
+      - _componentName: nuc
+        _state: ATP
+        _bound: 0
+        bondName: 
     productComponent:
-      _componentName: side2
+      _componentName: barbed
+      _state: 
+      _bound: 0
+      bondName: 
+  - description: ActinPointedGrowFilament
+    reactantComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side1
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: 3
+        - _componentName: barbed
+          _state: 
+          _bound: 1
+          bondName: 2
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side1
+          _state: 
+          _bound: 1
+          bondName: 3
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: barbed
+          _state: 
+          _bound: 1
+          bondName: +
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 1
+          bondName: 2
+        - _componentName: side1
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: +
+    reactantMolecule:
+      _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+      _components:
+      - _componentName: pointed
+        _state: 
+        _bound: 1
+        bondName: 2
+      - _componentName: side1
+        _state: 
+        _bound: 1
+        bondName: 1
+      - _componentName: side2
+        _state: 
+        _bound: 1
+        bondName: +
+    reactantComponent:
+      _componentName: pointed
       _state: 
       _bound: 1
       bondName: 2
+    productComplex:
+      _molecules:
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side1
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: barbed
+          _state: 
+          _bound: 1
+          bondName: +
+      - _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+        _components:
+        - _componentName: pointed
+          _state: 
+          _bound: 0
+          bondName: 
+        - _componentName: side1
+          _state: 
+          _bound: 1
+          bondName: 1
+        - _componentName: side2
+          _state: 
+          _bound: 1
+          bondName: +
+    productMolecule:
+      _moleculeDef: {fileID: 11400000, guid: a0cca325226924b1cb758e85d4a3ce26, type: 2}
+      _components:
+      - _componentName: pointed
+        _state: 
+        _bound: 0
+        bondName: 
+      - _componentName: side1
+        _state: 
+        _bound: 1
+        bondName: 1
+      - _componentName: side2
+        _state: 
+        _bound: 1
+        bondName: +
+    productComponent:
+      _componentName: pointed
+      _state: 
+      _bound: 0
+      bondName: 

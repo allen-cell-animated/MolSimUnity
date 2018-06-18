@@ -6,8 +6,8 @@ namespace AICS.AgentSim
 {
     public class ModelDef : ScriptableObject
     {
-        [Tooltip( "Meters" )] 
-        public float scale = 1e-6f;
+        [Tooltip( "Meters per scene unit" )] 
+        public float scale = 1e-9f;
         [Tooltip( "Liters" )] 
         public float containerVolume;
         public ComplexConcentration[] complexes;

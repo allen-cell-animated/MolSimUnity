@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AICS.SimulationView;
 
 namespace AICS.AgentSim
 {
@@ -24,6 +25,9 @@ namespace AICS.AgentSim
 
         public List<Mover> movers = new List<Mover>();
         public List<Complex> complexes = new List<Complex>();
+
+        Dictionary<string,AgentData> agents = new Dictionary<string,AgentData>();
+        Dictionary<string,Molecule> molecules = new Dictionary<string,Molecule>();
 
         //[HideInInspector] public int moveFails;
         //[SerializeField] float stepsPerMoveFail;
@@ -58,16 +62,12 @@ namespace AICS.AgentSim
             }
         }
 
-        void Start ()
+        public Dictionary<string,AgentData> Init (ModelDef _modelDef = null)
         {
-            StartReactor();
-        }
-
-        void StartReactor ()
-        {
+            if (_modelDef != null) { modelDef = _modelDef; }
             CreateReactions();
             CreateContainer();
-            SpawnComplexes();
+            return SpawnComplexes();
             //percentOccupiedVolume = GetPercentOccupiedVolume();
         }
 
@@ -116,12 +116,13 @@ namespace AICS.AgentSim
             container.Init( modelDef.scale, modelDef.containerVolume, periodicBoundary );
         }
 
-        protected virtual void SpawnComplexes ()
+        protected virtual Dictionary<string,AgentData> SpawnComplexes ()
         {
             foreach (ComplexConcentration complex in modelDef.complexes)
             {
                 SpawnSpecies( complex );
             }
+            return agents;
         }
 
         protected virtual void SpawnSpecies (ComplexConcentration complexConcentration)
@@ -131,7 +132,7 @@ namespace AICS.AgentSim
             {
                 return;
             }
-
+            Debug.Log( amount + " " + complexConcentration.complexPattern );
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
                                                               GetRelevantBindReactions( complexConcentration.complexPattern ),
                                                               GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );
@@ -139,14 +140,18 @@ namespace AICS.AgentSim
             Complex complex;
             for (int i = 0; i < amount; i++)
             {
-                complex = new GameObject( nextID ).AddComponent<Complex>();
-                complex.gameObject.transform.SetParent( transform );
-                complex.gameObject.transform.position = container.GetRandomPointInBounds( 0.1f );
-                complex.gameObject.transform.rotation = Random.rotation;
-                complex.reactor = this;
+                complex = new Complex( initData, this );
 
-                complex.SpawnMolecules( initData );
-                complex.Init( this );
+                //add all the new molecules as initial agents
+                foreach (string moleculeName in complex.molecules.Keys)
+                {
+                    foreach (Molecule molecule in complex.molecules[moleculeName])
+                    {
+                        molecule.agentID = nextID;
+                        agents.Add( molecule.agentID, new AgentData( moleculeName, molecule.position, molecule.rotation ) );
+                        molecules.Add( molecule.agentID, molecule );
+                    }
+                }
             }
         }
 
@@ -253,6 +258,90 @@ namespace AICS.AgentSim
             Destroy( molecule2.gameObject );
 
             return transforms;
+        }
+
+        Transform _parentTransform;
+        Transform parentTransform
+        {
+            get
+            {
+                if (_parentTransform == null)
+                {
+                    _parentTransform = new GameObject( "parentTransformCalculator" ).transform;
+                    _parentTransform.SetParent( transform );
+                }
+                return _parentTransform;
+            }
+        }
+
+        Transform _childTransform;
+        Transform childTransform
+        {
+            get
+            {
+                if (_childTransform == null)
+                {
+                    _childTransform = new GameObject( "childTransformCalculator" ).transform;
+                    _childTransform.SetParent( transform );
+                }
+                return _childTransform;
+            }
+        }
+
+        public RelativeTransform GetWorldTransform (Vector3 parentWorldPosition, Quaternion parentWorldRotation, RelativeTransform localTransform)
+        {
+            parentTransform.position = parentWorldPosition;
+            parentTransform.rotation = parentWorldRotation;
+
+            childTransform.position = parentTransform.TransformPoint( localTransform.position );
+            childTransform.rotation = parentTransform.rotation * Quaternion.Euler( localTransform.rotation );
+            return new RelativeTransform( childTransform.position, childTransform.rotation.eulerAngles );
+        }
+
+        public RelativeTransform GetWorldTransformForBindingMolecule (Vector3 moleculePosition, Vector3 moleculeRotation, Vector3 moleculesComponentPosition, 
+                                                                      Vector3 moleculesComponentRotation, Vector3 otherComponentPosition, Vector3 otherComponentRotation)
+        {
+            parentTransform.position = otherComponentPosition;
+            parentTransform.rotation = Quaternion.Euler( otherComponentRotation );
+
+            childTransform.position = moleculesComponentPosition;
+            childTransform.rotation = Quaternion.Euler( moleculesComponentRotation );
+
+            Vector3 pos = parentTransform.TransformPoint( childTransform.InverseTransformPoint( moleculePosition ) );
+            Quaternion rot = Quaternion.Euler( moleculeRotation ) * Quaternion.Inverse( childTransform.rotation ) * parentTransform.rotation;
+
+            return new RelativeTransform( pos, rot.eulerAngles );
+        }
+
+        public RelativeTransform GetParentWorldTransform (RelativeTransform childWorldTransform, RelativeTransform childLocalTransform)
+        {
+            childTransform.SetParent( parentTransform );
+            childTransform.localPosition = childLocalTransform.position;
+            childTransform.localRotation = Quaternion.Euler( childLocalTransform.rotation );
+
+            childTransform.SetParent( transform );
+            parentTransform.SetParent( childTransform );
+            childTransform.position = childWorldTransform.position;
+            childTransform.rotation = Quaternion.Euler( childWorldTransform.rotation );
+
+            parentTransform.SetParent( transform );
+            return new RelativeTransform( parentTransform.position, parentTransform.rotation.eulerAngles );
+        }
+
+        public RelativeTransform GetLocalTransform (Vector3 parentWorldPosition, Quaternion parentWorldRotation, RelativeTransform childWorldTransform)
+        {
+            parentTransform.position = parentWorldPosition;
+            parentTransform.rotation = parentWorldRotation;
+
+            childTransform.position = childWorldTransform.position;
+            childTransform.rotation = Quaternion.Euler( childWorldTransform.rotation );
+
+            childTransform.SetParent( parentTransform );
+            Vector3 childLocalPosition = childTransform.localPosition;
+            Vector3 childLocalRotation = childTransform.localRotation.eulerAngles;
+            childTransform.SetParent( transform );
+
+            return new RelativeTransform( childLocalPosition, childLocalRotation );
         }
 
         protected BindReaction[] GetRelevantBindReactions (ComplexPattern complexPattern)
@@ -362,10 +451,18 @@ namespace AICS.AgentSim
                 DoBindReactions();
                 UnityEngine.Profiling.Profiler.EndSample();
 
-                DestroyOldComplexes();
-
                 //stepsPerMoveFail = World.Instance.steps / (float)moveFails;
             }
+        }
+
+        public Dictionary<string,AgentData> GetAgentTransforms ()
+        {
+            foreach (string agentID in agents.Keys)
+            {
+                agents[agentID].position = molecules[agentID].position;
+                agents[agentID].rotation = molecules[agentID].rotation;
+            }
+            return agents;
         }
 
         protected virtual void MoveParticles ()
@@ -376,7 +473,7 @@ namespace AICS.AgentSim
                 for(int numAttempts = 0; numAttempts < maxMoveAttempts; ++numAttempts)
                 {
                     Vector3 moveStep = currentMover.GetRandomDisplacement(dT);
-                    Vector3 newPosition_AfterMoveStep = currentMover.transform.position + moveStep;
+                    Vector3 newPosition_AfterMoveStep = currentMover.position + moveStep;
 
                     bool isInbounds = container.IsInBounds( newPosition_AfterMoveStep );
 
@@ -405,7 +502,7 @@ namespace AICS.AgentSim
                         continue;
                     }
 
-                    currentMover.transform.position = newPosition_AfterMoveStep;
+                    currentMover.position = newPosition_AfterMoveStep;
                     break;
                 }
 
@@ -455,24 +552,20 @@ namespace AICS.AgentSim
 
         public virtual Complex MoveMoleculesToNewComplex (Dictionary<string,List<Molecule>> molecules)
         {
-            //create complex
-            Complex complex = new GameObject( nextID ).AddComponent<Complex>();
-            complex.gameObject.transform.SetParent( transform );
+            //get position in center of molecules
             Vector3 center = Vector3.zero;
             int n = 0;
             foreach (string moleculeName in molecules.Keys)
             {
                 foreach (Molecule molecule in molecules[moleculeName])
                 {
-                    center += molecule.theTransform.position;
+                    center += molecule.position;
                     n++;
                 }
             }
-            complex.gameObject.transform.position = center / n;
-            complex.reactor = this;
 
-            //move molecules
-            complex.molecules = molecules;
+            //create complex and move molecules to it
+            Complex complex = new Complex( molecules, center / n, this );
             foreach (string moleculeName in molecules.Keys)
             {
                 foreach (Molecule molecule in molecules[moleculeName])
@@ -480,22 +573,19 @@ namespace AICS.AgentSim
                     molecule.MoveToComplex( complex );
                 }
             }
-            complex.Init( this );
             return complex;
         }
 
-        protected void DestroyOldComplexes ()
+
+
+        public void ChangeColor (string agentID, Color newColor)
         {
-            List<Complex> complexesToDestroy = complexes.FindAll( c => c.readyToBeDestroyed );
-            foreach (Complex complex in complexesToDestroy)
-            {
-                Destroy( complex );
-            }
+            // TODO
         }
 
         public void Cleanup ()
         {
-            complexes.RemoveAll( c => c == null || !c.couldReactOnCollision );
+            complexes.RemoveAll( c => c.readyToBeDestroyed || !c.couldReactOnCollision );
         }
 
         public IEnumerator Restart ()
@@ -520,7 +610,7 @@ namespace AICS.AgentSim
             complexes.Clear();
             id = -1;
 
-            StartReactor();
+            Init();
 
             World.Instance.paused = wasPaused;
         }

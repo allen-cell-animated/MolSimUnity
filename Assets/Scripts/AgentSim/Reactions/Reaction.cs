@@ -53,7 +53,7 @@ namespace AICS.AgentSim
         {
             foreach (ReactionCenter reactionCenter in definition.reactionCenters)
             {
-                if (reactionCenter.reactantComplex.Matches( component.complex.molecules ) && 
+                if (//reactionCenter.reactantComplex.Matches( component.complex.molecules ) && 
                     reactionCenter.reactantMolecule.Matches( component.molecule ) && 
                     reactionCenter.reactantComponent.Matches( component ))
                 {
@@ -72,17 +72,6 @@ namespace AICS.AgentSim
                 foreach (Molecule molecule in molecules[moleculeName])
                 {
                     molecule.SetColorForCurrentState();
-                }
-            }
-        }
-
-        protected void AnimateReaction (Dictionary<string,List<Molecule>> molecules)
-        {
-            foreach (string moleculeName in molecules.Keys)
-            {
-                foreach (Molecule molecule in molecules[moleculeName])
-                {
-                    molecule.AnimateReaction();
                 }
             }
         }

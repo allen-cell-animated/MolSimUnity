@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Complex : MonoBehaviour 
+    public class Complex 
     {
         public Reactor reactor;
         public Dictionary<string,List<Molecule>> molecules = new Dictionary<string,List<Molecule>>();
@@ -14,17 +14,25 @@ namespace AICS.AgentSim
         protected Mover mover;
         float interactionRadius;
 
-        Transform _theTransform;
-        public Transform theTransform
+        public Vector3 position
         {
             get
             {
-                if (_theTransform == null)
-                {
-                    _theTransform = transform;
-                }
-                return _theTransform;
+                return mover.position;
             }
+        }
+
+        public Quaternion rotation
+        {
+            get
+            {
+                return mover.rotation;
+            }
+        }
+
+        public void SetWorldTransform (RelativeTransform worldTransform)
+        {
+            mover.SetWorldTransform( worldTransform );
         }
 
         string GetSpecies ()
@@ -65,7 +73,7 @@ namespace AICS.AgentSim
             {
                 foreach (Molecule molecule in aTypeOfMolecule)
                 {
-                    d = Vector3.Distance( theTransform.position, molecule.theTransform.position ) + molecule.interactionRadius;
+                    d = Vector3.Magnitude( molecule.localTransform.position ) + molecule.interactionRadius;
                     if (d > maxD)
                     {
                         maxD = d;
@@ -82,7 +90,7 @@ namespace AICS.AgentSim
             {
                 foreach (Molecule molecule in aTypeOfMolecule)
                 {
-                    d = Vector3.Distance( theTransform.position, molecule.theTransform.position ) + molecule.collisionRadius;
+                    d = Vector3.Magnitude( molecule.localTransform.position ) + molecule.collisionRadius;
                     if (d > maxD)
                     {
                         maxD = d;
@@ -120,22 +128,30 @@ namespace AICS.AgentSim
             return 0;
         }
 
-        // complex of MoleculeSimulators is set before Init is called so reactions can be set up correctly
-        public virtual void Init (Reactor _reactor)
+        public Complex (MoleculeInitData initData, Reactor _reactor)
         {
             reactor = _reactor;
+            SpawnMolecules( initData );
+            Init( reactor.container.GetRandomPointInBounds( 0.1f ), Random.rotation );
+        }
 
-            name = GetSpecies() + "_" + name;
+        public Complex (Dictionary<string,List<Molecule>> _molecules, Vector3 _position, Reactor _reactor)
+        {
+            reactor = _reactor;
+            molecules = _molecules;
+            Init( _position, Quaternion.identity );
+        }
+
+        void Init (Vector3 _position, Quaternion _rotation)
+        {
+            mover = new Mover( reactor, _position, _rotation, GetDiffusionCoefficient(), GetCollisionRadius() );
+
             interactionRadius = GetInteractionRadius();
-
-            mover = gameObject.AddComponent<Mover>();
-            mover.Init( reactor, GetDiffusionCoefficient(), GetCollisionRadius() );
-
             couldReactOnCollision = GetCouldReactOnCollision();
             reactor.RegisterComplex( this );
         }
 
-        public virtual void SpawnMolecules (MoleculeInitData initData)
+        public void SpawnMolecules (MoleculeInitData initData)
         {
             molecules = new Dictionary<string,List<Molecule>>();
             foreach (string moleculeName in initData.complexPattern.moleculePatterns.Keys)
@@ -146,7 +162,7 @@ namespace AICS.AgentSim
                 }
                 for (int i = 0; i < initData.complexPattern.moleculePatterns[moleculeName].Count; i++)
                 {
-                    molecules[moleculeName].Add( SpawnMolecule( initData.complexPattern.moleculePatterns[moleculeName][i], initData.moleculeTransforms[moleculeName][i] ) );
+                    molecules[moleculeName].Add( new Molecule( initData.complexPattern.moleculePatterns[moleculeName][i], initData.moleculeTransforms[moleculeName][i], this ) );
                 }
             }
             ConnectBoundComponents();
@@ -163,28 +179,6 @@ namespace AICS.AgentSim
                 }
             }
             UpdateCouldReactOnCollision();
-        }
-
-        protected virtual Molecule SpawnMolecule (MoleculePattern moleculePattern, RelativeTransform relativeTransform)
-        {
-            GameObject visualizationPrefab = moleculePattern.moleculeDef.visualizationPrefab;
-            if (visualizationPrefab == null)
-            {
-                Debug.LogWarning( moleculePattern.moleculeDef.moleculeName + "'s molecule prefab is null!" );
-                visualizationPrefab = Resources.Load( "DefaultMolecule" ) as GameObject;
-            }
-
-            GameObject moleculeObject = Instantiate( visualizationPrefab );
-
-            moleculeObject.name = name + "_" + moleculePattern.moleculeDef.moleculeName;
-            moleculeObject.transform.SetParent( theTransform );
-            moleculeObject.transform.position = theTransform.TransformPoint( relativeTransform.position );
-            moleculeObject.transform.rotation = theTransform.rotation * Quaternion.Euler( relativeTransform.rotation );
-
-            Molecule molecule = moleculeObject.AddComponent<Molecule>();
-            molecule.Init( moleculePattern, this );
-
-            return molecule;
         }
 
         protected virtual void ConnectBoundComponents ()
@@ -251,7 +245,7 @@ namespace AICS.AgentSim
         bool IsNear (Complex other)
         {
             return other != this 
-                && Vector3.Distance( theTransform.position, other.theTransform.position ) < interactionRadius + other.interactionRadius;
+                && Vector3.Distance( position, other.position ) < interactionRadius + other.interactionRadius;
         }
 
         public Dictionary<string,List<Molecule>> GetMoleculesAtEndOfBond (MoleculeComponent component)
@@ -339,7 +333,7 @@ namespace AICS.AgentSim
 
         public override string ToString ()
         {
-            return "Complex " + name;
+            return GetSpecies();
         }
 
         public int GetNumberOfMolecules ()

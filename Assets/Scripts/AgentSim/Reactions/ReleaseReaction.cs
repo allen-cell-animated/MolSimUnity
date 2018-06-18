@@ -14,6 +14,7 @@ namespace AICS.AgentSim
             if (components.Length > 0 && components[0] != null &&
                 matchingReactionCenters.Length > 0 && matchingReactionCenters[0] != null)
             {
+                Debug.Log( components[0].molecule.agentID + " release " + components[0].boundComponent.molecule.agentID + " " + definition.description );
                 components = new MoleculeComponent[]{components[0], components[0].boundComponent};
                 matchingReactionCenters = new ReactionCenter[]{matchingReactionCenters[0], GetOtherReactionCenter( matchingReactionCenters[0] )};
                 Dictionary<string,List<Molecule>> molecules;
@@ -29,9 +30,7 @@ namespace AICS.AgentSim
                     newComplex.UpdateReactions();
 
                     SetProductColor( molecules );
-                    AnimateReaction( molecules );
                 }
-                World.ShowFlash( components[0].theTransform );
 
                 return true;
             }

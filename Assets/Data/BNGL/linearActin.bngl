@@ -1,8 +1,27 @@
 begin parameters
 
-    kDimer    1e5
-    kTrimer   1e6
-    kBarbed   1e7
+    scale            1e-9        # m/unit (i.e. 1 spatial unit = 1 nm)
+    volume           1.25e-16    # L (500nm-sided cube), goal is to increase to 1e-15 (1 um^3)
+
+    actinConc        5e-6        # M (5 uM)
+    actinDiffCoeff   6.25e14     # nm^2/s, based on GFP diffusing 25-100 nm/us (https://www.nature.com/articles/ncomms6891)
+    
+    # RATE CONSTANTS -----------------------------------------
+    # units are s^-1, association rates given in uM^-1 s^-1 were multiplied by 5 uM concentration
+
+                                   # relative estimates from Fig 33.9 Pollard textbook
+    kDimer           3.7e-6        # 10       
+    kRevDimer        3.7e-1        # 1e6      
+    kTrimer          3.7e-6        # 10
+    kRevTrimer       3.7e-4        # 1e3         in vitro observed rates (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1305141)
+    kBarbedGrow      3.7e1         # 1e8         7.4 uM^-1 s^-1
+    kBarbedShrink    8.9e-1        # 1e7         0.89 s^-1
+    kPointedGrow     2.8           # 10          0.56 uM^-1 s^-1
+    kPointedShrink   1.9e-1        # 1           0.19 s^-1
+
+                                   # k = ln2 / t1/2 (first order half life)
+    kATPHydrolysis   3.5e-1        # t1/2 = 2 s
+    kPiDissoc        2.0e-3        # t1/2 = 350 s
 
 end parameters
 
@@ -10,7 +29,7 @@ end parameters
 
 begin molecule types
 
-    Actin(pointed,side1,side2,barbed)
+    Actin(pointed,side1,side2,barbed,nuc~ATP~ADP/Pi~ADP)
 
 end molecule types
 
@@ -18,7 +37,7 @@ end molecule types
 
 begin species
 
-    Actin(pointed,side1,side2,barbed)   3e-15 #Molar
+    Actin(pointed,side1,side2,barbed,nuc~ATP)   actinConc
 
 end species
 
@@ -27,12 +46,21 @@ end species
 begin reaction rules
 
     # nucleation (form dimer that is start of primary filament)
-    Actin(pointed,side1,side2,barbed) + Actin(pointed,side1,side2,barbed) -> Actin(pointed!1,side1,side2,barbed).Actin(pointed,side1,side2,barbed!1)   kDimer
+    Actin(pointed,side1,side2,barbed,nuc~ATP) + Actin(pointed,side1,side2,barbed,nuc~ATP) <-> Actin(pointed!1,side1,side2,barbed).Actin(pointed,side1,side2,barbed!1)   kDimer, kRevDimer
 
     # form trimer (start secondary filament)
-    Actin(pointed!1,side1,side2).Actin(side1,side2,barbed!1) + Actin(pointed,side1,side2,barbed) -> Actin(pointed!1,side1!2,side2).Actin(side1,side2!3,barbed!1).Actin(pointed,side1!3,side2!2,barbed)   kTrimer
+    Actin(pointed,side1,side2,barbed,nuc~ATP) + Actin(pointed!1,side1,side2).Actin(side1,side2,barbed!1) <-> Actin(pointed,side1!3,side2!2,barbed).Actin(pointed!1,side1!2,side2).Actin(side1,side2!3,barbed!1)   kTrimer, kRevTrimer
 
     # barbed end polymerization
-    Actin(pointed,side1,side2,barbed) + Actin(pointed!+,side1!1,side2,barbed).Actin(side1!+,side2!1,barbed) -> Actin(pointed!2,side1!3,side2,barbed).Actin(pointed!+,side1!1,side2!3,barbed).Actin(side1!+,side2!1,barbed!2)   kBarbed
+    Actin(pointed,side1,side2,barbed,nuc~ATP) + Actin(pointed!+,side1!1,side2,barbed).Actin(side1!+,side2!1,barbed) <-> Actin(pointed!2,side1!3,side2,barbed).Actin(pointed!+,side1!1,side2!3,barbed).Actin(side1!+,side2!1,barbed!2)   kBarbedGrow, kBarbedShrink
+
+    # pointed end polymerization
+    Actin(pointed,side1,side2,barbed,nuc~ATP) + Actin(pointed,side1,side2!1,barbed!+).Actin(pointed,side1!1,side2!+) <-> Actin(pointed,side1,side2!3,barbed!2).Actin(pointed,side1!3,side2!1,barbed!+).Actin(pointed!2,side1!1,side2!+)   kPointedGrow, kPointedShrink
+
+    # ATP hydrolysis
+    Actin(pointed!+,barbed!+,nuc~ATP) -> Actin(pointed!+,barbed!+,nuc~ADP/Pi)   kATPHydrolysis
+
+    # Pi dissociation
+    Actin(pointed!+,barbed!+,nuc~ADP/Pi) -> Actin(pointed!+,barbed!+,nuc~ADP)   kPiDissoc
 
 end reaction rules

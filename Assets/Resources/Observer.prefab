@@ -176,7 +176,7 @@ Camera:
   m_GameObject: {fileID: 1856796810176198}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.41911763, g: 0.41911763, b: 0.41911763, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -255,9 +255,9 @@ MonoBehaviour:
   lookSpeed: 5
   timeToLookAtTarget: 1
   tiltLimits: {x: -45, y: 75}
-  zoomSpeedScroll: 1
-  zoomSpeedArrows: 0.1
-  zoomLimits: {x: -5, y: -80}
+  zoomSpeedScroll: 10
+  zoomSpeedArrows: 1
+  zoomLimits: {x: -5, y: -600}
 --- !u!114 &114636416869853636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8acd0c4697a4911a859b95ca8ba98b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScale: 0.000000001
+  currentScale: 0.0001
 --- !u!124 &124428253405487270
 Behaviour:
   m_ObjectHideFlags: 1

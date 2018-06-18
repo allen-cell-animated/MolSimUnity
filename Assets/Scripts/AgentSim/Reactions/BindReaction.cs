@@ -14,6 +14,7 @@ namespace AICS.AgentSim
             if (components.Length > 1 && components[0] != null && components[1] != null &&
                 matchingReactionCenters.Length > 1 && matchingReactionCenters[0] != null && matchingReactionCenters[1] != null)
             {
+                Debug.Log( components[0].molecule.agentID + " bind " + components[1].molecule.agentID + " " + definition.description );
                 RelativelyPosition( components[0], components[1] );
 
                 Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].complex.molecules, components[1].complex.molecules );
@@ -37,8 +38,6 @@ namespace AICS.AgentSim
                 newComplex.UpdateReactions();
 
                 SetProductColor( molecules );
-                AnimateReaction( molecules );
-                World.ShowFlash( components[0].theTransform );
 
                 return true;
             }
@@ -61,10 +60,8 @@ namespace AICS.AgentSim
                 parentMoleculeCount = tempCount;
             }
 
-            childComponent.theTransform.parent.position = parentComponent.theTransform.TransformPoint( childComponent.theTransform.InverseTransformPoint( childComponent.theTransform.parent.position ) );
-            childComponent.theTransform.parent.rotation = childComponent.theTransform.parent.rotation * Quaternion.Inverse( childComponent.theTransform.rotation ) * parentComponent.theTransform.rotation;
-
-            //Debug.Log( "parent " + childComponent + " to " + parentComponent + " : " + parentComponent.theTransform.InverseTransformPoint( childComponent.theTransform.position ) );
+            childComponent.molecule.SetWorldTransform( reactor.GetWorldTransformForBindingMolecule( childComponent.molecule.position, childComponent.molecule.rotation, childComponent.position,
+                                                                                                    childComponent.rotation, parentComponent.position, parentComponent.rotation) );
         }
 
         protected Dictionary<string,List<Molecule>> MergeMolecules (Dictionary<string,List<Molecule>> molecules1, Dictionary<string,List<Molecule>> molecules2)

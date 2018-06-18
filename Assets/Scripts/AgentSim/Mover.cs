@@ -4,16 +4,26 @@ using UnityEngine;
 
 namespace AICS.AgentSim
 {
-    public class Mover : MonoBehaviour
+    public class Mover
     {
         public Reactor reactor;
+        public Vector3 position;
+        public Quaternion rotation;
+
+        public void SetWorldTransform (RelativeTransform worldTransform)
+        {
+            position = worldTransform.position;
+            rotation = Quaternion.Euler( worldTransform.rotation );
+        }
 
         [SerializeField] float diffusionCoefficient;
         [SerializeField] float collisionRadius;
 
-        public virtual void Init (Reactor _reactor, float _diffusionCoefficient, float _collisionRadius)
+        public Mover (Reactor _reactor, Vector3 _position, Quaternion _rotation, float _diffusionCoefficient, float _collisionRadius)
         {
             reactor = _reactor;
+            position = _position;
+            rotation = _rotation;
             diffusionCoefficient = _diffusionCoefficient;
             collisionRadius = _collisionRadius;
 
@@ -28,32 +38,32 @@ namespace AICS.AgentSim
         public void ReflectPeriodically (Vector3 collisionToCenter)
         {
             RaycastHit info;
-            if (Physics.Raycast( transform.position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, reactor.container.boundaryLayer ))
+            if (Physics.Raycast( position, collisionToCenter.normalized, out info, 2f * collisionToCenter.magnitude, reactor.container.boundaryLayer ))
             {
-                transform.position = info.point - collisionToCenter.normalized;
+                position = info.point - collisionToCenter.normalized;
             }
         }
 
         public void RotateRandomly (float dTime)
         {
-            transform.rotation *= Quaternion.Euler( 20f * GetDisplacement( dTime ) * Random.onUnitSphere );
+            rotation *= Quaternion.Euler( 2.5f * GetDisplacement( dTime ) * Random.onUnitSphere );
         }
 
         private float GetDisplacement (float dTime)
         {
-            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( diffusionCoefficient * dTime ) );
+            //mean squared displacement = 6 * diffusion coefficient * dT
+            return Helpers.SampleExponentialDistribution( Time.deltaTime * Mathf.Sqrt( 6f * diffusionCoefficient * dTime ) );
         }
 
         public bool WillCollideWith (Mover other, Vector3 newPosition)
         {
             return other != this
-                && Vector3.Distance( newPosition, other.transform.position ) < collisionRadius + other.collisionRadius;
+                && Vector3.Distance( newPosition, other.position ) < collisionRadius + other.collisionRadius;
         }
 
 		public void Destroy ()
 		{
             reactor.UnregisterMover( this );
-            Destroy( gameObject );
 		}
 	}
 }
