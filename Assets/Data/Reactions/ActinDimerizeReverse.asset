@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: ActinDimerizeReverse
   m_EditorClassIdentifier: 
   description: ActinDimerizeReverse
-  rate: 1000000
+  rate: 0.37
   type: 1
   reactionCenters:
   - description: ActinDimerizeReversePointed

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: ActinTrimerize
   m_EditorClassIdentifier: 
   description: ActinTrimerize
-  rate: 100000000
+  rate: 0.0000037
   type: 0
   reactionCenters:
   - description: ActinTrimerize1

@@ -132,7 +132,7 @@ namespace AICS.AgentSim
             {
                 return;
             }
-
+            Debug.Log( amount + " " + complexConcentration.complexPattern );
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
                                                               GetRelevantBindReactions( complexConcentration.complexPattern ),
                                                               GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );

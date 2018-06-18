@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: ActinBarbedGrow
   m_EditorClassIdentifier: 
   description: ActinBarbedGrow
-  rate: 100000000
+  rate: 37
   type: 0
   reactionCenters:
   - description: ActinBarbedGrowMonomer
