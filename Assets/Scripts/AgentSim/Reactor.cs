@@ -467,10 +467,10 @@ namespace AICS.AgentSim
 
         protected virtual void MoveParticles ()
         {
-            for(int i = 0; i < movers.Count; ++i)
+            for (int i = 0; i < movers.Count; ++i)
             {
                 Mover currentMover = movers[i];
-                for(int numAttempts = 0; numAttempts < maxMoveAttempts; ++numAttempts)
+                for (int numAttempts = 0; numAttempts < maxMoveAttempts; ++numAttempts)
                 {
                     Vector3 moveStep = currentMover.GetRandomDisplacement(dT);
                     Vector3 newPosition_AfterMoveStep = currentMover.position + moveStep;
@@ -481,14 +481,17 @@ namespace AICS.AgentSim
                     {
                         continue;
                     }
-                    else if(!isInbounds && container.periodicBoundary)
+
+                    if (!isInbounds && container.periodicBoundary)
                     {
-                        currentMover.ReflectPeriodically( container.transform.position - (newPosition_AfterMoveStep) );
-                        break;
+                        //currentMover.ReflectPeriodically( container.transform.position - (newPosition_AfterMoveStep) );
+                        //break;
+
+                        newPosition_AfterMoveStep = GetPeriodicallyReflectedPosition( currentMover.position, moveStep );
                     }
 
                     bool willCollide = false;
-                    for(int j = 0; j < i; ++j)
+                    for (int j = 0; j < i; ++j)
                     {
                         Mover alreadyPlacedMover = movers[j];
                         if (currentMover.WillCollideWith( alreadyPlacedMover, newPosition_AfterMoveStep ))
@@ -497,7 +500,7 @@ namespace AICS.AgentSim
                         }
                     }
 
-                    if(willCollide)
+                    if (willCollide)
                     {
                         continue;
                     }
@@ -508,6 +511,38 @@ namespace AICS.AgentSim
 
                 currentMover.RotateRandomly(dT);
             }
+        }
+
+        public Vector3 GetPeriodicallyReflectedPosition (Vector3 currentPosition, Vector3 attemptedMoveStep)
+        {
+            RaycastHit info;
+            if (Physics.Raycast( currentPosition, attemptedMoveStep.normalized, out info, attemptedMoveStep.magnitude, container.boundaryLayer ))
+            {
+                Vector3 extraMoveStep = attemptedMoveStep - (info.point - currentPosition);
+                Vector3 remainder = new Vector3( extraMoveStep.x % container.size.x, extraMoveStep.y % container.size.y, extraMoveStep.z % container.size.z );
+                Vector3 start = new Vector3( container.size.x * Mathf.Floor( extraMoveStep.x / container.size.x ), 
+                                             container.size.y * Mathf.Floor( extraMoveStep.y / container.size.y ), 
+                                             container.size.z * Mathf.Floor( extraMoveStep.z / container.size.z ));
+
+
+
+
+
+
+                float diameter = 2f * (info.point - container.transform.position).magnitude;
+                Debug.Log( remainder.magnitude + " " + diameter + " " + Mathf.Floor( remainder.magnitude / diameter ) + " " + (remainder.magnitude % diameter) );
+                remainder = (remainder.magnitude % diameter) * remainder.normalized;
+
+                UnityEditor.EditorApplication.isPaused = true;
+                new GameObject( "start" ).transform.position = currentPosition;
+                new GameObject( "attempt" ).transform.position = currentPosition + attemptedMoveStep;
+                new GameObject( "collision" ).transform.position = info.point;
+                new GameObject( "reflection" ).transform.position = container.transform.position - (info.point - container.transform.position);
+                new GameObject( "result" ).transform.position = container.transform.position - (info.point - container.transform.position) + remainder;
+
+                return container.transform.position - (info.point - container.transform.position) + remainder;
+            }
+            return currentPosition + attemptedMoveStep;
         }
 
         protected virtual void DoCollisionFreeReactions ()
