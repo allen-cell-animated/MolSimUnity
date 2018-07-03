@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class FollowLookZoomCamera : MonoBehaviour
 {
+    public bool canLook = true;
 	public Transform target;
 	public float followSpeed = 1f;
 	public float lookSpeed = 1.5f;
@@ -77,7 +78,7 @@ public class FollowLookZoomCamera : MonoBehaviour
 	{
 		get
 		{
-			return Input.GetButton( "Fire1" ) && !EventSystem.current.IsPointerOverGameObject();
+            return canLook && Input.GetButton( "Fire1" ) && !EventSystem.current.IsPointerOverGameObject();
 		}
 	}
 
