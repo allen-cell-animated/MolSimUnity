@@ -6,9 +6,8 @@ using UnityEngine.EventSystems;
 public class BuildFiber : MonoBehaviour 
 {
     public bool canCreate = false;
-    public LayerMask planeLayer;
-    public GameObject currentMonomerPrefab;
-    public float currentMonomerLength;
+    public LayerMask drawingPlaneLayer;
+    public FiberProperties fiberProperties;
 
     Vector3 lastCreatePoint;
     Transform currentFiber;
@@ -57,7 +56,7 @@ public class BuildFiber : MonoBehaviour
         get
         {
             RaycastHit hit;
-            if (Physics.Raycast( Camera.main.ScreenPointToRay( Input.mousePosition ), out hit, 1.5f * Camera.main.transform.GetChild( 0 ).localPosition.magnitude, planeLayer ))
+            if (Physics.Raycast( Camera.main.ScreenPointToRay( Input.mousePosition ), out hit, 1.5f * Camera.main.transform.GetChild( 0 ).localPosition.magnitude, drawingPlaneLayer ))
             {
                 return hit.point;
             }
@@ -73,33 +72,35 @@ public class BuildFiber : MonoBehaviour
 
 	void Update () 
     {
-        if (canCreate && (startedClick || dragging))
+        if (!canCreate || fiberProperties == null || !(startedClick || dragging))
         {
-            Vector3 _cursorPosition3D = cursorPosition3D;
-            if (_cursorPosition3D.magnitude < 1e6f)
+            return;
+        }
+
+        Vector3 _cursorPosition3D = cursorPosition3D;
+        if (_cursorPosition3D.magnitude < 1e6f)
+        {
+            if (startedClick)
             {
-                if (startedClick)
+                if (Vector3.Distance( lastCreatePoint, _cursorPosition3D ) >= fiberProperties.monomerLength)
                 {
-                    if (Vector3.Distance( lastCreatePoint, _cursorPosition3D ) >= currentMonomerLength)
-                    {
-                        currentFiber = CreateFiber();
-                    }
-                    GameObject _newMonomer = CreateMonomer( _cursorPosition3D, Random.rotation );
+                    currentFiber = CreateFiber();
+                }
+                GameObject _newMonomer = CreateMonomer( _cursorPosition3D, Random.rotation );
+                if (_newMonomer != null)
+                {
+                    lastCreatePoint = _cursorPosition3D;
+                }
+            }
+            else
+            {
+                if (Vector3.Distance( lastCreatePoint, _cursorPosition3D ) >= fiberProperties.monomerLength)
+                {
+                    GameObject _newMonomer = CreateMonomer( lastCreatePoint + fiberProperties.monomerLength * (_cursorPosition3D - lastCreatePoint).normalized, 
+                                                            Quaternion.LookRotation( lastCreatePoint - _cursorPosition3D ) );
                     if (_newMonomer != null)
                     {
                         lastCreatePoint = _cursorPosition3D;
-                    }
-                }
-                else
-                {
-                    if (Vector3.Distance( lastCreatePoint, _cursorPosition3D ) >= currentMonomerLength)
-                    {
-                        GameObject _newMonomer = CreateMonomer( lastCreatePoint + currentMonomerLength * (_cursorPosition3D - lastCreatePoint).normalized, 
-                                                                Quaternion.LookRotation( lastCreatePoint - _cursorPosition3D ) );
-                        if (_newMonomer != null)
-                        {
-                            lastCreatePoint = _cursorPosition3D;
-                        }
                     }
                 }
             }
@@ -108,7 +109,7 @@ public class BuildFiber : MonoBehaviour
 
     Transform CreateFiber ()
     {
-        GameObject newFiber = new GameObject( currentMonomerPrefab.name + "_Fiber_" + numFibers );
+        GameObject newFiber = new GameObject( fiberProperties.monomerPrefab.name + "_Fiber_" + numFibers );
         newFiber.transform.SetParent( transform );
         newFiber.transform.localPosition = Vector3.zero;
         newFiber.transform.localRotation = Quaternion.identity;
@@ -118,12 +119,12 @@ public class BuildFiber : MonoBehaviour
 
     GameObject CreateMonomer (Vector3 _position, Quaternion _rotation)
     {
-        if (currentMonomerPrefab == null)
+        if (fiberProperties.monomerPrefab == null)
         {
             return null;
         }
 
-        GameObject newMonomer = Instantiate( currentMonomerPrefab ) as GameObject;
+        GameObject newMonomer = Instantiate( fiberProperties.monomerPrefab ) as GameObject;
         newMonomer.transform.SetParent( currentFiber );
         newMonomer.transform.position = _position;
         newMonomer.transform.rotation = _rotation;
@@ -153,14 +154,14 @@ public class BuildFiber : MonoBehaviour
     {
         HingeJoint _hinge = _object.AddComponent<HingeJoint>();
         _hinge.connectedBody = _connectedBody;
-        _hinge.anchor = -currentMonomerLength / 2f * Vector3.forward;
+        _hinge.anchor = -fiberProperties.monomerLength / 2f * Vector3.forward;
         _hinge.axis = Vector3.back;
         _hinge.autoConfigureConnectedAnchor = false;
-        _hinge.connectedAnchor = currentMonomerLength / 2f * Vector3.forward;
+        _hinge.connectedAnchor = fiberProperties.monomerLength / 2f * Vector3.forward;
         _hinge.useLimits = true;
         JointLimits _limits = _hinge.limits;
-        _limits.min = -2f;
-        _limits.max = 2f;
+        _limits.min = fiberProperties.hingeLimitMin;
+        _limits.max = fiberProperties.hingeLimitMax;
         _hinge.limits = _limits;
         _hinge.enablePreprocessing = false;
     }
@@ -171,7 +172,7 @@ public class BuildFiber : MonoBehaviour
         _spring.connectedBody = _connectedBody;
         _spring.anchor = Vector3.zero;
         _spring.connectedAnchor = Vector3.zero;
-        _spring.damper = 0.5f;
-        _spring.minDistance = _spring.maxDistance = currentMonomerLength * _monomersAway;
+        _spring.damper = fiberProperties.springDamper;
+        _spring.minDistance = _spring.maxDistance = fiberProperties.monomerLength * _monomersAway;
     }
 }

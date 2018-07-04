@@ -262,8 +262,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 81000362}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
-  m_LocalScale: {x: 2.3009324, y: 2.300935, z: 2.300935}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_Children: []
   m_Father: {fileID: 574538616}
   m_RootOrder: 0
@@ -513,7 +513,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 574538615}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 81000366}
@@ -787,12 +787,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canCreate: 0
-  planeLayer:
+  drawingPlaneLayer:
     serializedVersion: 2
     m_Bits: 32
-  currentMonomerPrefab: {fileID: 1686314590400092, guid: 173a467028b544350b0cf6ff1182df7b,
-    type: 2}
-  currentMonomerLength: 0.337
+  fiberProperties: {fileID: 11400000, guid: 80f99420f368b4bb7bf60a50e83a81b2, type: 2}
 --- !u!4 &1699236309
 Transform:
   m_ObjectHideFlags: 0

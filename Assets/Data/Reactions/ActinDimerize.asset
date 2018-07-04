@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: ActinDimerize
   m_EditorClassIdentifier: 
   description: ActinDimerize
-  rate: 0.0000037
+  rate: 10000000
   type: 0
   reactionCenters:
   - description: ActinDimerizePointed
