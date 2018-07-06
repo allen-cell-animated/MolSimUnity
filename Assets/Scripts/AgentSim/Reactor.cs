@@ -515,32 +515,24 @@ namespace AICS.AgentSim
 
         public Vector3 GetPeriodicallyReflectedPosition (Vector3 currentPosition, Vector3 attemptedMoveStep)
         {
-            RaycastHit info;
-            if (Physics.Raycast( currentPosition, attemptedMoveStep.normalized, out info, attemptedMoveStep.magnitude, container.boundaryLayer ))
+            RaycastHit boundaryHit;
+            if (Physics.Raycast( currentPosition, attemptedMoveStep.normalized, out boundaryHit, attemptedMoveStep.magnitude, container.boundaryLayer ))
             {
-                Vector3 extraMoveStep = attemptedMoveStep - (info.point - currentPosition);
-                Vector3 remainder = new Vector3( extraMoveStep.x % container.size.x, extraMoveStep.y % container.size.y, extraMoveStep.z % container.size.z );
-                Vector3 start = new Vector3( container.size.x * Mathf.Floor( extraMoveStep.x / container.size.x ), 
-                                             container.size.y * Mathf.Floor( extraMoveStep.y / container.size.y ), 
-                                             container.size.z * Mathf.Floor( extraMoveStep.z / container.size.z ));
-
-
-
-
-
-
-                float diameter = 2f * (info.point - container.transform.position).magnitude;
-                Debug.Log( remainder.magnitude + " " + diameter + " " + Mathf.Floor( remainder.magnitude / diameter ) + " " + (remainder.magnitude % diameter) );
-                remainder = (remainder.magnitude % diameter) * remainder.normalized;
+                Vector3 extraMoveStep = attemptedMoveStep - (boundaryHit.point - currentPosition);
+                Vector3 remainder = new Vector3( extraMoveStep.x % container.size.x, 
+                                                 extraMoveStep.y % container.size.y, 
+                                                 extraMoveStep.z % container.size.z );
+                Vector3 start = container.theTransform.position + new Vector3( (currentPosition.x > container.theTransform.position.x ? -1f : 1f) * container.size.x / 2f,
+                                                                               (currentPosition.y > container.theTransform.position.y ? -1f : 1f) * container.size.y / 2f,
+                                                                               (currentPosition.z > container.theTransform.position.z ? -1f : 1f) * container.size.z / 2f );
+                Vector3 result = start + remainder;
 
                 UnityEditor.EditorApplication.isPaused = true;
-                new GameObject( "start" ).transform.position = currentPosition;
-                new GameObject( "attempt" ).transform.position = currentPosition + attemptedMoveStep;
-                new GameObject( "collision" ).transform.position = info.point;
-                new GameObject( "reflection" ).transform.position = container.transform.position - (info.point - container.transform.position);
-                new GameObject( "result" ).transform.position = container.transform.position - (info.point - container.transform.position) + remainder;
+                new GameObject( "attempt" ).AddComponent<LineRenderer>().SetPositions( new Vector3[]{currentPosition, currentPosition + attemptedMoveStep} );
+                new GameObject( "collision" ).transform.position = boundaryHit.point;
+                new GameObject( "result" ).AddComponent<LineRenderer>().SetPositions( new Vector3[]{start, result} );
 
-                return container.transform.position - (info.point - container.transform.position) + remainder;
+                return result;
             }
             return currentPosition + attemptedMoveStep;
         }
