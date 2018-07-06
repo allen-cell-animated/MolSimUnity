@@ -25,6 +25,12 @@ public class BuildFiber : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        Camera.main.transform.localPosition = fiberProperties.drawDistanceZ * Vector3.back;
+        Camera.main.transform.GetChild( 0 ).localPosition = fiberProperties.drawDistanceZ * Vector3.forward;
+    }
+
     int _numFibers = 0;
     int numFibers
     {

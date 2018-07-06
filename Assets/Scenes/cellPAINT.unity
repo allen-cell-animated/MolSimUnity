@@ -790,7 +790,7 @@ MonoBehaviour:
   drawingPlaneLayer:
     serializedVersion: 2
     m_Bits: 32
-  fiberProperties: {fileID: 11400000, guid: 80f99420f368b4bb7bf60a50e83a81b2, type: 2}
+  fiberProperties: {fileID: 11400000, guid: 9663d039552b0414a81c19460c073073, type: 2}
 --- !u!4 &1699236309
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dddc35bdb99349b288a86b55850afe5, type: 3}
   m_Name: DNAProperties
   m_EditorClassIdentifier: 
+  drawDistanceZ: 10
   monomerLength: 0.337
   hingeLimitMin: -2
   hingeLimitMax: 2

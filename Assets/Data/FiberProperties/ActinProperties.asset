@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dddc35bdb99349b288a86b55850afe5, type: 3}
   m_Name: ActinProperties
   m_EditorClassIdentifier: 
+  drawDistanceZ: 100
   monomerLength: 36
   hingeLimitMin: -2
   hingeLimitMax: 2
