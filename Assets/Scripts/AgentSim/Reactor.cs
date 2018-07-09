@@ -484,10 +484,7 @@ namespace AICS.AgentSim
 
                     if (!isInbounds && container.periodicBoundary)
                     {
-                        //currentMover.ReflectPeriodically( container.transform.position - (newPosition_AfterMoveStep) );
-                        //break;
-
-                        newPosition_AfterMoveStep = GetPeriodicallyReflectedPosition( currentMover.position, moveStep );
+                        newPosition_AfterMoveStep = GetPeriodicallyReflectedPosition( currentMover.position + moveStep );
                     }
 
                     bool willCollide = false;
@@ -513,28 +510,21 @@ namespace AICS.AgentSim
             }
         }
 
-        public Vector3 GetPeriodicallyReflectedPosition (Vector3 currentPosition, Vector3 attemptedMoveStep)
+        public Vector3 GetPeriodicallyReflectedPosition (Vector3 attemptedNewPosition)
         {
-            RaycastHit boundaryHit;
-            if (Physics.Raycast( currentPosition, attemptedMoveStep.normalized, out boundaryHit, attemptedMoveStep.magnitude, container.boundaryLayer ))
+            Vector3 newPosition = attemptedNewPosition;
+            for (int d = 0; d < 3; d++) 
             {
-                Vector3 extraMoveStep = attemptedMoveStep - (boundaryHit.point - currentPosition);
-                Vector3 remainder = new Vector3( extraMoveStep.x % container.size.x, 
-                                                 extraMoveStep.y % container.size.y, 
-                                                 extraMoveStep.z % container.size.z );
-                Vector3 start = container.theTransform.position + new Vector3( (currentPosition.x > container.theTransform.position.x ? -1f : 1f) * container.size.x / 2f,
-                                                                               (currentPosition.y > container.theTransform.position.y ? -1f : 1f) * container.size.y / 2f,
-                                                                               (currentPosition.z > container.theTransform.position.z ? -1f : 1f) * container.size.z / 2f );
-                Vector3 result = start + remainder;
-
-                UnityEditor.EditorApplication.isPaused = true;
-                new GameObject( "attempt" ).AddComponent<LineRenderer>().SetPositions( new Vector3[]{currentPosition, currentPosition + attemptedMoveStep} );
-                new GameObject( "collision" ).transform.position = boundaryHit.point;
-                new GameObject( "result" ).AddComponent<LineRenderer>().SetPositions( new Vector3[]{start, result} );
-
-                return result;
+                while (newPosition[d] >= 0.5f * container.size[d])
+                {
+                    newPosition[d] -= container.size[d];
+                }
+                while (newPosition[d] < -0.5f * container.size[d]) 
+                {
+                    newPosition[d] += container.size[d];
+                }
             }
-            return currentPosition + attemptedMoveStep;
+            return newPosition;
         }
 
         protected virtual void DoCollisionFreeReactions ()
