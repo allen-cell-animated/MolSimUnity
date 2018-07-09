@@ -9,6 +9,7 @@ namespace AICS.AgentSim
     {
         public Reactor reactor;
 
+        public RectTransform parameterViewport;
         public GameObject pauseButton;
         public GameObject playButton;
         public Text totalTime;
@@ -38,6 +39,32 @@ namespace AICS.AgentSim
                     _Instance = GameObject.FindObjectOfType<InputManager>();
                 }
                 return _Instance;
+            }
+        }
+
+        public void CreateCustomUI (Reactor reactor)
+        {
+            GameObject prefab = Resources.Load( "RateParameter" ) as GameObject;
+            if (prefab == null)
+            {
+                Debug.LogWarning( "RateParameter prefab not found in Resources" );
+                return;
+            }
+
+            int i = 0;
+            foreach (ReactionRateParameter parameter in reactor.modelDef.adjustableParameters)
+            {
+                Reaction reaction = reactor.GetReactionForDefinition( parameter.reaction );
+                if (reaction == null) 
+                {
+                    Debug.LogWarning( "Couldn't find reaction for " + parameter.reaction.description );
+                    continue;
+                }
+
+                RateParameter rateParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<RateParameter>();
+                rateParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - i * 110f, 0 );
+                rateParameter.Init( parameter, reaction );
+                i++;
             }
         }
 

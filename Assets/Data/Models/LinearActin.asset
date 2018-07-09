@@ -113,3 +113,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 687c8fe2dd9b047c9b3b11afdcd4ae05, type: 2}
   - {fileID: 11400000, guid: 0640e5b4c7f8d474285b009b2d36174a, type: 2}
   - {fileID: 11400000, guid: e1d69472dab54483ab46eb6392d1aed5, type: 2}
+  adjustableParameters:
+  - label: Nucleation Rate
+    reaction: {fileID: 11400000, guid: ba19dbba35ede42c985db27e50be9341, type: 2}
+    range: {x: 0.0000037, y: 10000000}
+  - label: Growth Rate
+    reaction: {fileID: 11400000, guid: 0640e5b4c7f8d474285b009b2d36174a, type: 2}
+    range: {x: 37, y: 10000000}

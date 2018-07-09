@@ -110,6 +110,28 @@ namespace AICS.AgentSim
             }
         }
 
+        public Reaction GetReactionForDefinition (ReactionDef definition)
+        {
+            switch (definition.type)
+            {
+                case ReactionType.Bind:
+                    return bindReactions.Find( r => r.definition == definition );
+
+                case ReactionType.Release:
+                    return releaseReactions.Find( r => r.definition == definition );
+
+                case ReactionType.StateChange:
+                    return stateChangeReactions.Find( r => r.definition == definition );
+
+                case ReactionType.Create:
+                    return createReactions.Find( r => r.definition == definition );
+
+                case ReactionType.Destroy:
+                    return destroyReactions.Find( r => r.definition == definition );
+            }
+            return null;
+        }
+
         protected virtual void CreateContainer ()
         {
             container = gameObject.AddComponent<Container>();
@@ -132,7 +154,7 @@ namespace AICS.AgentSim
             {
                 return;
             }
-            Debug.Log( amount + " " + complexConcentration.complexPattern );
+
             MoleculeInitData initData = new MoleculeInitData( complexConcentration.complexPattern, CalculateMoleculeTransforms( complexConcentration.complexPattern ),
                                                               GetRelevantBindReactions( complexConcentration.complexPattern ),
                                                               GetRelevantCollisionFreeReactions( complexConcentration.complexPattern ) );

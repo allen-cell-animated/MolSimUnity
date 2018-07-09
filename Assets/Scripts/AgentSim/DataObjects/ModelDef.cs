@@ -12,6 +12,7 @@ namespace AICS.AgentSim
         public float containerVolume;
         public ComplexConcentration[] complexes;
         public ReactionDef[] reactionDefs;
+        public ReactionRateParameter[] adjustableParameters;
 
         public void Init ()
         {
@@ -50,5 +51,13 @@ namespace AICS.AgentSim
             complexPattern.Init();
             concentration = _concentration;
         }
+    }
+
+    [System.Serializable]
+    public class ReactionRateParameter
+    {
+        public string label;
+        public ReactionDef reaction;
+        public Vector2 range;
     }
 }

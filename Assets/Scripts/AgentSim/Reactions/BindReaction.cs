@@ -14,7 +14,6 @@ namespace AICS.AgentSim
             if (components.Length > 1 && components[0] != null && components[1] != null &&
                 matchingReactionCenters.Length > 1 && matchingReactionCenters[0] != null && matchingReactionCenters[1] != null)
             {
-                Debug.Log( components[0].molecule.agentID + " bind " + components[1].molecule.agentID + " " + definition.description );
                 RelativelyPosition( components[0], components[1] );
 
                 Dictionary<string,List<Molecule>> molecules = MergeMolecules( components[0].complex.molecules, components[1].complex.molecules );

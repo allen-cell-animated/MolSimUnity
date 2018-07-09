@@ -14,7 +14,6 @@ namespace AICS.AgentSim
             if (components.Length > 0 && components[0] != null &&
                 matchingReactionCenters.Length > 0 && matchingReactionCenters[0] != null)
             {
-                Debug.Log( components[0].molecule.agentID + " change state" + " " + definition.description );
                 components[0].SetToProductState( matchingReactionCenters[0] );
                 components[0].complex.SetToProductState( matchingReactionCenters[0] );
                 components[0].complex.UpdateReactions();

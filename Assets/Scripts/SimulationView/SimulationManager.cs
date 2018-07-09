@@ -32,9 +32,23 @@ namespace AICS.SimulationView
             }
         }
 
+        InputManager _inputManager;
+        InputManager inputManager
+        {
+            get
+            {
+                if (_inputManager == null)
+                {
+                    _inputManager = GameObject.FindObjectOfType<InputManager>();
+                }
+                return _inputManager;
+            }
+        }
+
         void Start ()
         {
             visualizer.SpawnAgents( StartSimulation() );
+            inputManager.CreateCustomUI( reactor );
         }
 
         public Dictionary<string,AgentData> StartSimulation ()
