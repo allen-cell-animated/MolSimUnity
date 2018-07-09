@@ -65,6 +65,7 @@ namespace AICS.AgentSim
         public Dictionary<string,AgentData> Init (ModelDef _modelDef = null)
         {
             if (_modelDef != null) { modelDef = _modelDef; }
+            World.Instance.observer.currentScale = modelDef.scale;
             CreateReactions();
             CreateContainer();
             return SpawnComplexes();

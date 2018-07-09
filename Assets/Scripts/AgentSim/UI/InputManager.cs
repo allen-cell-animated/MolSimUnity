@@ -42,16 +42,37 @@ namespace AICS.AgentSim
             }
         }
 
-        public void CreateCustomUI (Reactor reactor)
+        public void CreateCustomUI (Reactor _reactor)
         {
-            GameObject prefab = Resources.Load( "RateParameter" ) as GameObject;
+            reactor = _reactor;
+            CreateTimeParameter();
+            CreateRateParameters();
+        }
+
+        void CreateTimeParameter ()
+        {
+            GameObject prefab = Resources.Load( "UI/TimeParameter" ) as GameObject;
             if (prefab == null)
             {
-                Debug.LogWarning( "RateParameter prefab not found in Resources" );
+                Debug.LogWarning( "TimeParameter prefab not found in Resources/UI" );
                 return;
             }
 
-            int i = 0;
+            TimeParameter timeParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<TimeParameter>();
+            timeParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f, 0 );
+            timeParameter.Init();
+        }
+
+        void CreateRateParameters ()
+        {
+            GameObject prefab = Resources.Load( "UI/RateParameter" ) as GameObject;
+            if (prefab == null)
+            {
+                Debug.LogWarning( "RateParameter prefab not found in Resources/UI" );
+                return;
+            }
+
+            int i = 1;
             foreach (ReactionRateParameter parameter in reactor.modelDef.adjustableParameters)
             {
                 Reaction reaction = reactor.GetReactionForDefinition( parameter.reaction );

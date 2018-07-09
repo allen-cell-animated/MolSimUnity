@@ -5,12 +5,8 @@ using UnityEngine.UI;
 
 namespace AICS.AgentSim
 {
-    public class RateParameter: MonoBehaviour
+    public class RateParameter : Parameter
     {
-        public Text label;
-        public Text value;
-        public Slider slider;
-
         Reaction reaction;
 
         public void Init (ReactionRateParameter _parameter, Reaction _reaction)
@@ -23,7 +19,7 @@ namespace AICS.AgentSim
             slider.value = reaction.theoreticalRate;
         }
 
-        public void ValueChanged (float newValue)
+        public override void ValueChanged (float newValue)
         {
             reaction.theoreticalRate = newValue;
             value.text = newValue.ToString() + " s⁻¹";
