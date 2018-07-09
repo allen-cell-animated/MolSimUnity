@@ -467,10 +467,10 @@ namespace AICS.AgentSim
 
         protected virtual void MoveParticles ()
         {
-            for(int i = 0; i < movers.Count; ++i)
+            for (int i = 0; i < movers.Count; ++i)
             {
                 Mover currentMover = movers[i];
-                for(int numAttempts = 0; numAttempts < maxMoveAttempts; ++numAttempts)
+                for (int numAttempts = 0; numAttempts < maxMoveAttempts; ++numAttempts)
                 {
                     Vector3 moveStep = currentMover.GetRandomDisplacement(dT);
                     Vector3 newPosition_AfterMoveStep = currentMover.position + moveStep;
@@ -481,14 +481,14 @@ namespace AICS.AgentSim
                     {
                         continue;
                     }
-                    else if(!isInbounds && container.periodicBoundary)
+
+                    if (!isInbounds && container.periodicBoundary)
                     {
-                        currentMover.ReflectPeriodically( container.transform.position - (newPosition_AfterMoveStep) );
-                        break;
+                        newPosition_AfterMoveStep = GetPeriodicallyReflectedPosition( currentMover.position + moveStep );
                     }
 
                     bool willCollide = false;
-                    for(int j = 0; j < i; ++j)
+                    for (int j = 0; j < i; ++j)
                     {
                         Mover alreadyPlacedMover = movers[j];
                         if (currentMover.WillCollideWith( alreadyPlacedMover, newPosition_AfterMoveStep ))
@@ -497,7 +497,7 @@ namespace AICS.AgentSim
                         }
                     }
 
-                    if(willCollide)
+                    if (willCollide)
                     {
                         continue;
                     }
@@ -508,6 +508,23 @@ namespace AICS.AgentSim
 
                 currentMover.RotateRandomly(dT);
             }
+        }
+
+        public Vector3 GetPeriodicallyReflectedPosition (Vector3 attemptedNewPosition)
+        {
+            Vector3 newPosition = attemptedNewPosition;
+            for (int d = 0; d < 3; d++) 
+            {
+                while (newPosition[d] >= 0.5f * container.size[d])
+                {
+                    newPosition[d] -= container.size[d];
+                }
+                while (newPosition[d] < -0.5f * container.size[d]) 
+                {
+                    newPosition[d] += container.size[d];
+                }
+            }
+            return newPosition;
         }
 
         protected virtual void DoCollisionFreeReactions ()
