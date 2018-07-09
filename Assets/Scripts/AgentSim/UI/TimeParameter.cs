@@ -2,36 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using AICS.AgentSim;
 
-namespace AICS.AgentSim
+namespace AICS.SimulationView
 {
     public class TimeParameter : Parameter
     {
-        Observer _observer;
-        Observer observer
+        public void Init (float _initialDT)
         {
-            get
-            {
-                if (_observer == null)
-                {
-                    _observer = GameObject.FindObjectOfType<Observer>();
-                }
-                return _observer;
-            }
-        }
-
-        public void Init ()
-        {
-            value.text = observer.currentScale.ToString() + " s";
+            value.text = _initialDT.ToString() + " s";
             slider.minValue = 1e-12f;
             slider.maxValue = 1e-6f;
-            slider.value = 1e-9f;// observer.currentScale;
+            slider.value = 1e-9f;// _initialDT;
         }
 
         public override void ValueChanged (float newValue)
         {
-            observer.currentScale = newValue;
             value.text = newValue.ToString() + " s";
+            SimulationManager.Instance.SetDT( newValue );
         }
     }
 

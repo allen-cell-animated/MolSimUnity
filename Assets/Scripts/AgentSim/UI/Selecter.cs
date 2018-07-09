@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using cakeslice;
 
-namespace AICS.AgentSim
+namespace AICS.SimulationView
 {
     [RequireComponent( typeof(Collider), typeof(Outline) )]
     public class Selecter : MonoBehaviour

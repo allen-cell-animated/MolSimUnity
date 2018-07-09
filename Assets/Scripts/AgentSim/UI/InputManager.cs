@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using AICS.AgentSim;
 
-namespace AICS.AgentSim
+namespace AICS.SimulationView
 {
     public class InputManager : MonoBehaviour
     {
-        public Reactor reactor;
-
         public RectTransform parameterViewport;
         public GameObject pauseButton;
         public GameObject playButton;
@@ -42,14 +41,13 @@ namespace AICS.AgentSim
             }
         }
 
-        public void CreateCustomUI (Reactor _reactor)
+        public void CreateCustomUI (ModelDef _modelDef)
         {
-            reactor = _reactor;
-            CreateTimeParameter();
-            CreateRateParameters();
+            CreateTimeParameter( _modelDef.scale );
+            CreateRateParameters( _modelDef );
         }
 
-        void CreateTimeParameter ()
+        void CreateTimeParameter (float _initialDT)
         {
             GameObject prefab = Resources.Load( "UI/TimeParameter" ) as GameObject;
             if (prefab == null)
@@ -60,10 +58,10 @@ namespace AICS.AgentSim
 
             TimeParameter timeParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<TimeParameter>();
             timeParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f, 0 );
-            timeParameter.Init();
+            timeParameter.Init( _initialDT );
         }
 
-        void CreateRateParameters ()
+        void CreateRateParameters (ModelDef _modelDef)
         {
             GameObject prefab = Resources.Load( "UI/RateParameter" ) as GameObject;
             if (prefab == null)
@@ -73,18 +71,11 @@ namespace AICS.AgentSim
             }
 
             int i = 1;
-            foreach (ReactionRateParameter parameter in reactor.modelDef.adjustableParameters)
+            foreach (ReactionRateParameter parameter in _modelDef.adjustableParameters)
             {
-                Reaction reaction = reactor.GetReactionForDefinition( parameter.reaction );
-                if (reaction == null) 
-                {
-                    Debug.LogWarning( "Couldn't find reaction for " + parameter.reaction.description );
-                    continue;
-                }
-
                 RateParameter rateParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<RateParameter>();
                 rateParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - i * 110f, 0 );
-                rateParameter.Init( parameter, reaction );
+                rateParameter.Init( parameter );
                 i++;
             }
         }
@@ -180,7 +171,7 @@ namespace AICS.AgentSim
 
         public void Restart ()
         {
-            reactor.StartCoroutine( "Restart" );
+            SimulationManager.Instance.Restart();
         }
     }
 }

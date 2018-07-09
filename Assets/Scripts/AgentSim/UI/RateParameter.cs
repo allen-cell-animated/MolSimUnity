@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using AICS.AgentSim;
 
-namespace AICS.AgentSim
+namespace AICS.SimulationView
 {
     public class RateParameter : Parameter
     {
-        Reaction reaction;
+        ReactionDef reactionDef;
 
-        public void Init (ReactionRateParameter _parameter, Reaction _reaction)
+        public void Init (ReactionRateParameter _parameter)
         {
-            reaction = _reaction;
+            reactionDef = _parameter.reactionDef;
             label.text = _parameter.label;
-            value.text = reaction.theoreticalRate.ToString() + " s⁻¹";
+            value.text = reactionDef.rate.ToString() + " s⁻¹";
             slider.minValue = _parameter.range.x;
             slider.maxValue = _parameter.range.y;
-            slider.value = reaction.theoreticalRate;
+            slider.value = reactionDef.rate;
         }
 
         public override void ValueChanged (float newValue)
         {
-            reaction.theoreticalRate = newValue;
             value.text = newValue.ToString() + " s⁻¹";
+            SimulationManager.Instance.SetRateParameter( reactionDef, newValue );
         }
     }
 }

@@ -57,7 +57,7 @@ namespace AICS.AgentSim
     public class ReactionRateParameter
     {
         public string label;
-        public ReactionDef reaction;
+        public ReactionDef reactionDef;
         public Vector2 range;
     }
 }
