@@ -13,17 +13,14 @@ namespace AICS.SimulationView
         public void Init (ReactionRateParameter _parameter)
         {
             reactionDef = _parameter.reactionDef;
-            label.text = _parameter.label;
-            value.text = reactionDef.rate.ToString() + " s⁻¹";
-            slider.minValue = _parameter.range.x;
-            slider.maxValue = _parameter.range.y;
-            slider.value = reactionDef.rate;
+            mapping = _parameter.mapping;
+            Setup( _parameter.label, reactionDef.rate, _parameter.range.x, _parameter.range.y, false, " s⁻¹" );
         }
 
-        public override void ValueChanged (float newValue)
+        public void ValueChanged (float _newValue)
         {
-            value.text = newValue.ToString() + " s⁻¹";
-            SimulationManager.Instance.SetRateParameter( reactionDef, newValue );
+            SetValue( _newValue );
+            SimulationManager.Instance.SetRateParameter( reactionDef, value );
         }
     }
 }

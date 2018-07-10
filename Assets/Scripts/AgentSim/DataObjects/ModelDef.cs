@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AICS.SimulationView;
 
 namespace AICS.AgentSim
 {
@@ -59,5 +60,6 @@ namespace AICS.AgentSim
         public string label;
         public ReactionDef reactionDef;
         public Vector2 range;
+        public SliderMapping mapping;
     }
 }

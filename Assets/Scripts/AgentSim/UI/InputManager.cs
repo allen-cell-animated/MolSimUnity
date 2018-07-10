@@ -160,7 +160,7 @@ namespace AICS.SimulationView
 
         void UpdateTime ()
         {
-            totalTime.text = Helpers.FormatTime( World.Instance.time, 0 );
+            totalTime.text = Helpers.FormatSIValue( World.Instance.time, 2, "s" );
         }
 
         void UpdateFPS ()

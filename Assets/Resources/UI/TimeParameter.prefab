@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 114269075534703426}
-  value: {fileID: 114281072017322524}
+  valueLabel: {fileID: 114281072017322524}
   slider: {fileID: 114922604598574612}
 --- !u!114 &114637148704928366
 MonoBehaviour:
