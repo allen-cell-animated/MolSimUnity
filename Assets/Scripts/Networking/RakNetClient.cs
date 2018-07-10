@@ -147,7 +147,6 @@ public class RakNetClient : MonoBehaviour {
 
 		int numAgents = (int)naf;
 		outData.Clear();
-		Debug.Log(String.Format("{0} Agents arrived", numAgents));
 
 		for(int i = 0; i < numAgents; ++i)
 		{
