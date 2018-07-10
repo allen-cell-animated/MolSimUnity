@@ -208,6 +208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e31bb750c161a45d6b3b385def959fbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStreamingSimulation: 0
+  simRequestSent: 0
+  Simulator: 1
 --- !u!65 &1194655418
 BoxCollider:
   m_ObjectHideFlags: 0
