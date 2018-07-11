@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60be86a25371b497a9474832fccb3ee7, type: 3}
   m_Name: LinearActin
   m_EditorClassIdentifier: 
-  scale: 0.000000001
+  scale: 0.00000001
   containerVolume: 1.25e-16
   complexes:
   - concentration: 0.000005
