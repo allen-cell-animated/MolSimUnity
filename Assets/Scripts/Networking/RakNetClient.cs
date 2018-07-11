@@ -8,7 +8,8 @@ public class RakNetClient : MonoBehaviour {
 
 	public enum messageId {
 		ID_VIS_DATA_ARRIVE = DefaultMessageIDTypes.ID_USER_PACKET_ENUM,
-		ID_VIS_DATA_REQUEST
+		ID_VIS_DATA_REQUEST,
+		ID_VIS_DATA_FINISH
 	};
 
 	public enum simulator {
@@ -17,7 +18,7 @@ public class RakNetClient : MonoBehaviour {
 	};
 
 	struct SimRequestData {
-		public SimRequestData(simulator s, short tSteps, int stepSize)
+		public SimRequestData(simulator s, float tSteps, float stepSize)
 		{
 			Simulator = s;
 			nTimeSteps = tSteps;
@@ -38,16 +39,17 @@ public class RakNetClient : MonoBehaviour {
 
 	Packet m_packet;
 	RakPeerInterface m_client;
-	public bool isStreamingSimulation = false;
-	public bool simRequestSent = false;
 
+	// Editor params
+	public bool isStreamingSimulation = false;
+	public int NumberOfTimeSteps = 10000;
+	public float StepSize = 1e-9f;
+
+	private bool simRequestSent = false;
 	private RakNet.BitStream m_recieved_data;
 	private RakNet.BitStream m_sent_data;
 
 	SystemAddress serverAddr;
-
-	private int simStepCounter;
-	private int requestedSteps;
 
 	public List<AgentData> AGENT_LIST = new List<AgentData>();
 
@@ -62,17 +64,19 @@ public class RakNetClient : MonoBehaviour {
 		this.m_client.Startup(1, new SocketDescriptor(), 1);
 		this.m_client.Connect("127.0.0.1", 60000, "", 0);
 		Debug.Log("Starting Client");
-
-		this.simStepCounter = 0;
-		this.requestedSteps = 0;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if(!this.isStreamingSimulation)
+		{
+			this.simRequestSent = false;
+		}
+
 		if(isStreamingSimulation && !simRequestSent)
 		{
 			Debug.Log("Sending data request");
-			SimRequestData sr = new SimRequestData(simulator.DevTest, 1000, 1);
+			SimRequestData sr = new SimRequestData(simulator.DevTest, this.NumberOfTimeSteps, this.StepSize);
 			SerializeVisDataRequest(ref this.m_sent_data, sr);
 
 			this.m_client.Send(
@@ -83,8 +87,6 @@ public class RakNetClient : MonoBehaviour {
 			simRequestSent = true;
 			Debug.Log(String.Format("Num Time Steps: {0}", sr.nTimeSteps));
 			Debug.Log(String.Format("Time Step Size: {0}", sr.timeStepSize));
-			this.simStepCounter = 0;
-			this.requestedSteps = 1000;
 		}
 
 		this.m_packet = this.m_client.Receive();
@@ -101,18 +103,14 @@ public class RakNetClient : MonoBehaviour {
 			}break;
 			case (byte)messageId.ID_VIS_DATA_ARRIVE:
 			{
-				//Debug.Log("Simulation Results have arrived");
-				simStepCounter++;
-
-				//@NOTE This won't work when packets are dropped
-				if(simStepCounter == requestedSteps)
-				{
-					Debug.Log("Request simulation data has finished");
-				}
-
 				this.m_recieved_data.Reset();
 				this.m_recieved_data.Write(this.m_packet.data, this.m_packet.length);
 				DeserializeSimData(ref this.m_recieved_data, ref this.AGENT_LIST);
+			} break;
+			case (byte)messageId.ID_VIS_DATA_FINISH:
+			{
+				Debug.Log("Request simulation data has finished");
+				this.isStreamingSimulation = false;
 			} break;
 			default:
 			{
