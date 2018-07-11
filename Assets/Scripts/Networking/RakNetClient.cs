@@ -17,11 +17,11 @@ public class RakNetClient : MonoBehaviour {
 	};
 
 	struct SimRequestData {
-		public SimRequestData(simulator s, short tSteps, int stepSizeNs)
+		public SimRequestData(simulator s, short tSteps, int stepSize)
 		{
 			Simulator = s;
 			nTimeSteps = tSteps;
-			timeStepSize = stepSizeNs;
+			timeStepSize = stepSize;
 		}
 
 		public simulator Simulator;

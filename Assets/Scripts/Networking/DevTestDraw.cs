@@ -16,6 +16,7 @@ public class DevTestDraw : MonoBehaviour {
 		{
 			GameObject gobj = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			gobj.SetActive(false);
+			gobj.transform.SetParent(this.gameObject.transform);
 			gobjs.Add(gobj);
 		}
 	}
@@ -34,6 +35,24 @@ public class DevTestDraw : MonoBehaviour {
 			gobjs[i].transform.position = new Vector3(ad.x, ad.y, ad.z);
 
 			gobjs[i].SetActive(true);
+
+			Renderer rend = gobjs[i].GetComponent<Renderer>();
+
+			switch((int)ad.type)
+			{
+				case 0:
+				{
+				 rend.material.SetColor("_Color", Color.green);
+				} break;
+				case 1:
+				{
+				 rend.material.SetColor("_Color", Color.red);
+				} break;
+				case 2:
+				{
+				 rend.material.SetColor("_Color", Color.blue);
+				} break;
+			}
 		}
 
 		for(;i < testMax; ++i)
