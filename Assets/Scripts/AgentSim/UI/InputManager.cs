@@ -17,6 +17,8 @@ namespace AICS.SimulationView
         public Selecter lastSelectedObject;
         bool justSelected;
         float deltaTime;
+        float parameterContentHeight;
+        float parameterPrefabHeight = 110f;
 
         Vector2 mouseDelta = Vector2.zero;
         float mouseMoveThreshold = 0.1f;
@@ -45,6 +47,7 @@ namespace AICS.SimulationView
         {
             CreateTimeParameter( _modelDef.scale );
             CreateRateParameters( _modelDef );
+            parameterViewport.sizeDelta = new Vector2( parameterViewport.sizeDelta.x, parameterContentHeight );
         }
 
         void CreateTimeParameter (float _initialDT)
@@ -57,8 +60,9 @@ namespace AICS.SimulationView
             }
 
             TimeParameter timeParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<TimeParameter>();
-            timeParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f, 0 );
+            timeParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - parameterContentHeight, 0 );
             timeParameter.Init( _initialDT );
+            parameterContentHeight += parameterPrefabHeight;
         }
 
         void CreateRateParameters (ModelDef _modelDef)
@@ -70,13 +74,12 @@ namespace AICS.SimulationView
                 return;
             }
 
-            int i = 1;
             foreach (ReactionRateParameter parameter in _modelDef.adjustableParameters)
             {
                 RateParameter rateParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<RateParameter>();
-                rateParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - i * 110f, 0 );
+                rateParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - parameterContentHeight, 0 );
                 rateParameter.Init( parameter );
-                i++;
+                parameterContentHeight += parameterPrefabHeight;
             }
         }
 
