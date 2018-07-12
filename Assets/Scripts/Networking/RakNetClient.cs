@@ -119,6 +119,7 @@ public class RakNetClient : MonoBehaviour {
 			{
 				Debug.Log("Request simulation data has finished");
 				this.m_ClientState = visClientState.NotStreaming;
+				ClientState = visClientState.NotStreaming;
 			} break;
 			default:
 			{
