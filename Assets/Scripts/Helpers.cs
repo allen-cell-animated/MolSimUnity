@@ -81,6 +81,22 @@ namespace AICS
 
         public static string FormatRoundedValue (float value, int significantFigures)
         {
+            // if value = 0
+            if (value > -float.Epsilon && value < float.Epsilon)
+            {
+                if (significantFigures < 2)
+                {
+                    return "0";
+                }
+
+                string zero = "0.";
+                while (zero.Length < significantFigures + 1)
+                {
+                    zero += "0";
+                }
+                return zero;
+            }
+
             // round to significant figures
             int exp = Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) ) - (significantFigures - 1);
             int roundedValue = Mathf.RoundToInt( Mathf.Abs( value ) / Mathf.Pow( 10f, exp ) );
@@ -130,10 +146,10 @@ namespace AICS
         public static string FormatSIValue (float value, int significantFigures, string baseUnit)
         {
             //get order of magnitude
-            int orderOfMagnitude = 3 * Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) / 3f );
+            int orderOfMagnitude = value > -float.Epsilon && value < float.Epsilon ? 0 : 3 * Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) / 3f );
 
             //round to significant figures
-            int exp = Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) ) - (significantFigures - 1);
+            int exp = value > -float.Epsilon && value < float.Epsilon ? 0 : Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) ) - (significantFigures - 1);
             int roundedValue = Mathf.RoundToInt( Mathf.Abs( value ) / Mathf.Pow( 10f, exp ) );
 
             // if rounded up and added a digit

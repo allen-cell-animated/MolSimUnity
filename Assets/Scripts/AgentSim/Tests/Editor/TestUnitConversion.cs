@@ -42,6 +42,7 @@ public class TestUnitConversion
         Assert.IsTrue( Helpers.FormatSIValue( 326810000f, 3, "s" ) == "327 Ms" );
         Assert.IsTrue( Helpers.FormatSIValue( 0.000009f, 1, "s" ) == "9 μs" );
         Assert.IsTrue( Helpers.FormatSIValue( -1.26f, 2, "s" ) == "-1.3 s" );
+        Assert.IsTrue( Helpers.FormatSIValue( 0, 2, "s" ) == "0.0 s" );
     }
 
     [Test]
@@ -78,5 +79,6 @@ public class TestUnitConversion
         Assert.IsTrue( Helpers.FormatRoundedValue( 0.000009f, 1 ) == "0.000009" );
         Assert.IsTrue( Helpers.FormatRoundedValue( -1.26f, 2 ) == "-1.3" );
         Assert.IsTrue( Helpers.FormatRoundedValue( 11f, 5 ) == "11.000" );
+        Assert.IsTrue( Helpers.FormatRoundedValue( 0, 5 ) == "0.0000" );
     }
 }

@@ -648,6 +648,8 @@ namespace AICS.AgentSim
             destroyReactions.Clear();
             movers.Clear();
             complexes.Clear();
+            agents.Clear();
+            molecules.Clear();
             id = -1;
 
             Init();
