@@ -118,7 +118,7 @@ namespace AICS.SimulationView
                     break;
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
+                    netClient.UpdateTimeStep(dT);
                     break;
             }
         }

@@ -16,7 +16,8 @@ public class RakNetClient : MonoBehaviour {
 		ID_VIS_DATA_FINISH,
 		ID_VIS_DATA_PAUSE,
 		ID_VIS_DATA_RESUME,
-		ID_VIS_DATA_ABORT
+		ID_VIS_DATA_ABORT,
+		ID_UPDATE_TIME_STEP
 	};
 
 	/**
@@ -312,6 +313,17 @@ public class RakNetClient : MonoBehaviour {
 		this.SetState(visClientState.Streaming);
 	}
 
+	public void UpdateTimeStep(float newTimeStep)
+	{
+		this.m_sent_data.Reset();
+		this.m_sent_data.Write((byte)messageId.ID_UPDATE_TIME_STEP);
+		this.m_sent_data.Write(newTimeStep);
+		this.m_client.Send(
+			this.m_sent_data, PacketPriority.HIGH_PRIORITY,
+			PacketReliability.RELIABLE_ORDERED,
+			(char)0, new AddressOrGUID(serverAddr), false);
+	}
+
 
 	/**
 	*	The below functions need to correspond with the C++ server functions
@@ -356,7 +368,6 @@ public class RakNetClient : MonoBehaviour {
 			bs.Read(out ad.zrot);
 			outData.Add(ad);
 		}
-
 	}
 
 }
