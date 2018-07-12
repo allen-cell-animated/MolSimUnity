@@ -23,7 +23,7 @@ public class DevTestDraw : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(rknc == null || !rknc.isStreamingSimulation)
+		if(rknc == null || !rknc.IsStreamingSimulation())
 		{
 			return;
 		}
