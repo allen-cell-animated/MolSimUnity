@@ -31,7 +31,7 @@ public class DevTestDraw : MonoBehaviour {
 		int i = 0;
 		for(; i < rknc.AGENT_LIST.Count; ++i)
 		{
-			RakNetClient.AgentData ad = rknc.AGENT_LIST[i];
+			RakNetClient.NetAgentData ad = rknc.AGENT_LIST[i];
 			gobjs[i].transform.position = new Vector3(ad.x, ad.y, ad.z);
 
 			gobjs[i].SetActive(true);

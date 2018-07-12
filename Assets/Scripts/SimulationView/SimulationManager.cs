@@ -12,17 +12,30 @@ namespace AICS.SimulationView
     }
 
     [RequireComponent( typeof(Visualizer) )]
-    public class SimulationManager : MonoBehaviour 
+    public class SimulationManager : MonoBehaviour
     {
         public SimulationType simulationType;
         public ModelDef modelDef;
 
         Reactor reactor;
 
+        RakNetClient _netClient = null;
+        RakNetClient netClient
+        {
+          get
+          {
+            if(_netClient == null)
+            {
+              _netClient = GetComponent<RakNetClient>();
+            }
+            return _netClient;
+          }
+        }
+
         static SimulationManager _Instance;
         public static SimulationManager Instance
         {
-            get 
+            get
             {
                 if (_Instance == null)
                 {
@@ -73,8 +86,7 @@ namespace AICS.SimulationView
                     return reactor.Init( modelDef );
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
-                    return new Dictionary<string,AgentData>();
+                    return netClient.StartActinSimulation();
             }
             return null;
         }
@@ -92,8 +104,7 @@ namespace AICS.SimulationView
                     return reactor.GetAgentTransforms();
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
-                    return new Dictionary<string,AgentData>();
+                    return netClient.UpdateSimulation();
             }
             return null;
         }
@@ -141,7 +152,7 @@ namespace AICS.SimulationView
         }
     }
 
-    public class AgentData 
+    public class AgentData
     {
         public string agentName;
         public Vector3 position;
@@ -152,6 +163,13 @@ namespace AICS.SimulationView
             agentName = _agentName;
             position = _position;
             rotation = _rotation;
+        }
+
+        public AgentData()
+        {
+          agentName = "Undefined";
+          position = new Vector3(0,0,0);
+          rotation = new Vector3(0,0,0);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AICS.SimulationView
 {
-    public class Visualizer : MonoBehaviour 
+    public class Visualizer : MonoBehaviour
     {
         [SerializeField] AgentPrefab[] agentPrefabs;
 
@@ -44,7 +44,7 @@ namespace AICS.SimulationView
                 Debug.LogWarning( "There's no prefab for " + agentData.agentName );
                 obj = Instantiate( Resources.Load( "DefaultMolecule" ) as GameObject );
             }
-            else 
+            else
             {
                 obj = Instantiate( prefabs[agentData.agentName] );
             }
@@ -59,10 +59,15 @@ namespace AICS.SimulationView
         {
             foreach (string id in agents.Keys)
             {
-                if (agents.ContainsKey( id ))
+                if (updatedAgents.ContainsKey( id ))
                 {
                     agents[id].transform.position = updatedAgents[id].position;
                     agents[id].transform.rotation = Quaternion.Euler( updatedAgents[id].rotation );
+                    agents[id].SetActive(true);
+                }
+                else
+                {
+                    agents[id].SetActive(false);
                 }
             }
         }

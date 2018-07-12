@@ -51,16 +51,28 @@ public class RakNetClient : MonoBehaviour {
 		public float timeStepSize;
 	};
 
-	public struct AgentData
+	public struct NetAgentData
 	{
 		public float type;
 		public float x, y, z;
 		public float xrot, yrot, zrot;
 	};
 
+	/**
+	*	Sending numerical values over the network is less hassle than sending
+	*	full string names. This maps entities to an ID used to identify
+	* a client side actor over the network.
+	*
+	*	The C++ simulator doesn't particularly care whether actin is defined
+	* as an "actin" or a "type == 1" so long as the parameters are correct
+	*/
+	private Dictionary<int, string> m_agentMapping =
+		new Dictionary<int, string>();
+
 	Packet m_packet;
 	RakPeerInterface m_client;
 
+	public bool ToggleStateManually = false;
 	public visClientState ClientState;
 
 	/**
@@ -75,7 +87,7 @@ public class RakNetClient : MonoBehaviour {
 
 	SystemAddress serverAddr;
 
-	public List<AgentData> AGENT_LIST = new List<AgentData>();
+	public List<NetAgentData> AGENT_LIST = new List<NetAgentData>();
 
 	// Use this for initialization
 	void Start () {
@@ -92,7 +104,7 @@ public class RakNetClient : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(ClientState != m_ClientState)
+		if(ToggleStateManually && ClientState != m_ClientState)
 		{
 			SetState(ClientState);
 		}
@@ -111,7 +123,7 @@ public class RakNetClient : MonoBehaviour {
 			}break;
 			case (byte)messageId.ID_VIS_DATA_ARRIVE:
 			{
-				this.m_recieved_data.Reset();
+				this.m_recieved_data.Reset();;
 				this.m_recieved_data.Write(this.m_packet.data, this.m_packet.length);
 				DeserializeSimData(ref this.m_recieved_data, ref this.AGENT_LIST);
 			} break;
@@ -130,6 +142,16 @@ public class RakNetClient : MonoBehaviour {
 		}
 	}
 
+	void OnDestroy()
+	{
+		Debug.Log("Destroying Client");
+		RakPeerInterface.DestroyInstance(this.m_client);
+	}
+
+	/**
+	*	The below functions relate to managing network
+	*	simulation streaming state
+	*/
 	public bool IsStreamingSimulation()
 	{
 		return this.m_ClientState == visClientState.Streaming;
@@ -156,7 +178,7 @@ public class RakNetClient : MonoBehaviour {
 			case visClientState.Streaming:
 			{
 				/**
-				*	Resume streaming simulation results
+				*	Resume streaming simulation ;results
 				*/
 				if (this.m_ClientState == visClientState.Paused)
 				{
@@ -223,10 +245,44 @@ public class RakNetClient : MonoBehaviour {
 		this.m_ClientState = newState;
 	}
 
-	void OnDestroy()
+	/**
+	*	Client side visualization functions
+	*/
+	private Dictionary<string, AICS.SimulationView.AgentData> m_outData =
+			new Dictionary<string, AICS.SimulationView.AgentData>();
+
+	public Dictionary<string, AICS.SimulationView.AgentData> StartActinSimulation()
 	{
-		Debug.Log("Destroying Client");
-		RakPeerInterface.DestroyInstance(this.m_client);
+		this.m_agentMapping[0] = "Actin";
+		this.m_agentMapping[1] = "Actin";
+		this.m_agentMapping[2] = "Actin";
+
+		SetState(visClientState.Streaming);
+
+		for(int i = 0; i < 1000; ++i)
+		{
+			var ad = new AICS.SimulationView.AgentData();
+			ad.agentName = "Actin";
+			this.m_outData[i.ToString()] = ad;
+		}
+
+		return this.m_outData;
+	}
+
+	public Dictionary<string, AICS.SimulationView.AgentData> UpdateSimulation()
+	{
+		for(int i = 0; i < this.AGENT_LIST.Count; ++i)
+		{
+			NetAgentData nad = this.AGENT_LIST[i];
+			AICS.SimulationView.AgentData ad = new AICS.SimulationView.AgentData();
+
+			ad.agentName = this.m_agentMapping[(int)nad.type];
+			ad.position = new Vector3(nad.x, nad.y, nad.z);
+			ad.rotation = new Vector3(nad.xrot, nad.yrot, nad.zrot);
+			this.m_outData[i.ToString()] = ad;
+		}
+
+		return this.m_outData;
 	}
 
 
@@ -250,7 +306,7 @@ public class RakNetClient : MonoBehaviour {
 		bs.Write(simReq.timeStepSize);
 	}
 
-	void DeserializeSimData(ref RakNet.BitStream bs, ref List<AgentData> outData)
+	void DeserializeSimData(ref RakNet.BitStream bs, ref List<NetAgentData> outData)
 	{
 		byte msgHeader;
 		bs.Read(out msgHeader);
@@ -263,7 +319,7 @@ public class RakNetClient : MonoBehaviour {
 
 		for(int i = 0; i < numAgents; ++i)
 		{
-			AgentData ad;
+			NetAgentData ad;
 			bs.Read(out ad.type);
 			bs.Read(out ad.x);
 			bs.Read(out ad.y);
