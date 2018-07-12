@@ -285,7 +285,8 @@ public class RakNetClient : MonoBehaviour {
 
 	public Dictionary<string, AICS.SimulationView.AgentData> UpdateSimulation()
 	{
-		for(int i = 0; i < this.AGENT_LIST.Count; ++i)
+		int i = 0;
+		for(; i < this.AGENT_LIST.Count; ++i)
 		{
 			NetAgentData nad = this.AGENT_LIST[i];
 			AICS.SimulationView.AgentData ad = new AICS.SimulationView.AgentData();
@@ -294,6 +295,11 @@ public class RakNetClient : MonoBehaviour {
 			ad.position = new Vector3(nad.x, nad.y, nad.z);
 			ad.rotation = new Vector3(nad.xrot, nad.yrot, nad.zrot);
 			this.m_outData[i.ToString()] = ad;
+		}
+
+		for(; i < 1000; ++i)
+		{
+			this.m_outData.Remove(i.ToString());
 		}
 
 		return this.m_outData;
