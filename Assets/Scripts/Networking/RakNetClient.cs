@@ -104,6 +104,20 @@ public class RakNetClient : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		// Pause for the world instance
+		if(AICS.AgentSim.World.Instance.paused &&
+				this.m_ClientState == visClientState.Streaming)
+		{
+			SetState(visClientState.Paused);
+		}
+
+		// Resume for the world isntance
+		if(!AICS.AgentSim.World.Instance.paused &&
+				this.m_ClientState == visClientState.Paused)
+		{
+			SetState(visClientState.Streaming);
+		}
+
 		if(ToggleStateManually && ClientState != m_ClientState)
 		{
 			SetState(ClientState);
@@ -283,6 +297,13 @@ public class RakNetClient : MonoBehaviour {
 		}
 
 		return this.m_outData;
+	}
+
+	public IEnumerator Restart()
+	{
+		this.SetState(visClientState.NotStreaming);
+		yield return new WaitForSeconds(0.3f);
+		this.SetState(visClientState.Streaming);
 	}
 
 

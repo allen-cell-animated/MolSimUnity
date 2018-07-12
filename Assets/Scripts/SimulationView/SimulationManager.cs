@@ -146,7 +146,7 @@ namespace AICS.SimulationView
                     break;
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
+                    netClient.StartCoroutine( "Restart" );
                     break;
             }
         }
