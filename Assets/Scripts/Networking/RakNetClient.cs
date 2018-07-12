@@ -79,7 +79,7 @@ public class RakNetClient : MonoBehaviour {
 	/**
 	*	Simulation parameters editable in the Unity Editor
 	*/
-	public int NumberOfTimeSteps = 10000;
+	public int NumberOfTimeSteps = -1;
 	public float StepSize = 1e-9f;
 
 	private visClientState m_ClientState = visClientState.NotStreaming;
@@ -266,7 +266,9 @@ public class RakNetClient : MonoBehaviour {
 	private Dictionary<string, AICS.SimulationView.AgentData> m_outData =
 			new Dictionary<string, AICS.SimulationView.AgentData>();
 
-	public Dictionary<string, AICS.SimulationView.AgentData> StartActinSimulation()
+	public Dictionary<string, AICS.SimulationView.AgentData> StartActinSimulation(
+		AICS.AgentSim.ModelDef modelDef
+	)
 	{
 		this.m_agentMapping[0] = "Actin";
 		this.m_agentMapping[1] = "Actin";

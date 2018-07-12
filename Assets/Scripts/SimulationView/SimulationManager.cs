@@ -86,7 +86,7 @@ namespace AICS.SimulationView
                     return reactor.Init( modelDef );
 
                 case SimulationType.ExternalSimulator:
-                    return netClient.StartActinSimulation();
+                    return netClient.StartActinSimulation(modelDef);
             }
             return null;
         }
