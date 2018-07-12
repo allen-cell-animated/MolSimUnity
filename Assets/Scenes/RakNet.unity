@@ -207,7 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isStreamingSimulation: 0
-  simRequestSent: 0
+  NumberOfTimeSteps: 10000
+  StepSize: 0.000000001
 --- !u!114 &1194655418
 MonoBehaviour:
   m_ObjectHideFlags: 0
