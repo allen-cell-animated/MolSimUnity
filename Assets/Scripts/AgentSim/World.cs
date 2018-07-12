@@ -29,7 +29,7 @@ namespace AICS.AgentSim
 		{
 			get
 			{
-				return observer.currentScale;
+                return observer.currentScale;
 			}
         }
 

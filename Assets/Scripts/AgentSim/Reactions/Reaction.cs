@@ -12,12 +12,14 @@ namespace AICS.AgentSim
 
         [SerializeField] int attempts;
         public int events;
+        public float theoreticalRate;
         [SerializeField] float observedRate;
 
         public Reaction (ReactionDef _reactionDef, Reactor _reactor)
         {
             reactor = _reactor;
             definition = _reactionDef;
+            theoreticalRate = definition.rate;
 
             foreach (ReactionCenter reactionCenter in definition.reactionCenters)
             {
@@ -85,7 +87,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return observedRate > 1.2f * definition.rate;
+                return observedRate > 1.2f * theoreticalRate;
             }
         }
 
@@ -93,7 +95,7 @@ namespace AICS.AgentSim
         {
             get
             {
-                return observedRate < 0.8f * definition.rate;
+                return observedRate < 0.8f * theoreticalRate;
             }
         }
 
@@ -112,7 +114,7 @@ namespace AICS.AgentSim
             }
             else 
             {
-                react = Random.value <= definition.rate * World.Instance.dT * (World.Instance.steps / attempts);
+                react = Random.value <= theoreticalRate * World.Instance.dT * (World.Instance.steps / attempts);
             }
 
             events = react ? events + 1 : events;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AICS.SimulationView;
 
 namespace AICS.AgentSim
 {
@@ -12,6 +13,7 @@ namespace AICS.AgentSim
         public float containerVolume;
         public ComplexConcentration[] complexes;
         public ReactionDef[] reactionDefs;
+        public ReactionRateParameter[] adjustableParameters;
 
         public void Init ()
         {
@@ -50,5 +52,14 @@ namespace AICS.AgentSim
             complexPattern.Init();
             concentration = _concentration;
         }
+    }
+
+    [System.Serializable]
+    public class ReactionRateParameter
+    {
+        public string label;
+        public ReactionDef reactionDef;
+        public Vector2 range;
+        public SliderMapping mapping;
     }
 }

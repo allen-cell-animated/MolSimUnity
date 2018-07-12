@@ -19,6 +19,19 @@ namespace AICS.SimulationView
 
         Reactor reactor;
 
+        static SimulationManager _Instance;
+        public static SimulationManager Instance
+        {
+            get 
+            {
+                if (_Instance == null)
+                {
+                    _Instance = GameObject.FindObjectOfType<SimulationManager>();
+                }
+                return _Instance;
+            }
+        }
+
         Visualizer _visualizer;
         Visualizer visualizer
         {
@@ -32,9 +45,23 @@ namespace AICS.SimulationView
             }
         }
 
+        InputManager _inputManager;
+        InputManager inputManager
+        {
+            get
+            {
+                if (_inputManager == null)
+                {
+                    _inputManager = GameObject.FindObjectOfType<InputManager>();
+                }
+                return _inputManager;
+            }
+        }
+
         void Start ()
         {
             visualizer.SpawnAgents( StartSimulation() );
+            inputManager.CreateCustomUI( modelDef );
         }
 
         public Dictionary<string,AgentData> StartSimulation ()
@@ -46,6 +73,7 @@ namespace AICS.SimulationView
                     return reactor.Init( modelDef );
 
                 case SimulationType.ExternalSimulator:
+                    //TODO
                     return new Dictionary<string,AgentData>();
             }
             return null;
@@ -64,9 +92,52 @@ namespace AICS.SimulationView
                     return reactor.GetAgentTransforms();
 
                 case SimulationType.ExternalSimulator:
+                    //TODO
                     return new Dictionary<string,AgentData>();
             }
             return null;
+        }
+
+        public void SetDT (float dT)
+        {
+            switch (simulationType)
+            {
+                case SimulationType.AgentSim :
+                    World.Instance.observer.currentScale = dT;
+                    break;
+
+                case SimulationType.ExternalSimulator:
+                    //TODO
+                    break;
+            }
+        }
+
+        public void SetRateParameter (ReactionDef reactionDef, float rate)
+        {
+            switch (simulationType)
+            {
+                case SimulationType.AgentSim :
+                    reactor.GetReactionForDefinition( reactionDef ).theoreticalRate = rate;
+                    break;
+
+                case SimulationType.ExternalSimulator:
+                    //TODO
+                    break;
+            }
+        }
+
+        public void Restart ()
+        {
+            switch (simulationType)
+            {
+                case SimulationType.AgentSim :
+                    reactor.StartCoroutine( "Restart" );
+                    break;
+
+                case SimulationType.ExternalSimulator:
+                    //TODO
+                    break;
+            }
         }
     }
 

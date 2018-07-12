@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using AICS.AgentSim;
 
-namespace AICS.AgentSim
+namespace AICS.SimulationView
 {
     public class InputManager : MonoBehaviour
     {
-        public Reactor reactor;
-
+        public RectTransform parameterViewport;
         public GameObject pauseButton;
         public GameObject playButton;
         public Text totalTime;
@@ -17,6 +17,8 @@ namespace AICS.AgentSim
         public Selecter lastSelectedObject;
         bool justSelected;
         float deltaTime;
+        float parameterContentHeight;
+        float parameterPrefabHeight = 110f;
 
         Vector2 mouseDelta = Vector2.zero;
         float mouseMoveThreshold = 0.1f;
@@ -38,6 +40,46 @@ namespace AICS.AgentSim
                     _Instance = GameObject.FindObjectOfType<InputManager>();
                 }
                 return _Instance;
+            }
+        }
+
+        public void CreateCustomUI (ModelDef _modelDef)
+        {
+            CreateTimeParameter( _modelDef.scale );
+            CreateRateParameters( _modelDef );
+            parameterViewport.sizeDelta = new Vector2( parameterViewport.sizeDelta.x, parameterContentHeight );
+        }
+
+        void CreateTimeParameter (float _initialDT)
+        {
+            GameObject prefab = Resources.Load( "UI/TimeParameter" ) as GameObject;
+            if (prefab == null)
+            {
+                Debug.LogWarning( "TimeParameter prefab not found in Resources/UI" );
+                return;
+            }
+
+            TimeParameter timeParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<TimeParameter>();
+            timeParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - parameterContentHeight, 0 );
+            timeParameter.Init( _initialDT );
+            parameterContentHeight += parameterPrefabHeight;
+        }
+
+        void CreateRateParameters (ModelDef _modelDef)
+        {
+            GameObject prefab = Resources.Load( "UI/RateParameter" ) as GameObject;
+            if (prefab == null)
+            {
+                Debug.LogWarning( "RateParameter prefab not found in Resources/UI" );
+                return;
+            }
+
+            foreach (ReactionRateParameter parameter in _modelDef.adjustableParameters)
+            {
+                RateParameter rateParameter = (Instantiate( prefab, parameterViewport ) as GameObject).GetComponent<RateParameter>();
+                rateParameter.GetComponent<RectTransform>().localPosition = new Vector3( 125f, -55f - parameterContentHeight, 0 );
+                rateParameter.Init( parameter );
+                parameterContentHeight += parameterPrefabHeight;
             }
         }
 
@@ -121,7 +163,7 @@ namespace AICS.AgentSim
 
         void UpdateTime ()
         {
-            totalTime.text = Helpers.FormatTime( World.Instance.time, 0 );
+            totalTime.text = Helpers.FormatSIValue( World.Instance.time, 2, "s" );
         }
 
         void UpdateFPS ()
@@ -132,7 +174,7 @@ namespace AICS.AgentSim
 
         public void Restart ()
         {
-            reactor.StartCoroutine( "Restart" );
+            SimulationManager.Instance.Restart();
         }
     }
 }

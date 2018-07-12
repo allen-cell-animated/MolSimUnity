@@ -8,7 +8,6 @@ namespace AICS
     {
         public static void Shuffle<T> (this T[] array)
         {
-                //UnityEngine.Profiling.Profiler.BeginSample("Shuffle");
             int k, n = array.Length;
             T value;
             while (n > 1) 
@@ -19,13 +18,11 @@ namespace AICS
                 value = array[k];  
                 array[k] = array[n];  
                 array[n] = value; 
-            } 
-                //UnityEngine.Profiling.Profiler.EndSample();
+            }
         }
 
         public static void Shuffle<T> (this List<T> list)
         {
-                //UnityEngine.Profiling.Profiler.BeginSample("Shuffle");
             int k, n = list.Count;
             T value;
             while (n > 1) 
@@ -36,8 +33,7 @@ namespace AICS
                 value = list[k];  
                 list[k] = list[n];  
                 list[n] = value; 
-            } 
-                //UnityEngine.Profiling.Profiler.EndSample();
+            }
         }
 
         public static int GetRandomIndex<T> (this T[] array)
@@ -83,25 +79,79 @@ namespace AICS
             return v1 * s;
         }
 
-        public static string FormatTime (float timeSeconds, int significantFigures)
+        public static string FormatRoundedValue (float value, int significantFigures)
         {
-            //round to significant figures
-            float logValue = Mathf.Log10( timeSeconds );
-            float multiplier = Mathf.Pow( 10f, Mathf.Floor( logValue ) - significantFigures - 1f );
-            float number = Mathf.Round( timeSeconds / multiplier ) * multiplier;
+            // round to significant figures
+            int exp = Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) ) - (significantFigures - 1);
+            int roundedValue = Mathf.RoundToInt( Mathf.Abs( value ) / Mathf.Pow( 10f, exp ) );
 
-            //convert to correct units
-            int exp = number > 0 ? GetSIExponent( number ) : 1;
-            number *= Mathf.Pow( 10f, -exp );
-
-            if (Mathf.Log10( number ) >= 3f)
+            // if rounded up and added a digit
+            if (roundedValue.ToString().Length > significantFigures) 
             {
-                number /= 1000f;
-                exp += 3;
+                roundedValue = Mathf.RoundToInt( roundedValue / 10f );
+                exp += 1;
             }
 
-            //add extra zeros
-            string result = number.ToString();
+            // build string
+            string result = "";
+            if (exp >= 0)
+            {
+                result = (roundedValue * Mathf.Pow( 10f, exp )).ToString();
+            }
+            else
+            {
+                string valueString = roundedValue.ToString();
+                int digits = valueString.Length;
+                int decimals = Mathf.Abs( exp );
+                if (digits > decimals)
+                {
+                    result = valueString.Substring( 0, digits - decimals) + "." + valueString.Substring( digits - decimals, decimals );
+                }
+                else 
+                {
+                    string zeroes = "";
+                    while (zeroes.Length < decimals - digits)
+                    {
+                        zeroes += "0";
+                    }
+                    result = "0." + zeroes + valueString;
+                }
+            }
+
+            // add the sign back in
+            if (Mathf.RoundToInt( value / Mathf.Abs( value ) ) < 0)
+            {
+                result = "-" + result;
+            }
+
+            return result;
+        }
+
+        public static string FormatSIValue (float value, int significantFigures, string baseUnit)
+        {
+            //get order of magnitude
+            int orderOfMagnitude = 3 * Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) / 3f );
+
+            //round to significant figures
+            int exp = Mathf.FloorToInt( Mathf.Log10( Mathf.Abs( value ) ) ) - (significantFigures - 1);
+            int roundedValue = Mathf.RoundToInt( Mathf.Abs( value ) / Mathf.Pow( 10f, exp ) );
+
+            // if rounded up and added a digit
+            if (roundedValue.ToString().Length > significantFigures) 
+            {
+                roundedValue = Mathf.RoundToInt( roundedValue / 10f );
+                exp += 1;
+                if (exp > orderOfMagnitude + 1)
+                {
+                    orderOfMagnitude += 3;
+                }
+            }
+
+            //multiply the sign back in
+            roundedValue *= Mathf.RoundToInt( value / Mathf.Abs( value ) );
+
+            //add extra zeroes
+            string result = (roundedValue * Mathf.Pow( 10f, exp - orderOfMagnitude )).ToString();
             string[] splitResult = result.Split( '.' );
             int digits = splitResult[0].Length + (splitResult.Length > 1 ? splitResult[1].Length : 0);
             if (digits < significantFigures)
@@ -117,14 +167,7 @@ namespace AICS
                 }
             }
 
-            //Debug.Log( timeSeconds + " -> " + result + " " + GetSIPrefixSymbol( exp ) + "s" );
-            return result + " " + GetSIPrefixSymbol( exp ) + "s";
-        }
-
-        public static int GetSIExponent (float _valueInBaseUnits)
-        {
-            float orderOfMagnitude = Mathf.Log10( _valueInBaseUnits );
-            return 3 * Mathf.FloorToInt( orderOfMagnitude / 3f );
+            return result + " " + GetSIPrefixSymbol( orderOfMagnitude ) + baseUnit;
         }
 
         public static string GetSIPrefixSymbol (int exponent)
@@ -174,7 +217,7 @@ namespace AICS
                 case -24 :
                     return "y"; //yocto
                 default:
-                    Debug.Log( "unrecognized SI exponent " + exponent );
+                    Debug.LogWarning( "unrecognized SI exponent " + exponent );
                     return "";
             }
         }
