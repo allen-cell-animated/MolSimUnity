@@ -69,6 +69,7 @@ namespace AICS.SimulationView
                     var old = agents[id];
                     agents[id] = CreateAgentVisualization(id, updatedAgents[id]);
                     nameRegistry[id] = updatedAgents[id].agentName;
+                    Destroy(old);
                   }
 
                   agents[id].transform.position = updatedAgents[id].position;
