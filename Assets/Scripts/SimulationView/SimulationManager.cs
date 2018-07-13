@@ -27,6 +27,7 @@ namespace AICS.SimulationView
             if(_netClient == null)
             {
               _netClient = GetComponent<RakNetClient>();
+              _netClient.TryInit();
             }
             return _netClient;
           }

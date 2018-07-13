@@ -82,6 +82,7 @@ public class RakNetClient : MonoBehaviour {
 	public int NumberOfTimeSteps = -1;
 	public float StepSize = 1e-9f;
 
+	private bool m_Connected = false;
 	private visClientState m_ClientState = visClientState.NotStreaming;
 	private RakNet.BitStream m_recieved_data;
 	private RakNet.BitStream m_sent_data;
@@ -92,6 +93,15 @@ public class RakNetClient : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		TryInit();
+	}
+
+	public void TryInit()
+	{
+		if(this.m_Connected)
+		{
+			return;
+		}
 		serverAddr = new SystemAddress("127.0.0.1", 60000);
 
 		this.m_recieved_data = new RakNet.BitStream();
@@ -101,6 +111,7 @@ public class RakNetClient : MonoBehaviour {
 		this.m_client.Startup(1, new SocketDescriptor(), 1);
 		this.m_client.Connect("127.0.0.1", 60000, "", 0);
 		Debug.Log("Starting Client");
+		this.m_Connected = true;
 	}
 
 	// Update is called once per frame
@@ -274,7 +285,7 @@ public class RakNetClient : MonoBehaviour {
 		this.m_agentMapping[1] = "Actin";
 		this.m_agentMapping[2] = "Actin";
 
-		SetState(visClientState.Streaming);
+		this.StartCoroutine("Restart");
 
 		for(int i = 0; i < 1000; ++i)
 		{
