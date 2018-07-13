@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace AICS.SimulationView
 {
@@ -10,6 +11,7 @@ namespace AICS.SimulationView
 
         Dictionary<string,GameObject> prefabs;
         Dictionary<string,GameObject> agents = new Dictionary<string,GameObject>();
+        Dictionary<string, string> nameRegistry = new Dictionary<string, string>();
 
         public void SpawnAgents (Dictionary<string,AgentData> initialAgents)
         {
@@ -20,6 +22,7 @@ namespace AICS.SimulationView
                 foreach (string agentID in initialAgents.Keys)
                 {
                     agents.Add( agentID, CreateAgentVisualization( agentID, initialAgents[agentID] ) );
+                    nameRegistry[agentID] = initialAgents[agentID].agentName;
                 }
             }
         }
@@ -57,10 +60,17 @@ namespace AICS.SimulationView
 
         public void UpdateAgents (Dictionary<string,AgentData> updatedAgents)
         {
-            foreach (string id in agents.Keys)
+            foreach (string id in agents.Keys.ToList())
             {
                 if (updatedAgents.ContainsKey( id ))
                 {
+                  if(updatedAgents[id].agentName != nameRegistry[id])
+                  {
+                    var old = agents[id];
+                    agents[id] = CreateAgentVisualization(id, updatedAgents[id]);
+                    nameRegistry[id] = updatedAgents[id].agentName;
+                  }
+
                   agents[id].transform.position = updatedAgents[id].position;
                   agents[id].transform.rotation = Quaternion.Euler( updatedAgents[id].rotation );
                   agents[id].SetActive(true);

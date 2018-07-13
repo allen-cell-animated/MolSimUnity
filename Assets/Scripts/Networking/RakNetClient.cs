@@ -281,9 +281,9 @@ public class RakNetClient : MonoBehaviour {
 		AICS.AgentSim.ModelDef modelDef
 	)
 	{
-		this.m_agentMapping[0] = "Actin";
-		this.m_agentMapping[1] = "Actin";
-		this.m_agentMapping[2] = "Actin";
+		this.m_agentMapping[0] = "Core";
+		this.m_agentMapping[1] = "End";
+		this.m_agentMapping[2] = "Monomer";
 
 		this.StartCoroutine("Restart");
 

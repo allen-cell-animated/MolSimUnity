@@ -209,7 +209,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 2081159360}
+      objectReference: {fileID: 1585322258}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 43be4eef988ea478eb72bd7cef6fe72e, type: 2}
   m_IsPrefabParent: 0
@@ -246,6 +246,12 @@ MonoBehaviour:
   agentPrefabs:
   - agentName: Actin
     prefab: {fileID: 1128255808781620, guid: 234cf3d4b9433451bacf3a7a4ec123ea, type: 2}
+  - agentName: Core
+    prefab: {fileID: 1472942295702896, guid: 9de035e56a1fd48afa3d5b170ffe0152, type: 2}
+  - agentName: End
+    prefab: {fileID: 1139421179927496, guid: a283c418f49484e4a873f9c22e50149e, type: 2}
+  - agentName: Monomer
+    prefab: {fileID: 1125619992897260, guid: 55196e1e82f6e4becbb89077cd91fcde, type: 2}
 --- !u!4 &902787514
 Transform:
   m_ObjectHideFlags: 0
@@ -388,7 +394,7 @@ Prefab:
     - {fileID: 114993363044504240, guid: bb1750e03016b4d71a4b5c4fbe440769, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: bb1750e03016b4d71a4b5c4fbe440769, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &1461295533
+--- !u!84 &1585322258
 RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -412,7 +418,7 @@ RenderTexture:
   m_TextureSettings:
     serializedVersion: 2
     m_FilterMode: 1
-    m_Aniso: 1
+    m_Aniso: 0
     m_MipBias: 0
     m_WrapU: 1
     m_WrapV: 1
@@ -697,12 +703,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5b00e899123084c4da0052c3259409d4, type: 2}
   m_IsPrefabParent: 0
---- !u!224 &2075980056 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224564491937088976, guid: 5b00e899123084c4da0052c3259409d4,
-    type: 2}
-  m_PrefabInternal: {fileID: 1755247913}
---- !u!84 &2081159360
+--- !u!84 &1879201695
 RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -726,10 +727,15 @@ RenderTexture:
   m_TextureSettings:
     serializedVersion: 2
     m_FilterMode: 1
-    m_Aniso: 0
+    m_Aniso: 1
     m_MipBias: 0
     m_WrapU: 1
     m_WrapV: 1
     m_WrapW: 1
   m_Dimension: 2
   m_VolumeDepth: 1
+--- !u!224 &2075980056 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224564491937088976, guid: 5b00e899123084c4da0052c3259409d4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1755247913}
