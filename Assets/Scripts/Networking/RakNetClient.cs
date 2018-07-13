@@ -328,6 +328,8 @@ public class RakNetClient : MonoBehaviour {
 
 	public void UpdateTimeStep(float newTimeStep)
 	{
+		this.StepSize = newTimeStep;
+
 		this.m_sent_data.Reset();
 		this.m_sent_data.Write((byte)messageId.ID_UPDATE_TIME_STEP);
 		this.m_sent_data.Write(newTimeStep);
