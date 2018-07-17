@@ -17,7 +17,8 @@ public class RakNetClient : MonoBehaviour {
 		ID_VIS_DATA_PAUSE,
 		ID_VIS_DATA_RESUME,
 		ID_VIS_DATA_ABORT,
-		ID_UPDATE_TIME_STEP
+		ID_UPDATE_TIME_STEP,
+		ID_UPDATE_RATE_PARAM
 	};
 
 	/**
@@ -333,6 +334,20 @@ public class RakNetClient : MonoBehaviour {
 		this.m_sent_data.Reset();
 		this.m_sent_data.Write((byte)messageId.ID_UPDATE_TIME_STEP);
 		this.m_sent_data.Write(newTimeStep);
+		this.m_client.Send(
+			this.m_sent_data, PacketPriority.HIGH_PRIORITY,
+			PacketReliability.RELIABLE_ORDERED,
+			(char)0, new AddressOrGUID(serverAddr), false);
+	}
+
+	public void UpdateRateParam(string paramName, float newRate)
+	{
+		RakNet.RakString rs = new RakNet.RakString(paramName);
+
+		this.m_sent_data.Reset();
+		this.m_sent_data.Write((byte)messageId.ID_UPDATE_RATE_PARAM);
+		this.m_sent_data.Write(rs);
+		this.m_sent_data.Write(newRate);
 		this.m_client.Send(
 			this.m_sent_data, PacketPriority.HIGH_PRIORITY,
 			PacketReliability.RELIABLE_ORDERED,

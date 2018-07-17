@@ -321,7 +321,7 @@ namespace AICS.AgentSim
             return new RelativeTransform( childTransform.position, childTransform.rotation.eulerAngles );
         }
 
-        public RelativeTransform GetWorldTransformForBindingMolecule (Vector3 moleculePosition, Vector3 moleculeRotation, Vector3 moleculesComponentPosition, 
+        public RelativeTransform GetWorldTransformForBindingMolecule (Vector3 moleculePosition, Vector3 moleculeRotation, Vector3 moleculesComponentPosition,
                                                                       Vector3 moleculesComponentRotation, Vector3 otherComponentPosition, Vector3 otherComponentRotation)
         {
             parentTransform.position = otherComponentPosition;
@@ -536,13 +536,13 @@ namespace AICS.AgentSim
         public Vector3 GetPeriodicallyReflectedPosition (Vector3 attemptedNewPosition)
         {
             Vector3 newPosition = attemptedNewPosition;
-            for (int d = 0; d < 3; d++) 
+            for (int d = 0; d < 3; d++)
             {
                 while (newPosition[d] >= 0.5f * container.size[d])
                 {
                     newPosition[d] -= container.size[d];
                 }
-                while (newPosition[d] < -0.5f * container.size[d]) 
+                while (newPosition[d] < -0.5f * container.size[d])
                 {
                     newPosition[d] += container.size[d];
                 }

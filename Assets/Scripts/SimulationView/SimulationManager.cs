@@ -131,9 +131,15 @@ namespace AICS.SimulationView
                 case SimulationType.AgentSim :
                     reactor.GetReactionForDefinition( reactionDef ).theoreticalRate = rate;
                     break;
+            }
+        }
 
+        public void SetRateParameter (string parameterName, float rate)
+        {
+            switch (simulationType)
+            {
                 case SimulationType.ExternalSimulator:
-                    //TODO
+                    netClient.UpdateRateParam(parameterName, rate);
                     break;
             }
         }
