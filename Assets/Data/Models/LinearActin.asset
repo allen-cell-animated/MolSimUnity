@@ -121,3 +121,7 @@ MonoBehaviour:
     reactionDef: {fileID: 11400000, guid: 0640e5b4c7f8d474285b009b2d36174a, type: 2}
     range: {x: 37, y: 999999}
     mapping: 1
+  - label: Dissociation Rate
+    reactionDef: {fileID: 11400000, guid: 0640e5b4c7f8d474285b009b2d36174a, type: 2}
+    range: {x: 37, y: 999999}
+    mapping: 1
