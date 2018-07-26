@@ -115,13 +115,13 @@ MonoBehaviour:
   adjustableParameters:
   - label: Nucleation Rate
     reactionDef: {fileID: 11400000, guid: ba19dbba35ede42c985db27e50be9341, type: 2}
-    range: {x: 0.0000037, y: 999999}
+    range: {x: 0.0000037, y: 1e+10}
     mapping: 1
   - label: Growth Rate
     reactionDef: {fileID: 11400000, guid: 0640e5b4c7f8d474285b009b2d36174a, type: 2}
-    range: {x: 37, y: 999999}
+    range: {x: 37, y: 1e+10}
     mapping: 1
   - label: Dissociation Rate
     reactionDef: {fileID: 11400000, guid: 0640e5b4c7f8d474285b009b2d36174a, type: 2}
-    range: {x: 37, y: 999999}
+    range: {x: 37, y: 1e+10}
     mapping: 1
