@@ -12,17 +12,31 @@ namespace AICS.SimulationView
     }
 
     [RequireComponent( typeof(Visualizer) )]
-    public class SimulationManager : MonoBehaviour 
+    public class SimulationManager : MonoBehaviour
     {
         public SimulationType simulationType;
         public ModelDef modelDef;
 
         Reactor reactor;
 
+        RakNetClient _netClient = null;
+        RakNetClient netClient
+        {
+          get
+          {
+            if(_netClient == null)
+            {
+              _netClient = GetComponent<RakNetClient>();
+              _netClient.TryInit();
+            }
+            return _netClient;
+          }
+        }
+
         static SimulationManager _Instance;
         public static SimulationManager Instance
         {
-            get 
+            get
             {
                 if (_Instance == null)
                 {
@@ -73,8 +87,7 @@ namespace AICS.SimulationView
                     return reactor.Init( modelDef );
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
-                    return new Dictionary<string,AgentData>();
+                    return netClient.StartActinSimulation(modelDef);
             }
             return null;
         }
@@ -92,8 +105,7 @@ namespace AICS.SimulationView
                     return reactor.GetAgentTransforms();
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
-                    return new Dictionary<string,AgentData>();
+                    return netClient.UpdateSimulation();
             }
             return null;
         }
@@ -107,7 +119,7 @@ namespace AICS.SimulationView
                     break;
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
+                    netClient.UpdateTimeStep(dT);
                     break;
             }
         }
@@ -119,9 +131,15 @@ namespace AICS.SimulationView
                 case SimulationType.AgentSim :
                     reactor.GetReactionForDefinition( reactionDef ).theoreticalRate = rate;
                     break;
+            }
+        }
 
+        public void SetRateParameter (string parameterName, float rate)
+        {
+            switch (simulationType)
+            {
                 case SimulationType.ExternalSimulator:
-                    //TODO
+                    netClient.UpdateRateParam(parameterName, rate);
                     break;
             }
         }
@@ -135,13 +153,13 @@ namespace AICS.SimulationView
                     break;
 
                 case SimulationType.ExternalSimulator:
-                    //TODO
+                    netClient.StartCoroutine( "Restart" );
                     break;
             }
         }
     }
 
-    public class AgentData 
+    public class AgentData
     {
         public string agentName;
         public Vector3 position;
@@ -152,6 +170,13 @@ namespace AICS.SimulationView
             agentName = _agentName;
             position = _position;
             rotation = _rotation;
+        }
+
+        public AgentData()
+        {
+          agentName = "Undefined";
+          position = new Vector3(0,0,0);
+          rotation = new Vector3(0,0,0);
         }
     }
 }

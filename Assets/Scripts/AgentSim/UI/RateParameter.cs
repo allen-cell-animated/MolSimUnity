@@ -21,6 +21,7 @@ namespace AICS.SimulationView
         {
             SetValue( _newValue );
             SimulationManager.Instance.SetRateParameter( reactionDef, value );
+            SimulationManager.Instance.SetRateParameter( this.label.text, value);
         }
     }
 }

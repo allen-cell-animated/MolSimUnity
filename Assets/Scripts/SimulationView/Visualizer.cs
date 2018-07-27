@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace AICS.SimulationView
 {
-    public class Visualizer : MonoBehaviour 
+    public class Visualizer : MonoBehaviour
     {
         [SerializeField] AgentPrefab[] agentPrefabs;
 
         Dictionary<string,GameObject> prefabs;
         Dictionary<string,GameObject> agents = new Dictionary<string,GameObject>();
+        Dictionary<string, string> nameRegistry = new Dictionary<string, string>();
 
         public void SpawnAgents (Dictionary<string,AgentData> initialAgents)
         {
@@ -20,6 +22,7 @@ namespace AICS.SimulationView
                 foreach (string agentID in initialAgents.Keys)
                 {
                     agents.Add( agentID, CreateAgentVisualization( agentID, initialAgents[agentID] ) );
+                    nameRegistry[agentID] = initialAgents[agentID].agentName;
                 }
             }
         }
@@ -44,7 +47,7 @@ namespace AICS.SimulationView
                 Debug.LogWarning( "There's no prefab for " + agentData.agentName );
                 obj = Instantiate( Resources.Load( "DefaultMolecule" ) as GameObject );
             }
-            else 
+            else
             {
                 obj = Instantiate( prefabs[agentData.agentName] );
             }
@@ -57,12 +60,25 @@ namespace AICS.SimulationView
 
         public void UpdateAgents (Dictionary<string,AgentData> updatedAgents)
         {
-            foreach (string id in agents.Keys)
+            foreach (string id in agents.Keys.ToList())
             {
-                if (agents.ContainsKey( id ))
+                if (updatedAgents.ContainsKey( id ))
                 {
-                    agents[id].transform.position = updatedAgents[id].position;
-                    agents[id].transform.rotation = Quaternion.Euler( updatedAgents[id].rotation );
+                  if(updatedAgents[id].agentName != nameRegistry[id])
+                  {
+                    var old = agents[id];
+                    agents[id] = CreateAgentVisualization(id, updatedAgents[id]);
+                    nameRegistry[id] = updatedAgents[id].agentName;
+                    Destroy(old);
+                  }
+
+                  agents[id].transform.position = updatedAgents[id].position;
+                  agents[id].transform.rotation = Quaternion.Euler( updatedAgents[id].rotation );
+                  agents[id].SetActive(true);
+                }
+                else
+                {
+                  agents[id].SetActive(false);
                 }
             }
         }
