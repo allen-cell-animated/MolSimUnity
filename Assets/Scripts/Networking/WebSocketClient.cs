@@ -9,6 +9,34 @@ using System;
 using Coe.WebSocketWrapper;
 
 public class WebSocketClient : MonoBehaviour {
+
+	/**
+	*	This needs to correspond to the values defined in the C++
+	*	server program
+	*/
+	public enum message_id {
+		id_vis_data_arrive = 0,
+	  id_vis_data_request,
+	  id_vis_data_finish,
+	  id_vis_data_pause,
+	  id_vis_data_resume,
+	  id_vis_data_abort,
+	  id_update_time_step,
+	  id_update_rate_param
+	};
+
+	class net_message {
+		public void Write(byte data)
+		{
+			_msg[w_end++] = (char)data;
+		}
+
+		public string Get() { return new string(_msg); }
+
+		private char[] _msg = new char[256];
+		private int w_end = 0;
+	}
+
 	private bool m_connected = false;
 
 	private WebSocketWrapper m_wsw;
@@ -28,6 +56,22 @@ public class WebSocketClient : MonoBehaviour {
 		Debug.Log("WebSocketClient Disconnected");
 	}
 
+	void StartRemoteSimulation(
+		WebSocketWrapper ws)
+	{
+		net_message nm = new net_message();
+		nm.Write((byte)message_id.id_vis_data_request);
+		ws.SendMessage(nm.Get());
+	}
+
+	void StopRemoteSimulation(
+		WebSocketWrapper ws)
+	{
+		net_message nm = new net_message();
+		nm.Write((byte)message_id.id_vis_data_abort);
+		ws.SendMessage(nm.Get());
+	}
+
 	public void TryConnect() {
 		if(!this.m_connected)
 		{
@@ -40,7 +84,8 @@ public class WebSocketClient : MonoBehaviour {
 			this.m_connected = true;
 
 			Thread.Sleep(1000);
-			this.m_wsw.SendMessage("Hello World!");
+			this.StartRemoteSimulation(this.m_wsw);
+			//this.StopRemoteSimulation(this.m_wsw);
 		}
 	}
 
