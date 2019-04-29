@@ -1,16 +1,24 @@
 fileFormatVersion: 2
-guid: 3373ba60a083e47148cf11fccb400cc8
-timeCreated: 1526499001
+guid: 40571e4c0e21f4fd7b70cbb0e4f606ca
+timeCreated: 1556312201
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: arp2
+    100004: complex1
     400000: //RootNode
+    400002: arp2
+    400004: complex1
     2300000: //RootNode
+    2300002: arp2
+    2300004: complex1
     3300000: //RootNode
-    4300000: monomer
-    4300002: actin1
+    3300002: arp2
+    3300004: complex1
+    4300000: arp2
+    4300002: complex1
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -69,7 +77,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 0
+  importAnimation: 1
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

@@ -29680,7 +29680,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 537893638}
-  - component: {fileID: 537893637}
   - component: {fileID: 537893636}
   m_Layer: 0
   m_Name: microtubule
@@ -29699,18 +29698,6 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6db9045601a6e444c86b04f7c44788d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &537893637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114623915585582572, guid: 2265fd496f6024bae95aadbfb922dee9,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 537893635}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 540f4be59c51b42e98170609977895a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &537893638

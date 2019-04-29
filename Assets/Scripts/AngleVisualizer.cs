@@ -26,7 +26,7 @@ public class AngleVisualizer : MonoBehaviour
         line.transform.localRotation = Quaternion.identity;
         line.transform.localScale = Vector3.one;
 
-        float arcRadius = 0.3f;
+        float arcRadius = 1f;
         float angleInc = 10f * Mathf.Deg2Rad;
         Vector3 v1 = angle.GetVector( 0, false );
         Vector3 v2 = angle.GetVector( 1, false );
