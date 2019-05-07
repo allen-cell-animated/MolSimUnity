@@ -33,14 +33,14 @@ public class PrintPositions : MonoBehaviour
         {
             foreach (Transform tub in pf)
             {
-                s += FormatPosition( tub.position, -35f * Vector3.forward );
+                s += FormatPosition( tub.position, 60f * Vector3.forward );
                 t++;
                 foreach (Transform site in tub)
                 {
                     if (site.name != "in")
                     {
                         t++;
-                        s += FormatPosition( site.position, -35f * Vector3.forward );
+                        s += FormatPosition( site.position, 60f * Vector3.forward );
                     }
                 }
             }
