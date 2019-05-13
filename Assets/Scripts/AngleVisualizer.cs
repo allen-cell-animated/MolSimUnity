@@ -45,22 +45,29 @@ public class AngleVisualizer : MonoBehaviour
 
 }
 
+public enum AngleUnits
+{
+    radians,
+    degrees
+}
+
 [System.Serializable]
 public class Tuple
 {
     public Transform[] objs;
     public float angle;
+    public AngleUnits units;
 
     public void CalculateAngle ()
     {
-        Vector3 v1 = GetVector( 0, true );
-        Vector3 v2 = GetVector( 1, true );
+        Vector3 v1 = GetVector( 0, false );
+        Vector3 v2 = GetVector( 1, false );
         angle = GetAngle( v1, v2 );
     }
 
     public float GetAngle (Vector3 v1, Vector3 v2)
     {
-        return Mathf.Acos( Mathf.Clamp( Vector3.Dot( v1, v2 ), -1f, 1f ) );
+        return Mathf.Acos( Mathf.Clamp( Vector3.Dot( v1, v2 ), -1f, 1f ) ) * (units == AngleUnits.degrees ? 180f / Mathf.PI : 1f);
     }
 
     public Vector3 GetVector (int n, bool invertZ)
