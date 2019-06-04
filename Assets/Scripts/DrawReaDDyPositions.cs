@@ -10,6 +10,7 @@ public class DrawReaDDyPositions : MonoBehaviour
     Vector3[] reaDDyPositions_14_1000_0;
     Vector3[] reaDDyPositions_14_1000_1;
     Vector3[] reaDDyPositions_14_1000_2;
+    Vector3[] reaDDyPositions_branch;
 
 	void Start () 
     {
@@ -109,7 +110,22 @@ public class DrawReaDDyPositions : MonoBehaviour
             new Vector3(-10.708975335166933f, -15.546095468944609f, -2.055978498693513f)
         };
 
-        CreateSpheres( reaDDyPositions_14_1000_1 );
+        reaDDyPositions_branch = new Vector3[] {
+            new Vector3(15.834134067568755f, -1.382111668029684f, 2.850963243498184f),
+            new Vector3(15.813149786479801f, -1.366704578094093f, 5.6999025672383965f),
+            new Vector3(15.82662300549884f, -1.3901025348538156f, 8.550940103531625f),
+            new Vector3(15.819674841667073f, -1.3589900175914407f, 11.402414775540063f),
+            new Vector3(15.821319602900966f, -1.3903976625325918f, 14.251977440089172f),
+            new Vector3(15.82594199840292f, -1.3595558228287148f, 17.10152375564929f),
+            new Vector3(15.812650888648555f, -1.3886664316849746f, 19.951726405046145f),
+            new Vector3(15.836278491489178f, -1.3638624665873866f, 22.80279512519367f),
+            new Vector3(15.810640344138232f, -1.382884866262558f, 25.6521609292625f),
+            new Vector3(15.83817259244988f, -1.3703392116222268f, 28.50182539464989f),
+            new Vector3(13.78769884190201f, -14.085714447525273f, 19.327048259013356f),
+            new Vector3(13.757464766149878f, -16.923652631142424f, 19.045618061205335f)
+        };
+
+        CreateSpheres( reaDDyPositions_branch );
 	}
 
     void CreateSpheres (Vector3[] reaDDyPositions)

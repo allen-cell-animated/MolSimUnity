@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class ClosestPointOnLine : MonoBehaviour 
 {
+    public Transform lineStart;
+    public Transform lineEnd;
+
 	void Start () 
     {
-		
+        Transform t = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
+        t.position = GetNearestPointOnLine( lineStart.position, lineEnd.position, transform.position );
+        t.name = name + "_axis";
 	}
 
-    public Vector3 GetNearestPointOnLine (Vector3 lineStart, Vector3 lineEnd, Vector3 point)
+    public Vector3 GetNearestPointOnLine (Vector3 _lineStart, Vector3 _lineEnd, Vector3 _point)
     {
-        Vector3 lineDir = (lineEnd - lineStart).normalized;
-        Vector3 v = point - lineStart;
+        Vector3 lineDir = (_lineEnd - _lineStart).normalized;
+        Vector3 v = _point - _lineStart;
         float d = Vector3.Dot(v, lineDir);
-        return lineStart + lineDir * d;
+        return _lineStart + lineDir * d;
     }
 }
