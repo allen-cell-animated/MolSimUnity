@@ -33,20 +33,15 @@ public class PrintPositions : MonoBehaviour
         {
             foreach (Transform tub in pf)
             {
-                s += FormatPosition( tub.position, 60f * Vector3.forward );
-                t++;
-                foreach (Transform site in tub)
+                if (!tub.name.Contains("frayed"))
                 {
-                    if (site.name != "in")
-                    {
-                        t++;
-                        s += FormatPosition( site.position, 60f * Vector3.forward );
-                    }
+                    s += FormatPosition( tub.position, Vector3.zero );
+                    t++;
                 }
             }
         }
         File.WriteAllText( "/Users/blairl/Desktop/mt_positions.txt", s );
-        Debug.Log("wrote microtubule positions to file! " + (t / 208f));
+        Debug.Log("wrote microtubule positions to file! " + t);
     }
 
     void RecordActin ()
@@ -54,7 +49,7 @@ public class PrintPositions : MonoBehaviour
         string s = "";
         foreach (Transform a in transform)
         {
-            s += FormatPosition( a.position, -15f * Vector3.right );
+            s += FormatPosition( a.position, 15f * Vector3.right );
         }
         File.WriteAllText( "/Users/blairl/Desktop/actin_positions.txt", s );
         Debug.Log("wrote actin positions to file!");
@@ -62,8 +57,8 @@ public class PrintPositions : MonoBehaviour
 
     string FormatPosition (Vector3 position, Vector3 shift)
     {
-        return "[" + (Mathf.Round( 100f * (position.x - shift.x) ) / 100f) + ", " 
-                   + (Mathf.Round( 100f * (position.y - shift.y) ) / 100f) + ", " 
-                   + (Mathf.Round( 100f * -(position.z - shift.z) ) / 100f) + "],";
+        return "[" + (Mathf.Round( 100f * (position.x + shift.x) ) / 100f) + ", " 
+                   + (Mathf.Round( 100f * (position.y + shift.y) ) / 100f) + ", " 
+                   + (Mathf.Round( 100f * -(position.z + shift.z) ) / 100f) + "],";
     }
 }

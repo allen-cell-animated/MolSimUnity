@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class AvgPositionCalculator : MonoBehaviour 
 {
-    public Transform[] transforms;
     public Vector3 averagePosition;
 
     void Start () 
     {
         averagePosition = Vector3.zero;
-        for (int i = 0; i < transforms.Length; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            averagePosition += transforms[i].position;
+            averagePosition += transform.GetChild(i).position;
         }
-        averagePosition /= transforms.Length;
+        averagePosition /= transform.childCount;
         GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position = averagePosition;
     }
 }

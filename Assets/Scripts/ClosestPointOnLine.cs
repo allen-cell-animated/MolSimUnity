@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class ClosestPointOnLine : MonoBehaviour 
 {
@@ -12,6 +13,8 @@ public class ClosestPointOnLine : MonoBehaviour
         Transform t = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
         t.position = GetNearestPointOnLine( lineStart.position, lineEnd.position, transform.position );
         t.name = name + "_axis";
+
+        File.AppendAllText( "/Users/blairl/Desktop/mt_distances.txt", t.position.z.ToString() + ", " );
 	}
 
     public Vector3 GetNearestPointOnLine (Vector3 _lineStart, Vector3 _lineEnd, Vector3 _point)
