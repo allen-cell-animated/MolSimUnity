@@ -17,7 +17,7 @@ public class DihedralCalculator : MonoBehaviour
             }
             Vector3 v1 = dihedrals[i].objs[0].position - dihedrals[i].objs[1].position;
             Vector3 v2 = dihedrals[i].objs[3].position - dihedrals[i].objs[2].position;
-            dihedrals[i].angle = Mathf.Acos( Vector3.Dot( v1.normalized, v2.normalized ) );
+            dihedrals[i].angle = Mathf.Acos( Vector3.Dot( v1.normalized, v2.normalized ) ) * (dihedrals[i].units == AngleUnits.degrees ? 180f / Mathf.PI : 1f);
         }
     }
 }
