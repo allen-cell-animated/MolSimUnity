@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465934, g: 0.49642956, b: 0.57482487, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -230,7 +230,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 304B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -397,7 +397,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 261
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -455,7 +455,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 290
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -603,7 +603,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 232
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -755,7 +755,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 255
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -813,7 +813,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 151
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -863,7 +863,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 324B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1137,7 +1137,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 316
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -1272,7 +1272,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 39
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -1310,7 +1310,7 @@ GameObject:
   - component: {fileID: 46823636}
   - component: {fileID: 46823635}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 46
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1329,7 +1329,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1817460448}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &46823635
 MeshRenderer:
@@ -1713,6 +1713,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 308
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -1843,6 +1847,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 168
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -1922,7 +1930,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 100B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1996,7 +2004,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 288
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -2051,6 +2059,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 253
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -2368,7 +2380,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 346
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -3153,7 +3165,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 332B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3331,6 +3343,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 280
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -3643,7 +3659,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 236B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3733,6 +3749,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 196
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -4072,7 +4092,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 149
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -4130,7 +4150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 285
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -4389,7 +4409,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 93
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -4524,7 +4544,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -4791,7 +4811,7 @@ GameObject:
   - component: {fileID: 187391226}
   - component: {fileID: 187391225}
   m_Layer: 0
-  m_Name: out
+  m_Name: 25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4809,7 +4829,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 325418710}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &187391225
 MeshRenderer:
@@ -4917,7 +4937,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 198
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -5277,6 +5297,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 85
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
   m_IsPrefabParent: 0
@@ -5409,7 +5433,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 312
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -5650,7 +5674,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 92
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -5984,7 +6008,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 88
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -6383,6 +6407,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -7008,7 +7036,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 310
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -7061,7 +7089,7 @@ GameObject:
   - component: {fileID: 266044172}
   - component: {fileID: 266044171}
   m_Layer: 0
-  m_Name: out
+  m_Name: 53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7079,7 +7107,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 770005923}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &266044171
 MeshRenderer:
@@ -7187,7 +7215,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -7445,7 +7473,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 206
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -7503,7 +7531,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 116
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -7649,7 +7677,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 180B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7945,7 +7973,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 173
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -8280,7 +8308,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 146
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -8318,9 +8346,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1960473716}
+  - {fileID: 187391224}
   - {fileID: 1616373865}
   - {fileID: 427807970}
-  - {fileID: 187391224}
   m_Father: {fileID: 1574452073}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8420,7 +8448,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 356B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -8446,7 +8474,7 @@ GameObject:
   - component: {fileID: 329681157}
   - component: {fileID: 329681156}
   m_Layer: 0
-  m_Name: out
+  m_Name: 69
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8464,7 +8492,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 840387125}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &329681156
 MeshRenderer:
@@ -8717,7 +8745,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 360B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -8783,7 +8811,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 212B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -8982,7 +9010,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 319
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -9271,7 +9299,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 202
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -9402,7 +9430,7 @@ GameObject:
   - component: {fileID: 383602907}
   - component: {fileID: 383602906}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 351
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9421,7 +9449,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1892206250}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &383602906
 MeshRenderer:
@@ -9496,9 +9524,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2017932979}
+  - {fileID: 1771239815}
   - {fileID: 585395312}
   - {fileID: 1854938268}
-  - {fileID: 1771239815}
   m_Father: {fileID: 338388440}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9627,7 +9655,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 313
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -9682,6 +9710,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 28
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -9739,7 +9771,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -9797,7 +9829,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 235
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -10161,7 +10193,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 16B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -10266,7 +10298,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -10390,7 +10422,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 260
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -10442,7 +10474,7 @@ GameObject:
   - component: {fileID: 427807972}
   - component: {fileID: 427807971}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 27
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10461,7 +10493,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 325418710}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &427807971
 MeshRenderer:
@@ -10633,7 +10665,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 289
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -10838,7 +10870,7 @@ GameObject:
   - component: {fileID: 440051925}
   - component: {fileID: 440051924}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 355
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10857,7 +10889,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1930473751}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &440051924
 MeshRenderer:
@@ -11537,7 +11569,7 @@ GameObject:
   - component: {fileID: 463641542}
   - component: {fileID: 463641541}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 54
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11556,7 +11588,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 770005923}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &463641541
 MeshRenderer:
@@ -11651,7 +11683,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 262
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -11934,7 +11966,7 @@ GameObject:
   - component: {fileID: 472008479}
   - component: {fileID: 472008478}
   m_Layer: 0
-  m_Name: out
+  m_Name: 45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11952,7 +11984,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1817460448}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &472008478
 MeshRenderer:
@@ -12060,7 +12092,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 119
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -12441,7 +12473,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 115
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -12975,7 +13007,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 341
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -13033,7 +13065,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 227
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -13083,7 +13115,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 248B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -13157,7 +13189,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -13227,7 +13259,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 292B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -13443,7 +13475,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 204
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -13501,7 +13533,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -14112,7 +14144,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 61
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -14282,7 +14314,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 300B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -14371,7 +14403,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 72B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -14483,7 +14515,7 @@ GameObject:
   - component: {fileID: 585395314}
   - component: {fileID: 585395313}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 362
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14502,7 +14534,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 383621606}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &585395313
 MeshRenderer:
@@ -14595,6 +14627,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 225
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
   m_IsPrefabParent: 0
@@ -14663,7 +14699,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 124B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -14725,7 +14761,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -14871,7 +14907,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 188B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -15300,6 +15336,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 56
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -15373,7 +15413,7 @@ GameObject:
   - component: {fileID: 607266078}
   - component: {fileID: 607266077}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15392,7 +15432,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1490937897}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &607266077
 MeshRenderer:
@@ -15829,7 +15869,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 80B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -15903,7 +15943,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 263
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -16113,7 +16153,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 345
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -16247,7 +16287,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 95
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -16787,7 +16827,7 @@ GameObject:
   - component: {fileID: 658045867}
   - component: {fileID: 658045866}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 55
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16806,7 +16846,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 770005923}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &658045866
 MeshRenderer:
@@ -17004,7 +17044,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 44B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -17385,7 +17425,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 62
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -17455,7 +17495,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 244B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -17717,7 +17757,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 231
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -17851,7 +17891,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 179
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -17940,7 +17980,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 287
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -18122,7 +18162,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -18296,7 +18336,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 240B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -18334,7 +18374,7 @@ GameObject:
   - component: {fileID: 724689141}
   - component: {fileID: 724689140}
   m_Layer: 0
-  m_Name: out
+  m_Name: 21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18352,7 +18392,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1425184273}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &724689140
 MeshRenderer:
@@ -18457,6 +18497,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -18734,7 +18778,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 174
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -18792,7 +18836,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 259
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -19048,6 +19092,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 224
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -19214,7 +19262,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 347
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -19303,7 +19351,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 258
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -19341,9 +19389,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1298140190}
+  - {fileID: 266044170}
   - {fileID: 463641540}
   - {fileID: 658045865}
-  - {fileID: 266044170}
   m_Father: {fileID: 1071080256}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19396,7 +19444,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 343
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -19569,7 +19617,7 @@ GameObject:
   - component: {fileID: 774857969}
   - component: {fileID: 774857968}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 70
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19588,7 +19636,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 840387125}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &774857968
 MeshRenderer:
@@ -19683,7 +19731,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 199
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -20075,7 +20123,7 @@ GameObject:
   - component: {fileID: 793606937}
   - component: {fileID: 793606936}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 71
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20094,7 +20142,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 840387125}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &793606936
 MeshRenderer:
@@ -20322,7 +20370,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 48B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -20567,7 +20615,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 118
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -20925,7 +20973,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 192B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -21267,7 +21315,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 276B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -21397,9 +21445,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1992690226}
+  - {fileID: 329681155}
   - {fileID: 774857967}
   - {fileID: 793606935}
-  - {fileID: 329681155}
   m_Father: {fileID: 1760815986}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21588,7 +21636,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 132B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -21645,7 +21693,7 @@ GameObject:
   - component: {fileID: 847400077}
   - component: {fileID: 847400076}
   m_Layer: 0
-  m_Name: out
+  m_Name: 13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21663,7 +21711,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1249642401}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &847400076
 MeshRenderer:
@@ -21891,7 +21939,7 @@ GameObject:
   - component: {fileID: 858103289}
   - component: {fileID: 858103288}
   m_Layer: 0
-  m_Name: out
+  m_Name: 353
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21909,7 +21957,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1930473751}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &858103288
 MeshRenderer:
@@ -22750,7 +22798,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 203
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -22933,7 +22981,7 @@ GameObject:
   - component: {fileID: 876881048}
   - component: {fileID: 876881047}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22952,7 +23000,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1425184273}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &876881047
 MeshRenderer:
@@ -23010,7 +23058,7 @@ GameObject:
   - component: {fileID: 878924057}
   - component: {fileID: 878924056}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23029,7 +23077,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1249642401}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &878924056
 MeshRenderer:
@@ -23136,7 +23184,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 348B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -23161,7 +23209,7 @@ GameObject:
   - component: {fileID: 886727036}
   - component: {fileID: 886727035}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23180,7 +23228,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1490937897}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &886727035
 MeshRenderer:
@@ -23306,7 +23354,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 207
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -23395,6 +23443,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 197
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -23572,7 +23624,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 104B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -23763,7 +23815,7 @@ GameObject:
   - component: {fileID: 916399068}
   - component: {fileID: 916399067}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23782,7 +23834,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1425184273}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &916399067
 MeshRenderer:
@@ -23877,7 +23929,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -23991,9 +24043,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 444432127}
+  - {fileID: 1651536295}
   - {fileID: 1687218319}
   - {fileID: 1486784239}
-  - {fileID: 1651536295}
   m_Father: {fileID: 402990078}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24443,6 +24495,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 309
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
   m_IsPrefabParent: 0
@@ -24817,7 +24873,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 318
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -25180,7 +25236,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -25421,7 +25477,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 234
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -25510,6 +25566,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 84
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -25781,7 +25841,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 33
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -25839,7 +25899,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 175
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -25928,7 +25988,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 314
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -26238,7 +26298,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 184B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -26762,7 +26822,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -26908,6 +26968,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 252
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -26995,7 +27059,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -27259,7 +27323,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 52B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -27364,7 +27428,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 122
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -27734,7 +27798,7 @@ GameObject:
   - component: {fileID: 1087264671}
   - component: {fileID: 1087264670}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27753,7 +27817,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1980015265}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1087264670
 MeshRenderer:
@@ -28044,7 +28108,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 67
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -28410,7 +28474,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 284
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -28540,7 +28604,7 @@ GameObject:
   - component: {fileID: 1126191098}
   - component: {fileID: 1126191097}
   m_Layer: 0
-  m_Name: out
+  m_Name: 349
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28558,7 +28622,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1892206250}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1126191097
 MeshRenderer:
@@ -28996,7 +29060,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 220B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -29070,7 +29134,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 176
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -29419,7 +29483,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 344
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -29477,7 +29541,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 59
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -29638,7 +29702,7 @@ GameObject:
   - component: {fileID: 1191864326}
   - component: {fileID: 1191864325}
   m_Layer: 0
-  m_Name: out
+  m_Name: 41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29656,7 +29720,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1980015265}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1191864325
 MeshRenderer:
@@ -29947,7 +30011,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 339
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -30203,7 +30267,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 178
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -30224,7 +30288,7 @@ GameObject:
   - component: {fileID: 1211700179}
   - component: {fileID: 1211700178}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30243,7 +30307,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1817460448}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1211700178
 MeshRenderer:
@@ -30338,7 +30402,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 317
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -30481,7 +30545,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 352B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -30555,7 +30619,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 120
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -30613,7 +30677,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 147
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -30791,9 +30855,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1689846209}
+  - {fileID: 847400075}
   - {fileID: 1832652500}
   - {fileID: 878924055}
-  - {fileID: 847400075}
   m_Father: {fileID: 1810055067}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -31114,7 +31178,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 156B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -31769,7 +31833,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 328B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -31982,6 +32046,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 141
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
   m_IsPrefabParent: 0
@@ -32190,7 +32258,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 282
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -32248,7 +32316,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 91
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -32306,7 +32374,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 177
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -32488,7 +32556,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 233
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -32581,7 +32649,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 114
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -32639,7 +32707,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -32786,7 +32854,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 76B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -32999,7 +33067,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 226
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -33581,7 +33649,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 201
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -33715,7 +33783,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 150
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -33981,6 +34049,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 336
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -34285,7 +34357,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 256
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -34707,7 +34779,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 40B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -34825,9 +34897,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1091007018}
+  - {fileID: 724689139}
   - {fileID: 916399066}
   - {fileID: 876881046}
-  - {fileID: 724689139}
   m_Father: {fileID: 2132278783}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -35184,7 +35256,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 143
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -35604,7 +35676,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 164B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -35690,7 +35762,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 216B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -35715,7 +35787,7 @@ GameObject:
   - component: {fileID: 1463425802}
   - component: {fileID: 1463425801}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 359
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35734,7 +35806,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1562335635}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1463425801
 MeshRenderer:
@@ -36271,7 +36343,7 @@ GameObject:
   - component: {fileID: 1486784241}
   - component: {fileID: 1486784240}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36290,7 +36362,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 922235562}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1486784240
 MeshRenderer:
@@ -36385,7 +36457,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -36422,9 +36494,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1064011542}
+  - {fileID: 2125004737}
   - {fileID: 607266076}
   - {fileID: 886727034}
-  - {fileID: 2125004737}
   m_Father: {fileID: 805615708}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36582,6 +36654,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -37270,7 +37346,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -37558,7 +37634,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 63
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -37647,7 +37723,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 172
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -37705,7 +37781,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 117
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -38190,6 +38266,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 281
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
   m_IsPrefabParent: 0
@@ -38401,7 +38481,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 87
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -38514,9 +38594,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1517978618}
+  - {fileID: 1826747490}
   - {fileID: 1660929963}
   - {fileID: 1463425800}
-  - {fileID: 1826747490}
   m_Father: {fileID: 328643119}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -38929,7 +39009,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 24B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -39262,7 +39342,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 144
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -39320,7 +39400,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 254
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -39424,6 +39504,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -39492,7 +39576,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 152B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -39643,7 +39727,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 264B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -39809,7 +39893,7 @@ GameObject:
   - component: {fileID: 1616373867}
   - component: {fileID: 1616373866}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39828,7 +39912,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 325418710}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1616373866
 MeshRenderer:
@@ -40153,7 +40237,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 311
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -40391,7 +40475,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 208B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -40723,7 +40807,7 @@ GameObject:
   - component: {fileID: 1651536297}
   - component: {fileID: 1651536296}
   m_Layer: 0
-  m_Name: out
+  m_Name: 17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40741,7 +40825,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 922235562}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1651536296
 MeshRenderer:
@@ -40849,7 +40933,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 66
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -40994,7 +41078,7 @@ GameObject:
   - component: {fileID: 1660929965}
   - component: {fileID: 1660929964}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 358
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41013,7 +41097,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1562335635}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1660929964
 MeshRenderer:
@@ -41108,7 +41192,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 257
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -41366,7 +41450,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -41679,7 +41763,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 123
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -41813,7 +41897,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 171
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -42003,7 +42087,7 @@ GameObject:
   - component: {fileID: 1687218321}
   - component: {fileID: 1687218320}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42022,7 +42106,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 922235562}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1687218320
 MeshRenderer:
@@ -42456,7 +42540,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 89
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -42514,7 +42598,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 286
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -42584,7 +42668,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 272B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -42967,7 +43051,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 230
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -43025,7 +43109,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 145
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -43396,7 +43480,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 268B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -43482,7 +43566,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 68B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -43697,7 +43781,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (4)
+      value: 291
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -43947,7 +44031,7 @@ GameObject:
   - component: {fileID: 1771239817}
   - component: {fileID: 1771239816}
   m_Layer: 0
-  m_Name: out
+  m_Name: 361
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43965,7 +44049,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 383621606}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1771239816
 MeshRenderer:
@@ -44302,6 +44386,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 169
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
   m_IsPrefabParent: 0
@@ -44463,7 +44551,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 12B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -44556,7 +44644,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 37
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -44594,9 +44682,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1827866371}
+  - {fileID: 472008477}
   - {fileID: 46823634}
   - {fileID: 1211700177}
-  - {fileID: 472008477}
   m_Father: {fileID: 661382158}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -44641,7 +44729,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 108B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -44786,7 +44874,7 @@ GameObject:
   - component: {fileID: 1826747492}
   - component: {fileID: 1826747491}
   m_Layer: 0
-  m_Name: out
+  m_Name: 357
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44804,7 +44892,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1562335635}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1826747491
 MeshRenderer:
@@ -45106,7 +45194,7 @@ GameObject:
   - component: {fileID: 1832652502}
   - component: {fileID: 1832652501}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45125,7 +45213,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1249642401}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1832652501
 MeshRenderer:
@@ -45434,7 +45522,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 148
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -45568,7 +45656,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 283
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -45660,7 +45748,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (2)
+      value: 315
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -45681,7 +45769,7 @@ GameObject:
   - component: {fileID: 1854938270}
   - component: {fileID: 1854938269}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 363
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45700,7 +45788,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 383621606}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1854938269
 MeshRenderer:
@@ -45812,7 +45900,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (0)
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -45901,7 +45989,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -46066,7 +46154,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 86
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -46230,9 +46318,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 208604269}
+  - {fileID: 1126191096}
   - {fileID: 1913389802}
   - {fileID: 383602905}
-  - {fileID: 1126191096}
   m_Father: {fileID: 885899783}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -46730,6 +46818,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 140
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
   m_IsPrefabParent: 0
@@ -46780,7 +46872,7 @@ GameObject:
   - component: {fileID: 1913389804}
   - component: {fileID: 1913389803}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 350
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46799,7 +46891,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1892206250}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1913389803
 MeshRenderer:
@@ -46925,7 +47017,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 229
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -46980,6 +47072,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 113
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -47190,7 +47286,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 342
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -47304,9 +47400,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1008988793}
+  - {fileID: 858103287}
   - {fileID: 1955376765}
   - {fileID: 440051923}
-  - {fileID: 858103287}
   m_Father: {fileID: 1237494328}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47390,7 +47486,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 340
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -47448,7 +47544,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (2)
+      value: 34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -47675,7 +47771,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 205
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -47696,7 +47792,7 @@ GameObject:
   - component: {fileID: 1955376767}
   - component: {fileID: 1955376766}
   m_Layer: 0
-  m_Name: ring1_react
+  m_Name: 354
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47715,7 +47811,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1930473751}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1955376766
 MeshRenderer:
@@ -48322,7 +48418,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 121
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -48462,7 +48558,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 128B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -48591,9 +48687,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1577195879}
+  - {fileID: 1191864324}
   - {fileID: 1087264669}
   - {fileID: 2119880329}
-  - {fileID: 1191864324}
   m_Father: {fileID: 1421470520}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -49106,7 +49202,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (3)
+      value: 65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -49232,7 +49328,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 296B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -49335,7 +49431,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 160B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -49898,7 +49994,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 142
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -49956,7 +50052,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB (1)
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -50087,6 +50183,10 @@ Prefab:
     - target: {fileID: 2300000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
+      propertyPath: m_Name
+      value: 112
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -50221,7 +50321,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (4)
+      value: 94
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -50271,7 +50371,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Name
-      value: tubulinB_frayed
+      value: 136B
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -50342,6 +50442,10 @@ Prefab:
     - target: {fileID: 2300000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
+      propertyPath: m_Name
+      value: 337
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bb63bb154009d468da95c7d43df538fc, type: 3}
@@ -50859,7 +50963,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 338
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -50960,7 +51064,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 320B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -51287,7 +51391,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (0)
+      value: 170
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -51433,7 +51537,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 96B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -51552,7 +51656,7 @@ GameObject:
   - component: {fileID: 2119880331}
   - component: {fileID: 2119880330}
   m_Layer: 0
-  m_Name: ring2_react
+  m_Name: 43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51571,7 +51675,7 @@ Transform:
   m_LocalScale: {x: 0.3280812, y: 0.3280812, z: 0.32808012}
   m_Children: []
   m_Father: {fileID: 1980015265}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2119880330
 MeshRenderer:
@@ -51866,7 +51970,7 @@ GameObject:
   - component: {fileID: 2125004739}
   - component: {fileID: 2125004738}
   m_Layer: 0
-  m_Name: out
+  m_Name: 49
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51884,7 +51988,7 @@ Transform:
   m_LocalScale: {x: 0.30000085, y: 0.3000003, z: 0.30000076}
   m_Children: []
   m_Father: {fileID: 1490937897}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2125004738
 MeshRenderer:
@@ -52277,7 +52381,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA_frayed
+      value: 20B
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -52523,7 +52627,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 228
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -52581,7 +52685,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (3)
+      value: 64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
@@ -52639,7 +52743,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
       propertyPath: m_Name
-      value: tubulinA (1)
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 568a845a66dc844cead53e21611a4169, type: 3}
