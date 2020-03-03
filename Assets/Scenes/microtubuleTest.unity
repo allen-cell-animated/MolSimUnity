@@ -22632,6 +22632,54 @@ MonoBehaviour:
     - {fileID: 847400075}
     angle: 0
     units: 0
+  - objs:
+    - {fileID: 816980734}
+    - {fileID: 1741312156}
+    - {fileID: 1689846209}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 1689846209}
+    - {fileID: 444432127}
+    - {fileID: 1091007018}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 1689846209}
+    - {fileID: 847400075}
+    - {fileID: 1651536295}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 1651536295}
+    - {fileID: 444432127}
+    - {fileID: 1091007018}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 724689139}
+    - {fileID: 1091007018}
+    - {fileID: 444432127}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 847400075}
+    - {fileID: 1651536295}
+    - {fileID: 724689139}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 1832652500}
+    - {fileID: 1687218319}
+    - {fileID: 916399066}
+    angle: 0
+    units: 0
+  - objs:
+    - {fileID: 878924055}
+    - {fileID: 1486784239}
+    - {fileID: 876881046}
+    angle: 0
+    units: 0
 --- !u!114 &869984251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22650,7 +22698,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 869984249}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb81e05e554344064bc2c0e85cbba44d, type: 3}
   m_Name: 
